@@ -1,5 +1,5 @@
 note
-	component:   "openEHR Components Project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "[
 				 This application demonstrates loading a set of BMM (basic meta-model) schemas into memory and
 				 accessing them using the BMM classes.
@@ -8,7 +8,7 @@ note
 	author:      "Thomas Beale"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011 Ocean Informatics Pty Ltd"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class
 	APPLICATION

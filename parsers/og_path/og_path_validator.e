@@ -1,11 +1,11 @@
 note
-	component:   "openEHR Archetype Project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "parser for Object Graph paths"
 	keywords:    "OG_PATH"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class OG_PATH_VALIDATOR
 
@@ -200,7 +200,6 @@ feature {NONE} -- Semantic actions
 		do
 			inspect yy_act
 when 1 then
---|#line 45 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 45")
 end
@@ -231,7 +230,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 2 then
---|#line 50 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 50")
 end
@@ -262,7 +260,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 3 then
---|#line 55 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 55")
 end
@@ -293,7 +290,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 4 then
---|#line 60 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 60")
 end
@@ -308,7 +304,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 5 then
---|#line 69 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 69")
 end
@@ -322,7 +317,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 6 then
---|#line 76 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 76")
 end
@@ -355,7 +349,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 7 then
---|#line 83 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 83")
 end
@@ -372,7 +365,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 8 then
---|#line 91 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 91")
 end
@@ -390,7 +382,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 9 then
---|#line 101 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 101")
 end
@@ -420,7 +411,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 10 then
---|#line 105 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 105")
 end
@@ -435,7 +425,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 11 then
---|#line 112 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 112")
 end
@@ -468,7 +457,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
 when 12 then
---|#line 119 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 119")
 end
@@ -501,7 +489,6 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
 when 13 then
---|#line 126 "og_path_validator.y"
 debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'og_path_validator.y' at line 126")
 end

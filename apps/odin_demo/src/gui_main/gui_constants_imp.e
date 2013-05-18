@@ -192,8 +192,6 @@ feature -- Access
 
 feature -- Access
 
---| FIXME `constant_by_name' and `has_constant' `constants_initialized' are only required until the complete change to
---| constants is complete. They are required for the pixmaps at the moment.
 
 	constants_initialized: BOOLEAN
 			-- Have constants been initialized from file?

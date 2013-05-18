@@ -1,11 +1,11 @@
 note
-	component:   "openEHR Archetype Project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "Scanner for Object Graph PathS"
 	keywords:    "OG_PATH scanner"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class OG_PATH_SCANNER
 
@@ -66,20 +66,17 @@ if yy_act <= 6 then
 if yy_act <= 3 then
 if yy_act <= 2 then
 if yy_act = 1 then
---|#line 57 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 57")
 end
 last_token := Dot_code
 else
---|#line 58 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 58")
 end
 last_token := Slash_code
 end
 else
---|#line 60 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 60")
 end
@@ -88,20 +85,17 @@ end
 else
 if yy_act <= 5 then
 if yy_act = 4 then
---|#line 61 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 61")
 end
 last_token := Right_bracket_code
 else
---|#line 63 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 63")
 end
 last_token := Left_parenthesis_code
 end
 else
---|#line 64 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 64")
 end
@@ -112,13 +106,11 @@ else
 if yy_act <= 9 then
 if yy_act <= 8 then
 if yy_act = 7 then
---|#line 66 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 66")
 end
 last_token := SYM_MOVABLE_LEADER
 else
---|#line 69 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 69")
 end
@@ -128,7 +120,6 @@ end
 			
 end
 else
---|#line 75 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 75")
 end
@@ -139,7 +130,6 @@ end
 end
 else
 if yy_act = 10 then
---|#line 81 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 81")
 end
@@ -148,7 +138,6 @@ end
 					last_string_value := text
 			
 else
---|#line 87 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 87")
 end
@@ -164,7 +153,6 @@ if yy_act <= 16 then
 if yy_act <= 14 then
 if yy_act <= 13 then
 if yy_act = 12 then
---|#line 92 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 92")
 end
@@ -175,14 +163,12 @@ end
 				set_start_condition (IN_STR)
 			
 else
---|#line 100 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 100")
 end
 in_buffer.append_character ('\')
 end
 else
---|#line 102 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 102")
 end
@@ -190,7 +176,6 @@ in_buffer.append_character ('"')
 end
 else
 if yy_act = 15 then
---|#line 104 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 104")
 end
@@ -198,7 +183,6 @@ end
 				in_buffer.append_string (text)
 	
 else
---|#line 108 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 108")
 end
@@ -209,7 +193,6 @@ else
 if yy_act <= 19 then
 if yy_act <= 18 then
 if yy_act = 17 then
---|#line 110 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 110")
 end
@@ -218,7 +201,6 @@ end
 				in_buffer.append_character ('%N')
 			
 else
---|#line 115 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 115")
 end
@@ -237,7 +219,6 @@ end
 			
 end
 else
---|#line 128 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 128")
 end
@@ -248,13 +229,11 @@ end
 end
 else
 if yy_act = 20 then
---|#line 138 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 138")
 end
 ;
 else
---|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end
@@ -270,13 +249,11 @@ end
 		do
 			inspect yy_sc
 when 0 then
---|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end
 terminate
 when 1 then
---|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end

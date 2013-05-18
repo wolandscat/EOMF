@@ -1,5 +1,5 @@
 note
-	component:   "openEHR Library Project"
+	component:   "Eiffel Object Modelling Framework"
       description: "[
 			 Version of SORTED_TWO_WAY_LIST[G] with faster searching,
 		  	 based on the idea that the next search request will usually be for
@@ -10,7 +10,7 @@ note
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.biz>"
 	copyright:   "Copyright (c) 2004 Ocean Informatics Pty Ltd"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 	file:        "$URL$"
 	revision:    "$LastChangedRevision$"

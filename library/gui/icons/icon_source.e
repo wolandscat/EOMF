@@ -1,11 +1,11 @@
 note
-	component:   "openEHR Project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "Parent class for generated ICON_XXX classs based on icon files"
 	keywords:    "Embedded icons"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 deferred class ICON_SOURCE
 

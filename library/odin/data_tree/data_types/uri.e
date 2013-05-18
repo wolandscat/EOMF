@@ -1,5 +1,5 @@
 note
-	component:   "openEHR support types"
+	component:   "Eiffel Object Modelling Framework"
 
 	description: "[
 				  Model of a URI, or Universal Resource Identifier, as defined by W3C
@@ -19,7 +19,7 @@ note
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2005- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class URI
 

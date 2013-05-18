@@ -1,11 +1,11 @@
 note
-	component:   "openEHR ODIN Project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "Data objects for ODIN testing"
 	keywords:    "ODIN, test"
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2010- Ocean Informatics Pty Ltd"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class
 	ODIN_TEST_OBJECTS
