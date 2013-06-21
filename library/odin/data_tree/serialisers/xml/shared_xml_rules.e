@@ -13,8 +13,6 @@ feature -- Access
 
 	xml_rules: XML_RULES
 			-- set of rules to do with IM class, keyed by class name to which they apply
-		local
-			xr: XML_RULES
 		do
 			if xml_rules_out_of_date then
 				if attached xml_load_rules_agent_cache.item as load_agt and then attached load_agt.item ([]) as x then
@@ -23,6 +21,8 @@ feature -- Access
 					create Result.make
 				end
 				xml_rules_cache.put (Result)
+			elseif attached xml_rules_cache.item as xr then
+				Result := xr
 			else
 				create Result.make
 			end
