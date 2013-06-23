@@ -1,6 +1,5 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-
 	description: "[
 				 Terminology code, possibly coordinated by terminology service; consisting of
 				 a key, which is parsable into a terminology id and a code string,
@@ -10,9 +9,6 @@ note
 					terminology_id SEP code_string
 				 ]"
 	keywords:    "text, data"
-
-	requirements:"ISO 18308 TS V1.0 STR 4.2"
-	design:      "openEHR Data Types Reference Model 1.7"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2000- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
