@@ -23,6 +23,7 @@ create
 feature -- Initialisation
 
 	make (a_gui_update_agent: like gui_update_agent)
+			-- make with UI-updating agent 
 		do
 			create chain.make
 			gui_update_agent := a_gui_update_agent
@@ -33,7 +34,9 @@ feature -- Access
 
 	chain: TWO_WAY_LIST [UNDO_REDO_ACTION]
 
-	gui_update_agent: PROCEDURE [ANY, TUPLE [UNDO_REDO_CHAIN]]
+	gui_update_agent: PROCEDURE [ANY, TUPLE]
+			-- agent that updates the UI when any undo/redo happens, typically to set a 
+			-- visual 'dirty' marker, set back / forward arrows etc
 
 	last_action_time: DATE_TIME
 			-- time stamp of last action, either due to the action executed before the
@@ -60,14 +63,16 @@ feature -- Status Report
 
 feature -- Element Change
 
-	add_link (an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
+	add_link (a_ui_context: EV_WIDGET; an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
+			-- add an undo/redo pair with corresponding undo/redo display actions
 		do
-			do_add_link (create {UNDO_REDO_ACTION}.make (an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action))
+			do_add_link (create {UNDO_REDO_ACTION}.make (a_ui_context, an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action))
 		end
 
-	add_link_simple (an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
+	add_link_simple (a_ui_context: EV_WIDGET; an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
+			-- add an undo/redo pair
 		do
-			do_add_link (create {UNDO_REDO_ACTION}.make_simple (an_undo_action, a_redo_action))
+			do_add_link (create {UNDO_REDO_ACTION}.make_simple (a_ui_context, an_undo_action, a_redo_action))
 		end
 
 feature -- Commands

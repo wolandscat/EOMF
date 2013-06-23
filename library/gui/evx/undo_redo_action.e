@@ -16,16 +16,18 @@ create
 
 feature -- Initialisation
 
-	make (an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
+	make (a_ui_context: EV_WIDGET; an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
 		do
+			ui_context := a_ui_context
 			undo_action := an_undo_action
 			redo_action := a_redo_action
 			undo_display_action := an_undo_display_action
 			redo_display_action := a_redo_display_action
 		end
 
-	make_simple (an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
+	make_simple (a_ui_context: EV_WIDGET; an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
 		do
+			ui_context := a_ui_context
 			undo_action := an_undo_action
 			redo_action := a_redo_action
 		end
@@ -40,10 +42,16 @@ feature -- Access
 
 	redo_display_action: detachable PROCEDURE [ANY, TUPLE]
 
+	ui_context: EV_WIDGET
+			-- UI widget or other visual context that needs to be shown when undo or redo are called
+
 feature -- Commands
 
 	undo
 		do
+			if not ui_context.is_show_requested then
+				ui_context.show
+			end
 			undo_action.call ([])
 			if attached undo_display_action then
 				undo_display_action.call ([])
@@ -52,6 +60,9 @@ feature -- Commands
 
 	redo
 		do
+			if not ui_context.is_show_requested then
+				ui_context.show
+			end
 			redo_action.call ([])
 			if attached redo_display_action then
 				redo_display_action.call ([])
