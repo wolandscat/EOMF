@@ -22,7 +22,7 @@
 		</library>
 
 		<cluster name="app_support" location=".\" recursive="true">
-			<option void_safety="initialization"> </option>
+			<option void_safety="initialization" full_class_checking="true" is_attached_by_default="true"/>
 			<file_rule>
 				<exclude>/other$</exclude>
 				<include>/windows$</include>
@@ -39,7 +39,7 @@
 			</file_rule>
 		</cluster>
 		<cluster name="eomf_messages" location="$EOMF\resources\messages\compiled">
-			<option void_safety="initialization"> </option>
+			<option void_safety="initialization" full_class_checking="true" is_attached_by_default="true"/>
 		</cluster>
 		<cluster name="gobo_pattern" location="$ISE_LIBRARY\contrib\library\gobo\library\pattern\" recursive="true"/>
 		<cluster name="gobo_regexp" location="$ISE_LIBRARY\contrib\library\gobo\library\regexp\" recursive="true"/>
