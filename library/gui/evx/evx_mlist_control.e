@@ -88,10 +88,10 @@ feature -- Commands
 
 	populate
 		do
+			do_populate_control_from_source
 			if attached header_strings_agent then
 				ev_data_control.set_column_titles (header_strings_agent.item ([]))
 			end
-			do_populate_control_from_source
 			if is_editable then
 				set_columns_editable
 			end
@@ -106,6 +106,7 @@ feature -- Commands
 feature {NONE} -- Implementation
 
 	do_populate_control_from_source
+			-- populate table data rows from data source (doesn't populate header row)
 		deferred
 		end
 

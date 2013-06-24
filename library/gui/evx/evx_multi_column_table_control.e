@@ -122,7 +122,7 @@ feature {NONE} -- Implementation
 			if not old_val.same_string (new_val) then
 				data_source_modify_agent.call ([col_name, key, new_val])
 
-				undo_redo_chain.add_link (
+				undo_redo_chain.add_link (ev_data_control,
 					-- undo
 					agent data_source_modify_agent.call ([col_name, key, old_val]),
 					agent (ev_data_control.i_th (ev_data_control.widget_row)).put_i_th (old_val, ev_data_control.widget_column),
@@ -149,7 +149,7 @@ feature {NONE} -- Implementation
 --			new_row.pointer_button_press_actions.force_extend (agent mlist_row_handler (new_row, ?, ?, ?))
 
 --			data_source_create_agent.call ([new_key, new_val])
---			undo_redo_chain.add_link (
+--			undo_redo_chain.add_link (ev_data_control,
 --				agent data_source_remove_agent.call ([new_key]), agent data_source_create_agent.call ([new_key, new_val]), agent do_populate
 --			)
 		end
@@ -164,7 +164,7 @@ feature {NONE} -- Implementation
 --			data_source_remove_agent.call ([old_key])
 --			ev_data_control.remove_selected_item
 
---			undo_redo_chain.add_link (
+--			undo_redo_chain.add_link (ev_data_control,
 --				agent data_source_create_agent.call ([old_key, old_val]), agent data_source_remove_agent.call ([old_key]), agent do_populate
 --			)
 		end

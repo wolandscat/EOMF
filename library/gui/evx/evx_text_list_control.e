@@ -90,7 +90,7 @@ feature {NONE} -- Implementation
 
 			if not old_val.same_string (new_val) then
 				ds.replace (new_val)
-				undo_redo_chain.add_link (
+				undo_redo_chain.add_link (ev_data_control,
 					-- undo
 					agent ds.put_i_th (old_val, ds_index),
 					agent (a_val: STRING_32; row_idx: INTEGER)
@@ -126,7 +126,7 @@ feature {NONE} -- Implementation
 	--		new_row.pointer_button_press_actions.force_extend (agent mlist_handler (ev_data_control, ?, ?, ?, ?, ?, ?, ?, ?))
 
 			data_source_setter_agent.call ([new_val, 0])
-			undo_redo_chain.add_link (
+			undo_redo_chain.add_link (ev_data_control, 
 				-- undo
 				agent data_source_remove_agent.call ([new_val]),
 				agent populate,
@@ -155,7 +155,7 @@ feature {NONE} -- Implementation
 				undo_add_idx := ds_index
 			end
 			data_source_remove_agent.call ([old_val])
-			undo_redo_chain.add_link (
+			undo_redo_chain.add_link (ev_data_control, 
 				agent data_source_setter_agent.call ([old_val, undo_add_idx]),
 				agent populate,
 				agent data_source_remove_agent.call ([old_val]),
