@@ -1,19 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-
 	description: "[
 				 Integer interval, used for representing cardinality, occurrences etc.
 				 ]"
 	keywords:    "intervals"
-
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2000-2005 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
-
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
 
 class MULTIPLICITY_INTERVAL
 
@@ -61,10 +55,10 @@ feature -- Initialisation
 			Bounded_upper: not upper_unbounded
 		end
 
-	make_upper_unbounded(a_lower: INTEGER)
+	make_upper_unbounded (a_lower: INTEGER)
 			-- make an interval from `a_lower' to +infinity
 		do
-			make_upper_unbounded_interval(a_lower, True)
+			make_upper_unbounded_interval (a_lower, True)
 		ensure
 			Lower_set: lower = a_lower
 			Bounded_lower: not lower_unbounded
@@ -193,6 +187,18 @@ feature -- Status report
 		do
 			-- for the moment, just assume
 			Result := True
+		end
+
+feature -- Modification
+
+	set_lower (a_lower: INTEGER)
+			-- reset lower to `_lower'
+		require
+			Lower_valid: a_lower >= 0
+		do
+			lower := a_lower
+			lower_unbounded := False
+			lower_included := True
 		end
 
 feature -- Operations

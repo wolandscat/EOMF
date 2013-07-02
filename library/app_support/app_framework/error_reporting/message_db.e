@@ -69,11 +69,6 @@ feature -- Access
 		end
 
 	create_message_text (an_id: STRING): STRING
-		local
-			i: INTEGER
-			idx_str: STRING
-			args_list: detachable ARRAY[STRING]
-			replacement: STRING
 		do
 			if message_table.has (an_id) then
 				check attached message_table.item (an_id) as msg then

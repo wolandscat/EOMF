@@ -162,7 +162,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	proximate_ev_window (a_widget: EV_WIDGET): detachable EV_WINDOW
+	proximate_ev_window (a_widget: EV_WIDGET): EV_WINDOW
 			-- find closest EV_WINDOW containing `a_widget'
 		local
 			csr: detachable EV_WIDGET
@@ -170,7 +170,7 @@ feature {NONE} -- Implementation
 			from csr := a_widget.parent until not attached csr or else attached {EV_WINDOW} csr loop
 				csr := csr.parent
 			end
-			if attached {EV_WINDOW} csr as ev_win then
+			check attached {EV_WINDOW} csr as ev_win then
 				Result := ev_win
 			end
 		end

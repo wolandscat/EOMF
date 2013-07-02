@@ -194,24 +194,18 @@ feature {NONE} -- Implementation
 	file_exists (path: STRING): BOOLEAN
 			-- Is `path' a valid, existing file?
 		do
-			if path /= Void and then not path.is_empty then
-				Result := file_system.file_exists (file_system.canonical_pathname (path))
-			end
+			Result := file_system.file_exists (file_system.canonical_pathname (path))
 		end
 
 	directory_exists (path: STRING): BOOLEAN
 			-- Is `path' a valid, existing directory?
 		do
-			if path /= Void and then not path.is_empty then
-				Result := file_system.directory_exists (file_system.canonical_pathname (path))
-			end
+			Result := file_system.directory_exists (file_system.canonical_pathname (path))
 		end
 
 	extension_replaced (path, new_extension: STRING): STRING
 			-- Copy of `path', with its extension replaced by `new_extension'.
 		require
-			path_attached: path /= Void
-			new_extension_attached: new_extension /= Void
 			new_extension_starts_with_dot: not new_extension.is_empty implies new_extension.item (1) = '.'
 		local
 			n: INTEGER
