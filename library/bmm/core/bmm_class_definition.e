@@ -267,7 +267,7 @@ feature -- Access
 			end
 		end
 
-	property_definition_at_path (a_prop_path: OG_PATH): detachable BMM_PROPERTY_DEFINITION
+	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY_DEFINITION
 			-- retrieve the property definition for `a_prop_path' in flattened class corresponding to `a_type_name'
 			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
 			-- recursive evaluation)
@@ -276,20 +276,28 @@ feature -- Access
 		local
 			a_path_pos: INTEGER
 			i: INTEGER
+			found: BOOLEAN
+			bmm_prop: detachable BMM_PROPERTY_DEFINITION
 		do
 			a_path_pos := a_prop_path.items.index
 			if has_property (a_prop_path.item.attr_name) then
-				Result := flat_properties.item (a_prop_path.item.attr_name)
+				check attached flat_properties.item (a_prop_path.item.attr_name) as fp then
+					Result := fp
+				end
 				a_prop_path.forth
 				if not a_prop_path.off and then attached bmm_schema.class_definition (Result.type.root_class) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
-				from i := 1 until i > immediate_descendants.count or Result /= Void loop
+				from i := 1 until i > immediate_descendants.count or found loop
 					if immediate_descendants.i_th(i).has_property_path (a_prop_path) then
-						Result := immediate_descendants.i_th(i).property_definition_at_path (a_prop_path)
+						bmm_prop := immediate_descendants.i_th(i).property_definition_at_path (a_prop_path)
+						found := True
 					end
 					i := i + 1
+				end
+				check attached bmm_prop as bp then
+					Result := bp
 				end
 			end
 			a_prop_path.go_i_th (a_path_pos)

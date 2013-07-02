@@ -117,7 +117,7 @@ feature -- Access
 			end
 		end
 
-	property_definition_at_path (a_type_name, a_property_path: STRING): detachable BMM_PROPERTY_DEFINITION
+	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY_DEFINITION
 			-- retrieve the property definition for `a_property_path' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
