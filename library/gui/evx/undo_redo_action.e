@@ -16,23 +16,24 @@ create
 
 feature -- Initialisation
 
-	make (a_ui_context: EV_WIDGET; an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
+	make (a_link_id: INTEGER; a_ui_context: EV_WIDGET; an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
 		do
-			ui_context := a_ui_context
-			undo_action := an_undo_action
-			redo_action := a_redo_action
+			make_simple (a_link_id, a_ui_context, an_undo_action, a_redo_action)
 			undo_display_action := an_undo_display_action
 			redo_display_action := a_redo_display_action
 		end
 
-	make_simple (a_ui_context: EV_WIDGET; an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
+	make_simple (a_link_id: INTEGER; a_ui_context: EV_WIDGET; an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
 		do
+			link_id := a_link_id
 			ui_context := a_ui_context
 			undo_action := an_undo_action
 			redo_action := a_redo_action
 		end
 
 feature -- Access
+
+	link_id: INTEGER
 
 	undo_action: PROCEDURE [ANY, TUPLE]
 
@@ -48,8 +49,16 @@ feature -- Access
 feature -- Commands
 
 	undo
+		local
+			p: detachable EV_CONTAINER
 		do
-			if not ui_context.is_show_requested then
+			if not ui_context.is_displayed then
+				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
+					if attached p as a_p then
+						a_p.show
+					end
+					p := p.parent
+				end
 				ui_context.show
 			end
 			undo_action.call ([])
@@ -59,8 +68,16 @@ feature -- Commands
 		end
 
 	redo
+		local
+			p: detachable EV_CONTAINER
 		do
-			if not ui_context.is_show_requested then
+			if not ui_context.is_displayed then
+				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
+					if attached p as a_p then
+						a_p.show
+					end
+					p := p.parent
+				end
 				ui_context.show
 			end
 			redo_action.call ([])

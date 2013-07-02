@@ -42,6 +42,9 @@ feature -- Access
 			-- time stamp of last action, either due to the action executed before the
 			-- call to `add_link' or an undo or redo
 
+	created_link_count: INTEGER
+			-- number of links created; used to stamp an id on each link for debugging purposes
+
 feature -- Status Report
 
 	is_empty: BOOLEAN
@@ -66,13 +69,15 @@ feature -- Element Change
 	add_link (a_ui_context: EV_WIDGET; an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action: PROCEDURE [ANY, TUPLE])
 			-- add an undo/redo pair with corresponding undo/redo display actions
 		do
-			do_add_link (create {UNDO_REDO_ACTION}.make (a_ui_context, an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action))
+			created_link_count := created_link_count + 1
+			do_add_link (create {UNDO_REDO_ACTION}.make (created_link_count, a_ui_context, an_undo_action, an_undo_display_action, a_redo_action, a_redo_display_action))
 		end
 
 	add_link_simple (a_ui_context: EV_WIDGET; an_undo_action, a_redo_action: PROCEDURE [ANY, TUPLE])
 			-- add an undo/redo pair
 		do
-			do_add_link (create {UNDO_REDO_ACTION}.make_simple (a_ui_context, an_undo_action, a_redo_action))
+			created_link_count := created_link_count + 1
+			do_add_link (create {UNDO_REDO_ACTION}.make_simple (created_link_count, a_ui_context, an_undo_action, a_redo_action))
 		end
 
 feature -- Commands
