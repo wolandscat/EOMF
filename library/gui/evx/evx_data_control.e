@@ -114,6 +114,18 @@ feature -- Commands
 			ev_data_control.show
 		end
 
+	enable_sensitive
+		do
+			ev_data_control.enable_sensitive
+			ev_data_control.set_background_color (editable_colour)
+		end
+
+	disable_sensitive
+		do
+			ev_data_control.disable_sensitive
+			ev_data_control.set_background_color (readonly_colour)
+		end
+
 feature {NONE} -- Implementation
 
 	create_ev_data_control
@@ -123,15 +135,13 @@ feature {NONE} -- Implementation
 	linked_data_controls: detachable ARRAYED_LIST [EVX_DATA_CONTROL]
 
 	do_enable_editable
+			-- enable user editing, do nothing if `is_readonly'
 		do
-	--		ev_data_control.enable_sensitive
-	--		ev_data_control.set_background_color (editable_colour)
 		end
 
 	do_disable_editable
+			-- disable user editing, do nothing if `is_readonly'
 		do
-	--		ev_data_control.disable_sensitive
-	--		ev_data_control.set_background_color (readonly_colour)
 		end
 
 end

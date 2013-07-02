@@ -101,10 +101,12 @@ feature -- Commands
 			-- populate content
 		local
 			li2: EV_LIST_ITEM
+			not_sensitive: BOOLEAN
 		do
 			ev_data_control.select_actions.block
-			if not is_editable then
+			if not ev_data_control.is_sensitive then
 				ev_data_control.enable_sensitive
+				not_sensitive := True
 			end
 
 			-- populate with all possible values
@@ -131,7 +133,7 @@ feature -- Commands
 				li2.enable_select
 			end
 			ev_data_control.select_actions.resume
-			if not is_editable then
+			if not_sensitive then
 				ev_data_control.disable_sensitive
 			end
 		end
