@@ -13,6 +13,16 @@ feature -- Definitions
 
 	Any_type: STRING = "Any"
 
+	bare_type_name (type_str: STRING): STRING
+			-- remove any leading ! from broken TYPE.name
+		do
+			if type_str.item (1) = '!' then
+				Result := type_str.substring (2, type_str.count)
+			else
+				Result := type_str
+			end
+		end
+
 	Regex_any_pattern: STRING = ".*"
 
 	CR: CHARACTER = '%/015/'
