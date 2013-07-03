@@ -52,15 +52,16 @@ feature -- Commands
 		local
 			p: detachable EV_CONTAINER
 		do
-			if not ui_context.is_displayed then
-				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
-					if attached p as a_p then
-						a_p.show
-					end
-					p := p.parent
-				end
-				ui_context.show
-			end
+-- FOR NOW this doesn't work in EV_NOTEBOOK at least
+--			if not ui_context.is_displayed then
+--				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
+--					if attached p as a_p then
+--						a_p.show
+--					end
+--					p := p.parent
+--				end
+--				ui_context.show
+--			end
 			undo_action.call ([])
 			if attached undo_display_action then
 				undo_display_action.call ([])
@@ -71,15 +72,16 @@ feature -- Commands
 		local
 			p: detachable EV_CONTAINER
 		do
-			if not ui_context.is_displayed then
-				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
-					if attached p as a_p then
-						a_p.show
-					end
-					p := p.parent
-				end
-				ui_context.show
-			end
+-- FOR NOW this doesn't work in EV_NOTEBOOK at least
+--			if not ui_context.is_displayed then
+--				from p := ui_context.parent until not attached p as att_p or else att_p.is_displayed loop
+--					if attached p as a_p then
+--						a_p.show
+--					end
+--					p := p.parent
+--				end
+--				ui_context.show
+--			end
 			redo_action.call ([])
 			if attached redo_display_action then
 				redo_display_action.call ([])
