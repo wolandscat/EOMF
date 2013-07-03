@@ -8,6 +8,6 @@
 #	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 #
 
-geyacc --new_typing -v parser_errs.txt -t DADL_TOKENS -o odin_validator.e odin_validator.y
+geyacc --new_typing -v parser_errs.txt -t ODIN_TOKENS -o odin_validator.e odin_validator.y
 
-geyacc --doc=html -v parser_errs.txt -t DADL_TOKENS -o odin_validator.html odin_validator.y
+geyacc --doc=html -v parser_errs.txt -t ODIN_TOKENS -o odin_validator.html odin_validator.y

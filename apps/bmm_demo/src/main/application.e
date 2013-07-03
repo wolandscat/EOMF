@@ -4,7 +4,7 @@ note
 				 This application demonstrates loading a set of BMM (basic meta-model) schemas into memory and
 				 accessing them using the BMM classes.
 				 ]"
-	keywords:    "ADL"
+	keywords:    "BMM, reflection, meta-model"
 	author:      "Thomas Beale"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011 Ocean Informatics Pty Ltd"

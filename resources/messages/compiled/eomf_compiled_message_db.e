@@ -1,11 +1,11 @@
 note
-	component:   "Eiffel Object Modelling Framework"
+	component:   "openEHR Archetype Project"
 	description: "Generated class from message text files"
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2012 Ocean Informatics Pty Ltd"
-	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
+	license:     "See notice at bottom of class"
 
 class EOMF_COMPILED_MESSAGE_DB
 
@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (151)
+			create message_table.make (152)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -163,6 +163,7 @@ feature -- Initialisation
 			message_table.put ("[Software exception]: Nested structure mismatch for type $1, attribute $2: DT structure is nested, object type is not", ec_dt_nested_type_mismatch)
 			message_table.put ("Data source mentions unknown type $1 (object add failed)", ec_dt_unknown_type_in_source)
 			message_table.put ("Syntax error: invalid term code reference: '$1'; code string can only contain digits, letters and '.', '_' and '-' and must commence with a letter or digit", ec_STCV)
+			message_table.put ("Syntax error: invalid term code reference has no code: '$1'", ec_STNC)
 			message_table.put ("Syntax error (SGEE)generic object not enclosed by normal object not allowed", ec_SGEE)
 			message_table.put ("Syntax error (SDAT)invalid attribute value", ec_SDAT)
 			message_table.put ("assumed value $1 not within constraint value space", ec_VOBAV)

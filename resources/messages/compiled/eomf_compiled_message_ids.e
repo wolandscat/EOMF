@@ -1,11 +1,11 @@
 note
-	component:   "Eiffel Object Modelling Framework"
+	component:   "openEHR Archetype Project"
 	description: "Generated class from message text files"
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd"
-	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
+	license:     "See notice at bottom of class"
 
 class EOMF_COMPILED_MESSAGE_IDS
 
@@ -148,6 +148,7 @@ feature -- Definitions
 		ec_dt_nested_type_mismatch: STRING = "dt_nested_type_mismatch"
 		ec_dt_unknown_type_in_source: STRING = "dt_unknown_type_in_source"
 		ec_STCV: STRING = "STCV"
+		ec_STNC: STRING = "STNC"
 		ec_SGEE: STRING = "SGEE"
 		ec_SDAT: STRING = "SDAT"
 		ec_VOBAV: STRING = "VOBAV"

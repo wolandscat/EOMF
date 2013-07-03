@@ -35,6 +35,7 @@ templates = <
 
 		-- Syntax errors
 		["STCV"] = <"Syntax error: invalid term code reference: '$1'; code string can only contain digits, letters and '.', '_' and '-' and must commence with a letter or digit">
+		["STNC"] = <"Syntax error: invalid term code reference has no code: '$1'">
 		["SGEE"] = <"Syntax error (SGEE)generic object not enclosed by normal object not allowed">
 
 		["SDAT"] = <"Syntax error (SDAT)invalid attribute value">
