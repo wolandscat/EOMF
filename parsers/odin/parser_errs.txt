@@ -11,8 +11,8 @@ Terminals which are not used:
 	ERR_V_LOCAL_TERM_CODE_REF
 
 
-State 116 contains 1 shift/reduce conflict.
-State 215 contains 1 shift/reduce conflict.
+State 117 contains 1 shift/reduce conflict.
+State 216 contains 1 shift/reduce conflict.
 
 Grammar
 
@@ -177,24 +177,25 @@ rule 158 duration_interval_value -> SYM_INTERVAL_DELIM SYM_GT duration_value SYM
 rule 159 duration_interval_value -> SYM_INTERVAL_DELIM SYM_GE duration_value SYM_INTERVAL_DELIM
 rule 160 duration_interval_value -> SYM_INTERVAL_DELIM duration_value SYM_INTERVAL_DELIM
 rule 161 term_code -> V_QUALIFIED_TERM_CODE_REF
-rule 162 term_code -> ERR_V_QUALIFIED_TERM_CODE_REF
-rule 163 term_code_list_value -> term_code ',' term_code
-rule 164 term_code_list_value -> term_code_list_value ',' term_code
-rule 165 term_code_list_value -> term_code ',' SYM_LIST_CONTINUE
-rule 166 uri_value -> V_URI
-rule 167 object_reference_block -> SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK
-rule 168 absolute_path_object_value -> absolute_path
-rule 169 absolute_path_object_value -> absolute_path_list
-rule 170 absolute_path_list -> absolute_path ',' absolute_path
-rule 171 absolute_path_list -> absolute_path_list ',' absolute_path
-rule 172 absolute_path_list -> absolute_path ',' SYM_LIST_CONTINUE
-rule 173 absolute_path -> '/'
-rule 174 absolute_path -> '/' relative_path
-rule 175 absolute_path -> absolute_path '/' relative_path
-rule 176 relative_path -> path_segment
-rule 177 relative_path -> relative_path '/' path_segment
-rule 178 path_segment -> V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'
-rule 179 path_segment -> V_ATTRIBUTE_IDENTIFIER
+rule 162 term_code -> V_TERMINOLOGY_ID
+rule 163 term_code -> ERR_V_QUALIFIED_TERM_CODE_REF
+rule 164 term_code_list_value -> term_code ',' term_code
+rule 165 term_code_list_value -> term_code_list_value ',' term_code
+rule 166 term_code_list_value -> term_code ',' SYM_LIST_CONTINUE
+rule 167 uri_value -> V_URI
+rule 168 object_reference_block -> SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK
+rule 169 absolute_path_object_value -> absolute_path
+rule 170 absolute_path_object_value -> absolute_path_list
+rule 171 absolute_path_list -> absolute_path ',' absolute_path
+rule 172 absolute_path_list -> absolute_path_list ',' absolute_path
+rule 173 absolute_path_list -> absolute_path ',' SYM_LIST_CONTINUE
+rule 174 absolute_path -> '/'
+rule 175 absolute_path -> '/' relative_path
+rule 176 absolute_path -> absolute_path '/' relative_path
+rule 177 relative_path -> path_segment
+rule 178 relative_path -> relative_path '/' path_segment
+rule 179 path_segment -> V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'
+rule 180 path_segment -> V_ATTRIBUTE_IDENTIFIER
 
 Terminals, with rules where they appear
 
@@ -205,8 +206,8 @@ V_INTEGER (token 258) 70 71 72
 V_REAL (token 259) 85 86 87
 V_TYPE_IDENTIFIER (token 260) 61 63
 V_GENERIC_TYPE_IDENTIFIER (token 261) 62 64
-V_ATTRIBUTE_IDENTIFIER (token 262) 8 9 178 179
-V_STRING (token 263) 65 66 67 69 178
+V_ATTRIBUTE_IDENTIFIER (token 262) 8 9 179 180
+V_STRING (token 263) 65 66 67 69 179
 V_ISO8601_EXTENDED_DATE (token 264) 109
 V_ISO8601_EXTENDED_TIME (token 265) 122
 V_ISO8601_EXTENDED_DATE_TIME (token 266) 135
@@ -215,37 +216,38 @@ V_CADL_BLOCK (token 268)
 V_LOCAL_CODE (token 269)
 V_QUALIFIED_TERM_CODE_REF (token 270) 161
 V_LOCAL_TERM_CODE_REF (token 271)
-V_URI (token 272) 166
-V_CHARACTER (token 273) 105
-SYM_START_DBLOCK (token 274) 13 19 27 30 167
-SYM_END_DBLOCK (token 275) 13 18 26 30 167
-SYM_EQ (token 276) 7 22
-SYM_ELLIPSIS (token 277) 76 77 78 79 91 92 93 94 113 114 115 116 126 127 128 129 139 140 141 142 152 153 154 155
-SYM_LIST_CONTINUE (token 278) 68 69 75 90 104 108 112 125 138 151 165 172
-SYM_INFINITY (token 279)
-SYM_INTERVAL_DELIM (token 280) 76 77 78 79 80 81 82 83 84 91 92 93 94 95 96 97 98 99 113 114 115 116 117 118 119 120 121 126 127 128 129 130 131 132 133 134 139 140 141 142 143 144 145 146 147 152 153 154 155 156 157 158 159 160
-SYM_DT_UNKNOWN (token 281)
-SYM_TRUE (token 282) 100
-SYM_FALSE (token 283) 101
-SYM_LT (token 284) 78 79 80 93 94 95 115 116 117 128 129 130 141 142 143 154 155 156
-SYM_GT (token 285) 77 79 82 92 94 97 114 116 119 127 129 132 140 142 145 153 155 158
-SYM_LE (token 286) 81 96 118 131 144 157
-SYM_GE (token 287) 83 98 120 133 146 159
-ERR_CHARACTER (token 288)
-ERR_STRING (token 289)
-ERR_CADL_MISPLACED (token 290)
-ERR_V_QUALIFIED_TERM_CODE_REF (token 291) 162
-ERR_V_LOCAL_TERM_CODE_REF (token 292)
-UNARY_MINUS (token 293)
+V_TERMINOLOGY_ID (token 272) 162
+V_URI (token 273) 167
+V_CHARACTER (token 274) 105
+SYM_START_DBLOCK (token 275) 13 19 27 30 168
+SYM_END_DBLOCK (token 276) 13 18 26 30 168
+SYM_EQ (token 277) 7 22
+SYM_ELLIPSIS (token 278) 76 77 78 79 91 92 93 94 113 114 115 116 126 127 128 129 139 140 141 142 152 153 154 155
+SYM_LIST_CONTINUE (token 279) 68 69 75 90 104 108 112 125 138 151 166 173
+SYM_INFINITY (token 280)
+SYM_INTERVAL_DELIM (token 281) 76 77 78 79 80 81 82 83 84 91 92 93 94 95 96 97 98 99 113 114 115 116 117 118 119 120 121 126 127 128 129 130 131 132 133 134 139 140 141 142 143 144 145 146 147 152 153 154 155 156 157 158 159 160
+SYM_DT_UNKNOWN (token 282)
+SYM_TRUE (token 283) 100
+SYM_FALSE (token 284) 101
+SYM_LT (token 285) 78 79 80 93 94 95 115 116 117 128 129 130 141 142 143 154 155 156
+SYM_GT (token 286) 77 79 82 92 94 97 114 116 119 127 129 132 140 142 145 153 155 158
+SYM_LE (token 287) 81 96 118 131 144 157
+SYM_GE (token 288) 83 98 120 133 146 159
+ERR_CHARACTER (token 289)
+ERR_STRING (token 290)
+ERR_CADL_MISPLACED (token 291)
+ERR_V_QUALIFIED_TERM_CODE_REF (token 292) 163
+ERR_V_LOCAL_TERM_CODE_REF (token 293)
+UNARY_MINUS (token 294)
 ';' (token 59) 6
-'[' (token 91) 23 178
-']' (token 93) 23 178
+'[' (token 91) 23 179
+']' (token 93) 23 179
 '(' (token 40) 61 62
 ')' (token 41) 61 62
-',' (token 44) 66 67 68 69 73 74 75 88 89 90 102 103 104 106 107 108 110 111 112 123 124 125 136 137 138 149 150 151 163 164 165 170 171 172
+',' (token 44) 66 67 68 69 73 74 75 88 89 90 102 103 104 106 107 108 110 111 112 123 124 125 136 137 138 149 150 151 164 165 166 171 172 173
 '+' (token 43) 71 86
 '-' (token 45) 72 87
-'/' (token 47) 173 174 175 177
+'/' (token 47) 174 175 176 178
 
 Nonterminals, with rules where they appear
 
@@ -258,8 +260,8 @@ date_value (5) on left: 109, on right: 41 110 111 112 113 114 115 116 117 118 11
 date_time_value (6) on left: 135, on right: 43 136 137 138 139 140 141 142 143 144 145 146 147
 time_value (7) on left: 122, on right: 42 123 124 125 126 127 128 129 130 131 132 133 134
 duration_value (8) on left: 148, on right: 44 149 150 151 152 153 154 155 156 157 158 159 160
-term_code (9) on left: 161 162, on right: 34 163 164 165
-uri_value (10) on left: 166, on right: 45
+term_code (9) on left: 161 162 163, on right: 34 164 165 166
+uri_value (10) on left: 167, on right: 45
 single_attr_object_block (11) on left: 24 25, on right: 14
 untyped_single_attr_object_block (12) on left: 26, on right: 24 25
 container_attr_object_block (13) on left: 16 17, on right: 15
@@ -267,13 +269,13 @@ untyped_container_attr_object_block (14) on left: 18, on right: 16 17
 complex_object_block (15) on left: 14 15, on right: 2 10
 untyped_primitive_object_block (16) on left: 30, on right: 28 29
 primitive_object_block (17) on left: 28 29, on right: 11
-object_reference_block (18) on left: 167, on right: 12
+object_reference_block (18) on left: 168, on right: 12
 primitive_object (19) on left: 31 32 33 34 35, on right: 30
-absolute_path_object_value (20) on left: 168 169, on right: 167
-absolute_path (21) on left: 173 174 175, on right: 168 170 171 172 175
-relative_path (22) on left: 176 177, on right: 174 175 177
-path_segment (23) on left: 178 179, on right: 176 177
-absolute_path_list (24) on left: 170 171 172, on right: 169 171
+absolute_path_object_value (20) on left: 169 170, on right: 168
+absolute_path (21) on left: 174 175 176, on right: 169 171 172 173 176
+relative_path (22) on left: 177 178, on right: 175 176 178
+path_segment (23) on left: 179 180, on right: 177 178
+absolute_path_list (24) on left: 171 172 173, on right: 170 172
 string_list_value (25) on left: 66 67 68 69, on right: 46 67 68
 integer_list_value (26) on left: 73 74 75, on right: 47 74
 real_list_value (27) on left: 88 89 90, on right: 48 89
@@ -283,7 +285,7 @@ date_list_value (30) on left: 110 111 112, on right: 51 111
 time_list_value (31) on left: 123 124 125, on right: 52 124
 date_time_list_value (32) on left: 136 137 138, on right: 53 137
 duration_list_value (33) on left: 149 150 151, on right: 54 150
-term_code_list_value (34) on left: 163 164 165, on right: 35 164
+term_code_list_value (34) on left: 164 165 166, on right: 35 165
 primitive_list_value (35) on left: 46 47 48 49 50 51 52 53 54, on right: 32
 integer_interval_value (36) on left: 76 77 78 79 80 81 82 83 84, on right: 55
 real_interval_value (37) on left: 91 92 93 94 95 96 97 98 99, on right: 56
@@ -350,7 +352,7 @@ state 0
 	attr_id	go to state 15
 	container_attr_object_block_head	go to state 16
 	single_attr_object_complex_head	go to state 17
-	input	go to state 323
+	input	go to state 324
 
 
 
@@ -621,7 +623,7 @@ state 25
 	type_identifier  ->  . '(' V_GENERIC_TYPE_IDENTIFIER ')'   (rule 62)
 	type_identifier  ->  . V_TYPE_IDENTIFIER   (rule 63)
 	type_identifier  ->  . V_GENERIC_TYPE_IDENTIFIER   (rule 64)
-	object_reference_block  ->  . SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK   (rule 167)
+	object_reference_block  ->  . SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK   (rule 168)
 
 	'('	shift, and go to state 1
 	SYM_START_DBLOCK	shift, and go to state 34
@@ -670,7 +672,7 @@ state 26
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
-	uri_value  ->  . V_URI   (rule 166)
+	uri_value  ->  . V_URI   (rule 167)
 
 	'-'	shift, and go to state 41
 	'+'	shift, and go to state 42
@@ -906,20 +908,21 @@ state 34
 	duration_interval_value  ->  . SYM_INTERVAL_DELIM SYM_GE duration_value SYM_INTERVAL_DELIM   (rule 159)
 	duration_interval_value  ->  . SYM_INTERVAL_DELIM duration_value SYM_INTERVAL_DELIM   (rule 160)
 	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
-	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 162)
-	term_code_list_value  ->  . term_code ',' term_code   (rule 163)
-	term_code_list_value  ->  . term_code_list_value ',' term_code   (rule 164)
-	term_code_list_value  ->  . term_code ',' SYM_LIST_CONTINUE   (rule 165)
-	uri_value  ->  . V_URI   (rule 166)
-	object_reference_block  ->  SYM_START_DBLOCK . absolute_path_object_value SYM_END_DBLOCK   (rule 167)
-	absolute_path_object_value  ->  . absolute_path   (rule 168)
-	absolute_path_object_value  ->  . absolute_path_list   (rule 169)
-	absolute_path_list  ->  . absolute_path ',' absolute_path   (rule 170)
-	absolute_path_list  ->  . absolute_path_list ',' absolute_path   (rule 171)
-	absolute_path_list  ->  . absolute_path ',' SYM_LIST_CONTINUE   (rule 172)
-	absolute_path  ->  . '/'   (rule 173)
-	absolute_path  ->  . '/' relative_path   (rule 174)
-	absolute_path  ->  . absolute_path '/' relative_path   (rule 175)
+	term_code  ->  . V_TERMINOLOGY_ID   (rule 162)
+	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 163)
+	term_code_list_value  ->  . term_code ',' term_code   (rule 164)
+	term_code_list_value  ->  . term_code_list_value ',' term_code   (rule 165)
+	term_code_list_value  ->  . term_code ',' SYM_LIST_CONTINUE   (rule 166)
+	uri_value  ->  . V_URI   (rule 167)
+	object_reference_block  ->  SYM_START_DBLOCK . absolute_path_object_value SYM_END_DBLOCK   (rule 168)
+	absolute_path_object_value  ->  . absolute_path   (rule 169)
+	absolute_path_object_value  ->  . absolute_path_list   (rule 170)
+	absolute_path_list  ->  . absolute_path ',' absolute_path   (rule 171)
+	absolute_path_list  ->  . absolute_path_list ',' absolute_path   (rule 172)
+	absolute_path_list  ->  . absolute_path ',' SYM_LIST_CONTINUE   (rule 173)
+	absolute_path  ->  . '/'   (rule 174)
+	absolute_path  ->  . '/' relative_path   (rule 175)
+	absolute_path  ->  . absolute_path '/' relative_path   (rule 176)
 
 	'/'	shift, and go to state 69
 	'-'	shift, and go to state 41
@@ -931,51 +934,52 @@ state 34
 	SYM_END_DBLOCK	shift, and go to state 72
 	V_CHARACTER	shift, and go to state 45
 	V_URI	shift, and go to state 46
-	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 73
+	V_TERMINOLOGY_ID	shift, and go to state 73
+	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 74
 	V_ISO8601_DURATION	shift, and go to state 47
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
-	V_STRING	shift, and go to state 74
+	V_STRING	shift, and go to state 75
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
 	V_ATTRIBUTE_IDENTIFIER	reduce using rule 27 (single_attr_object_complex_head)
 	$default	reduce using rule 19 (container_attr_object_block_head)
 
-	integer_value	go to state 75
-	real_value	go to state 76
-	boolean_value	go to state 77
-	character_value	go to state 78
-	date_value	go to state 79
-	date_time_value	go to state 80
-	time_value	go to state 81
-	duration_value	go to state 82
-	term_code	go to state 83
+	integer_value	go to state 76
+	real_value	go to state 77
+	boolean_value	go to state 78
+	character_value	go to state 79
+	date_value	go to state 80
+	date_time_value	go to state 81
+	time_value	go to state 82
+	duration_value	go to state 83
+	term_code	go to state 84
 	uri_value	go to state 62
-	primitive_object	go to state 84
-	absolute_path_object_value	go to state 85
-	absolute_path	go to state 86
-	absolute_path_list	go to state 87
-	string_list_value	go to state 88
-	integer_list_value	go to state 89
-	real_list_value	go to state 90
-	character_list_value	go to state 91
-	boolean_list_value	go to state 92
-	date_list_value	go to state 93
-	time_list_value	go to state 94
-	date_time_list_value	go to state 95
-	duration_list_value	go to state 96
-	term_code_list_value	go to state 97
-	primitive_list_value	go to state 98
-	integer_interval_value	go to state 99
-	real_interval_value	go to state 100
-	time_interval_value	go to state 101
-	date_interval_value	go to state 102
-	date_time_interval_value	go to state 103
-	duration_interval_value	go to state 104
-	primitive_interval_value	go to state 105
-	primitive_value	go to state 106
+	primitive_object	go to state 85
+	absolute_path_object_value	go to state 86
+	absolute_path	go to state 87
+	absolute_path_list	go to state 88
+	string_list_value	go to state 89
+	integer_list_value	go to state 90
+	real_list_value	go to state 91
+	character_list_value	go to state 92
+	boolean_list_value	go to state 93
+	date_list_value	go to state 94
+	time_list_value	go to state 95
+	date_time_list_value	go to state 96
+	duration_list_value	go to state 97
+	term_code_list_value	go to state 98
+	primitive_list_value	go to state 99
+	integer_interval_value	go to state 100
+	real_interval_value	go to state 101
+	time_interval_value	go to state 102
+	date_interval_value	go to state 103
+	date_time_interval_value	go to state 104
+	duration_interval_value	go to state 105
+	primitive_interval_value	go to state 106
+	primitive_value	go to state 107
 	string_value	go to state 64
 
 
@@ -991,11 +995,11 @@ state 35
 	primitive_object_block  ->  type_identifier . untyped_primitive_object_block   (rule 29)
 	untyped_primitive_object_block  ->  . SYM_START_DBLOCK primitive_object SYM_END_DBLOCK   (rule 30)
 
-	SYM_START_DBLOCK	shift, and go to state 107
+	SYM_START_DBLOCK	shift, and go to state 108
 
 	untyped_single_attr_object_block	go to state 21
 	untyped_container_attr_object_block	go to state 22
-	untyped_primitive_object_block	go to state 108
+	untyped_primitive_object_block	go to state 109
 	container_attr_object_block_head	go to state 16
 	single_attr_object_complex_head	go to state 17
 
@@ -1046,8 +1050,8 @@ state 41
 	integer_value  ->  '-' . V_INTEGER   (rule 72)
 	real_value  ->  '-' . V_REAL   (rule 87)
 
-	V_REAL	shift, and go to state 109
-	V_INTEGER	shift, and go to state 110
+	V_REAL	shift, and go to state 110
+	V_INTEGER	shift, and go to state 111
 
 
 
@@ -1056,8 +1060,8 @@ state 42
 	integer_value  ->  '+' . V_INTEGER   (rule 71)
 	real_value  ->  '+' . V_REAL   (rule 86)
 
-	V_REAL	shift, and go to state 111
-	V_INTEGER	shift, and go to state 112
+	V_REAL	shift, and go to state 112
+	V_INTEGER	shift, and go to state 113
 
 
 
@@ -1087,9 +1091,9 @@ state 45
 
 state 46
 
-	uri_value  ->  V_URI .   (rule 166)
+	uri_value  ->  V_URI .   (rule 167)
 
-	$default	reduce using rule 166 (uri_value)
+	$default	reduce using rule 167 (uri_value)
 
 
 
@@ -1225,7 +1229,7 @@ state 63
 
 	object_key  ->  '[' primitive_value . ']'   (rule 23)
 
-	']'	shift, and go to state 113
+	']'	shift, and go to state 114
 
 
 
@@ -1277,7 +1281,7 @@ state 67
 	type_identifier  ->  . '(' V_GENERIC_TYPE_IDENTIFIER ')'   (rule 62)
 	type_identifier  ->  . V_TYPE_IDENTIFIER   (rule 63)
 	type_identifier  ->  . V_GENERIC_TYPE_IDENTIFIER   (rule 64)
-	object_reference_block  ->  . SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK   (rule 167)
+	object_reference_block  ->  . SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK   (rule 168)
 
 	'('	shift, and go to state 1
 	SYM_START_DBLOCK	shift, and go to state 34
@@ -1293,7 +1297,7 @@ state 67
 	untyped_primitive_object_block	go to state 37
 	primitive_object_block	go to state 38
 	object_reference_block	go to state 39
-	object_block	go to state 114
+	object_block	go to state 115
 	container_attr_object_block_head	go to state 16
 	single_attr_object_complex_head	go to state 17
 
@@ -1309,27 +1313,27 @@ state 68
 
 state 69
 
-	absolute_path  ->  '/' .   (rule 173)
-	absolute_path  ->  '/' . relative_path   (rule 174)
-	relative_path  ->  . path_segment   (rule 176)
-	relative_path  ->  . relative_path '/' path_segment   (rule 177)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 178)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 179)
+	absolute_path  ->  '/' .   (rule 174)
+	absolute_path  ->  '/' . relative_path   (rule 175)
+	relative_path  ->  . path_segment   (rule 177)
+	relative_path  ->  . relative_path '/' path_segment   (rule 178)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 179)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 180)
 
-	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 115
+	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 116
 
-	$default	reduce using rule 173 (absolute_path)
+	$default	reduce using rule 174 (absolute_path)
 
-	relative_path	go to state 116
-	path_segment	go to state 117
+	relative_path	go to state 117
+	path_segment	go to state 118
 
 
 
 state 70
 
-	term_code  ->  ERR_V_QUALIFIED_TERM_CODE_REF .   (rule 162)
+	term_code  ->  ERR_V_QUALIFIED_TERM_CODE_REF .   (rule 163)
 
-	$default	reduce using rule 162 (term_code)
+	$default	reduce using rule 163 (term_code)
 
 
 
@@ -1402,10 +1406,10 @@ state 71
 
 	'-'	shift, and go to state 41
 	'+'	shift, and go to state 42
-	SYM_GE	shift, and go to state 118
-	SYM_LE	shift, and go to state 119
-	SYM_GT	shift, and go to state 120
-	SYM_LT	shift, and go to state 121
+	SYM_GE	shift, and go to state 119
+	SYM_LE	shift, and go to state 120
+	SYM_GT	shift, and go to state 121
+	SYM_LT	shift, and go to state 122
 	V_ISO8601_DURATION	shift, and go to state 47
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
@@ -1413,12 +1417,12 @@ state 71
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 122
-	real_value	go to state 123
-	date_value	go to state 124
-	date_time_value	go to state 125
-	time_value	go to state 126
-	duration_value	go to state 127
+	integer_value	go to state 123
+	real_value	go to state 124
+	date_value	go to state 125
+	date_time_value	go to state 126
+	time_value	go to state 127
+	duration_value	go to state 128
 
 
 
@@ -1432,143 +1436,143 @@ state 72
 
 state 73
 
+	term_code  ->  V_TERMINOLOGY_ID .   (rule 162)
+
+	$default	reduce using rule 162 (term_code)
+
+
+
+state 74
+
 	term_code  ->  V_QUALIFIED_TERM_CODE_REF .   (rule 161)
 
 	$default	reduce using rule 161 (term_code)
 
 
 
-state 74
+state 75
 
 	string_value  ->  V_STRING .   (rule 65)
 	string_list_value  ->  V_STRING . ',' V_STRING   (rule 66)
 	string_list_value  ->  V_STRING . ',' SYM_LIST_CONTINUE   (rule 69)
 
-	','	shift, and go to state 128
+	','	shift, and go to state 129
 
 	$default	reduce using rule 65 (string_value)
 
 
 
-state 75
+state 76
 
 	primitive_value  ->  integer_value .   (rule 37)
 	integer_list_value  ->  integer_value . ',' integer_value   (rule 73)
 	integer_list_value  ->  integer_value . ',' SYM_LIST_CONTINUE   (rule 75)
 
-	','	shift, and go to state 129
+	','	shift, and go to state 130
 
 	$default	reduce using rule 37 (primitive_value)
 
 
 
-state 76
+state 77
 
 	primitive_value  ->  real_value .   (rule 38)
 	real_list_value  ->  real_value . ',' real_value   (rule 88)
 	real_list_value  ->  real_value . ',' SYM_LIST_CONTINUE   (rule 90)
 
-	','	shift, and go to state 130
+	','	shift, and go to state 131
 
 	$default	reduce using rule 38 (primitive_value)
 
 
 
-state 77
+state 78
 
 	primitive_value  ->  boolean_value .   (rule 39)
 	boolean_list_value  ->  boolean_value . ',' boolean_value   (rule 102)
 	boolean_list_value  ->  boolean_value . ',' SYM_LIST_CONTINUE   (rule 104)
 
-	','	shift, and go to state 131
+	','	shift, and go to state 132
 
 	$default	reduce using rule 39 (primitive_value)
 
 
 
-state 78
+state 79
 
 	primitive_value  ->  character_value .   (rule 40)
 	character_list_value  ->  character_value . ',' character_value   (rule 106)
 	character_list_value  ->  character_value . ',' SYM_LIST_CONTINUE   (rule 108)
 
-	','	shift, and go to state 132
+	','	shift, and go to state 133
 
 	$default	reduce using rule 40 (primitive_value)
 
 
 
-state 79
+state 80
 
 	primitive_value  ->  date_value .   (rule 41)
 	date_list_value  ->  date_value . ',' date_value   (rule 110)
 	date_list_value  ->  date_value . ',' SYM_LIST_CONTINUE   (rule 112)
 
-	','	shift, and go to state 133
+	','	shift, and go to state 134
 
 	$default	reduce using rule 41 (primitive_value)
 
 
 
-state 80
+state 81
 
 	primitive_value  ->  date_time_value .   (rule 43)
 	date_time_list_value  ->  date_time_value . ',' date_time_value   (rule 136)
 	date_time_list_value  ->  date_time_value . ',' SYM_LIST_CONTINUE   (rule 138)
 
-	','	shift, and go to state 134
+	','	shift, and go to state 135
 
 	$default	reduce using rule 43 (primitive_value)
 
 
 
-state 81
+state 82
 
 	primitive_value  ->  time_value .   (rule 42)
 	time_list_value  ->  time_value . ',' time_value   (rule 123)
 	time_list_value  ->  time_value . ',' SYM_LIST_CONTINUE   (rule 125)
 
-	','	shift, and go to state 135
+	','	shift, and go to state 136
 
 	$default	reduce using rule 42 (primitive_value)
 
 
 
-state 82
+state 83
 
 	primitive_value  ->  duration_value .   (rule 44)
 	duration_list_value  ->  duration_value . ',' duration_value   (rule 149)
 	duration_list_value  ->  duration_value . ',' SYM_LIST_CONTINUE   (rule 151)
 
-	','	shift, and go to state 136
+	','	shift, and go to state 137
 
 	$default	reduce using rule 44 (primitive_value)
 
 
 
-state 83
+state 84
 
 	primitive_object  ->  term_code .   (rule 34)
-	term_code_list_value  ->  term_code . ',' term_code   (rule 163)
-	term_code_list_value  ->  term_code . ',' SYM_LIST_CONTINUE   (rule 165)
+	term_code_list_value  ->  term_code . ',' term_code   (rule 164)
+	term_code_list_value  ->  term_code . ',' SYM_LIST_CONTINUE   (rule 166)
 
-	','	shift, and go to state 137
+	','	shift, and go to state 138
 
 	$default	reduce using rule 34 (primitive_object)
 
 
 
-state 84
-
-	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object . SYM_END_DBLOCK   (rule 30)
-
-	SYM_END_DBLOCK	shift, and go to state 138
-
-
-
 state 85
 
-	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value . SYM_END_DBLOCK   (rule 167)
+	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object . SYM_END_DBLOCK   (rule 30)
 
 	SYM_END_DBLOCK	shift, and go to state 139
 
@@ -1576,23 +1580,20 @@ state 85
 
 state 86
 
-	absolute_path_object_value  ->  absolute_path .   (rule 168)
-	absolute_path_list  ->  absolute_path . ',' absolute_path   (rule 170)
-	absolute_path_list  ->  absolute_path . ',' SYM_LIST_CONTINUE   (rule 172)
-	absolute_path  ->  absolute_path . '/' relative_path   (rule 175)
+	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value . SYM_END_DBLOCK   (rule 168)
 
-	'/'	shift, and go to state 140
-	','	shift, and go to state 141
-
-	$default	reduce using rule 168 (absolute_path_object_value)
+	SYM_END_DBLOCK	shift, and go to state 140
 
 
 
 state 87
 
-	absolute_path_object_value  ->  absolute_path_list .   (rule 169)
-	absolute_path_list  ->  absolute_path_list . ',' absolute_path   (rule 171)
+	absolute_path_object_value  ->  absolute_path .   (rule 169)
+	absolute_path_list  ->  absolute_path . ',' absolute_path   (rule 171)
+	absolute_path_list  ->  absolute_path . ',' SYM_LIST_CONTINUE   (rule 173)
+	absolute_path  ->  absolute_path . '/' relative_path   (rule 176)
 
+	'/'	shift, and go to state 141
 	','	shift, and go to state 142
 
 	$default	reduce using rule 169 (absolute_path_object_value)
@@ -1601,116 +1602,127 @@ state 87
 
 state 88
 
-	primitive_list_value  ->  string_list_value .   (rule 46)
-	string_list_value  ->  string_list_value . ',' V_STRING   (rule 67)
-	string_list_value  ->  string_list_value . ',' SYM_LIST_CONTINUE   (rule 68)
+	absolute_path_object_value  ->  absolute_path_list .   (rule 170)
+	absolute_path_list  ->  absolute_path_list . ',' absolute_path   (rule 172)
 
 	','	shift, and go to state 143
 
-	$default	reduce using rule 46 (primitive_list_value)
+	$default	reduce using rule 170 (absolute_path_object_value)
 
 
 
 state 89
 
-	primitive_list_value  ->  integer_list_value .   (rule 47)
-	integer_list_value  ->  integer_list_value . ',' integer_value   (rule 74)
+	primitive_list_value  ->  string_list_value .   (rule 46)
+	string_list_value  ->  string_list_value . ',' V_STRING   (rule 67)
+	string_list_value  ->  string_list_value . ',' SYM_LIST_CONTINUE   (rule 68)
 
 	','	shift, and go to state 144
 
-	$default	reduce using rule 47 (primitive_list_value)
+	$default	reduce using rule 46 (primitive_list_value)
 
 
 
 state 90
 
-	primitive_list_value  ->  real_list_value .   (rule 48)
-	real_list_value  ->  real_list_value . ',' real_value   (rule 89)
+	primitive_list_value  ->  integer_list_value .   (rule 47)
+	integer_list_value  ->  integer_list_value . ',' integer_value   (rule 74)
 
 	','	shift, and go to state 145
 
-	$default	reduce using rule 48 (primitive_list_value)
+	$default	reduce using rule 47 (primitive_list_value)
 
 
 
 state 91
 
-	primitive_list_value  ->  character_list_value .   (rule 50)
-	character_list_value  ->  character_list_value . ',' character_value   (rule 107)
+	primitive_list_value  ->  real_list_value .   (rule 48)
+	real_list_value  ->  real_list_value . ',' real_value   (rule 89)
 
 	','	shift, and go to state 146
 
-	$default	reduce using rule 50 (primitive_list_value)
+	$default	reduce using rule 48 (primitive_list_value)
 
 
 
 state 92
 
-	primitive_list_value  ->  boolean_list_value .   (rule 49)
-	boolean_list_value  ->  boolean_list_value . ',' boolean_value   (rule 103)
+	primitive_list_value  ->  character_list_value .   (rule 50)
+	character_list_value  ->  character_list_value . ',' character_value   (rule 107)
 
 	','	shift, and go to state 147
 
-	$default	reduce using rule 49 (primitive_list_value)
+	$default	reduce using rule 50 (primitive_list_value)
 
 
 
 state 93
 
-	primitive_list_value  ->  date_list_value .   (rule 51)
-	date_list_value  ->  date_list_value . ',' date_value   (rule 111)
+	primitive_list_value  ->  boolean_list_value .   (rule 49)
+	boolean_list_value  ->  boolean_list_value . ',' boolean_value   (rule 103)
 
 	','	shift, and go to state 148
 
-	$default	reduce using rule 51 (primitive_list_value)
+	$default	reduce using rule 49 (primitive_list_value)
 
 
 
 state 94
 
-	primitive_list_value  ->  time_list_value .   (rule 52)
-	time_list_value  ->  time_list_value . ',' time_value   (rule 124)
+	primitive_list_value  ->  date_list_value .   (rule 51)
+	date_list_value  ->  date_list_value . ',' date_value   (rule 111)
 
 	','	shift, and go to state 149
 
-	$default	reduce using rule 52 (primitive_list_value)
+	$default	reduce using rule 51 (primitive_list_value)
 
 
 
 state 95
 
-	primitive_list_value  ->  date_time_list_value .   (rule 53)
-	date_time_list_value  ->  date_time_list_value . ',' date_time_value   (rule 137)
+	primitive_list_value  ->  time_list_value .   (rule 52)
+	time_list_value  ->  time_list_value . ',' time_value   (rule 124)
 
 	','	shift, and go to state 150
 
-	$default	reduce using rule 53 (primitive_list_value)
+	$default	reduce using rule 52 (primitive_list_value)
 
 
 
 state 96
 
-	primitive_list_value  ->  duration_list_value .   (rule 54)
-	duration_list_value  ->  duration_list_value . ',' duration_value   (rule 150)
+	primitive_list_value  ->  date_time_list_value .   (rule 53)
+	date_time_list_value  ->  date_time_list_value . ',' date_time_value   (rule 137)
 
 	','	shift, and go to state 151
 
-	$default	reduce using rule 54 (primitive_list_value)
+	$default	reduce using rule 53 (primitive_list_value)
 
 
 
 state 97
 
-	primitive_object  ->  term_code_list_value .   (rule 35)
-	term_code_list_value  ->  term_code_list_value . ',' term_code   (rule 164)
+	primitive_list_value  ->  duration_list_value .   (rule 54)
+	duration_list_value  ->  duration_list_value . ',' duration_value   (rule 150)
 
 	','	shift, and go to state 152
+
+	$default	reduce using rule 54 (primitive_list_value)
+
+
+
+state 98
+
+	primitive_object  ->  term_code_list_value .   (rule 35)
+	term_code_list_value  ->  term_code_list_value . ',' term_code   (rule 165)
+
+	','	shift, and go to state 153
 
 	$default	reduce using rule 35 (primitive_object)
 
 
 
-state 98
+state 99
 
 	primitive_object  ->  primitive_list_value .   (rule 32)
 
@@ -1718,7 +1730,7 @@ state 98
 
 
 
-state 99
+state 100
 
 	primitive_interval_value  ->  integer_interval_value .   (rule 55)
 
@@ -1726,7 +1738,7 @@ state 99
 
 
 
-state 100
+state 101
 
 	primitive_interval_value  ->  real_interval_value .   (rule 56)
 
@@ -1734,7 +1746,7 @@ state 100
 
 
 
-state 101
+state 102
 
 	primitive_interval_value  ->  time_interval_value .   (rule 58)
 
@@ -1742,7 +1754,7 @@ state 101
 
 
 
-state 102
+state 103
 
 	primitive_interval_value  ->  date_interval_value .   (rule 57)
 
@@ -1750,7 +1762,7 @@ state 102
 
 
 
-state 103
+state 104
 
 	primitive_interval_value  ->  date_time_interval_value .   (rule 59)
 
@@ -1758,7 +1770,7 @@ state 103
 
 
 
-state 104
+state 105
 
 	primitive_interval_value  ->  duration_interval_value .   (rule 60)
 
@@ -1766,7 +1778,7 @@ state 104
 
 
 
-state 105
+state 106
 
 	primitive_object  ->  primitive_interval_value .   (rule 33)
 
@@ -1774,7 +1786,7 @@ state 105
 
 
 
-state 106
+state 107
 
 	primitive_object  ->  primitive_value .   (rule 31)
 
@@ -1782,7 +1794,7 @@ state 106
 
 
 
-state 107
+state 108
 
 	container_attr_object_block_head  ->  SYM_START_DBLOCK .   (rule 19)
 	single_attr_object_complex_head  ->  SYM_START_DBLOCK .   (rule 27)
@@ -1914,11 +1926,12 @@ state 107
 	duration_interval_value  ->  . SYM_INTERVAL_DELIM SYM_GE duration_value SYM_INTERVAL_DELIM   (rule 159)
 	duration_interval_value  ->  . SYM_INTERVAL_DELIM duration_value SYM_INTERVAL_DELIM   (rule 160)
 	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
-	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 162)
-	term_code_list_value  ->  . term_code ',' term_code   (rule 163)
-	term_code_list_value  ->  . term_code_list_value ',' term_code   (rule 164)
-	term_code_list_value  ->  . term_code ',' SYM_LIST_CONTINUE   (rule 165)
-	uri_value  ->  . V_URI   (rule 166)
+	term_code  ->  . V_TERMINOLOGY_ID   (rule 162)
+	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 163)
+	term_code_list_value  ->  . term_code ',' term_code   (rule 164)
+	term_code_list_value  ->  . term_code_list_value ',' term_code   (rule 165)
+	term_code_list_value  ->  . term_code ',' SYM_LIST_CONTINUE   (rule 166)
+	uri_value  ->  . V_URI   (rule 167)
 
 	'-'	shift, and go to state 41
 	'+'	shift, and go to state 42
@@ -1928,53 +1941,54 @@ state 107
 	SYM_INTERVAL_DELIM	shift, and go to state 71
 	V_CHARACTER	shift, and go to state 45
 	V_URI	shift, and go to state 46
-	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 73
+	V_TERMINOLOGY_ID	shift, and go to state 73
+	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 74
 	V_ISO8601_DURATION	shift, and go to state 47
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
-	V_STRING	shift, and go to state 74
+	V_STRING	shift, and go to state 75
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
 	V_ATTRIBUTE_IDENTIFIER	reduce using rule 27 (single_attr_object_complex_head)
 	$default	reduce using rule 19 (container_attr_object_block_head)
 
-	integer_value	go to state 75
-	real_value	go to state 76
-	boolean_value	go to state 77
-	character_value	go to state 78
-	date_value	go to state 79
-	date_time_value	go to state 80
-	time_value	go to state 81
-	duration_value	go to state 82
-	term_code	go to state 83
+	integer_value	go to state 76
+	real_value	go to state 77
+	boolean_value	go to state 78
+	character_value	go to state 79
+	date_value	go to state 80
+	date_time_value	go to state 81
+	time_value	go to state 82
+	duration_value	go to state 83
+	term_code	go to state 84
 	uri_value	go to state 62
-	primitive_object	go to state 84
-	string_list_value	go to state 88
-	integer_list_value	go to state 89
-	real_list_value	go to state 90
-	character_list_value	go to state 91
-	boolean_list_value	go to state 92
-	date_list_value	go to state 93
-	time_list_value	go to state 94
-	date_time_list_value	go to state 95
-	duration_list_value	go to state 96
-	term_code_list_value	go to state 97
-	primitive_list_value	go to state 98
-	integer_interval_value	go to state 99
-	real_interval_value	go to state 100
-	time_interval_value	go to state 101
-	date_interval_value	go to state 102
-	date_time_interval_value	go to state 103
-	duration_interval_value	go to state 104
-	primitive_interval_value	go to state 105
-	primitive_value	go to state 106
+	primitive_object	go to state 85
+	string_list_value	go to state 89
+	integer_list_value	go to state 90
+	real_list_value	go to state 91
+	character_list_value	go to state 92
+	boolean_list_value	go to state 93
+	date_list_value	go to state 94
+	time_list_value	go to state 95
+	date_time_list_value	go to state 96
+	duration_list_value	go to state 97
+	term_code_list_value	go to state 98
+	primitive_list_value	go to state 99
+	integer_interval_value	go to state 100
+	real_interval_value	go to state 101
+	time_interval_value	go to state 102
+	date_interval_value	go to state 103
+	date_time_interval_value	go to state 104
+	duration_interval_value	go to state 105
+	primitive_interval_value	go to state 106
+	primitive_value	go to state 107
 	string_value	go to state 64
 
 
 
-state 108
+state 109
 
 	primitive_object_block  ->  type_identifier untyped_primitive_object_block .   (rule 29)
 
@@ -1982,7 +1996,7 @@ state 108
 
 
 
-state 109
+state 110
 
 	real_value  ->  '-' V_REAL .   (rule 87)
 
@@ -1990,7 +2004,7 @@ state 109
 
 
 
-state 110
+state 111
 
 	integer_value  ->  '-' V_INTEGER .   (rule 72)
 
@@ -1998,7 +2012,7 @@ state 110
 
 
 
-state 111
+state 112
 
 	real_value  ->  '+' V_REAL .   (rule 86)
 
@@ -2006,7 +2020,7 @@ state 111
 
 
 
-state 112
+state 113
 
 	integer_value  ->  '+' V_INTEGER .   (rule 71)
 
@@ -2014,7 +2028,7 @@ state 112
 
 
 
-state 113
+state 114
 
 	object_key  ->  '[' primitive_value ']' .   (rule 23)
 
@@ -2022,7 +2036,7 @@ state 113
 
 
 
-state 114
+state 115
 
 	keyed_object  ->  object_key SYM_EQ object_block .   (rule 22)
 
@@ -2030,38 +2044,38 @@ state 114
 
 
 
-state 115
-
-	path_segment  ->  V_ATTRIBUTE_IDENTIFIER . '[' V_STRING ']'   (rule 178)
-	path_segment  ->  V_ATTRIBUTE_IDENTIFIER .   (rule 179)
-
-	'['	shift, and go to state 153
-
-	$default	reduce using rule 179 (path_segment)
-
-
-
 state 116
 
-	absolute_path  ->  '/' relative_path .   (rule 174)
-	relative_path  ->  relative_path . '/' path_segment   (rule 177)
+	path_segment  ->  V_ATTRIBUTE_IDENTIFIER . '[' V_STRING ']'   (rule 179)
+	path_segment  ->  V_ATTRIBUTE_IDENTIFIER .   (rule 180)
 
-	'/'	shift, and go to state 154
+	'['	shift, and go to state 154
 
-	'/'	[reduce using rule 174 (absolute_path)]
-	$default	reduce using rule 174 (absolute_path)
+	$default	reduce using rule 180 (path_segment)
 
 
 
 state 117
 
-	relative_path  ->  path_segment .   (rule 176)
+	absolute_path  ->  '/' relative_path .   (rule 175)
+	relative_path  ->  relative_path . '/' path_segment   (rule 178)
 
-	$default	reduce using rule 176 (relative_path)
+	'/'	shift, and go to state 155
+
+	'/'	[reduce using rule 175 (absolute_path)]
+	$default	reduce using rule 175 (absolute_path)
 
 
 
 state 118
+
+	relative_path  ->  path_segment .   (rule 177)
+
+	$default	reduce using rule 177 (relative_path)
+
+
+
+state 119
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2089,16 +2103,16 @@ state 118
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 155
-	real_value	go to state 156
-	date_value	go to state 157
-	date_time_value	go to state 158
-	time_value	go to state 159
-	duration_value	go to state 160
+	integer_value	go to state 156
+	real_value	go to state 157
+	date_value	go to state 158
+	date_time_value	go to state 159
+	time_value	go to state 160
+	duration_value	go to state 161
 
 
 
-state 119
+state 120
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2126,16 +2140,16 @@ state 119
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 161
-	real_value	go to state 162
-	date_value	go to state 163
-	date_time_value	go to state 164
-	time_value	go to state 165
-	duration_value	go to state 166
+	integer_value	go to state 162
+	real_value	go to state 163
+	date_value	go to state 164
+	date_time_value	go to state 165
+	time_value	go to state 166
+	duration_value	go to state 167
 
 
 
-state 120
+state 121
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2175,16 +2189,16 @@ state 120
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 167
-	real_value	go to state 168
-	date_value	go to state 169
-	date_time_value	go to state 170
-	time_value	go to state 171
-	duration_value	go to state 172
+	integer_value	go to state 168
+	real_value	go to state 169
+	date_value	go to state 170
+	date_time_value	go to state 171
+	time_value	go to state 172
+	duration_value	go to state 173
 
 
 
-state 121
+state 122
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2212,92 +2226,92 @@ state 121
 	V_REAL	shift, and go to state 52
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 173
-	real_value	go to state 174
-	date_value	go to state 175
-	date_time_value	go to state 176
-	time_value	go to state 177
-	duration_value	go to state 178
-
-
-
-state 122
-
-	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM   (rule 76)
-	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 78)
-	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_INTERVAL_DELIM   (rule 84)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 179
-	SYM_ELLIPSIS	shift, and go to state 180
+	integer_value	go to state 174
+	real_value	go to state 175
+	date_value	go to state 176
+	date_time_value	go to state 177
+	time_value	go to state 178
+	duration_value	go to state 179
 
 
 
 state 123
 
-	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM   (rule 91)
-	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM   (rule 93)
-	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_INTERVAL_DELIM   (rule 99)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM   (rule 76)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 78)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value . SYM_INTERVAL_DELIM   (rule 84)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 181
-	SYM_ELLIPSIS	shift, and go to state 182
+	SYM_INTERVAL_DELIM	shift, and go to state 180
+	SYM_ELLIPSIS	shift, and go to state 181
 
 
 
 state 124
 
-	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM   (rule 113)
-	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM   (rule 115)
-	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_INTERVAL_DELIM   (rule 121)
+	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM   (rule 91)
+	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM   (rule 93)
+	real_interval_value  ->  SYM_INTERVAL_DELIM real_value . SYM_INTERVAL_DELIM   (rule 99)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 183
-	SYM_ELLIPSIS	shift, and go to state 184
+	SYM_INTERVAL_DELIM	shift, and go to state 182
+	SYM_ELLIPSIS	shift, and go to state 183
 
 
 
 state 125
 
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM   (rule 139)
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 141)
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_INTERVAL_DELIM   (rule 147)
+	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM   (rule 113)
+	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM   (rule 115)
+	date_interval_value  ->  SYM_INTERVAL_DELIM date_value . SYM_INTERVAL_DELIM   (rule 121)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 185
-	SYM_ELLIPSIS	shift, and go to state 186
+	SYM_INTERVAL_DELIM	shift, and go to state 184
+	SYM_ELLIPSIS	shift, and go to state 185
 
 
 
 state 126
 
-	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM   (rule 126)
-	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM   (rule 128)
-	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_INTERVAL_DELIM   (rule 134)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM   (rule 139)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 141)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value . SYM_INTERVAL_DELIM   (rule 147)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 187
-	SYM_ELLIPSIS	shift, and go to state 188
+	SYM_INTERVAL_DELIM	shift, and go to state 186
+	SYM_ELLIPSIS	shift, and go to state 187
 
 
 
 state 127
 
-	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM   (rule 152)
-	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 154)
-	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_INTERVAL_DELIM   (rule 160)
+	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM   (rule 126)
+	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM   (rule 128)
+	time_interval_value  ->  SYM_INTERVAL_DELIM time_value . SYM_INTERVAL_DELIM   (rule 134)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 189
-	SYM_ELLIPSIS	shift, and go to state 190
+	SYM_INTERVAL_DELIM	shift, and go to state 188
+	SYM_ELLIPSIS	shift, and go to state 189
 
 
 
 state 128
 
-	string_list_value  ->  V_STRING ',' . V_STRING   (rule 66)
-	string_list_value  ->  V_STRING ',' . SYM_LIST_CONTINUE   (rule 69)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM   (rule 152)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 154)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value . SYM_INTERVAL_DELIM   (rule 160)
 
-	SYM_LIST_CONTINUE	shift, and go to state 191
-	V_STRING	shift, and go to state 192
+	SYM_INTERVAL_DELIM	shift, and go to state 190
+	SYM_ELLIPSIS	shift, and go to state 191
 
 
 
 state 129
+
+	string_list_value  ->  V_STRING ',' . V_STRING   (rule 66)
+	string_list_value  ->  V_STRING ',' . SYM_LIST_CONTINUE   (rule 69)
+
+	SYM_LIST_CONTINUE	shift, and go to state 192
+	V_STRING	shift, and go to state 193
+
+
+
+state 130
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2305,16 +2319,16 @@ state 129
 	integer_list_value  ->  integer_value ',' . integer_value   (rule 73)
 	integer_list_value  ->  integer_value ',' . SYM_LIST_CONTINUE   (rule 75)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
-	SYM_LIST_CONTINUE	shift, and go to state 195
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
+	SYM_LIST_CONTINUE	shift, and go to state 196
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 196
+	integer_value	go to state 197
 
 
 
-state 130
+state 131
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
@@ -2322,16 +2336,16 @@ state 130
 	real_list_value  ->  real_value ',' . real_value   (rule 88)
 	real_list_value  ->  real_value ',' . SYM_LIST_CONTINUE   (rule 90)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
-	SYM_LIST_CONTINUE	shift, and go to state 199
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
+	SYM_LIST_CONTINUE	shift, and go to state 200
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 200
+	real_value	go to state 201
 
 
 
-state 131
+state 132
 
 	boolean_value  ->  . SYM_TRUE   (rule 100)
 	boolean_value  ->  . SYM_FALSE   (rule 101)
@@ -2340,93 +2354,95 @@ state 131
 
 	SYM_FALSE	shift, and go to state 43
 	SYM_TRUE	shift, and go to state 44
-	SYM_LIST_CONTINUE	shift, and go to state 201
+	SYM_LIST_CONTINUE	shift, and go to state 202
 
-	boolean_value	go to state 202
-
-
-
-state 132
-
-	character_value  ->  . V_CHARACTER   (rule 105)
-	character_list_value  ->  character_value ',' . character_value   (rule 106)
-	character_list_value  ->  character_value ',' . SYM_LIST_CONTINUE   (rule 108)
-
-	SYM_LIST_CONTINUE	shift, and go to state 203
-	V_CHARACTER	shift, and go to state 45
-
-	character_value	go to state 204
+	boolean_value	go to state 203
 
 
 
 state 133
 
-	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
-	date_list_value  ->  date_value ',' . date_value   (rule 110)
-	date_list_value  ->  date_value ',' . SYM_LIST_CONTINUE   (rule 112)
+	character_value  ->  . V_CHARACTER   (rule 105)
+	character_list_value  ->  character_value ',' . character_value   (rule 106)
+	character_list_value  ->  character_value ',' . SYM_LIST_CONTINUE   (rule 108)
 
-	SYM_LIST_CONTINUE	shift, and go to state 205
-	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
+	SYM_LIST_CONTINUE	shift, and go to state 204
+	V_CHARACTER	shift, and go to state 45
 
-	date_value	go to state 206
+	character_value	go to state 205
 
 
 
 state 134
 
-	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
-	date_time_list_value  ->  date_time_value ',' . date_time_value   (rule 136)
-	date_time_list_value  ->  date_time_value ',' . SYM_LIST_CONTINUE   (rule 138)
+	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
+	date_list_value  ->  date_value ',' . date_value   (rule 110)
+	date_list_value  ->  date_value ',' . SYM_LIST_CONTINUE   (rule 112)
 
-	SYM_LIST_CONTINUE	shift, and go to state 207
-	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
+	SYM_LIST_CONTINUE	shift, and go to state 206
+	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_time_value	go to state 208
+	date_value	go to state 207
 
 
 
 state 135
 
-	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
-	time_list_value  ->  time_value ',' . time_value   (rule 123)
-	time_list_value  ->  time_value ',' . SYM_LIST_CONTINUE   (rule 125)
+	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
+	date_time_list_value  ->  date_time_value ',' . date_time_value   (rule 136)
+	date_time_list_value  ->  date_time_value ',' . SYM_LIST_CONTINUE   (rule 138)
 
-	SYM_LIST_CONTINUE	shift, and go to state 209
-	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
+	SYM_LIST_CONTINUE	shift, and go to state 208
+	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	time_value	go to state 210
+	date_time_value	go to state 209
 
 
 
 state 136
 
-	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
-	duration_list_value  ->  duration_value ',' . duration_value   (rule 149)
-	duration_list_value  ->  duration_value ',' . SYM_LIST_CONTINUE   (rule 151)
+	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
+	time_list_value  ->  time_value ',' . time_value   (rule 123)
+	time_list_value  ->  time_value ',' . SYM_LIST_CONTINUE   (rule 125)
 
-	SYM_LIST_CONTINUE	shift, and go to state 211
-	V_ISO8601_DURATION	shift, and go to state 47
+	SYM_LIST_CONTINUE	shift, and go to state 210
+	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	duration_value	go to state 212
+	time_value	go to state 211
 
 
 
 state 137
 
-	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
-	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 162)
-	term_code_list_value  ->  term_code ',' . term_code   (rule 163)
-	term_code_list_value  ->  term_code ',' . SYM_LIST_CONTINUE   (rule 165)
+	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
+	duration_list_value  ->  duration_value ',' . duration_value   (rule 149)
+	duration_list_value  ->  duration_value ',' . SYM_LIST_CONTINUE   (rule 151)
 
-	ERR_V_QUALIFIED_TERM_CODE_REF	shift, and go to state 70
-	SYM_LIST_CONTINUE	shift, and go to state 213
-	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 73
+	SYM_LIST_CONTINUE	shift, and go to state 212
+	V_ISO8601_DURATION	shift, and go to state 47
 
-	term_code	go to state 214
+	duration_value	go to state 213
 
 
 
 state 138
+
+	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
+	term_code  ->  . V_TERMINOLOGY_ID   (rule 162)
+	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 163)
+	term_code_list_value  ->  term_code ',' . term_code   (rule 164)
+	term_code_list_value  ->  term_code ',' . SYM_LIST_CONTINUE   (rule 166)
+
+	ERR_V_QUALIFIED_TERM_CODE_REF	shift, and go to state 70
+	SYM_LIST_CONTINUE	shift, and go to state 214
+	V_TERMINOLOGY_ID	shift, and go to state 73
+	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 74
+
+	term_code	go to state 215
+
+
+
+state 139
 
 	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object SYM_END_DBLOCK .   (rule 30)
 
@@ -2434,52 +2450,39 @@ state 138
 
 
 
-state 139
-
-	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK .   (rule 167)
-
-	$default	reduce using rule 167 (object_reference_block)
-
-
-
 state 140
 
-	absolute_path  ->  absolute_path '/' . relative_path   (rule 175)
-	relative_path  ->  . path_segment   (rule 176)
-	relative_path  ->  . relative_path '/' path_segment   (rule 177)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 178)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 179)
+	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK .   (rule 168)
 
-	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 115
-
-	relative_path	go to state 215
-	path_segment	go to state 117
+	$default	reduce using rule 168 (object_reference_block)
 
 
 
 state 141
 
-	absolute_path_list  ->  absolute_path ',' . absolute_path   (rule 170)
-	absolute_path_list  ->  absolute_path ',' . SYM_LIST_CONTINUE   (rule 172)
-	absolute_path  ->  . '/'   (rule 173)
-	absolute_path  ->  . '/' relative_path   (rule 174)
-	absolute_path  ->  . absolute_path '/' relative_path   (rule 175)
+	absolute_path  ->  absolute_path '/' . relative_path   (rule 176)
+	relative_path  ->  . path_segment   (rule 177)
+	relative_path  ->  . relative_path '/' path_segment   (rule 178)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 179)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 180)
 
-	'/'	shift, and go to state 69
-	SYM_LIST_CONTINUE	shift, and go to state 216
+	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 116
 
-	absolute_path	go to state 217
+	relative_path	go to state 216
+	path_segment	go to state 118
 
 
 
 state 142
 
-	absolute_path_list  ->  absolute_path_list ',' . absolute_path   (rule 171)
-	absolute_path  ->  . '/'   (rule 173)
-	absolute_path  ->  . '/' relative_path   (rule 174)
-	absolute_path  ->  . absolute_path '/' relative_path   (rule 175)
+	absolute_path_list  ->  absolute_path ',' . absolute_path   (rule 171)
+	absolute_path_list  ->  absolute_path ',' . SYM_LIST_CONTINUE   (rule 173)
+	absolute_path  ->  . '/'   (rule 174)
+	absolute_path  ->  . '/' relative_path   (rule 175)
+	absolute_path  ->  . absolute_path '/' relative_path   (rule 176)
 
 	'/'	shift, and go to state 69
+	SYM_LIST_CONTINUE	shift, and go to state 217
 
 	absolute_path	go to state 218
 
@@ -2487,56 +2490,69 @@ state 142
 
 state 143
 
-	string_list_value  ->  string_list_value ',' . V_STRING   (rule 67)
-	string_list_value  ->  string_list_value ',' . SYM_LIST_CONTINUE   (rule 68)
+	absolute_path_list  ->  absolute_path_list ',' . absolute_path   (rule 172)
+	absolute_path  ->  . '/'   (rule 174)
+	absolute_path  ->  . '/' relative_path   (rule 175)
+	absolute_path  ->  . absolute_path '/' relative_path   (rule 176)
 
-	SYM_LIST_CONTINUE	shift, and go to state 219
-	V_STRING	shift, and go to state 220
+	'/'	shift, and go to state 69
+
+	absolute_path	go to state 219
 
 
 
 state 144
+
+	string_list_value  ->  string_list_value ',' . V_STRING   (rule 67)
+	string_list_value  ->  string_list_value ',' . SYM_LIST_CONTINUE   (rule 68)
+
+	SYM_LIST_CONTINUE	shift, and go to state 220
+	V_STRING	shift, and go to state 221
+
+
+
+state 145
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
 	integer_value  ->  . '-' V_INTEGER   (rule 72)
 	integer_list_value  ->  integer_list_value ',' . integer_value   (rule 74)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 221
+	integer_value	go to state 222
 
 
 
-state 145
+state 146
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
 	real_value  ->  . '-' V_REAL   (rule 87)
 	real_list_value  ->  real_list_value ',' . real_value   (rule 89)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 222
+	real_value	go to state 223
 
 
 
-state 146
+state 147
 
 	character_value  ->  . V_CHARACTER   (rule 105)
 	character_list_value  ->  character_list_value ',' . character_value   (rule 107)
 
 	V_CHARACTER	shift, and go to state 45
 
-	character_value	go to state 223
+	character_value	go to state 224
 
 
 
-state 147
+state 148
 
 	boolean_value  ->  . SYM_TRUE   (rule 100)
 	boolean_value  ->  . SYM_FALSE   (rule 101)
@@ -2545,98 +2561,92 @@ state 147
 	SYM_FALSE	shift, and go to state 43
 	SYM_TRUE	shift, and go to state 44
 
-	boolean_value	go to state 224
+	boolean_value	go to state 225
 
 
 
-state 148
+state 149
 
 	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
 	date_list_value  ->  date_list_value ',' . date_value   (rule 111)
 
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_value	go to state 225
+	date_value	go to state 226
 
 
 
-state 149
+state 150
 
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	time_list_value  ->  time_list_value ',' . time_value   (rule 124)
 
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	time_value	go to state 226
+	time_value	go to state 227
 
 
 
-state 150
+state 151
 
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	date_time_list_value  ->  date_time_list_value ',' . date_time_value   (rule 137)
 
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	date_time_value	go to state 227
+	date_time_value	go to state 228
 
 
 
-state 151
+state 152
 
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
 	duration_list_value  ->  duration_list_value ',' . duration_value   (rule 150)
 
 	V_ISO8601_DURATION	shift, and go to state 47
 
-	duration_value	go to state 228
-
-
-
-state 152
-
-	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
-	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 162)
-	term_code_list_value  ->  term_code_list_value ',' . term_code   (rule 164)
-
-	ERR_V_QUALIFIED_TERM_CODE_REF	shift, and go to state 70
-	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 73
-
-	term_code	go to state 229
+	duration_value	go to state 229
 
 
 
 state 153
 
-	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' . V_STRING ']'   (rule 178)
+	term_code  ->  . V_QUALIFIED_TERM_CODE_REF   (rule 161)
+	term_code  ->  . V_TERMINOLOGY_ID   (rule 162)
+	term_code  ->  . ERR_V_QUALIFIED_TERM_CODE_REF   (rule 163)
+	term_code_list_value  ->  term_code_list_value ',' . term_code   (rule 165)
 
-	V_STRING	shift, and go to state 230
+	ERR_V_QUALIFIED_TERM_CODE_REF	shift, and go to state 70
+	V_TERMINOLOGY_ID	shift, and go to state 73
+	V_QUALIFIED_TERM_CODE_REF	shift, and go to state 74
+
+	term_code	go to state 230
 
 
 
 state 154
 
-	relative_path  ->  relative_path '/' . path_segment   (rule 177)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 178)
-	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 179)
+	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' . V_STRING ']'   (rule 179)
 
-	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 115
-
-	path_segment	go to state 231
+	V_STRING	shift, and go to state 231
 
 
 
 state 155
 
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE integer_value . SYM_INTERVAL_DELIM   (rule 83)
+	relative_path  ->  relative_path '/' . path_segment   (rule 178)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']'   (rule 179)
+	path_segment  ->  . V_ATTRIBUTE_IDENTIFIER   (rule 180)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 232
+	V_ATTRIBUTE_IDENTIFIER	shift, and go to state 116
+
+	path_segment	go to state 232
 
 
 
 state 156
 
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE real_value . SYM_INTERVAL_DELIM   (rule 98)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE integer_value . SYM_INTERVAL_DELIM   (rule 83)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 233
 
@@ -2644,7 +2654,7 @@ state 156
 
 state 157
 
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_value . SYM_INTERVAL_DELIM   (rule 120)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE real_value . SYM_INTERVAL_DELIM   (rule 98)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 234
 
@@ -2652,7 +2662,7 @@ state 157
 
 state 158
 
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_time_value . SYM_INTERVAL_DELIM   (rule 146)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_value . SYM_INTERVAL_DELIM   (rule 120)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 235
 
@@ -2660,7 +2670,7 @@ state 158
 
 state 159
 
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE time_value . SYM_INTERVAL_DELIM   (rule 133)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_time_value . SYM_INTERVAL_DELIM   (rule 146)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 236
 
@@ -2668,7 +2678,7 @@ state 159
 
 state 160
 
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE duration_value . SYM_INTERVAL_DELIM   (rule 159)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE time_value . SYM_INTERVAL_DELIM   (rule 133)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 237
 
@@ -2676,7 +2686,7 @@ state 160
 
 state 161
 
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE integer_value . SYM_INTERVAL_DELIM   (rule 81)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE duration_value . SYM_INTERVAL_DELIM   (rule 159)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 238
 
@@ -2684,7 +2694,7 @@ state 161
 
 state 162
 
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE real_value . SYM_INTERVAL_DELIM   (rule 96)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE integer_value . SYM_INTERVAL_DELIM   (rule 81)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 239
 
@@ -2692,7 +2702,7 @@ state 162
 
 state 163
 
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_value . SYM_INTERVAL_DELIM   (rule 118)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE real_value . SYM_INTERVAL_DELIM   (rule 96)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 240
 
@@ -2700,7 +2710,7 @@ state 163
 
 state 164
 
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_time_value . SYM_INTERVAL_DELIM   (rule 144)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_value . SYM_INTERVAL_DELIM   (rule 118)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 241
 
@@ -2708,7 +2718,7 @@ state 164
 
 state 165
 
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE time_value . SYM_INTERVAL_DELIM   (rule 131)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_time_value . SYM_INTERVAL_DELIM   (rule 144)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 242
 
@@ -2716,7 +2726,7 @@ state 165
 
 state 166
 
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE duration_value . SYM_INTERVAL_DELIM   (rule 157)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE time_value . SYM_INTERVAL_DELIM   (rule 131)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 243
 
@@ -2724,81 +2734,81 @@ state 166
 
 state 167
 
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM   (rule 77)
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 79)
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_INTERVAL_DELIM   (rule 82)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE duration_value . SYM_INTERVAL_DELIM   (rule 157)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 244
-	SYM_ELLIPSIS	shift, and go to state 245
 
 
 
 state 168
 
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM   (rule 92)
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM   (rule 94)
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_INTERVAL_DELIM   (rule 97)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM   (rule 77)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 79)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value . SYM_INTERVAL_DELIM   (rule 82)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 246
-	SYM_ELLIPSIS	shift, and go to state 247
+	SYM_INTERVAL_DELIM	shift, and go to state 245
+	SYM_ELLIPSIS	shift, and go to state 246
 
 
 
 state 169
 
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM   (rule 114)
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM   (rule 116)
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_INTERVAL_DELIM   (rule 119)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM   (rule 92)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM   (rule 94)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value . SYM_INTERVAL_DELIM   (rule 97)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 248
-	SYM_ELLIPSIS	shift, and go to state 249
+	SYM_INTERVAL_DELIM	shift, and go to state 247
+	SYM_ELLIPSIS	shift, and go to state 248
 
 
 
 state 170
 
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM   (rule 140)
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 142)
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_INTERVAL_DELIM   (rule 145)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM   (rule 114)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM   (rule 116)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value . SYM_INTERVAL_DELIM   (rule 119)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 250
-	SYM_ELLIPSIS	shift, and go to state 251
+	SYM_INTERVAL_DELIM	shift, and go to state 249
+	SYM_ELLIPSIS	shift, and go to state 250
 
 
 
 state 171
 
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM   (rule 127)
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM   (rule 129)
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_INTERVAL_DELIM   (rule 132)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM   (rule 140)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 142)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value . SYM_INTERVAL_DELIM   (rule 145)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 252
-	SYM_ELLIPSIS	shift, and go to state 253
+	SYM_INTERVAL_DELIM	shift, and go to state 251
+	SYM_ELLIPSIS	shift, and go to state 252
 
 
 
 state 172
 
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM   (rule 153)
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 155)
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_INTERVAL_DELIM   (rule 158)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM   (rule 127)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM   (rule 129)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value . SYM_INTERVAL_DELIM   (rule 132)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 254
-	SYM_ELLIPSIS	shift, and go to state 255
+	SYM_INTERVAL_DELIM	shift, and go to state 253
+	SYM_ELLIPSIS	shift, and go to state 254
 
 
 
 state 173
 
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT integer_value . SYM_INTERVAL_DELIM   (rule 80)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM   (rule 153)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 155)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value . SYM_INTERVAL_DELIM   (rule 158)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 256
+	SYM_INTERVAL_DELIM	shift, and go to state 255
+	SYM_ELLIPSIS	shift, and go to state 256
 
 
 
 state 174
 
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT real_value . SYM_INTERVAL_DELIM   (rule 95)
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT integer_value . SYM_INTERVAL_DELIM   (rule 80)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 257
 
@@ -2806,7 +2816,7 @@ state 174
 
 state 175
 
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_value . SYM_INTERVAL_DELIM   (rule 117)
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT real_value . SYM_INTERVAL_DELIM   (rule 95)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 258
 
@@ -2814,7 +2824,7 @@ state 175
 
 state 176
 
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_time_value . SYM_INTERVAL_DELIM   (rule 143)
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_value . SYM_INTERVAL_DELIM   (rule 117)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 259
 
@@ -2822,7 +2832,7 @@ state 176
 
 state 177
 
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT time_value . SYM_INTERVAL_DELIM   (rule 130)
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_time_value . SYM_INTERVAL_DELIM   (rule 143)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 260
 
@@ -2830,7 +2840,7 @@ state 177
 
 state 178
 
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT duration_value . SYM_INTERVAL_DELIM   (rule 156)
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT time_value . SYM_INTERVAL_DELIM   (rule 130)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 261
 
@@ -2838,13 +2848,21 @@ state 178
 
 state 179
 
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT duration_value . SYM_INTERVAL_DELIM   (rule 156)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 262
+
+
+
+state 180
+
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_INTERVAL_DELIM .   (rule 84)
 
 	$default	reduce using rule 84 (integer_interval_value)
 
 
 
-state 180
+state 181
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -2852,16 +2870,16 @@ state 180
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS . integer_value SYM_INTERVAL_DELIM   (rule 76)
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS . SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 78)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
-	SYM_LT	shift, and go to state 262
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
+	SYM_LT	shift, and go to state 263
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 263
+	integer_value	go to state 264
 
 
 
-state 181
+state 182
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_INTERVAL_DELIM .   (rule 99)
 
@@ -2869,7 +2887,7 @@ state 181
 
 
 
-state 182
+state 183
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
@@ -2877,16 +2895,16 @@ state 182
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS . real_value SYM_INTERVAL_DELIM   (rule 91)
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS . SYM_LT real_value SYM_INTERVAL_DELIM   (rule 93)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
-	SYM_LT	shift, and go to state 264
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
+	SYM_LT	shift, and go to state 265
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 265
+	real_value	go to state 266
 
 
 
-state 183
+state 184
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_INTERVAL_DELIM .   (rule 121)
 
@@ -2894,20 +2912,20 @@ state 183
 
 
 
-state 184
+state 185
 
 	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS . date_value SYM_INTERVAL_DELIM   (rule 113)
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS . SYM_LT date_value SYM_INTERVAL_DELIM   (rule 115)
 
-	SYM_LT	shift, and go to state 266
+	SYM_LT	shift, and go to state 267
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_value	go to state 267
+	date_value	go to state 268
 
 
 
-state 185
+state 186
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_INTERVAL_DELIM .   (rule 147)
 
@@ -2915,20 +2933,20 @@ state 185
 
 
 
-state 186
+state 187
 
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS . date_time_value SYM_INTERVAL_DELIM   (rule 139)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS . SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 141)
 
-	SYM_LT	shift, and go to state 268
+	SYM_LT	shift, and go to state 269
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	date_time_value	go to state 269
+	date_time_value	go to state 270
 
 
 
-state 187
+state 188
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_INTERVAL_DELIM .   (rule 134)
 
@@ -2936,20 +2954,20 @@ state 187
 
 
 
-state 188
+state 189
 
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS . time_value SYM_INTERVAL_DELIM   (rule 126)
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS . SYM_LT time_value SYM_INTERVAL_DELIM   (rule 128)
 
-	SYM_LT	shift, and go to state 270
+	SYM_LT	shift, and go to state 271
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	time_value	go to state 271
+	time_value	go to state 272
 
 
 
-state 189
+state 190
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_INTERVAL_DELIM .   (rule 160)
 
@@ -2957,20 +2975,20 @@ state 189
 
 
 
-state 190
+state 191
 
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS . duration_value SYM_INTERVAL_DELIM   (rule 152)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS . SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 154)
 
-	SYM_LT	shift, and go to state 272
+	SYM_LT	shift, and go to state 273
 	V_ISO8601_DURATION	shift, and go to state 47
 
-	duration_value	go to state 273
+	duration_value	go to state 274
 
 
 
-state 191
+state 192
 
 	string_list_value  ->  V_STRING ',' SYM_LIST_CONTINUE .   (rule 69)
 
@@ -2978,7 +2996,7 @@ state 191
 
 
 
-state 192
+state 193
 
 	string_list_value  ->  V_STRING ',' V_STRING .   (rule 66)
 
@@ -2986,23 +3004,23 @@ state 192
 
 
 
-state 193
+state 194
 
 	integer_value  ->  '-' . V_INTEGER   (rule 72)
 
-	V_INTEGER	shift, and go to state 110
-
-
-
-state 194
-
-	integer_value  ->  '+' . V_INTEGER   (rule 71)
-
-	V_INTEGER	shift, and go to state 112
+	V_INTEGER	shift, and go to state 111
 
 
 
 state 195
+
+	integer_value  ->  '+' . V_INTEGER   (rule 71)
+
+	V_INTEGER	shift, and go to state 113
+
+
+
+state 196
 
 	integer_list_value  ->  integer_value ',' SYM_LIST_CONTINUE .   (rule 75)
 
@@ -3010,7 +3028,7 @@ state 195
 
 
 
-state 196
+state 197
 
 	integer_list_value  ->  integer_value ',' integer_value .   (rule 73)
 
@@ -3018,23 +3036,23 @@ state 196
 
 
 
-state 197
+state 198
 
 	real_value  ->  '-' . V_REAL   (rule 87)
 
-	V_REAL	shift, and go to state 109
-
-
-
-state 198
-
-	real_value  ->  '+' . V_REAL   (rule 86)
-
-	V_REAL	shift, and go to state 111
+	V_REAL	shift, and go to state 110
 
 
 
 state 199
+
+	real_value  ->  '+' . V_REAL   (rule 86)
+
+	V_REAL	shift, and go to state 112
+
+
+
+state 200
 
 	real_list_value  ->  real_value ',' SYM_LIST_CONTINUE .   (rule 90)
 
@@ -3042,7 +3060,7 @@ state 199
 
 
 
-state 200
+state 201
 
 	real_list_value  ->  real_value ',' real_value .   (rule 88)
 
@@ -3050,7 +3068,7 @@ state 200
 
 
 
-state 201
+state 202
 
 	boolean_list_value  ->  boolean_value ',' SYM_LIST_CONTINUE .   (rule 104)
 
@@ -3058,7 +3076,7 @@ state 201
 
 
 
-state 202
+state 203
 
 	boolean_list_value  ->  boolean_value ',' boolean_value .   (rule 102)
 
@@ -3066,7 +3084,7 @@ state 202
 
 
 
-state 203
+state 204
 
 	character_list_value  ->  character_value ',' SYM_LIST_CONTINUE .   (rule 108)
 
@@ -3074,7 +3092,7 @@ state 203
 
 
 
-state 204
+state 205
 
 	character_list_value  ->  character_value ',' character_value .   (rule 106)
 
@@ -3082,7 +3100,7 @@ state 204
 
 
 
-state 205
+state 206
 
 	date_list_value  ->  date_value ',' SYM_LIST_CONTINUE .   (rule 112)
 
@@ -3090,7 +3108,7 @@ state 205
 
 
 
-state 206
+state 207
 
 	date_list_value  ->  date_value ',' date_value .   (rule 110)
 
@@ -3098,7 +3116,7 @@ state 206
 
 
 
-state 207
+state 208
 
 	date_time_list_value  ->  date_time_value ',' SYM_LIST_CONTINUE .   (rule 138)
 
@@ -3106,7 +3124,7 @@ state 207
 
 
 
-state 208
+state 209
 
 	date_time_list_value  ->  date_time_value ',' date_time_value .   (rule 136)
 
@@ -3114,7 +3132,7 @@ state 208
 
 
 
-state 209
+state 210
 
 	time_list_value  ->  time_value ',' SYM_LIST_CONTINUE .   (rule 125)
 
@@ -3122,7 +3140,7 @@ state 209
 
 
 
-state 210
+state 211
 
 	time_list_value  ->  time_value ',' time_value .   (rule 123)
 
@@ -3130,7 +3148,7 @@ state 210
 
 
 
-state 211
+state 212
 
 	duration_list_value  ->  duration_value ',' SYM_LIST_CONTINUE .   (rule 151)
 
@@ -3138,7 +3156,7 @@ state 211
 
 
 
-state 212
+state 213
 
 	duration_list_value  ->  duration_value ',' duration_value .   (rule 149)
 
@@ -3146,59 +3164,48 @@ state 212
 
 
 
-state 213
-
-	term_code_list_value  ->  term_code ',' SYM_LIST_CONTINUE .   (rule 165)
-
-	$default	reduce using rule 165 (term_code_list_value)
-
-
-
 state 214
 
-	term_code_list_value  ->  term_code ',' term_code .   (rule 163)
+	term_code_list_value  ->  term_code ',' SYM_LIST_CONTINUE .   (rule 166)
 
-	$default	reduce using rule 163 (term_code_list_value)
+	$default	reduce using rule 166 (term_code_list_value)
 
 
 
 state 215
 
-	absolute_path  ->  absolute_path '/' relative_path .   (rule 175)
-	relative_path  ->  relative_path . '/' path_segment   (rule 177)
+	term_code_list_value  ->  term_code ',' term_code .   (rule 164)
 
-	'/'	shift, and go to state 154
-
-	'/'	[reduce using rule 175 (absolute_path)]
-	$default	reduce using rule 175 (absolute_path)
+	$default	reduce using rule 164 (term_code_list_value)
 
 
 
 state 216
 
-	absolute_path_list  ->  absolute_path ',' SYM_LIST_CONTINUE .   (rule 172)
+	absolute_path  ->  absolute_path '/' relative_path .   (rule 176)
+	relative_path  ->  relative_path . '/' path_segment   (rule 178)
 
-	$default	reduce using rule 172 (absolute_path_list)
+	'/'	shift, and go to state 155
+
+	'/'	[reduce using rule 176 (absolute_path)]
+	$default	reduce using rule 176 (absolute_path)
 
 
 
 state 217
 
-	absolute_path_list  ->  absolute_path ',' absolute_path .   (rule 170)
-	absolute_path  ->  absolute_path . '/' relative_path   (rule 175)
+	absolute_path_list  ->  absolute_path ',' SYM_LIST_CONTINUE .   (rule 173)
 
-	'/'	shift, and go to state 140
-
-	$default	reduce using rule 170 (absolute_path_list)
+	$default	reduce using rule 173 (absolute_path_list)
 
 
 
 state 218
 
-	absolute_path_list  ->  absolute_path_list ',' absolute_path .   (rule 171)
-	absolute_path  ->  absolute_path . '/' relative_path   (rule 175)
+	absolute_path_list  ->  absolute_path ',' absolute_path .   (rule 171)
+	absolute_path  ->  absolute_path . '/' relative_path   (rule 176)
 
-	'/'	shift, and go to state 140
+	'/'	shift, and go to state 141
 
 	$default	reduce using rule 171 (absolute_path_list)
 
@@ -3206,13 +3213,24 @@ state 218
 
 state 219
 
+	absolute_path_list  ->  absolute_path_list ',' absolute_path .   (rule 172)
+	absolute_path  ->  absolute_path . '/' relative_path   (rule 176)
+
+	'/'	shift, and go to state 141
+
+	$default	reduce using rule 172 (absolute_path_list)
+
+
+
+state 220
+
 	string_list_value  ->  string_list_value ',' SYM_LIST_CONTINUE .   (rule 68)
 
 	$default	reduce using rule 68 (string_list_value)
 
 
 
-state 220
+state 221
 
 	string_list_value  ->  string_list_value ',' V_STRING .   (rule 67)
 
@@ -3220,7 +3238,7 @@ state 220
 
 
 
-state 221
+state 222
 
 	integer_list_value  ->  integer_list_value ',' integer_value .   (rule 74)
 
@@ -3228,7 +3246,7 @@ state 221
 
 
 
-state 222
+state 223
 
 	real_list_value  ->  real_list_value ',' real_value .   (rule 89)
 
@@ -3236,7 +3254,7 @@ state 222
 
 
 
-state 223
+state 224
 
 	character_list_value  ->  character_list_value ',' character_value .   (rule 107)
 
@@ -3244,7 +3262,7 @@ state 223
 
 
 
-state 224
+state 225
 
 	boolean_list_value  ->  boolean_list_value ',' boolean_value .   (rule 103)
 
@@ -3252,7 +3270,7 @@ state 224
 
 
 
-state 225
+state 226
 
 	date_list_value  ->  date_list_value ',' date_value .   (rule 111)
 
@@ -3260,7 +3278,7 @@ state 225
 
 
 
-state 226
+state 227
 
 	time_list_value  ->  time_list_value ',' time_value .   (rule 124)
 
@@ -3268,7 +3286,7 @@ state 226
 
 
 
-state 227
+state 228
 
 	date_time_list_value  ->  date_time_list_value ',' date_time_value .   (rule 137)
 
@@ -3276,7 +3294,7 @@ state 227
 
 
 
-state 228
+state 229
 
 	duration_list_value  ->  duration_list_value ',' duration_value .   (rule 150)
 
@@ -3284,31 +3302,31 @@ state 228
 
 
 
-state 229
-
-	term_code_list_value  ->  term_code_list_value ',' term_code .   (rule 164)
-
-	$default	reduce using rule 164 (term_code_list_value)
-
-
-
 state 230
 
-	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' V_STRING . ']'   (rule 178)
+	term_code_list_value  ->  term_code_list_value ',' term_code .   (rule 165)
 
-	']'	shift, and go to state 274
+	$default	reduce using rule 165 (term_code_list_value)
 
 
 
 state 231
 
-	relative_path  ->  relative_path '/' path_segment .   (rule 177)
+	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' V_STRING . ']'   (rule 179)
 
-	$default	reduce using rule 177 (relative_path)
+	']'	shift, and go to state 275
 
 
 
 state 232
+
+	relative_path  ->  relative_path '/' path_segment .   (rule 178)
+
+	$default	reduce using rule 178 (relative_path)
+
+
+
+state 233
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE integer_value SYM_INTERVAL_DELIM .   (rule 83)
 
@@ -3316,7 +3334,7 @@ state 232
 
 
 
-state 233
+state 234
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE real_value SYM_INTERVAL_DELIM .   (rule 98)
 
@@ -3324,7 +3342,7 @@ state 233
 
 
 
-state 234
+state 235
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_value SYM_INTERVAL_DELIM .   (rule 120)
 
@@ -3332,7 +3350,7 @@ state 234
 
 
 
-state 235
+state 236
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE date_time_value SYM_INTERVAL_DELIM .   (rule 146)
 
@@ -3340,7 +3358,7 @@ state 235
 
 
 
-state 236
+state 237
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE time_value SYM_INTERVAL_DELIM .   (rule 133)
 
@@ -3348,7 +3366,7 @@ state 236
 
 
 
-state 237
+state 238
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GE duration_value SYM_INTERVAL_DELIM .   (rule 159)
 
@@ -3356,7 +3374,7 @@ state 237
 
 
 
-state 238
+state 239
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE integer_value SYM_INTERVAL_DELIM .   (rule 81)
 
@@ -3364,7 +3382,7 @@ state 238
 
 
 
-state 239
+state 240
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE real_value SYM_INTERVAL_DELIM .   (rule 96)
 
@@ -3372,7 +3390,7 @@ state 239
 
 
 
-state 240
+state 241
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_value SYM_INTERVAL_DELIM .   (rule 118)
 
@@ -3380,7 +3398,7 @@ state 240
 
 
 
-state 241
+state 242
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE date_time_value SYM_INTERVAL_DELIM .   (rule 144)
 
@@ -3388,7 +3406,7 @@ state 241
 
 
 
-state 242
+state 243
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE time_value SYM_INTERVAL_DELIM .   (rule 131)
 
@@ -3396,7 +3414,7 @@ state 242
 
 
 
-state 243
+state 244
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LE duration_value SYM_INTERVAL_DELIM .   (rule 157)
 
@@ -3404,7 +3422,7 @@ state 243
 
 
 
-state 244
+state 245
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_INTERVAL_DELIM .   (rule 82)
 
@@ -3412,7 +3430,7 @@ state 244
 
 
 
-state 245
+state 246
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
@@ -3420,16 +3438,16 @@ state 245
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS . integer_value SYM_INTERVAL_DELIM   (rule 77)
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS . SYM_LT integer_value SYM_INTERVAL_DELIM   (rule 79)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
-	SYM_LT	shift, and go to state 275
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
+	SYM_LT	shift, and go to state 276
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 276
+	integer_value	go to state 277
 
 
 
-state 246
+state 247
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_INTERVAL_DELIM .   (rule 97)
 
@@ -3437,7 +3455,7 @@ state 246
 
 
 
-state 247
+state 248
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
@@ -3445,16 +3463,16 @@ state 247
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS . real_value SYM_INTERVAL_DELIM   (rule 92)
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS . SYM_LT real_value SYM_INTERVAL_DELIM   (rule 94)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
-	SYM_LT	shift, and go to state 277
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
+	SYM_LT	shift, and go to state 278
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 278
+	real_value	go to state 279
 
 
 
-state 248
+state 249
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_INTERVAL_DELIM .   (rule 119)
 
@@ -3462,20 +3480,20 @@ state 248
 
 
 
-state 249
+state 250
 
 	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS . date_value SYM_INTERVAL_DELIM   (rule 114)
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS . SYM_LT date_value SYM_INTERVAL_DELIM   (rule 116)
 
-	SYM_LT	shift, and go to state 279
+	SYM_LT	shift, and go to state 280
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_value	go to state 280
+	date_value	go to state 281
 
 
 
-state 250
+state 251
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_INTERVAL_DELIM .   (rule 145)
 
@@ -3483,20 +3501,20 @@ state 250
 
 
 
-state 251
+state 252
 
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS . date_time_value SYM_INTERVAL_DELIM   (rule 140)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS . SYM_LT date_time_value SYM_INTERVAL_DELIM   (rule 142)
 
-	SYM_LT	shift, and go to state 281
+	SYM_LT	shift, and go to state 282
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	date_time_value	go to state 282
+	date_time_value	go to state 283
 
 
 
-state 252
+state 253
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_INTERVAL_DELIM .   (rule 132)
 
@@ -3504,20 +3522,20 @@ state 252
 
 
 
-state 253
+state 254
 
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS . time_value SYM_INTERVAL_DELIM   (rule 127)
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS . SYM_LT time_value SYM_INTERVAL_DELIM   (rule 129)
 
-	SYM_LT	shift, and go to state 283
+	SYM_LT	shift, and go to state 284
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	time_value	go to state 284
+	time_value	go to state 285
 
 
 
-state 254
+state 255
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_INTERVAL_DELIM .   (rule 158)
 
@@ -3525,20 +3543,20 @@ state 254
 
 
 
-state 255
+state 256
 
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS . duration_value SYM_INTERVAL_DELIM   (rule 153)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS . SYM_LT duration_value SYM_INTERVAL_DELIM   (rule 155)
 
-	SYM_LT	shift, and go to state 285
+	SYM_LT	shift, and go to state 286
 	V_ISO8601_DURATION	shift, and go to state 47
 
-	duration_value	go to state 286
+	duration_value	go to state 287
 
 
 
-state 256
+state 257
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT integer_value SYM_INTERVAL_DELIM .   (rule 80)
 
@@ -3546,7 +3564,7 @@ state 256
 
 
 
-state 257
+state 258
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT real_value SYM_INTERVAL_DELIM .   (rule 95)
 
@@ -3554,7 +3572,7 @@ state 257
 
 
 
-state 258
+state 259
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_value SYM_INTERVAL_DELIM .   (rule 117)
 
@@ -3562,7 +3580,7 @@ state 258
 
 
 
-state 259
+state 260
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT date_time_value SYM_INTERVAL_DELIM .   (rule 143)
 
@@ -3570,7 +3588,7 @@ state 259
 
 
 
-state 260
+state 261
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT time_value SYM_INTERVAL_DELIM .   (rule 130)
 
@@ -3578,7 +3596,7 @@ state 260
 
 
 
-state 261
+state 262
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_LT duration_value SYM_INTERVAL_DELIM .   (rule 156)
 
@@ -3586,261 +3604,253 @@ state 261
 
 
 
-state 262
+state 263
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
 	integer_value  ->  . '-' V_INTEGER   (rule 72)
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS SYM_LT . integer_value SYM_INTERVAL_DELIM   (rule 78)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 287
-
-
-
-state 263
-
-	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS integer_value . SYM_INTERVAL_DELIM   (rule 76)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 288
+	integer_value	go to state 288
 
 
 
 state 264
+
+	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS integer_value . SYM_INTERVAL_DELIM   (rule 76)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 289
+
+
+
+state 265
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
 	real_value  ->  . '-' V_REAL   (rule 87)
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS SYM_LT . real_value SYM_INTERVAL_DELIM   (rule 93)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 289
-
-
-
-state 265
-
-	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS real_value . SYM_INTERVAL_DELIM   (rule 91)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 290
+	real_value	go to state 290
 
 
 
 state 266
+
+	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS real_value . SYM_INTERVAL_DELIM   (rule 91)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 291
+
+
+
+state 267
 
 	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS SYM_LT . date_value SYM_INTERVAL_DELIM   (rule 115)
 
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_value	go to state 291
-
-
-
-state 267
-
-	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS date_value . SYM_INTERVAL_DELIM   (rule 113)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 292
+	date_value	go to state 292
 
 
 
 state 268
+
+	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS date_value . SYM_INTERVAL_DELIM   (rule 113)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 293
+
+
+
+state 269
 
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS SYM_LT . date_time_value SYM_INTERVAL_DELIM   (rule 141)
 
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	date_time_value	go to state 293
-
-
-
-state 269
-
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS date_time_value . SYM_INTERVAL_DELIM   (rule 139)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 294
+	date_time_value	go to state 294
 
 
 
 state 270
+
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS date_time_value . SYM_INTERVAL_DELIM   (rule 139)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 295
+
+
+
+state 271
 
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS SYM_LT . time_value SYM_INTERVAL_DELIM   (rule 128)
 
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	time_value	go to state 295
-
-
-
-state 271
-
-	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS time_value . SYM_INTERVAL_DELIM   (rule 126)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 296
+	time_value	go to state 296
 
 
 
 state 272
+
+	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS time_value . SYM_INTERVAL_DELIM   (rule 126)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 297
+
+
+
+state 273
 
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS SYM_LT . duration_value SYM_INTERVAL_DELIM   (rule 154)
 
 	V_ISO8601_DURATION	shift, and go to state 47
 
-	duration_value	go to state 297
-
-
-
-state 273
-
-	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS duration_value . SYM_INTERVAL_DELIM   (rule 152)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 298
+	duration_value	go to state 298
 
 
 
 state 274
 
-	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']' .   (rule 178)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS duration_value . SYM_INTERVAL_DELIM   (rule 152)
 
-	$default	reduce using rule 178 (path_segment)
+	SYM_INTERVAL_DELIM	shift, and go to state 299
 
 
 
 state 275
+
+	path_segment  ->  V_ATTRIBUTE_IDENTIFIER '[' V_STRING ']' .   (rule 179)
+
+	$default	reduce using rule 179 (path_segment)
+
+
+
+state 276
 
 	integer_value  ->  . V_INTEGER   (rule 70)
 	integer_value  ->  . '+' V_INTEGER   (rule 71)
 	integer_value  ->  . '-' V_INTEGER   (rule 72)
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS SYM_LT . integer_value SYM_INTERVAL_DELIM   (rule 79)
 
-	'-'	shift, and go to state 193
-	'+'	shift, and go to state 194
+	'-'	shift, and go to state 194
+	'+'	shift, and go to state 195
 	V_INTEGER	shift, and go to state 53
 
-	integer_value	go to state 299
-
-
-
-state 276
-
-	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS integer_value . SYM_INTERVAL_DELIM   (rule 77)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 300
+	integer_value	go to state 300
 
 
 
 state 277
+
+	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS integer_value . SYM_INTERVAL_DELIM   (rule 77)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 301
+
+
+
+state 278
 
 	real_value  ->  . V_REAL   (rule 85)
 	real_value  ->  . '+' V_REAL   (rule 86)
 	real_value  ->  . '-' V_REAL   (rule 87)
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS SYM_LT . real_value SYM_INTERVAL_DELIM   (rule 94)
 
-	'-'	shift, and go to state 197
-	'+'	shift, and go to state 198
+	'-'	shift, and go to state 198
+	'+'	shift, and go to state 199
 	V_REAL	shift, and go to state 52
 
-	real_value	go to state 301
-
-
-
-state 278
-
-	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS real_value . SYM_INTERVAL_DELIM   (rule 92)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 302
+	real_value	go to state 302
 
 
 
 state 279
+
+	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS real_value . SYM_INTERVAL_DELIM   (rule 92)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 303
+
+
+
+state 280
 
 	date_value  ->  . V_ISO8601_EXTENDED_DATE   (rule 109)
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS SYM_LT . date_value SYM_INTERVAL_DELIM   (rule 116)
 
 	V_ISO8601_EXTENDED_DATE	shift, and go to state 50
 
-	date_value	go to state 303
-
-
-
-state 280
-
-	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS date_value . SYM_INTERVAL_DELIM   (rule 114)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 304
+	date_value	go to state 304
 
 
 
 state 281
+
+	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS date_value . SYM_INTERVAL_DELIM   (rule 114)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 305
+
+
+
+state 282
 
 	date_time_value  ->  . V_ISO8601_EXTENDED_DATE_TIME   (rule 135)
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS SYM_LT . date_time_value SYM_INTERVAL_DELIM   (rule 142)
 
 	V_ISO8601_EXTENDED_DATE_TIME	shift, and go to state 48
 
-	date_time_value	go to state 305
-
-
-
-state 282
-
-	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS date_time_value . SYM_INTERVAL_DELIM   (rule 140)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 306
+	date_time_value	go to state 306
 
 
 
 state 283
+
+	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS date_time_value . SYM_INTERVAL_DELIM   (rule 140)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 307
+
+
+
+state 284
 
 	time_value  ->  . V_ISO8601_EXTENDED_TIME   (rule 122)
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS SYM_LT . time_value SYM_INTERVAL_DELIM   (rule 129)
 
 	V_ISO8601_EXTENDED_TIME	shift, and go to state 49
 
-	time_value	go to state 307
-
-
-
-state 284
-
-	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS time_value . SYM_INTERVAL_DELIM   (rule 127)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 308
+	time_value	go to state 308
 
 
 
 state 285
+
+	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS time_value . SYM_INTERVAL_DELIM   (rule 127)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 309
+
+
+
+state 286
 
 	duration_value  ->  . V_ISO8601_DURATION   (rule 148)
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS SYM_LT . duration_value SYM_INTERVAL_DELIM   (rule 155)
 
 	V_ISO8601_DURATION	shift, and go to state 47
 
-	duration_value	go to state 309
-
-
-
-state 286
-
-	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS duration_value . SYM_INTERVAL_DELIM   (rule 153)
-
-	SYM_INTERVAL_DELIM	shift, and go to state 310
+	duration_value	go to state 310
 
 
 
 state 287
 
-	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS SYM_LT integer_value . SYM_INTERVAL_DELIM   (rule 78)
+	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS duration_value . SYM_INTERVAL_DELIM   (rule 153)
 
 	SYM_INTERVAL_DELIM	shift, and go to state 311
 
@@ -3848,21 +3858,29 @@ state 287
 
 state 288
 
+	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS SYM_LT integer_value . SYM_INTERVAL_DELIM   (rule 78)
+
+	SYM_INTERVAL_DELIM	shift, and go to state 312
+
+
+
+state 289
+
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM .   (rule 76)
 
 	$default	reduce using rule 76 (integer_interval_value)
 
 
 
-state 289
+state 290
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS SYM_LT real_value . SYM_INTERVAL_DELIM   (rule 93)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 312
+	SYM_INTERVAL_DELIM	shift, and go to state 313
 
 
 
-state 290
+state 291
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM .   (rule 91)
 
@@ -3870,15 +3888,15 @@ state 290
 
 
 
-state 291
+state 292
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS SYM_LT date_value . SYM_INTERVAL_DELIM   (rule 115)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 313
+	SYM_INTERVAL_DELIM	shift, and go to state 314
 
 
 
-state 292
+state 293
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM .   (rule 113)
 
@@ -3886,15 +3904,15 @@ state 292
 
 
 
-state 293
+state 294
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS SYM_LT date_time_value . SYM_INTERVAL_DELIM   (rule 141)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 314
+	SYM_INTERVAL_DELIM	shift, and go to state 315
 
 
 
-state 294
+state 295
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM .   (rule 139)
 
@@ -3902,15 +3920,15 @@ state 294
 
 
 
-state 295
+state 296
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS SYM_LT time_value . SYM_INTERVAL_DELIM   (rule 128)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 315
+	SYM_INTERVAL_DELIM	shift, and go to state 316
 
 
 
-state 296
+state 297
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM .   (rule 126)
 
@@ -3918,15 +3936,15 @@ state 296
 
 
 
-state 297
+state 298
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS SYM_LT duration_value . SYM_INTERVAL_DELIM   (rule 154)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 316
+	SYM_INTERVAL_DELIM	shift, and go to state 317
 
 
 
-state 298
+state 299
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM .   (rule 152)
 
@@ -3934,15 +3952,15 @@ state 298
 
 
 
-state 299
+state 300
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS SYM_LT integer_value . SYM_INTERVAL_DELIM   (rule 79)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 317
+	SYM_INTERVAL_DELIM	shift, and go to state 318
 
 
 
-state 300
+state 301
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS integer_value SYM_INTERVAL_DELIM .   (rule 77)
 
@@ -3950,15 +3968,15 @@ state 300
 
 
 
-state 301
+state 302
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS SYM_LT real_value . SYM_INTERVAL_DELIM   (rule 94)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 318
+	SYM_INTERVAL_DELIM	shift, and go to state 319
 
 
 
-state 302
+state 303
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS real_value SYM_INTERVAL_DELIM .   (rule 92)
 
@@ -3966,15 +3984,15 @@ state 302
 
 
 
-state 303
+state 304
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS SYM_LT date_value . SYM_INTERVAL_DELIM   (rule 116)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 319
+	SYM_INTERVAL_DELIM	shift, and go to state 320
 
 
 
-state 304
+state 305
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS date_value SYM_INTERVAL_DELIM .   (rule 114)
 
@@ -3982,15 +4000,15 @@ state 304
 
 
 
-state 305
+state 306
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS SYM_LT date_time_value . SYM_INTERVAL_DELIM   (rule 142)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 320
+	SYM_INTERVAL_DELIM	shift, and go to state 321
 
 
 
-state 306
+state 307
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS date_time_value SYM_INTERVAL_DELIM .   (rule 140)
 
@@ -3998,15 +4016,15 @@ state 306
 
 
 
-state 307
+state 308
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS SYM_LT time_value . SYM_INTERVAL_DELIM   (rule 129)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 321
+	SYM_INTERVAL_DELIM	shift, and go to state 322
 
 
 
-state 308
+state 309
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS time_value SYM_INTERVAL_DELIM .   (rule 127)
 
@@ -4014,15 +4032,15 @@ state 308
 
 
 
-state 309
+state 310
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS SYM_LT duration_value . SYM_INTERVAL_DELIM   (rule 155)
 
-	SYM_INTERVAL_DELIM	shift, and go to state 322
+	SYM_INTERVAL_DELIM	shift, and go to state 323
 
 
 
-state 310
+state 311
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS duration_value SYM_INTERVAL_DELIM .   (rule 153)
 
@@ -4030,7 +4048,7 @@ state 310
 
 
 
-state 311
+state 312
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM integer_value SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM .   (rule 78)
 
@@ -4038,7 +4056,7 @@ state 311
 
 
 
-state 312
+state 313
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM real_value SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM .   (rule 93)
 
@@ -4046,7 +4064,7 @@ state 312
 
 
 
-state 313
+state 314
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM date_value SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM .   (rule 115)
 
@@ -4054,7 +4072,7 @@ state 313
 
 
 
-state 314
+state 315
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM date_time_value SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM .   (rule 141)
 
@@ -4062,7 +4080,7 @@ state 314
 
 
 
-state 315
+state 316
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM time_value SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM .   (rule 128)
 
@@ -4070,7 +4088,7 @@ state 315
 
 
 
-state 316
+state 317
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM duration_value SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM .   (rule 154)
 
@@ -4078,7 +4096,7 @@ state 316
 
 
 
-state 317
+state 318
 
 	integer_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT integer_value SYM_ELLIPSIS SYM_LT integer_value SYM_INTERVAL_DELIM .   (rule 79)
 
@@ -4086,7 +4104,7 @@ state 317
 
 
 
-state 318
+state 319
 
 	real_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT real_value SYM_ELLIPSIS SYM_LT real_value SYM_INTERVAL_DELIM .   (rule 94)
 
@@ -4094,7 +4112,7 @@ state 318
 
 
 
-state 319
+state 320
 
 	date_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_value SYM_ELLIPSIS SYM_LT date_value SYM_INTERVAL_DELIM .   (rule 116)
 
@@ -4102,7 +4120,7 @@ state 319
 
 
 
-state 320
+state 321
 
 	date_time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT date_time_value SYM_ELLIPSIS SYM_LT date_time_value SYM_INTERVAL_DELIM .   (rule 142)
 
@@ -4110,7 +4128,7 @@ state 320
 
 
 
-state 321
+state 322
 
 	time_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT time_value SYM_ELLIPSIS SYM_LT time_value SYM_INTERVAL_DELIM .   (rule 129)
 
@@ -4118,18 +4136,11 @@ state 321
 
 
 
-state 322
+state 323
 
 	duration_interval_value  ->  SYM_INTERVAL_DELIM SYM_GT duration_value SYM_ELLIPSIS SYM_LT duration_value SYM_INTERVAL_DELIM .   (rule 155)
 
 	$default	reduce using rule 155 (duration_interval_value)
-
-
-
-state 323
-
-
-	$	go to state 324
 
 
 
@@ -4141,6 +4152,13 @@ state 324
 
 
 state 325
+
+
+	$	go to state 326
+
+
+
+state 326
 
 
 	$default	accept

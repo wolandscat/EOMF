@@ -78,7 +78,6 @@ UTF8CHAR (([\xC2-\xDF][\x80-\xBF])|(\xE0[\xA0-\xBF][\x80-\xBF])|([\xE1-\xEF][\x8
 "("			last_token := Left_parenthesis_code
 ")"			last_token := Right_parenthesis_code
 "$"			last_token := Dollar_code
-"??"			last_token := SYM_DT_UNKNOWN
 "?"			last_token := Question_mark_code
 
 "|"		{
@@ -128,8 +127,6 @@ UTF8CHAR (([\xC2-\xDF][\x80-\xBF])|(\xE0[\xA0-\xBF][\x80-\xBF])|([\xE1-\xEF][\x8
 
 [Ff][Aa][Ll][Ss][Ee] 						last_token := SYM_FALSE
 
-[Ii][Nn][Ff][Ii][Nn][Ii][Tt][Yy]			last_token := SYM_INFINITY
-
 ----------/* URI */ -------------------------------------------------
 [a-z]+:[^<>|\\{}^" ]*	{
 	last_token := V_URI
@@ -142,25 +139,14 @@ UTF8CHAR (([\xC2-\xDF][\x80-\xBF])|(\xE0[\xA0-\xBF][\x80-\xBF])|([\xE1-\xEF][\x8
 					last_string_value := text_substring (2, text_count - 1)
 			}
 
+\[{NAMECHAR_PAREN}+::[ \t]*\]	{
+					last_token := V_TERMINOLOGY_ID
+					last_string_value := text_substring (2, text_count - 1)
+			}
+
 \[{NAMECHAR_PAREN}+::[^\]]+\]	{
 					last_token := ERR_V_QUALIFIED_TERM_CODE_REF
 					last_string_value := text_substring (2, text_count - 1)
-			}
-
-\[a[ct][0-9.]+\] {
-					last_token := V_LOCAL_TERM_CODE_REF
-					last_string_value := text_substring (2, text_count - 1)
-			}
-
-\[{ALPHANUM}[^\]]+\]	{
-					last_token := ERR_V_LOCAL_TERM_CODE_REF
-					last_string_value := text_substring (2, text_count - 1)
-			}
-
-----------/* local code definition */ -------------------------------------------------
-a[ct][0-9.]+		{
-					last_token := V_LOCAL_CODE
-					last_string_value := text
 			}
 
 ----------/* V_ISO8601_DATE_TIME YYYY-MM-DDThh:mm:ss[,sss][Z|+/-nnnn] */ -------------------------------------------------
