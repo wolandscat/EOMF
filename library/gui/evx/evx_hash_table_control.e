@@ -103,7 +103,6 @@ feature {NONE} -- Implementation
 			new_row: EV_MULTI_COLUMN_LIST_ROW
 		do
 			new_key := "new_key#" + uniqueness_counter.out
-			increment_uniqueness_counter
 			new_val := "new_value"
 
 			create new_row
