@@ -17,7 +17,8 @@ inherit
 
 	EVX_UTILITIES
 		export
-			{NONE} all
+			{NONE} all;
+			{ANY} deep_twin, is_deep_equal, standard_is_equal
 		end
 
 create
@@ -25,18 +26,23 @@ create
 
 feature -- Initialisation
 
-	make (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	make (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING;
+			a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
 		do
 			active_pixmap := an_active_pixmap
 			inactive_pixmap := an_inactive_pixmap
-			select_action := a_select_action
+			do_action := a_do_action
+			stop_action := a_stop_action
 
 			create ev_button
+			if attached a_button_text then
+				ev_button.set_text (a_button_text)
+			end
 			if attached a_tooltip_text then
 				ev_button.set_tooltip (a_tooltip_text)
 			end
-			is_active := True
-			disable_active
+			ev_button.select_actions.extend (agent toggle)
+			set_inactive
 		end
 
 feature -- Access
@@ -47,42 +53,48 @@ feature -- Access
 
 	inactive_pixmap: detachable EV_PIXMAP
 
-	select_action: detachable PROCEDURE [ANY, TUPLE]
+	do_action: detachable PROCEDURE [ANY, TUPLE]
+			-- action to perform some task
+
+	stop_action: detachable PROCEDURE [ANY, TUPLE]
+			-- action to stop some task
 
 feature -- Status Report
 
 	is_active: BOOLEAN
 
-feature -- Commands
-
-	enable_active
-			-- set active pixmap and install `select_action'
-		do
-			if not is_active then
-				is_active := True
-				if attached active_pixmap then
-					ev_button.set_pixmap (active_pixmap)
-				end
-				if attached select_action then
-					ev_button.select_actions.extend (select_action)
-				end
-			end
-		end
-
-	disable_active
-			-- set inactive pixmap and uninstall `select_action'
-		do
-			if is_active then
-				is_active := False
-				if attached inactive_pixmap then
-					ev_button.set_pixmap (inactive_pixmap)
-				end
-				ev_button.select_actions.wipe_out
-			end
-		end
-
 feature {NONE} -- Implementation
 
+	toggle
+		do
+			if not is_active then
+				set_active
+			else
+				set_inactive
+			end
+		end
+
+	set_active
+		do
+			is_active := True
+			if attached active_pixmap as pm then
+				ev_button.set_pixmap (pm)
+			end
+			if attached do_action as action then
+				action.call ([])
+			end
+		end
+
+	set_inactive
+		do
+			is_active := False
+			if attached inactive_pixmap as pm then
+				ev_button.set_pixmap (pm)
+			end
+			if attached stop_action as action then
+				action.call ([])
+			end
+		end
 
 end
 

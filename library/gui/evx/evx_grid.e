@@ -56,6 +56,11 @@ feature -- Access
 			Result := ev_grid.row_count
 		end
 
+	column_count: INTEGER
+		do
+			Result := ev_grid.column_count
+		end
+
 	matching_sub_row (a_parent_row: EV_GRID_ROW; a_row_test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN]): detachable EV_GRID_ROW
 		local
 			i: INTEGER
@@ -195,6 +200,17 @@ feature -- Modification
 			end
 		end
 
+	last_row_add_checkbox (col: INTEGER)
+			-- Add a checkbox column to `col' of a `last_row'
+		local
+			gcli: EV_GRID_CHECKABLE_LABEL_ITEM
+		do
+			create gcli
+			last_row.set_item (col, gcli)
+			gcli.set_is_checked (True)
+			gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
+		end
+
 	remove_matching_sub_rows (a_parent_row: EV_GRID_ROW; a_row_test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		local
 			remove_list: SORTED_TWO_WAY_LIST [INTEGER]
@@ -232,7 +248,7 @@ feature -- Modification
 			i: INTEGER
 		do
 			if ev_grid.row_count > 0 then
-				from i := 1 until i > ev_grid.column_count loop
+				from i := 1 until i > ev_grid.column_count.min (col_names.count) loop
 					ev_grid.column (i).set_title (utf8_to_utf32 (col_names.i_th (i)))
 					i := i + 1
 				end
@@ -253,9 +269,39 @@ feature -- Modification
 
 feature -- Commands
 
+	expand_tree
+			-- expand entire tree, if there is content
+		do
+			if row_count > 0 then
+				ev_grid.expand_tree (ev_grid.row (1), Void)
+			end
+		end
+
+	collapse_tree
+			-- expand entire tree, if there is content
+		do
+			if row_count > 0 then
+				ev_grid.collapse_tree (ev_grid.row (1))
+			end
+		end
+
 	resize_columns_to_content
 		do
 			ev_grid.resize_columns_to_content (Default_grid_expansion_factor)
+		end
+
+	set_checkboxes_recursively (a_gcli: EV_GRID_CHECKABLE_LABEL_ITEM)
+			-- For all sub-items of `a_gcli', set their check boxes in the same column to match the parent's, recursively.
+		local
+			i: INTEGER
+		do
+			from i := a_gcli.row.subrow_count until i = 0 loop
+				if attached {EV_GRID_CHECKABLE_LABEL_ITEM} a_gcli.row.subrow (i).item (a_gcli.column.index) as sub_gcli then
+					sub_gcli.set_is_checked (a_gcli.is_checked)
+					set_checkboxes_recursively (sub_gcli)
+				end
+				i := i - 1
+			end
 		end
 
 end

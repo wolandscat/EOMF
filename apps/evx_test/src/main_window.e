@@ -143,6 +143,7 @@ feature {NONE} -- GUI Widgets
 	evx_ok_cancel_controls: EVX_OK_CANCEL_CONTROLS
 	evx_control_panel: EVX_CONTROL_PANEL
 	evx_multi_column_table_control: EVX_MULTI_COLUMN_TABLE_CONTROL
+	evx_button: EVX_BUTTON
 
 end
 
