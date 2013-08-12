@@ -2,13 +2,13 @@
 
 EOMF is a holding project for various generic facilities for Eiffel applications, including:
 
-* ODIN - Object Data Instance Notation - parser, validator, internal Data Tree representation, and serialiser for [ODIN notation](https://github.com/openEHR/odin). 
+* [BMM - Basic Meta-Model](library/bmm) - an object schema representation facility. BMM schemas represent object data models, including classes and attributes with open and closed generics, inheritance etc. BMM files are written in ODIN syntax. [Examples](https://github.com/openEHR/reference-models/tree/master/models/openEHR/Release-1.0.2/BMM) used on openEHR.
 
-* BMM - Basic Meta-Model - an object schema representation facility. BMM schemas represent object data models, including classes and attributes with open and closed generics, inheritance etc. BMM files are written in ODIN syntax. [Examples](https://github.com/openEHR/reference-models/tree/master/models/openEHR/Release-1.0.2/BMM) used on openEHR.
+* [App config file](library/app_resources), in ODIN format.
 
-* App resources - inheritable classes containing useful resources, like access to inline icons, standard app paths, etc.
+* [ODIN](library/odin) - Object Data Instance Notation - [parser](parsers/odin), validator, internal Data Tree representation, and serialiser for [ODIN notation](https://github.com/openEHR/odin). 
 
-* App config file, in ODIN format.
+* [App resources](library/app_resources) - inheritable classes containing useful resources, like access to inline icons, standard app paths, etc.
 
 * [EVX](library/gui/evx) - layer over Eiffel Vision EV lib to provide higher level controls with built-in agents, visual settings.
 
