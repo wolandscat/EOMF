@@ -35,20 +35,6 @@ feature -- Initialisation
 			precursor (a_rm_publisher, a_schema_name, a_rm_release)
 		end
 
-feature -- Definitions
-
-	substitutions: HASH_TABLE [STRING, STRING]
-			-- allowed type substitutions due to archetyping as a table of
-			-- allowable substitution keyed by expected type
-		once
-			create Result.make(0)
-			Result.put("String", "ISO8601_DURATION")
-			Result.put("String", "ISO8601_DATE")
-			Result.put("String", "ISO8601_DATE_TIME")
-			Result.put("String", "ISO8601_TIME")
-			Result.put("Double", "REAL")
-		end
-
 feature -- Access
 
 	class_definitions: HASH_TABLE [BMM_CLASS_DEFINITION, STRING]
@@ -62,11 +48,10 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			from class_definitions.start until class_definitions.off loop
-				if class_definitions.item_for_iteration.is_primitive_type then
-					Result.extend (class_definitions.item_for_iteration.name)
+			across class_definitions as class_defs_csr loop
+				if class_defs_csr.item.is_primitive_type then
+					Result.extend (class_defs_csr.item.name)
 				end
-				class_definitions.forth
 			end
 		ensure
 			Result.object_comparison
