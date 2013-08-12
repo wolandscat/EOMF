@@ -304,24 +304,45 @@ feature -- Access
 		end
 
 	property_type (a_class_type_name, a_prop_name: STRING): STRING
-			-- retrieve the property type for `a_prop_name' in class corresponding to `a_type_name'
-			-- same as property_definition.type, except if a_type_name is generic
+			-- retrieve the property type for `a_prop_name' in type corresponding to `a_class_type_name'
+			-- same as property_definition.type, except if a_type_name is generic, in which case:
+			-- `a_class_type_name' will be an actual type name, e.g. "INTERVAL<TIME>", whereas
+			-- Current's type is either "INTERVAL<T>" or (say) "INTERVAL<T:TEMPORAL>" (assuming
+			-- TIME inherits from TEMPORAL in the BMM type system
 		require
 			Type_name_valid: is_well_formed_type_name (a_class_type_name)
 			Property_valid: has_property (a_prop_name)
 		local
 			prop_type: BMM_TYPE_SPECIFIER
-			gen_param_count: INTEGER
+			i, gen_param_count: INTEGER
+			eff_type_list: LIST [STRING]
+			gen_param_type: detachable STRING
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
 				prop_type := prop_def.type
-				if attached {BMM_GENERIC_PARAMETER_DEFINITION} prop_type as gen_prop_type then
-					gen_param_count := 1
-					from generic_parameters.start until generic_parameters.off or generic_parameters.item_for_iteration.name.is_equal (gen_prop_type.name) loop
-						gen_param_count := gen_param_count + 1
-						generic_parameters.forth
+				if attached {BMM_GENERIC_PARAMETER_DEFINITION} prop_type as gen_prop_type and attached generic_parameters as gen_parms then
+					i := 1
+					-- we traverse the generic parameters Hash instead of just keying into it so as
+					-- to get the index in order of the required parameter
+					across gen_parms as gen_parms_csr loop
+						if gen_parms_csr.item.name.is_equal (gen_prop_type.name) then
+							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was 
+							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
+							gen_param_type := gen_parms_csr.item.as_conformance_type_string
+							gen_param_count := i
+						end
+						i := i + 1
 					end
-					Result := type_name_as_flat_list (a_class_type_name).i_th (gen_param_count + 1)
+
+					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that 
+					eff_type_list := type_name_as_flat_list (a_class_type_name)
+					if gen_param_count < eff_type_list.count then
+						Result := eff_type_list.i_th (gen_param_count + 1)
+					else
+						check attached gen_param_type as gpt then
+							Result := gen_param_type
+						end
+					end
 				else
 					Result := prop_type.as_type_string
 				end
