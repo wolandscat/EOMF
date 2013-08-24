@@ -15,7 +15,7 @@ templates = <
 		["msg_files_dir_not_found"] = <"Message database directory: $1 does not exist or not readable">
 		["msg_files_dup_found"] = <"Duplicate (?) message files found: $1, $2">
 		["lang_not_found"] = <"Language $1 not found in file $2">
-		["dadl_parse_failure"] = <"dADL parsing failure in message file $1: $2">
+		["odin_parse_failure"] = <"ODIN parsing failure in message file $1: $2">
 		["dup_key_in_other_file"] = <"Key $1 in file $2 already found in file $3">
 		["wrote_file_info"] = <"Wrote class text to $1%N">
 	>

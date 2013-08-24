@@ -50,7 +50,7 @@ feature -- Definitions
 		ec_msg_files_dir_not_found: STRING = "msg_files_dir_not_found"
 		ec_msg_files_dup_found: STRING = "msg_files_dup_found"
 		ec_lang_not_found: STRING = "lang_not_found"
-		ec_dadl_parse_failure: STRING = "dadl_parse_failure"
+		ec_odin_parse_failure: STRING = "odin_parse_failure"
 		ec_dup_key_in_other_file: STRING = "dup_key_in_other_file"
 		ec_wrote_file_info: STRING = "wrote_file_info"
 		ec_bmm_schemas_config_not_valid: STRING = "bmm_schemas_config_not_valid"

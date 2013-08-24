@@ -65,7 +65,7 @@ feature -- Initialisation
 			message_table.put ("Message database directory: $1 does not exist or not readable", ec_msg_files_dir_not_found)
 			message_table.put ("Duplicate (?) message files found: $1, $2", ec_msg_files_dup_found)
 			message_table.put ("Language $1 not found in file $2", ec_lang_not_found)
-			message_table.put ("dADL parsing failure in message file $1: $2", ec_dadl_parse_failure)
+			message_table.put ("ODIN parsing failure in message file $1: $2", ec_odin_parse_failure)
 			message_table.put ("Key $1 in file $2 already found in file $3", ec_dup_key_in_other_file)
 			message_table.put ("Wrote class text to $1%N", ec_wrote_file_info)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in directory $2", ec_bmm_schemas_config_not_valid)

@@ -236,10 +236,10 @@ feature {NONE} -- Implementation
 			Valid_local_lang: not a_locale_lang.is_empty
 			Valid_file_path: not a_file_path.is_empty
 		do
-			dadl_parser.reset
-			dadl_parser.execute (a_dadl_str, 1)
-			if not dadl_parser.syntax_error then
-				if attached {IN_MEMORY_MESSAGE_DB_INITIALISER} dadl_parser.output.as_object_from_string (({IN_MEMORY_MESSAGE_DB_INITIALISER}).name, Void) as init_helper and then attached init_helper.templates as tpls then
+			odin_parser.reset
+			odin_parser.execute (a_dadl_str, 1)
+			if not odin_parser.syntax_error then
+				if attached {IN_MEMORY_MESSAGE_DB_INITIALISER} odin_parser.output.as_object_from_string (({IN_MEMORY_MESSAGE_DB_INITIALISER}).name, Void) as init_helper and then attached init_helper.templates as tpls then
 					if tpls.has (a_locale_lang) then
 						across tpls.item (a_locale_lang) as msg_def_csr loop
 							if not message_defs.has (msg_def_csr.key) then
@@ -255,14 +255,14 @@ feature {NONE} -- Implementation
 						add_error (ec_lang_not_found, <<a_locale_lang, a_file_path>>)
 					end
 				else
-					add_error (ec_dadl_parse_failure, <<a_file_path, dt_object_converter.errors.as_string>>)
+					add_error (ec_odin_parse_failure, <<a_file_path, dt_object_converter.errors.as_string>>)
 				end
 			else
-				add_error (ec_dadl_parse_failure, <<a_file_path, dadl_parser.errors.as_string>>)
+				add_error (ec_odin_parse_failure, <<a_file_path, odin_parser.errors.as_string>>)
 			end
 		end
 
-	dadl_parser: DADL_VALIDATOR
+	odin_parser: ODIN_VALIDATOR
 		once
 			create Result.make
 		end
