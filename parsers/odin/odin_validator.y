@@ -677,9 +677,6 @@ primitive_interval_value: integer_interval_value
 		}
 	;
 
----------------------- BASIC DATA VALUES -----------------------
-
-
 type_identifier: '(' V_TYPE_IDENTIFIER ')'
 		{
 			$$ := $2
@@ -697,6 +694,9 @@ type_identifier: '(' V_TYPE_IDENTIFIER ')'
 			$$ := $1
 		}
 	;
+
+---------------------- BASIC DATA VALUES -----------------------
+
 
 string_value: V_STRING
 		{

@@ -45,6 +45,12 @@ feature {YY_PARSER_ACTION} -- Basic Operations
 			abort
 		end
 
+	abort_with_errors (errs: ERROR_ACCUMULATOR)
+		do
+			merge_errors (errs)
+			abort
+		end
+
 	error_loc: STRING
 		deferred
 		end

@@ -33,6 +33,7 @@ feature -- Access
 
 	all_paths: HASH_TABLE [detachable OG_OBJECT, OG_PATH]
 			-- all paths below this point, including this node
+			-- with OG_OJBECT at each path, for those paths that are OG_OBJECTs
 		do
 			Result := generate_all_paths (False)
 			if is_root then
@@ -221,7 +222,7 @@ feature {OG_OBJECT_NODE} -- Implementation
 		end
 
 	generate_all_paths (is_unique: BOOLEAN): HASH_TABLE [detachable OG_OBJECT, OG_PATH]
-			-- all paths below this point, including this node; if unique_flag is True,
+			-- all paths below this point, including this node; if `is_unique' is True,
 			-- then include the "unknown" ids on non-identified object nodes to give
 			-- completely unique paths
 		local
@@ -285,6 +286,7 @@ feature {OG_OBJECT_NODE} -- Implementation
 						end
 					end
 
+					-- add an attribute path, if one didn't already get added
 					if not created_attr_path then
 						create a_path.make_relative (create {OG_PATH_ITEM}.make (attr_node.node_id))
 						if is_root then
