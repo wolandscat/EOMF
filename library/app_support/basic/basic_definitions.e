@@ -23,6 +23,8 @@ feature -- Definitions
 			end
 		end
 
+	Terminology_separator: STRING = "::"
+
 	Regex_any_pattern: STRING = ".*"
 
 	CR: CHARACTER = '%/015/'
