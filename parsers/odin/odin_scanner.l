@@ -343,6 +343,7 @@ feature {NONE} -- Initialization
 			make_compressed_scanner_skeleton
 			create in_buffer.make (Init_buffer_size)
 			in_lineno := 1
+			create str_.make_empty
 		end
 
 feature -- Initialization

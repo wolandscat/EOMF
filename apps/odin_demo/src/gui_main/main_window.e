@@ -50,7 +50,11 @@ feature -- Status setting
 
 			initialise_splitter (explorer_split_area, explorer_split_position)
 			initialise_splitter (main_split_area, main_split_position)
-			focus_first_widget (main_notebook.selected_item)
+
+			-- text widget handling
+			if attached main_notebook.selected_item as nb_item then
+				text_widget_handler.focus_first_widget (nb_item)
+			end
 
 			if app_maximised then
 				maximize
@@ -82,10 +86,11 @@ feature -- Events
 			-- Called by `select_actions' of `explorer_tree'.
 		do
 			if attached {EV_TREE_NODE} explorer_tree.selected_item as node and then
+				attached node.data as node_data and then
 				attached {PROCEDURE [ANY, TUPLE[ANY]]} node.parent.data as test_proc
 			then
 				status_area.set_text ("")
-				test_proc.call ([node.data])
+				test_proc.call ([node_data])
 			end
 		end
 
@@ -167,7 +172,7 @@ feature {NONE} -- Implementation
 		do
 			add_menu_shortcut (file_menu_open, key_o, True, False, False)
 			add_menu_shortcut (file_menu_save_as, key_s, True, False, False)
-			add_menu_shortcut_for_action (edit_menu_copy, agent call_unless_text_focused (agent on_copy), key_c, True, False, False)
+			add_menu_shortcut_for_action (edit_menu_copy, agent text_widget_handler.call_unless_text_focused (agent on_copy), key_c, True, False, False)
 			add_menu_shortcut (edit_menu_select_all, key_a, True, False, False)
 		end
 
@@ -186,55 +191,14 @@ feature {NONE} -- Implementation
 
 feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be managing automatically
 
-	focus_first_widget (widget: EV_WIDGET)
-			-- Set focus to `widget' or to its first child widget that accepts focus.
-		local
-			widgets: LINEAR [EV_WIDGET]
-		do
-			if attached {EV_CONTAINER} widget as container and not attached {EV_GRID} widget as grid then
-				from
-					widgets := container.linear_representation
-					widgets.start
-				until
-					widgets.off or container.has_recursive (ev_application.focused_widget)
-				loop
-					focus_first_widget (widgets.item)
-					widgets.forth
-				end
-			elseif widget.is_displayed and widget.is_sensitive then
-				if not attached {EV_LABEL} widget as label and not attached {EV_TOOL_BAR} widget as toolbar then
-					widget.set_focus
-				end
-			end
-		end
-
-	focused_text: EV_TEXT_COMPONENT
-			-- The currently focused text widget, if any.
-		do
-			Result ?= ev_application.focused_widget
-
-			if not has_recursive (Result) then
-				Result := Void
-			end
-		ensure
-			focused: Result /= Void implies Result.has_focus
-			in_this_window: Result /= Void implies has_recursive (Result)
-		end
-
-	call_unless_text_focused (action: PROCEDURE [ANY, TUPLE])
-			-- Some of the edit shortcuts are implemented automatically for text boxes (although not for rich text
-			-- boxes, or at least not on Windows).
-			-- If called from a keyboard shortcut, execute the action unless a text box is focused.
-			-- Executing it within a text box would cause it to be performed twice.
-			-- For some actions this wouldn't really matter (cut, copy), but for paste it would be a blatant bug.
-		local
-			t: EV_TEXT_COMPONENT
-		do
-			t := focused_text
-
-			if t = Void or attached {EV_RICH_TEXT} t then
-				action.call ([])
-			end
+	text_widget_handler: EVX_TEXT_WIDGET_HANDLER
+			-- FIXME: this is a hack to get round lack of standard behaviour in Vision2 for
+			-- focussed text widgets & cut & paste behaviours
+		once
+			-- FIXME: create with a dummy EV_CONTAINER initially; the argument should be 'Current', i.e the MAIN_WINDOW,
+			-- but we can't supply it when this call gets made because 'make' has not finished yet, and 'Current' doesn't
+			-- pass the void-safety test. So we give it a fake for now, and set the real root at the end of the make routine
+			create Result.set_root (create {EV_CELL})
 		end
 
 end

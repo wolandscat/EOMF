@@ -64,7 +64,7 @@ create
 %token SYM_TRUE SYM_FALSE
 %left SYM_LT SYM_GT SYM_LE SYM_GE
 
-%token ERR_CHARACTER ERR_STRING
+%token ERR_CHARACTER ERR_STRING ERR_CADL_MISPLACED
 %token <STRING> ERR_V_QUALIFIED_TERM_CODE_REF
 
 %left UNARY_MINUS
@@ -74,42 +74,42 @@ create
 %type <REAL> real_value
 %type <BOOLEAN> boolean_value
 %type <CHARACTER> character_value
-%type <ISO8601_DATE> date_value
-%type <ISO8601_DATE_TIME> date_time_value
-%type <ISO8601_TIME> time_value
-%type <ISO8601_DURATION> duration_value
-%type <TERMINOLOGY_CODE> term_code
-%type <URI> uri_value
+%type <detachable ISO8601_DATE> date_value
+%type <detachable ISO8601_DATE_TIME> date_time_value
+%type <detachable ISO8601_TIME> time_value
+%type <detachable ISO8601_DURATION> duration_value
+%type <detachable TERMINOLOGY_CODE> term_code
+%type <detachable URI> uri_value
 
-%type <DT_COMPLEX_OBJECT_NODE> single_attr_object_block, untyped_single_attr_object_block
-%type <DT_COMPLEX_OBJECT_NODE> container_attr_object_block, untyped_container_attr_object_block
-%type <DT_COMPLEX_OBJECT_NODE> complex_object_block
-%type <DT_OBJECT_LEAF> untyped_primitive_object_block, primitive_object_block object_reference_block
-%type <DT_OBJECT_LEAF> primitive_object absolute_path_object_value
+%type <detachable DT_COMPLEX_OBJECT_NODE> single_attr_object_block, untyped_single_attr_object_block
+%type <detachable DT_COMPLEX_OBJECT_NODE> container_attr_object_block, untyped_container_attr_object_block
+%type <detachable DT_COMPLEX_OBJECT_NODE> complex_object_block
+%type <detachable DT_OBJECT_LEAF> untyped_primitive_object_block, primitive_object_block object_reference_block
+%type <detachable DT_OBJECT_LEAF> primitive_object absolute_path_object_value
 
-%type <OG_PATH> absolute_path relative_path
-%type <OG_PATH_ITEM> path_segment
+%type <detachable OG_PATH> absolute_path relative_path
+%type <detachable OG_PATH_ITEM> path_segment
 %type <ARRAYED_LIST[OG_PATH]> absolute_path_list
 
-%type <ARRAYED_LIST[STRING]> string_list_value
-%type <ARRAYED_LIST[INTEGER]> integer_list_value
-%type <ARRAYED_LIST[REAL]> real_list_value
-%type <ARRAYED_LIST[CHARACTER]> character_list_value
-%type <ARRAYED_LIST[BOOLEAN]> boolean_list_value
-%type <ARRAYED_LIST[ISO8601_DATE]> date_list_value
-%type <ARRAYED_LIST[ISO8601_TIME]> time_list_value
-%type <ARRAYED_LIST[ISO8601_DATE_TIME]> date_time_list_value
-%type <ARRAYED_LIST[ISO8601_DURATION]> duration_list_value
-%type <ARRAYED_LIST[TERMINOLOGY_CODE]> term_code_list_value
-%type <ARRAYED_LIST[ANY]> primitive_list_value
+%type <detachable ARRAYED_LIST[STRING]> string_list_value
+%type <detachable ARRAYED_LIST[INTEGER]> integer_list_value
+%type <detachable ARRAYED_LIST[REAL]> real_list_value
+%type <detachable ARRAYED_LIST[CHARACTER]> character_list_value
+%type <detachable ARRAYED_LIST[BOOLEAN]> boolean_list_value
+%type <detachable ARRAYED_LIST[ISO8601_DATE]> date_list_value
+%type <detachable ARRAYED_LIST[ISO8601_TIME]> time_list_value
+%type <detachable ARRAYED_LIST[ISO8601_DATE_TIME]> date_time_list_value
+%type <detachable ARRAYED_LIST[ISO8601_DURATION]> duration_list_value
+%type <detachable ARRAYED_LIST[TERMINOLOGY_CODE]> term_code_list_value
+%type <detachable ARRAYED_LIST[ANY]> primitive_list_value
 
-%type <INTERVAL[INTEGER]> integer_interval_value
-%type <INTERVAL[REAL]> real_interval_value
-%type <INTERVAL[ISO8601_TIME]> time_interval_value
-%type <INTERVAL[ISO8601_DATE]> date_interval_value
-%type <INTERVAL[ISO8601_DATE_TIME]> date_time_interval_value
-%type <INTERVAL[ISO8601_DURATION]> duration_interval_value
-%type <INTERVAL[PART_COMPARABLE]> primitive_interval_value
+%type <detachable INTERVAL[INTEGER]> integer_interval_value
+%type <detachable INTERVAL[REAL]> real_interval_value
+%type <detachable INTERVAL[ISO8601_TIME]> time_interval_value
+%type <detachable INTERVAL[ISO8601_DATE]> date_interval_value
+%type <detachable INTERVAL[ISO8601_DATE_TIME]> date_time_interval_value
+%type <detachable INTERVAL[ISO8601_DURATION]> duration_interval_value
+%type <detachable INTERVAL[PART_COMPARABLE]> primitive_interval_value
 
 %%
 
@@ -228,7 +228,7 @@ object_block: complex_object_block
 	| SYM_START_DBLOCK SYM_END_DBLOCK -- empty object
 		{
 			-- for single-valued attributes, remove the attribute
-			if obj_key = Void then
+			if not attached obj_key then
 				complex_object_nodes.item.remove_attribute(attr_node.im_attr_name)
 			end
 		}
@@ -325,15 +325,15 @@ end
 container_attr_object_block_head: SYM_START_DBLOCK
 		{
 			-- if obj_key is set, it means we are inside a keyed object, and we have hit more keyed objects
-			if obj_key /= Void then
-				create complex_object_node.make_identified(obj_key)
-				if not attr_nodes.item.has_child_with_id(complex_object_node.id) then
+			if attached obj_key as att_obj_key then
+				create complex_object_node.make_identified (att_obj_key)
+				if not attr_nodes.item.has_child_with_id (complex_object_node.id) then
 debug("ODIN_parse")
 	io.put_string(indent + "container_attr_object_block_head; attr_nodes(<<" + 
 		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" + 
 		complex_object_node.id + "))%N")
 end
-					attr_nodes.item.put_child(complex_object_node)
+					attr_nodes.item.put_child (complex_object_node)
 				else
 					abort_with_error (ec_VOKU, <<complex_object_node.id, attr_nodes.item.im_attr_name >>)
 				end
@@ -393,8 +393,10 @@ object_key: '[' primitive_value ']'
 			obj_key := $2.out
 
 debug("ODIN_parse")
-	io.put_string(indent + "object_key: " + obj_key + 
-		" (setting " + attr_nodes.item.im_attr_name + " to Multiple)%N")
+	check attached obj_key as att_obj_key then
+		io.put_string(indent + "object_key: " + att_obj_key + 
+			" (setting " + attr_nodes.item.im_attr_name + " to Multiple)%N")
+	end
 end
 			if not attr_nodes.is_empty then
 				attr_nodes.item.set_container_type
@@ -453,11 +455,11 @@ debug("ODIN_parse")
 	io.put_string(indent + "single_attr_object_complex_head: create complex_object_node.make_anonymous%N")
 end
 				create complex_object_node.make_anonymous
-			else
+			elseif attached obj_key as att_obj_key then
 debug("ODIN_parse")
-	io.put_string(indent + "single_attr_object_complex_head: create complex_object_node.make (" + obj_key + ")%N")
+	io.put_string(indent + "single_attr_object_complex_head: create complex_object_node.make (" + att_obj_key + ")%N")
 end
-				create complex_object_node.make_identified(obj_key)
+				create complex_object_node.make_identified (att_obj_key)
 				obj_key := Void
 			end
 
@@ -499,74 +501,88 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "typed primitive_object_block; type = " + $1 + "%N")
 end
-			$2.set_visible_type_name($1)
-			$$ := $2
+			if attached $1 as att_type_id and attached $2 as att_ut_pob then
+				att_ut_pob.set_visible_type_name(att_type_id)
+				$$ := att_ut_pob
+			end
 		}
 	;
-
+ 
 --
 -- untyped primitive blocks can only be of the following types
 --	
 --
 untyped_primitive_object_block: SYM_START_DBLOCK primitive_object SYM_END_DBLOCK
 		{
+			if attached $2 as att_po then
 debug("ODIN_parse")
 	io.put_string(indent + "untyped_primitive_object_block; attr_nodes(<<" + 
 			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
-			$2.as_string + ">>)%N")
+			att_po.as_string + ">>)%N")
 end
-			if not attr_nodes.item.has_child_with_id($2.id) then
-				attr_nodes.item.put_child($2)
-				$$ := $2
-			else
-				abort_with_error (ec_VOKU, <<$2.id, attr_nodes.item.im_attr_name >>)
+				if not attr_nodes.item.has_child_with_id(att_po.id) then
+					attr_nodes.item.put_child(att_po)
+					$$ := att_po
+				else
+					abort_with_error (ec_VOKU, <<att_po.id, attr_nodes.item.im_attr_name >>)
+				end
 			end
 		}
 	;
 
 primitive_object: primitive_value
 		{
-			if obj_key /= Void then
-				create {DT_PRIMITIVE_OBJECT} $$.make_identified ($1, obj_key)
-				obj_key := Void
-			else
-				create {DT_PRIMITIVE_OBJECT} $$.make_anonymous ($1)
+			if attached $1 as att_pv then
+				if attached obj_key as att_obj_key then
+					create {DT_PRIMITIVE_OBJECT} $$.make_identified (att_pv, att_obj_key)
+					obj_key := Void
+				else
+					create {DT_PRIMITIVE_OBJECT} $$.make_anonymous (att_pv)
+				end
 			end
 		}
 	| primitive_list_value
 		{
-			if obj_key /= Void then
-				create {DT_PRIMITIVE_OBJECT_LIST} $$.make_identified ($1, obj_key)
-				obj_key := Void
-			else
-				create {DT_PRIMITIVE_OBJECT_LIST} $$.make_anonymous ($1)
+			if attached $1 as att_plv then
+				if attached obj_key as att_obj_key then
+					create {DT_PRIMITIVE_OBJECT_LIST} $$.make_identified (att_plv, att_obj_key)
+					obj_key := Void
+				else
+					create {DT_PRIMITIVE_OBJECT_LIST} $$.make_anonymous (att_plv)
+				end
 			end
 		}
 	| primitive_interval_value
 		{
-			if obj_key /= Void then
-				create {DT_PRIMITIVE_OBJECT_INTERVAL} $$.make_identified ($1, obj_key)
-				obj_key := Void
-			else
-				create {DT_PRIMITIVE_OBJECT_INTERVAL} $$.make_anonymous ($1)
+			if attached $1 as att_piv then
+				if attached obj_key as att_obj_key then
+					create {DT_PRIMITIVE_OBJECT_INTERVAL} $$.make_identified (att_piv, att_obj_key)
+					obj_key := Void
+				else
+					create {DT_PRIMITIVE_OBJECT_INTERVAL} $$.make_anonymous (att_piv)
+				end
 			end
 		}
 	| term_code
 		{
-			if obj_key /= Void then
-				create {DT_PRIMITIVE_OBJECT} $$.make_identified ($1, obj_key)
-				obj_key := Void
-			else
-				create {DT_PRIMITIVE_OBJECT} $$.make_anonymous ($1)
+			if attached $1 as att_tc then
+				if attached obj_key as att_obj_key then
+					create {DT_PRIMITIVE_OBJECT} $$.make_identified (att_tc, att_obj_key)
+					obj_key := Void
+				else
+					create {DT_PRIMITIVE_OBJECT} $$.make_anonymous (att_tc)
+				end
 			end
 		}
 	| term_code_list_value
 		{
-			if obj_key /= Void then
-				create {DT_PRIMITIVE_OBJECT_LIST} $$.make_identified ($1, obj_key)
-				obj_key := Void
-			else
-				create {DT_PRIMITIVE_OBJECT_LIST} $$.make_anonymous ($1)
+			if attached $1 as att_tclv then
+				if attached obj_key as att_obj_key then
+					create {DT_PRIMITIVE_OBJECT_LIST} $$.make_identified (att_tclv, att_obj_key)
+					obj_key := Void
+				else
+					create {DT_PRIMITIVE_OBJECT_LIST} $$.make_anonymous (att_tclv)
+				end
 			end
 		}
 	;
@@ -963,18 +979,24 @@ date_value: V_ISO8601_EXTENDED_DATE -- in ISO8601 form yyyy-MM-dd
 date_list_value: date_value ',' date_value
 		{
 			create $$.make(0)
-			$$.extend($1)
-			$$.extend($3)
+			if attached $1 as att_dlv and attached $3 as att_dv then
+				$$.extend (att_dlv)
+				$$.extend (att_dv)
+			end
 		}
 	| date_list_value ',' date_value
 		{
-			$1.extend($3)
-			$$ := $1
+			if attached $1 as att_dlv and attached $3 as att_dv then
+				att_dlv.extend (att_dv)
+				$$ := att_dlv
+			end
 		}
 	| date_value ',' SYM_LIST_CONTINUE
 		{
 			create $$.make(0)
-			$$.extend($1)
+			if attached $1 as att_dlv then
+				$$.extend (att_dlv)
+			end
 		}
 	;
 
@@ -1045,18 +1067,24 @@ time_value: V_ISO8601_EXTENDED_TIME
 time_list_value: time_value ',' time_value
 		{
 			create $$.make(0)
-			$$.extend($1)
-			$$.extend($3)
+			if attached $1 as tv1 and attached $3 as tv3 then
+				$$.extend(tv1)
+				$$.extend(tv3)
+			end
 		}
 	| time_list_value ',' time_value
 		{
-			$1.extend($3)
-			$$ := $1
+			if attached $1 as tv1 and attached $3 as tv3 then
+				tv1.extend(tv3)
+				$$ := tv1
+			end
 		}
 	| time_value ',' SYM_LIST_CONTINUE
 		{
 			create $$.make(0)
-			$$.extend($1)
+			if attached $1 as tv1 then
+				$$.extend(tv1)
+			end
 		}
 	;
 
@@ -1338,8 +1366,8 @@ end
 
 absolute_path_object_value: absolute_path
 		{
-			if obj_key /= Void then
-				create {DT_OBJECT_REFERENCE} $$.make_identified($1, obj_key)
+			if attached obj_key as att_obj_key then
+				create {DT_OBJECT_REFERENCE} $$.make_identified($1, att_obj_key)
 				obj_key := Void
 			else
 				create {DT_OBJECT_REFERENCE} $$.make_anonymous($1)
@@ -1347,8 +1375,8 @@ absolute_path_object_value: absolute_path
 		}
 	| absolute_path_list
 		{
-			if obj_key /= Void then
-				create {DT_OBJECT_REFERENCE_LIST} $$.make_identified($1, obj_key)
+			if attached obj_key as att_obj_key then
+				create {DT_OBJECT_REFERENCE_LIST} $$.make_identified($1, att_obj_key)
 				obj_key := Void
 			else
 				create {DT_OBJECT_REFERENCE_LIST} $$.make_anonymous($1)
@@ -1450,6 +1478,9 @@ feature {NONE} -- Initialization
 			create complex_object_nodes.make(0)
 			create attr_nodes.make(0)
 			create indent.make(0)
+
+			create complex_object_node.make_anonymous
+			create attr_node.make_single("xxx")
 		end
 
 feature -- Commands
@@ -1499,10 +1530,10 @@ feature -- Access
 feature {NONE} -- Parse Tree
 
 	complex_object_nodes: ARRAYED_STACK [DT_COMPLEX_OBJECT_NODE]
-	complex_object_node: detachable DT_COMPLEX_OBJECT_NODE
+	complex_object_node: DT_COMPLEX_OBJECT_NODE
 
 	attr_nodes: ARRAYED_STACK [DT_ATTRIBUTE_NODE]
-	attr_node: detachable DT_ATTRIBUTE_NODE
+	attr_node: DT_ATTRIBUTE_NODE
 
 	obj_key: detachable STRING
 			-- qualifier of last rel name; use for next object creation
@@ -1513,6 +1544,5 @@ feature {NONE} -- Parse Tree
 feature {NONE} -- Implementation 
 	
 	indent: STRING
-	str: STRING
 
 end

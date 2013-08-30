@@ -228,7 +228,6 @@ feature -- Test procedures
 
 	round_trip (an_obj: ANY)
 		local
-			new_obj: ANY
 			dt: DT_COMPLEX_OBJECT_NODE
 		do
 			append_status ("%NCreate Data Tree from " + an_obj.generator + " object%N")
@@ -244,11 +243,10 @@ feature -- Test procedures
 			dadl_engine.parse
 			if dadl_engine.parse_succeeded then
 				-- display tree in node explorer
-				new_obj := dadl_engine.tree.as_object_from_string (an_obj.generator, Void)
-				if attached new_obj then
+				if attached dadl_engine.tree.as_object_from_string (an_obj.generator, Void) as new_obj then
 					append_status("%TSuccessfully created " + new_obj.generator + " object from DADL%N")
 				else
-					append_status("%TFailed to create " + new_obj.generator + " object from DADL Error%N")
+					append_status("%TFailed to create " + an_obj.generator + " object from DADL Error%N")
 				end
 			else
 				append_status (dadl_engine.errors.as_string)
@@ -274,25 +272,25 @@ feature {NONE} -- Implementation
 			create Result.make
 		end
 
-	status_reporting_proc: PROCEDURE [ANY, TUPLE [STRING]]
+	status_reporting_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
 	append_status (a_text: STRING)
 			-- write a_text to reporting location, or else stdout if none
 		do
-			if status_reporting_proc /= Void then
-				status_reporting_proc.call([a_text])
+			if attached status_reporting_proc as proc then
+				proc.call([a_text])
 			else
 				io.put_string (a_text)
 			end
 		end
 
-	source_text_proc: PROCEDURE [ANY, TUPLE [STRING]]
+	source_text_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
 	set_source_text (a_text: STRING)
 			-- write a_text to source text location, or else stdout if none
 		do
-			if source_text_proc /= Void then
-				source_text_proc.call([a_text])
+			if attached source_text_proc as proc then
+				proc.call([a_text])
 			else
 				io.put_string (a_text)
 			end

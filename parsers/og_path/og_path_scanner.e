@@ -66,17 +66,20 @@ if yy_act <= 6 then
 if yy_act <= 3 then
 if yy_act <= 2 then
 if yy_act = 1 then
+--|#line 57 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 57")
 end
 last_token := Dot_code
 else
+--|#line 58 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 58")
 end
 last_token := Slash_code
 end
 else
+--|#line 60 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 60")
 end
@@ -85,17 +88,20 @@ end
 else
 if yy_act <= 5 then
 if yy_act = 4 then
+--|#line 61 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 61")
 end
 last_token := Right_bracket_code
 else
+--|#line 63 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 63")
 end
 last_token := Left_parenthesis_code
 end
 else
+--|#line 64 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 64")
 end
@@ -106,11 +112,13 @@ else
 if yy_act <= 9 then
 if yy_act <= 8 then
 if yy_act = 7 then
+--|#line 66 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 66")
 end
 last_token := SYM_MOVABLE_LEADER
 else
+--|#line 69 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 69")
 end
@@ -120,6 +128,7 @@ end
 			
 end
 else
+--|#line 75 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 75")
 end
@@ -130,6 +139,7 @@ end
 end
 else
 if yy_act = 10 then
+--|#line 81 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 81")
 end
@@ -138,6 +148,7 @@ end
 					last_string_value := text
 			
 else
+--|#line 87 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 87")
 end
@@ -153,6 +164,7 @@ if yy_act <= 16 then
 if yy_act <= 14 then
 if yy_act <= 13 then
 if yy_act = 12 then
+--|#line 92 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 92")
 end
@@ -163,12 +175,14 @@ end
 				set_start_condition (IN_STR)
 			
 else
+--|#line 100 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 100")
 end
 in_buffer.append_character ('\')
 end
 else
+--|#line 102 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 102")
 end
@@ -176,6 +190,7 @@ in_buffer.append_character ('"')
 end
 else
 if yy_act = 15 then
+--|#line 104 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 104")
 end
@@ -183,6 +198,7 @@ end
 				in_buffer.append_string (text)
 	
 else
+--|#line 108 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 108")
 end
@@ -193,6 +209,7 @@ else
 if yy_act <= 19 then
 if yy_act <= 18 then
 if yy_act = 17 then
+--|#line 110 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 110")
 end
@@ -201,6 +218,7 @@ end
 				in_buffer.append_character ('%N')
 			
 else
+--|#line 115 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 115")
 end
@@ -219,6 +237,7 @@ end
 			
 end
 else
+--|#line 128 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 128")
 end
@@ -229,11 +248,13 @@ end
 end
 else
 if yy_act = 20 then
+--|#line 138 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 138")
 end
 ;
 else
+--|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end
@@ -249,11 +270,13 @@ end
 		do
 			inspect yy_sc
 when 0 then
+--|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end
 terminate
 when 1 then
+--|#line 0 "og_path_scanner.l"
 debug ("GELEX")
 	std.error.put_line ("Executing scanner user-code from file 'og_path_scanner.l' at line 0")
 end
@@ -271,14 +294,14 @@ feature {NONE} -- Table templates
 	yy_nxt_template: SPECIAL [INTEGER]
 		once
 			Result := yy_fixed_array (<<
-			    0,   28,   28,    7,    8,    9,   10,   33,   11,   12,
-			   25,   13,   25,   14,   25,   15,    7,    8,    9,   10,
+			    0,   50,   33,    7,    8,    9,   10,   32,   11,   12,
+			   50,   13,   50,   14,   41,   15,    7,    8,    9,   10,
 			   29,   11,   12,   32,   13,   29,   14,   30,   15,   17,
-			   18,   30,   30,   34,   32,   41,   26,   37,   19,   32,
-			   32,   35,   33,   32,   32,   20,   21,   22,   23,   24,
-			   17,   18,   39,   39,   37,   27,   30,   39,   39,   19,
-			   30,   30,   26,   50,   50,   50,   20,   21,   22,   23,
-			   24,   32,   31,   50,   31,   50,   31,   50,   50,   50,
+			   18,   30,   30,   34,   26,   33,   32,   37,   19,   32,
+			   32,   35,   27,   26,   32,   20,   21,   22,   23,   24,
+			   17,   18,   39,   39,   37,   50,   30,   39,   39,   19,
+			   30,   30,   50,   50,   50,   50,   20,   21,   22,   23,
+			   24,   32,   28,   28,   50,   50,   50,   28,   50,   50,
 			   50,   50,   50,   36,   36,   36,   32,   50,   50,   50,
 			   50,   50,   50,   50,   50,   50,   50,   50,   38,   38,
 
@@ -301,24 +324,25 @@ feature {NONE} -- Table templates
 			   32,   50,   50,   50,   50,   50,   50,   50,   50,   50,
 			   50,   50,   36,   36,   36,   32,   50,   50,   50,   50,
 			   50,   50,   50,   50,   50,   50,   50,   36,   36,   36,
-			    6,    6,    6,    6,    6,   16,   16,   16,   16,   16,
-			    5,   50,   50,   50,   50,   50,   50,   50,   50,   50,
+			    6,    6,    6,    6,    6,    6,   16,   16,   16,   16,
+			   16,   16,   25,   50,   25,   50,   25,   25,   31,   50,
 
+			   31,   50,   31,   31,    5,   50,   50,   50,   50,   50,
 			   50,   50,   50,   50,   50,   50,   50,   50,   50,   50,
-			   50,   50,   50,   50, yy_Dummy>>)
+			   50,   50,   50,   50,   50,   50,   50,   50, yy_Dummy>>)
 		end
 
 	yy_chk_template: SPECIAL [INTEGER]
 		once
 			Result := yy_fixed_array (<<
-			    0,   54,   54,    1,    1,    1,    1,   33,    1,    1,
-			   53,    1,   53,    1,   53,    1,    2,    2,    2,    2,
+			    0,    0,   33,    1,    1,    1,    1,   31,    1,    1,
+			    0,    1,    0,    1,   28,    1,    2,    2,    2,    2,
 			   13,    2,    2,   21,    2,   13,    2,   15,    2,    3,
-			    3,   15,   15,   19,   31,   28,   25,   21,    3,   23,
-			   44,   19,   17,   16,   46,    3,    3,    3,    3,    3,
-			    4,    4,   23,   23,   44,   12,   30,   46,   46,    4,
-			   30,   30,    8,    5,    0,    0,    4,    4,    4,    4,
-			    4,   20,   55,    0,   55,    0,   55,    0,    0,    0,
+			    3,   15,   15,   19,   25,   17,   16,   21,    3,   23,
+			   44,   19,   12,    8,   46,    3,    3,    3,    3,    3,
+			    4,    4,   23,   23,   44,    5,   30,   46,   46,    4,
+			   30,   30,    0,    0,    0,    0,    4,    4,    4,    4,
+			    4,   20,   54,   54,    0,    0,    0,   54,    0,    0,
 			    0,    0,    0,   20,   20,   20,   22,    0,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,    0,   22,   22,
 
@@ -341,22 +365,23 @@ feature {NONE} -- Table templates
 			   48,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 			    0,    0,   48,   48,   48,   49,    0,    0,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,   49,   49,   49,
-			   51,   51,   51,   51,   51,   52,   52,   52,   52,   52,
-			   50,   50,   50,   50,   50,   50,   50,   50,   50,   50,
+			   51,   51,   51,   51,   51,   51,   52,   52,   52,   52,
+			   52,   52,   53,    0,   53,    0,   53,   53,   55,    0,
 
+			   55,    0,   55,   55,   50,   50,   50,   50,   50,   50,
 			   50,   50,   50,   50,   50,   50,   50,   50,   50,   50,
-			   50,   50,   50,   50, yy_Dummy>>)
+			   50,   50,   50,   50,   50,   50,   50,   50, yy_Dummy>>)
 		end
 
 	yy_base_template: SPECIAL [INTEGER]
 		once
 			Result := yy_fixed_array (<<
-			    0,    0,   13,   26,   47,   63,  290,  290,   58,  290,
-			  290,  290,   46,   10,  290,   17,   39,   40,  290,   29,
-			   67,   19,   82,   35,   97,   32,  290,  290,   22,  109,
-			   46,   30,  290,    5,  290,  290,  121,  141,  156,  171,
-			  186,  290,  290,  201,   36,  216,   40,  231,  246,  261,
-			  290,  279,  284,    9,    0,   71, yy_Dummy>>)
+			    0,    0,   13,   26,   47,   55,  304,  304,   39,  304,
+			  304,  304,   33,   10,  304,   17,   32,   33,  304,   29,
+			   67,   19,   82,   35,   97,   30,  304,  304,    1,  109,
+			   46,    3,  304,    0,  304,  304,  121,  141,  156,  171,
+			  186,  304,  304,  201,   36,  216,   40,  231,  246,  261,
+			  304,  279,  285,  291,   71,  297, yy_Dummy>>)
 		end
 
 	yy_def_template: SPECIAL [INTEGER]
@@ -407,8 +432,8 @@ feature {NONE} -- Table templates
 		once
 			Result := yy_fixed_array (<<
 			    0,    1,    1,    2,    1,    1,    1,    1,    1,    1,
-			    1,    3,    4,    5,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1, yy_Dummy>>)
+			    1,    3,    4,    5,    6,    6,    6,    6,    6,    6,
+			    6,    6,    6,    6, yy_Dummy>>)
 		end
 
 	yy_accept_template: SPECIAL [INTEGER]
@@ -424,7 +449,7 @@ feature {NONE} -- Table templates
 
 feature {NONE} -- Constants
 
-	yyJam_base: INTEGER = 290
+	yyJam_base: INTEGER = 304
 			-- Position in `yy_nxt'/`yy_chk' tables
 			-- where default jam table starts
 

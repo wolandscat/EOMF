@@ -39,7 +39,7 @@ feature {YY_PARSER_ACTION} -- Basic Operations
 			add_error_with_location ("general_error", <<a_message>>, error_loc)
 		end
 
-	abort_with_error (err_code: STRING; args: ARRAY [STRING])
+	abort_with_error (err_code: STRING; args: detachable ARRAY [STRING])
 		do
 			add_error_with_location (err_code, args, error_loc)
 			abort
