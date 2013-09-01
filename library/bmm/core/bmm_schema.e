@@ -11,24 +11,33 @@ class BMM_SCHEMA
 
 inherit
 	BMM_PACKAGE_CONTAINER
+		undefine
+			default_create
 		redefine
 			add_package
 		end
 
 	BMM_SCHEMA_CORE
 		redefine
-			make
+			make, default_create
 		end
 
 	SHARED_MESSAGE_DB
 		export
 			{NONE} all
+		undefine
+			default_create
 		end
 
 create
-	make
+	make, default_create
 
 feature -- Initialisation
+
+	default_create
+		do
+			make ("unknown", "unknown", "unknown")
+		end
 
 	make (a_rm_publisher, a_schema_name, a_rm_release: STRING)
 		do

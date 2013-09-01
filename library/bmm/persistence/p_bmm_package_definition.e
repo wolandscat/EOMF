@@ -33,7 +33,7 @@ feature -- Initialisation
 			name := a_name
 		end
 
-	make_dt (make_args: ARRAY[ANY])
+	make_dt (make_args: detachable ARRAY[ANY])
 			-- make in a safe way for DT building purposes
 		do
 			make (unknown_package_name)

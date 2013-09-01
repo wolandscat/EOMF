@@ -16,7 +16,7 @@ inherit
 
 feature -- Initialisation
 
-	make_dt (make_args: ARRAY[ANY])
+	make_dt (make_args: detachable ARRAY[ANY])
 		do
 			create ancestors.make (0)
 			ancestors.compare_objects

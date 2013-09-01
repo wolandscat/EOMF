@@ -3,7 +3,7 @@ note
 	description: "Parser token codes"
 	generator: "geyacc version 3.9"
 
-class ODIN_TOKENS
+deferred class ODIN_TOKENS
 
 inherit
 
@@ -12,10 +12,10 @@ inherit
 feature -- Last values
 
 	last_detachable_any_value: detachable ANY
-	last_integer_value: detachable INTEGER
-	last_real_value: detachable REAL
-	last_string_value: detachable STRING
-	last_character_value: detachable CHARACTER
+	last_integer_value: INTEGER
+	last_real_value: REAL
+	last_string_value: STRING
+	last_character_value: CHARACTER
 
 feature -- Access
 

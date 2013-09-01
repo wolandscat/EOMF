@@ -43,12 +43,16 @@ feature {YY_PARSER_ACTION} -- Basic Operations
 		do
 			add_error_with_location (err_code, args, error_loc)
 			abort
+		ensure
+			False
 		end
 
 	abort_with_errors (errs: ERROR_ACCUMULATOR)
 		do
 			merge_errors (errs)
 			abort
+		ensure
+			False
 		end
 
 	error_loc: STRING

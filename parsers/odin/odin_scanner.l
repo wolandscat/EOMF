@@ -344,6 +344,7 @@ feature {NONE} -- Initialization
 			create in_buffer.make (Init_buffer_size)
 			in_lineno := 1
 			create str_.make_empty
+			create last_string_value.make_empty
 		end
 
 feature -- Initialization

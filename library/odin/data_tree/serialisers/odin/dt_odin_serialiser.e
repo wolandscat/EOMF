@@ -11,6 +11,9 @@ class DT_ODIN_SERIALISER
 
 inherit
 	DT_SERIALISER
+		redefine
+			make
+		end
 
 	ODIN_TOKENS
 		export
@@ -24,6 +27,15 @@ inherit
 
 create
 	make
+
+feature -- Initialisation
+
+	make (a_profile: SERIALISATION_PROFILE)
+			-- set profile
+		do
+			precursor (a_profile)
+			create last_string_value.make_empty
+		end
 
 feature -- Visitor
 

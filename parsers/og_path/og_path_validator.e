@@ -98,11 +98,7 @@ feature {NONE} -- Implementation
 					yyvsc1 := yyvsc1 + yyInitial_yyvs_size
 					yyvs1 := yyspecial_routines1.aliased_resized_area (yyvs1, yyvsc1)
 				end
-				if attached last_detachable_any_value as yyl_last_detachable_any_value then
-					yyspecial_routines1.force (yyvs1, yyl_last_detachable_any_value, yyvsp1)
-				else
-					yyspecial_routines1.force (yyvs1, ({detachable ANY}).default, yyvsp1)
-				end
+				yyspecial_routines1.force (yyvs1, last_detachable_any_value, yyvsp1)
 			when 2 then
 				yyvsp2 := yyvsp2 + 1
 				if yyvsp2 >= yyvsc2 then
@@ -112,11 +108,7 @@ feature {NONE} -- Implementation
 					yyvsc2 := yyvsc2 + yyInitial_yyvs_size
 					yyvs2 := yyspecial_routines2.aliased_resized_area (yyvs2, yyvsc2)
 				end
-				if attached last_string_value as yyl_last_string_value then
-					yyspecial_routines2.force (yyvs2, yyl_last_string_value, yyvsp2)
-				else
-					yyspecial_routines2.force (yyvs2, ({STRING}).default, yyvsp2)
-				end
+				yyspecial_routines2.force (yyvs2, last_string_value, yyvsp2)
 			else
 				debug ("GEYACC")
 					std.error.put_string ("Error in parser: not a token type: ")
@@ -179,11 +171,13 @@ feature {NONE} -- Semantic actions
 	yy_do_action (yy_act: INTEGER)
 			-- Execute semantic action.
 		local
+			yy_retried: BOOLEAN
 			yyval1: detachable ANY
 			yyval4: OG_PATH
 			yyval3: OG_PATH_ITEM
 		do
-			inspect yy_act
+			if not yy_retried then
+				inspect yy_act
 when 1 then
 --|#line 45 "og_path_validator.y"
 debug ("GEYACC")
@@ -446,13 +440,19 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
-			else
-				debug ("GEYACC")
-					std.error.put_string ("Error in parser: unknown rule id: ")
-					std.error.put_integer (yy_act)
-					std.error.put_new_line
+				else
+					debug ("GEYACC")
+						std.error.put_string ("Error in parser: unknown rule id: ")
+						std.error.put_integer (yy_act)
+						std.error.put_new_line
+					end
+					abort
 				end
-				abort
+			end
+		rescue
+			if yy_parsing_status = yyAborted then
+				yy_retried := True
+				retry
 			end
 		end
 

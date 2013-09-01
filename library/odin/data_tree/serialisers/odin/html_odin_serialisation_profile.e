@@ -11,6 +11,9 @@ class HTML_ODIN_SERIALISATION_PROFILE
 
 inherit
 	HTML_SERIALISATION_PROFILE
+		redefine
+			make
+		end
 
 	ODIN_TOKENS
 		export
@@ -20,6 +23,15 @@ inherit
 create
 	make
 	
+feature -- Initialisation
+
+	make (an_output_format: STRING)
+			-- make with the output format name this serialiser is to be associated with
+		do
+			precursor (an_output_format)
+			create last_string_value.make_empty
+		end
+
 feature {NONE} -- Implementation
 
 	symbols: HASH_TABLE[STRING, INTEGER]

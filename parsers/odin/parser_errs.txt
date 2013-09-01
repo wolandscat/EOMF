@@ -262,40 +262,40 @@ primitive_object_block (17) on left: 28 29, on right: 11
 object_reference_block (18) on left: 168, on right: 12
 primitive_object (19) on left: 31 32 33 34 35, on right: 30
 absolute_path_object_value (20) on left: 169 170, on right: 168
-absolute_path (21) on left: 174 175 176, on right: 169 171 172 173 176
-relative_path (22) on left: 177 178, on right: 175 176 178
-path_segment (23) on left: 179 180, on right: 177 178
-absolute_path_list (24) on left: 171 172 173, on right: 170 172
-string_list_value (25) on left: 66 67 68 69, on right: 46 67 68
-integer_list_value (26) on left: 73 74 75, on right: 47 74
-real_list_value (27) on left: 88 89 90, on right: 48 89
-character_list_value (28) on left: 106 107 108, on right: 50 107
-boolean_list_value (29) on left: 102 103 104, on right: 49 103
-date_list_value (30) on left: 110 111 112, on right: 51 111
-time_list_value (31) on left: 123 124 125, on right: 52 124
-date_time_list_value (32) on left: 136 137 138, on right: 53 137
-duration_list_value (33) on left: 149 150 151, on right: 54 150
-term_code_list_value (34) on left: 164 165 166, on right: 35 165
-primitive_list_value (35) on left: 46 47 48 49 50 51 52 53 54, on right: 32
-integer_interval_value (36) on left: 76 77 78 79 80 81 82 83 84, on right: 55
-real_interval_value (37) on left: 91 92 93 94 95 96 97 98 99, on right: 56
-time_interval_value (38) on left: 126 127 128 129 130 131 132 133 134, on right: 58
-date_interval_value (39) on left: 113 114 115 116 117 118 119 120 121, on right: 57
-date_time_interval_value (40) on left: 139 140 141 142 143 144 145 146 147, on right: 59
-duration_interval_value (41) on left: 152 153 154 155 156 157 158 159 160, on right: 60
-primitive_interval_value (42) on left: 55 56 57 58 59 60, on right: 33
-input (43) on left: 1 2 3
-attr_vals (44) on left: 4 5 6, on right: 1 5 6 26
-attr_val (45) on left: 7, on right: 4 5 6
-attr_id (46) on left: 8 9, on right: 7
-object_block (47) on left: 10 11 12 13, on right: 7 22
-container_attr_object_block_head (48) on left: 19, on right: 18
-keyed_objects (49) on left: 20 21, on right: 18 21
-keyed_object (50) on left: 22, on right: 20 21
-object_key (51) on left: 23, on right: 22
-primitive_value (52) on left: 36 37 38 39 40 41 42 43 44 45, on right: 23 31
-single_attr_object_complex_head (53) on left: 27, on right: 26
-string_value (54) on left: 65, on right: 36
+primitive_value (21) on left: 36 37 38 39 40 41 42 43 44 45, on right: 23 31
+absolute_path (22) on left: 174 175 176, on right: 169 171 172 173 176
+relative_path (23) on left: 177 178, on right: 175 176 178
+path_segment (24) on left: 179 180, on right: 177 178
+absolute_path_list (25) on left: 171 172 173, on right: 170 172
+string_value (26) on left: 65, on right: 36
+string_list_value (27) on left: 66 67 68 69, on right: 46 67 68
+integer_list_value (28) on left: 73 74 75, on right: 47 74
+real_list_value (29) on left: 88 89 90, on right: 48 89
+character_list_value (30) on left: 106 107 108, on right: 50 107
+boolean_list_value (31) on left: 102 103 104, on right: 49 103
+date_list_value (32) on left: 110 111 112, on right: 51 111
+time_list_value (33) on left: 123 124 125, on right: 52 124
+date_time_list_value (34) on left: 136 137 138, on right: 53 137
+duration_list_value (35) on left: 149 150 151, on right: 54 150
+term_code_list_value (36) on left: 164 165 166, on right: 35 165
+primitive_list_value (37) on left: 46 47 48 49 50 51 52 53 54, on right: 32
+integer_interval_value (38) on left: 76 77 78 79 80 81 82 83 84, on right: 55
+real_interval_value (39) on left: 91 92 93 94 95 96 97 98 99, on right: 56
+time_interval_value (40) on left: 126 127 128 129 130 131 132 133 134, on right: 58
+date_interval_value (41) on left: 113 114 115 116 117 118 119 120 121, on right: 57
+date_time_interval_value (42) on left: 139 140 141 142 143 144 145 146 147, on right: 59
+duration_interval_value (43) on left: 152 153 154 155 156 157 158 159 160, on right: 60
+primitive_interval_value (44) on left: 55 56 57 58 59 60, on right: 33
+input (45) on left: 1 2 3
+attr_vals (46) on left: 4 5 6, on right: 1 5 6 26
+attr_val (47) on left: 7, on right: 4 5 6
+attr_id (48) on left: 8 9, on right: 7
+object_block (49) on left: 10 11 12 13, on right: 7 22
+container_attr_object_block_head (50) on left: 19, on right: 18
+keyed_objects (51) on left: 20 21, on right: 18 21
+keyed_object (52) on left: 22, on right: 20 21
+object_key (53) on left: 23, on right: 22
+single_attr_object_complex_head (54) on left: 27, on right: 26
 
 
 state 0
@@ -949,28 +949,28 @@ state 34
 	uri_value	go to state 62
 	primitive_object	go to state 85
 	absolute_path_object_value	go to state 86
-	absolute_path	go to state 87
-	absolute_path_list	go to state 88
-	string_list_value	go to state 89
-	integer_list_value	go to state 90
-	real_list_value	go to state 91
-	character_list_value	go to state 92
-	boolean_list_value	go to state 93
-	date_list_value	go to state 94
-	time_list_value	go to state 95
-	date_time_list_value	go to state 96
-	duration_list_value	go to state 97
-	term_code_list_value	go to state 98
-	primitive_list_value	go to state 99
-	integer_interval_value	go to state 100
-	real_interval_value	go to state 101
-	time_interval_value	go to state 102
-	date_interval_value	go to state 103
-	date_time_interval_value	go to state 104
-	duration_interval_value	go to state 105
-	primitive_interval_value	go to state 106
-	primitive_value	go to state 107
+	primitive_value	go to state 87
+	absolute_path	go to state 88
+	absolute_path_list	go to state 89
 	string_value	go to state 64
+	string_list_value	go to state 90
+	integer_list_value	go to state 91
+	real_list_value	go to state 92
+	character_list_value	go to state 93
+	boolean_list_value	go to state 94
+	date_list_value	go to state 95
+	time_list_value	go to state 96
+	date_time_list_value	go to state 97
+	duration_list_value	go to state 98
+	term_code_list_value	go to state 99
+	primitive_list_value	go to state 100
+	integer_interval_value	go to state 101
+	real_interval_value	go to state 102
+	time_interval_value	go to state 103
+	date_interval_value	go to state 104
+	date_time_interval_value	go to state 105
+	duration_interval_value	go to state 106
+	primitive_interval_value	go to state 107
 
 
 
@@ -1578,6 +1578,14 @@ state 86
 
 state 87
 
+	primitive_object  ->  primitive_value .   (rule 31)
+
+	$default	reduce using rule 31 (primitive_object)
+
+
+
+state 88
+
 	absolute_path_object_value  ->  absolute_path .   (rule 169)
 	absolute_path_list  ->  absolute_path . ',' absolute_path   (rule 171)
 	absolute_path_list  ->  absolute_path . ',' SYM_LIST_CONTINUE   (rule 173)
@@ -1590,7 +1598,7 @@ state 87
 
 
 
-state 88
+state 89
 
 	absolute_path_object_value  ->  absolute_path_list .   (rule 170)
 	absolute_path_list  ->  absolute_path_list . ',' absolute_path   (rule 172)
@@ -1601,7 +1609,7 @@ state 88
 
 
 
-state 89
+state 90
 
 	primitive_list_value  ->  string_list_value .   (rule 46)
 	string_list_value  ->  string_list_value . ',' V_STRING   (rule 67)
@@ -1613,7 +1621,7 @@ state 89
 
 
 
-state 90
+state 91
 
 	primitive_list_value  ->  integer_list_value .   (rule 47)
 	integer_list_value  ->  integer_list_value . ',' integer_value   (rule 74)
@@ -1624,7 +1632,7 @@ state 90
 
 
 
-state 91
+state 92
 
 	primitive_list_value  ->  real_list_value .   (rule 48)
 	real_list_value  ->  real_list_value . ',' real_value   (rule 89)
@@ -1635,7 +1643,7 @@ state 91
 
 
 
-state 92
+state 93
 
 	primitive_list_value  ->  character_list_value .   (rule 50)
 	character_list_value  ->  character_list_value . ',' character_value   (rule 107)
@@ -1646,7 +1654,7 @@ state 92
 
 
 
-state 93
+state 94
 
 	primitive_list_value  ->  boolean_list_value .   (rule 49)
 	boolean_list_value  ->  boolean_list_value . ',' boolean_value   (rule 103)
@@ -1657,7 +1665,7 @@ state 93
 
 
 
-state 94
+state 95
 
 	primitive_list_value  ->  date_list_value .   (rule 51)
 	date_list_value  ->  date_list_value . ',' date_value   (rule 111)
@@ -1668,7 +1676,7 @@ state 94
 
 
 
-state 95
+state 96
 
 	primitive_list_value  ->  time_list_value .   (rule 52)
 	time_list_value  ->  time_list_value . ',' time_value   (rule 124)
@@ -1679,7 +1687,7 @@ state 95
 
 
 
-state 96
+state 97
 
 	primitive_list_value  ->  date_time_list_value .   (rule 53)
 	date_time_list_value  ->  date_time_list_value . ',' date_time_value   (rule 137)
@@ -1690,7 +1698,7 @@ state 96
 
 
 
-state 97
+state 98
 
 	primitive_list_value  ->  duration_list_value .   (rule 54)
 	duration_list_value  ->  duration_list_value . ',' duration_value   (rule 150)
@@ -1701,7 +1709,7 @@ state 97
 
 
 
-state 98
+state 99
 
 	primitive_object  ->  term_code_list_value .   (rule 35)
 	term_code_list_value  ->  term_code_list_value . ',' term_code   (rule 165)
@@ -1712,7 +1720,7 @@ state 98
 
 
 
-state 99
+state 100
 
 	primitive_object  ->  primitive_list_value .   (rule 32)
 
@@ -1720,7 +1728,7 @@ state 99
 
 
 
-state 100
+state 101
 
 	primitive_interval_value  ->  integer_interval_value .   (rule 55)
 
@@ -1728,7 +1736,7 @@ state 100
 
 
 
-state 101
+state 102
 
 	primitive_interval_value  ->  real_interval_value .   (rule 56)
 
@@ -1736,7 +1744,7 @@ state 101
 
 
 
-state 102
+state 103
 
 	primitive_interval_value  ->  time_interval_value .   (rule 58)
 
@@ -1744,7 +1752,7 @@ state 102
 
 
 
-state 103
+state 104
 
 	primitive_interval_value  ->  date_interval_value .   (rule 57)
 
@@ -1752,7 +1760,7 @@ state 103
 
 
 
-state 104
+state 105
 
 	primitive_interval_value  ->  date_time_interval_value .   (rule 59)
 
@@ -1760,7 +1768,7 @@ state 104
 
 
 
-state 105
+state 106
 
 	primitive_interval_value  ->  duration_interval_value .   (rule 60)
 
@@ -1768,19 +1776,11 @@ state 105
 
 
 
-state 106
+state 107
 
 	primitive_object  ->  primitive_interval_value .   (rule 33)
 
 	$default	reduce using rule 33 (primitive_object)
-
-
-
-state 107
-
-	primitive_object  ->  primitive_value .   (rule 31)
-
-	$default	reduce using rule 31 (primitive_object)
 
 
 
@@ -1955,26 +1955,26 @@ state 108
 	term_code	go to state 84
 	uri_value	go to state 62
 	primitive_object	go to state 85
-	string_list_value	go to state 89
-	integer_list_value	go to state 90
-	real_list_value	go to state 91
-	character_list_value	go to state 92
-	boolean_list_value	go to state 93
-	date_list_value	go to state 94
-	time_list_value	go to state 95
-	date_time_list_value	go to state 96
-	duration_list_value	go to state 97
-	term_code_list_value	go to state 98
-	primitive_list_value	go to state 99
-	integer_interval_value	go to state 100
-	real_interval_value	go to state 101
-	time_interval_value	go to state 102
-	date_interval_value	go to state 103
-	date_time_interval_value	go to state 104
-	duration_interval_value	go to state 105
-	primitive_interval_value	go to state 106
-	primitive_value	go to state 107
+	primitive_value	go to state 87
 	string_value	go to state 64
+	string_list_value	go to state 90
+	integer_list_value	go to state 91
+	real_list_value	go to state 92
+	character_list_value	go to state 93
+	boolean_list_value	go to state 94
+	date_list_value	go to state 95
+	time_list_value	go to state 96
+	date_time_list_value	go to state 97
+	duration_list_value	go to state 98
+	term_code_list_value	go to state 99
+	primitive_list_value	go to state 100
+	integer_interval_value	go to state 101
+	real_interval_value	go to state 102
+	time_interval_value	go to state 103
+	date_interval_value	go to state 104
+	date_time_interval_value	go to state 105
+	duration_interval_value	go to state 106
+	primitive_interval_value	go to state 107
 
 
 
