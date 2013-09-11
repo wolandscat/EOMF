@@ -16,18 +16,19 @@ feature -- Access
 		once
 			create Result.make(0)
 			Result.compare_objects
-			from dt_serialisers.start until dt_serialisers.off loop
-				Result.extend(dt_serialisers.key_for_iteration)
-				dt_serialisers.forth
+			across dt_serialisers as dt_serialisers_csr loop
+				Result.extend (dt_serialisers_csr.key)
 			end
 		end
 
-	dt_serialiser_for_format (a_format: STRING): detachable DT_SERIALISER
+	dt_serialiser_for_format (a_format: STRING): DT_SERIALISER
 			-- get a specific ADL serialiser
 		require
 			Format_valid: has_dt_serialiser_format (a_format)
 		do
-			Result := dt_serialisers.item (a_format)
+			check attached dt_serialisers.item (a_format) as dt_ser then
+				Result := dt_ser
+			end
 		end
 
 feature -- Status Report

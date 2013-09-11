@@ -46,19 +46,21 @@ feature -- Commands
 		require
 			Format_valid: has_dt_serialiser_format (a_format)
 		local
-			a_dt_iterator: DT_VISITOR_ITERATOR
+			dt_iterator: DT_VISITOR_ITERATOR
+			dt_serialiser: DT_SERIALISER
 		do
-			if attached tree as att_tree and attached dt_serialiser_for_format (a_format) as a_dt_serialiser then
-				a_dt_serialiser.reset
+			if attached tree as att_tree then
+				dt_serialiser := dt_serialiser_for_format (a_format)
+				dt_serialiser.reset
 				if full_type_marking_on then
-					a_dt_serialiser.set_full_type_marking_on
+					dt_serialiser.set_full_type_marking_on
 				end
 				if output_typed_encapsulated then
-					a_dt_serialiser.set_output_typed_encapsulated
+					dt_serialiser.set_output_typed_encapsulated
 				end
-				create a_dt_iterator.make (att_tree, a_dt_serialiser)
-				a_dt_iterator.do_all
-				serialised := a_dt_serialiser.last_result
+				create dt_iterator.make (att_tree, dt_serialiser)
+				dt_iterator.do_all
+				serialised := dt_serialiser.last_result
 			else
 				create serialised.make_empty
 			end
