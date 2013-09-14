@@ -26,6 +26,5 @@
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 
 		<cluster name="odin" location=".\" recursive="true"/>
-		<cluster name="odin_parsers" location="$EOMF\parsers\" recursive="true"/>
 	</target>
 </system>
