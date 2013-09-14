@@ -25,7 +25,7 @@ inherit
 			is_equal, out, default_create
 		end
 
-	COMPARABLE
+	ISO8601_TYPE
 		redefine
 			out, default_create
 		end
@@ -46,8 +46,6 @@ feature -- Initialisation
 
 	make_from_string (str: STRING)
 			-- make from any valid ISO date/time string
-		require
-			String_valid: valid_iso8601_date_time(str)
 		do
 			make_date_time (create {DATE_TIME}.make_now)
 			if valid_iso8601_date_time(str) then
@@ -74,9 +72,6 @@ feature -- Initialisation
 		end
 
 feature -- Access
-
-	value: STRING
-			-- ISO8601 string for date/time; always equal to result of as_string
 
 	year: INTEGER
 		do
@@ -175,6 +170,11 @@ feature -- Status Report
 			Result := second_unknown
 		end
 
+	valid_iso8601_string (str: STRING): BOOLEAN
+		do
+			Result := valid_iso8601_date_time (str)
+		end
+
 feature -- Comparison
 
 	is_less alias "<" (other: like Current): BOOLEAN
@@ -208,8 +208,6 @@ feature -- Output
 				Result.append_character (Time_leader)
 				Result.append (tp.as_string)
 			end
-		ensure
-			valid_iso8601_date_time (Result)
 		end
 
 	out: STRING

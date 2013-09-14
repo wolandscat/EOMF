@@ -28,7 +28,7 @@ inherit
 			is_equal, out, default_create
 		end
 
-	COMPARABLE
+	ISO8601_TYPE
 		redefine
 			out, default_create
 		end
@@ -49,8 +49,6 @@ feature -- Initialisation
 
 	make_from_string (str: STRING)
 			-- make from any valid ISO date string
-		require
-			String_valid: valid_iso8601_date(str)
 		do
 			make_date (create {DATE}.make_now)
 			if valid_iso8601_date (str) and then attached iso8601_parser.cached_iso8601_date as dt then
@@ -110,9 +108,6 @@ feature -- Initialisation
 
 feature -- Access
 
-	value: STRING
-			-- ISO8601 string for date; always equal to result of as_string
-
 	year: INTEGER
 			-- extracted year
 
@@ -137,6 +132,11 @@ feature -- Status Report
 			-- True if either date or month unknown
 		do
 			Result := day_unknown
+		end
+
+	valid_iso8601_string (str: STRING): BOOLEAN
+		do
+			Result := valid_iso8601_date (str)
 		end
 
 feature -- Comparison
@@ -226,8 +226,6 @@ feature -- Output
 					Result.append(s)
 				end
 			end
-		ensure
-			Result_valid: valid_iso8601_date(Result)
 		end
 
 	out: STRING

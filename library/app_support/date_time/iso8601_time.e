@@ -28,7 +28,7 @@ inherit
 			is_equal, out, default_create
 		end
 
-	COMPARABLE
+	ISO8601_TYPE
 		redefine
 			out, default_create
 		end
@@ -51,8 +51,6 @@ feature -- Initialisation
 			-- make from a time of form:
 			-- hhmmss[,sss][Z|+/-hhmm] or
 			-- hh:mm:ss[,sss][,sss][Z|+/-hhmm]
-		require
-			String_valid: valid_iso8601_time (str)
 		do
 			make_time (create {TIME}.make_now)
 			if valid_iso8601_time (str) and then attached iso8601_parser.cached_iso8601_time as tm then
@@ -124,9 +122,6 @@ feature -- Initialisation
 
 feature -- Access
 
-	value: STRING
-			-- ISO8601 string for time; always equal to result of as_string
-
 	hour: INTEGER
 			-- extracted hour
 
@@ -160,6 +155,11 @@ feature -- Status Report
 			-- True if either minute or second unknown
 		do
 			Result := second_unknown
+		end
+
+	valid_iso8601_string (str: STRING): BOOLEAN
+		do
+			Result := valid_iso8601_time (str)
 		end
 
 feature -- Modification
@@ -289,8 +289,6 @@ feature -- Output
 			if attached timezone as att_tz then
 				Result.append (att_tz.as_string)
 			end
-		ensure
-			Result_valid: valid_iso8601_time (Result)
 		end
 
 	out: STRING

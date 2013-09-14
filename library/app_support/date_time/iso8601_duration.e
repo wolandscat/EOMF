@@ -26,7 +26,7 @@ inherit
 			is_equal, default_create, out
 		end
 
-	COMPARABLE
+	ISO8601_TYPE
 		redefine
 			default_create, out
 		end
@@ -51,8 +51,6 @@ feature {NONE} -- Initialisation
 
 	make_from_string (str: STRING)
 			-- Make from a valid ISO duration string.
-		require
-			str_valid_duration: valid_iso8601_duration (str)
 		do
 			if valid_iso8601_duration (str) then
 				days := iso8601_parser.cached_iso8601_duration.days
@@ -71,7 +69,7 @@ feature {NONE} -- Initialisation
 			else
 				value := as_string
 			end
-		ensure
+		ensure then
 			value_when_zero: is_zero implies value.is_equal (str)
 		end
 
@@ -107,9 +105,6 @@ feature {NONE} -- Initialisation
 		end
 
 feature -- Access
-
-	value: STRING
-			-- ISO8601 string form of duration, always synchronised with as_string
 
 	years: INTEGER
 			-- extracted year count
@@ -147,6 +142,11 @@ feature -- Status Report
 			-- True if total value is zero
 		do
 			Result := weeks = 0 and years + months + days + hours + minutes + seconds = 0 and fractional_seconds = 0.0
+		end
+
+	valid_iso8601_string (str: STRING): BOOLEAN
+		do
+			Result := valid_iso8601_duration (str)
 		end
 
 feature -- Comparison
@@ -209,8 +209,6 @@ feature -- Output
 					end
 				end
 			end
-		ensure
-			valid: valid_iso8601_duration (Result)
 		end
 
 	out: STRING
