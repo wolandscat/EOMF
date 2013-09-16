@@ -1,110 +1,131 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Abstract generic class defining an interval (i.e. range) of a comparable type, allowing half-ranges, i.e. with
-				 -infinity as lower limit or +infinity as upper limit.
-				 FIXME: should really be defined as INTERVAL[COMPARABLE] but DATE_TIME_DURATION (one of the types occurring
-				 as a generic parameter of this type) is strangely only PART_COMPARABLE.
-				 ]"
-	keywords:    "intervals"
+	description: "Form of INTERVAL [G] that represents point (i.e. 'degenerate') intervals."
+	keywords:    "point interval, degenerate interval"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2000- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class INTERVAL [G -> PART_COMPARABLE]
+class POINT_INTERVAL [G -> PART_COMPARABLE]
 
 inherit
-	ANY
+	INTERVAL [G]
 		redefine
+			lower
+		end
+
+	STRING_UTILITIES
+		export
+			{NONE} all
+		undefine
 			out
+		end
+
+create
+	make
+
+feature -- Initialization
+
+	make (a_value: G)
+			-- make with both limits set to the same value
+		do
+			lower := a_value
+		ensure
+			Lower_set: lower = a_value
+			Upper_set: upper = a_value
+			lower_included_set: lower_included
+			upper_included_set: upper_included
+			Is_point: is_point
 		end
 
 feature -- Access
 
-	lower: detachable G
+	lower: G
 			-- lower limit of interval
 
-	upper: detachable G
+	upper: G
 			-- upper limit of interval
-		deferred
+		do
+			Result := lower
 		end
 
-	midpoint: detachable G
+	midpoint: G
 			-- generate midpoint of limits
-		deferred
+		do
+			Result := lower
 		end
 
 feature -- Status report
 
 	lower_unbounded: BOOLEAN
 			-- True if lower limit open, i.e. -infinity
-		deferred
+		do
+			Result := False
 		end
 
 	upper_unbounded: BOOLEAN
 			-- True if upper limit open, i.e. +infinity
-		deferred
+		do
+			Result := False
 		end
 
 	lower_included: BOOLEAN
 			-- True if lower limit point included in interval
-		deferred
+		do
+			Result := True
 		end
 
 	upper_included: BOOLEAN
 			-- True if upper limit point included in interval
-		deferred
+		do
+			Result := True
 		end
 
 	is_point: BOOLEAN
 			-- Is current interval a point (width = 0)?
-		deferred
+		do
+			Result := True
 		end
 
 	unbounded: BOOLEAN
 			-- True if interval is completely open
-		deferred
+		do
+			Result := False
 		end
 
 feature -- Comparison
 
 	has (v: G): BOOLEAN
 			-- Does current interval have `v' between its bounds?
-		deferred
+		do
+			Result := lower = v
 		end
 
 	intersects (other: like Current): BOOLEAN
 			-- True if there is any overlap between intervals represented by Current and other
-		deferred
+		do
+			Result := other.has (lower)
 		end
 
 	contains (other: like Current): BOOLEAN
-			-- Does current interval properly contain `other'? True if at least one limit of other
-			-- is stricly inside the limits of this interval
-		deferred
+			-- Does current interval properly contain `other'?
+		do
+			Result := equal_interval (other)
 		end
 
 	equal_interval (other: like Current): BOOLEAN
 			-- compare two intervals, allows subtypes like MULTIPLICITY_INTERVAL to be compared
-		deferred
+		do
+			Result := other.is_point and then lower = other.lower
 		end
 
 feature -- Output
 
 	as_string: STRING
-		deferred
-		end
-
-	out: STRING
 		do
-			Result := as_string
+			Result := serialise_primitive_value (lower)
 		end
-
-invariant
-	lower_attached_if_bounded: not lower_unbounded implies attached lower
-	upper_attached_if_bounded: not upper_unbounded implies attached upper
-	limits_consistent: attached lower as l and then attached upper as u implies l <= u
 
 end
 

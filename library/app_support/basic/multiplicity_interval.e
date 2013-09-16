@@ -11,7 +11,7 @@ note
 
 class MULTIPLICITY_INTERVAL
 
-inherit INTERVAL [INTEGER]
+inherit PROPER_INTERVAL [INTEGER]
 	rename
 		make_bounded as make_bounded_interval,
 		make_upper_unbounded as make_upper_unbounded_interval
@@ -32,7 +32,7 @@ create
 	make_from_string
 
 convert
-	make_from_interval({INTERVAL[INTEGER]})
+	make_from_interval ({INTERVAL[INTEGER]})
 
 feature -- Definitions
 
@@ -47,11 +47,10 @@ feature -- Initialisation
 		require
 			Valid_order: a_lower <= an_upper
 		do
-			make_bounded_interval(a_lower, an_upper, True, True)
+			make_bounded_interval (a_lower, an_upper, True, True)
 		ensure
 			Lower_set: lower = a_lower
 			Upper_set: upper = an_upper
-			Bounded_lower: not lower_unbounded
 			Bounded_upper: not upper_unbounded
 		end
 
@@ -61,7 +60,6 @@ feature -- Initialisation
 			make_upper_unbounded_interval (a_lower, True)
 		ensure
 			Lower_set: lower = a_lower
-			Bounded_lower: not lower_unbounded
 			Upper_unbounded: upper_unbounded
 		end
 
@@ -70,18 +68,17 @@ feature -- Initialisation
 		do
 			lower := an_int.lower
 			upper := an_int.upper
-			lower_included := True
 			upper_included := an_int.upper_included
 			upper_unbounded := an_int.upper_unbounded
+			lower_included := True
 		end
 
 	make_open
 			-- make an open interval from 0 to +infinity
 		do
-			make_upper_unbounded_interval(0, True)
+			make_upper_unbounded_interval (0, True)
 		ensure
 			Lower_set: lower = 0
-			Lower_bounded: not lower_unbounded
 			Upper_unbounded: upper_unbounded
 			open: is_open
 		end
@@ -89,11 +86,10 @@ feature -- Initialisation
 	make_optional
 			-- make an interval representing optionality, i.e. 0..1
 		do
-			make_bounded_interval(0, 1, True, True)
+			make_bounded_interval (0, 1, True, True)
 		ensure
 			Lower_set: lower = 0
 			Upper_set: upper = 1
-			Lower_bounded: not lower_unbounded
 			Upper_bounded: not upper_unbounded
 			optional: is_optional
 		end
@@ -101,11 +97,10 @@ feature -- Initialisation
 	make_mandatory
 			-- make an interval representing mandatoriness, i.e. 1..1
 		do
-			make_point(1)
+			make_point (1)
 		ensure
 			Lower_set: lower = 1
 			Upper_set: upper = 1
-			Lower_bounded: not lower_unbounded
 			Upper_bounded: not upper_unbounded
 			mandatory: is_mandatory
 		end
@@ -117,12 +112,11 @@ feature -- Initialisation
 		ensure
 			Lower_set: lower = 0
 			Upper_set: upper = 0
-			Lower_bounded: not lower_unbounded
 			Upper_bounded: not upper_unbounded
 			prohibited: is_prohibited
 		end
 
-	make_from_string (a_str: attached STRING)
+	make_from_string (a_str: STRING)
 			-- make from a string of the form "n..m" or just "n", where n and m are integers, or m may be '*'
 		require
 			valid_multiplicity_string: valid_multiplicity_string (a_str)
@@ -182,7 +176,7 @@ feature -- Status report
 			Result := lower = 0 and upper = 0 and not lower_unbounded and not upper_unbounded
 		end
 
-	valid_multiplicity_string (a_str: attached STRING): BOOLEAN
+	valid_multiplicity_string (a_str: STRING): BOOLEAN
 			-- check if string is in form "n..m; ordered; unique" where each subsection after a ';' is optional
 		do
 			-- for the moment, just assume
@@ -198,7 +192,6 @@ feature -- Modification
 		do
 			lower := a_lower
 			lower_unbounded := False
-			lower_included := True
 		end
 
 feature -- Operations
@@ -227,14 +220,12 @@ feature -- Operations
 
 feature -- Comparison
 
-	equal_interval (other: attached  INTERVAL [INTEGER]): BOOLEAN
+	equal_interval (other: PROPER_INTERVAL [INTEGER]): BOOLEAN
 			-- True if current object's interval is same as `other'
 		do
 			Result := lower = other.lower and
 				upper = other.upper and
-				lower_included = other.lower_included and
 				upper_included = other.upper_included and
-				lower_unbounded = other.lower_unbounded and
 				upper_unbounded = other.upper_unbounded
 		end
 
@@ -245,7 +236,7 @@ feature -- Output
 			create Result.make(0)
 			if upper_unbounded then
 				Result.append (serialise_primitive_value (lower) + "..*")
-			elseif not limits_equal then
+			elseif not is_point then
 				Result.append (serialise_primitive_value (lower) + ".." + serialise_primitive_value (upper))
 			else
 				Result.append (serialise_primitive_value (lower))
@@ -254,6 +245,8 @@ feature -- Output
 
 invariant
 	Lower_valid: lower >= 0
+	Lower_bounded: not lower_unbounded
+	Lower_included: lower_included
 
 end
 
