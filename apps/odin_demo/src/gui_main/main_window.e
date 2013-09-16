@@ -149,11 +149,22 @@ feature {NONE} -- Implementation
 					end
 				end
 			end
+
+			explorer_tree.recursive_do_all (agent expand_ev_node)
+		end
+
+	expand_ev_node (a_node: EV_TREE_NODE)
+		do
+			if a_node.is_expandable then
+				a_node.expand
+			end
 		end
 
 	initialise_overall_appearance
 			-- Initialise the main properties of the window (size, appearance, title, etc.).
 		do
+			close_request_actions.extend (agent exit_app)
+
 			set_position (app_x_position, app_y_position)
 
 			if app_width > 0 and app_height > 0 then

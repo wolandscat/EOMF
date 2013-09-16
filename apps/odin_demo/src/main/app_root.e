@@ -20,6 +20,11 @@ inherit
 			{ANY} has_dt_serialiser_format
 		end
 
+	ODIN_DEFINITIONS
+		export
+			{NONE} all
+		end
+
 create
 	make
 
@@ -27,7 +32,10 @@ feature -- Initialisation
 
 	make
 		once
-			dt_serialisers.put (create {DT_ODIN_SERIALISER}.make (create {NATIVE_ODIN_SERIALISATION_PROFILE}.make("odin")), "odin")
+			dt_serialisers.put (create {DT_ODIN_SERIALISER}.make (create {NATIVE_ODIN_SERIALISATION_PROFILE}.make (Syntax_type_odin)), Syntax_type_odin)
+			dt_serialisers.put (create {DT_XML_SERIALISER}.make (create {XML_DT_SERIALISATION_PROFILE}.make (Syntax_type_xml)), Syntax_type_xml)
+			dt_serialisers.put (create {DT_JSON_SERIALISER}.make (create {JSON_DT_SERIALISATION_PROFILE}.make (Syntax_type_json)), Syntax_type_json)
+			dt_serialisers.put (create {DT_YAML_SERIALISER}.make (create {YAML_DT_SERIALISATION_PROFILE}.make (Syntax_type_yaml)), Syntax_type_yaml)
 			initialised := True
 		end
 

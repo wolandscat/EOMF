@@ -18,7 +18,7 @@ inherit
 		redefine
 			create_interface_objects, initialize, is_in_default_state
 		end
-			
+
 	GUI_CONSTANTS
 		undefine
 			is_equal, default_create, copy
@@ -32,7 +32,7 @@ feature {NONE}-- Initialization
 			Precursor {EV_TITLED_WINDOW}
 			initialize_constants
 
-			
+
 				-- Build widget structure.
 			set_menu_bar (l_ev_menu_bar_1)
 			l_ev_menu_bar_1.extend (file_menu)
@@ -73,7 +73,7 @@ feature {NONE}-- Initialization
 			set_title ("Display window")
 
 			set_all_attributes_using_constants
-			
+
 				-- Connect events.
 			file_menu_save_as.select_actions.extend (agent exit_app)
 			file_menu_exit.select_actions.extend (agent exit_app)
@@ -81,16 +81,16 @@ feature {NONE}-- Initialization
 			explorer_tree.select_actions.extend (agent select_explorer_item)
 				-- Close the application when an interface close
 				-- request is recieved on `Current'. i.e. the cross is clicked.
-			close_request_actions.extend (agent destroy_and_exit_if_last)
+		--	close_request_actions.extend (agent destroy_and_exit_if_last)
 
 				-- Call `user_initialization'.
 			user_initialization
 		end
-		
+
 	create_interface_objects
 			-- Create objects
 		do
-			
+
 				-- Create all widgets.
 			create l_ev_menu_bar_1
 			create file_menu
@@ -160,22 +160,22 @@ feature {NONE} -- Implementation
 			-- Feature for custom initialization, called at end of `initialize'.
 		deferred
 		end
-	
+
 	exit_app
 			-- Called by `select_actions' of `file_menu_save_as'.
 		deferred
 		end
-	
+
 	on_copy
 			-- Called by `select_actions' of `edit_menu_copy'.
 		deferred
 		end
-	
+
 	select_explorer_item
 			-- Called by `select_actions' of `explorer_tree'.
 		deferred
 		end
-	
+
 
 feature {NONE} -- Constant setting
 
@@ -272,7 +272,7 @@ feature {NONE} -- Constant setting
 					font_constant_set_procedures.item.call ([f])
 				end
 				font_constant_set_procedures.forth
-			end	
+			end
 		end
 
 	set_attributes_using_color_constants
@@ -305,7 +305,7 @@ feature {NONE} -- Constant setting
 			set_attributes_using_font_constants
 			set_attributes_using_color_constants
 		end
-	
+
 	string_constant_set_procedures: ARRAYED_LIST [PROCEDURE [ANY, TUPLE [STRING_GENERAL]]]
 	string_constant_retrieval_functions: ARRAYED_LIST [FUNCTION [ANY, TUPLE [], STRING_32]]
 	integer_constant_set_procedures: ARRAYED_LIST [PROCEDURE [ANY, TUPLE [INTEGER]]]
