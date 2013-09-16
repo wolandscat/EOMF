@@ -175,6 +175,27 @@ feature {NONE} -- Implementation
 			create yyspecial_routines36
 			yyvsc36 := yyInitial_yyvs_size
 			yyvs36 := yyspecial_routines36.make (yyvsc36)
+			create yyspecial_routines37
+			yyvsc37 := yyInitial_yyvs_size
+			yyvs37 := yyspecial_routines37.make (yyvsc37)
+			create yyspecial_routines38
+			yyvsc38 := yyInitial_yyvs_size
+			yyvs38 := yyspecial_routines38.make (yyvsc38)
+			create yyspecial_routines39
+			yyvsc39 := yyInitial_yyvs_size
+			yyvs39 := yyspecial_routines39.make (yyvsc39)
+			create yyspecial_routines40
+			yyvsc40 := yyInitial_yyvs_size
+			yyvs40 := yyspecial_routines40.make (yyvsc40)
+			create yyspecial_routines41
+			yyvsc41 := yyInitial_yyvs_size
+			yyvs41 := yyspecial_routines41.make (yyvsc41)
+			create yyspecial_routines42
+			yyvsc42 := yyInitial_yyvs_size
+			yyvs42 := yyspecial_routines42.make (yyvsc42)
+			create yyspecial_routines43
+			yyvsc43 := yyInitial_yyvs_size
+			yyvs43 := yyspecial_routines43.make (yyvsc43)
 		end
 
 	yy_init_value_stacks
@@ -216,6 +237,13 @@ feature {NONE} -- Implementation
 			yyvsp34 := -1
 			yyvsp35 := -1
 			yyvsp36 := -1
+			yyvsp37 := -1
+			yyvsp38 := -1
+			yyvsp39 := -1
+			yyvsp40 := -1
+			yyvsp41 := -1
+			yyvsp42 := -1
+			yyvsp43 := -1
 		end
 
 	yy_clear_value_stacks
@@ -258,6 +286,13 @@ feature {NONE} -- Implementation
 			yyvs34.keep_head (0)
 			yyvs35.keep_head (0)
 			yyvs36.keep_head (0)
+			yyvs37.keep_head (0)
+			yyvs38.keep_head (0)
+			yyvs39.keep_head (0)
+			yyvs40.keep_head (0)
+			yyvs41.keep_head (0)
+			yyvs42.keep_head (0)
+			yyvs43.keep_head (0)
 		end
 
 	yy_push_last_value (yychar1: INTEGER)
@@ -422,6 +457,20 @@ feature {NONE} -- Implementation
 				yyvsp35 := yyvsp35 - 1
 			when 36 then
 				yyvsp36 := yyvsp36 - 1
+			when 37 then
+				yyvsp37 := yyvsp37 - 1
+			when 38 then
+				yyvsp38 := yyvsp38 - 1
+			when 39 then
+				yyvsp39 := yyvsp39 - 1
+			when 40 then
+				yyvsp40 := yyvsp40 - 1
+			when 41 then
+				yyvsp41 := yyvsp41 - 1
+			when 42 then
+				yyvsp42 := yyvsp42 - 1
+			when 43 then
+				yyvsp43 := yyvsp43 - 1
 			else
 				debug ("GEYACC")
 					std.error.put_string ("Error in parser: unknown type id: ")
@@ -449,14 +498,17 @@ feature {NONE} -- Semantic actions
 			yyval15: ANY
 			yyval29: ARRAYED_LIST [ANY]
 			yyval36: INTERVAL [PART_COMPARABLE]
+			yyval43: ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]
 			yyval4: STRING
 			yyval19: ARRAYED_LIST [STRING]
 			yyval2: INTEGER
 			yyval20: ARRAYED_LIST [INTEGER]
 			yyval30: INTERVAL [INTEGER]
+			yyval37: ARRAYED_LIST [INTERVAL [INTEGER]]
 			yyval3: REAL
 			yyval21: ARRAYED_LIST [REAL]
 			yyval31: INTERVAL [REAL]
+			yyval38: ARRAYED_LIST [INTERVAL [REAL]]
 			yyval6: BOOLEAN
 			yyval23: ARRAYED_LIST [BOOLEAN]
 			yyval5: CHARACTER
@@ -464,15 +516,19 @@ feature {NONE} -- Semantic actions
 			yyval7: ISO8601_DATE
 			yyval24: ARRAYED_LIST [ISO8601_DATE]
 			yyval33: INTERVAL [ISO8601_DATE]
+			yyval40: ARRAYED_LIST [INTERVAL [ISO8601_DATE]]
 			yyval9: ISO8601_TIME
 			yyval25: ARRAYED_LIST [ISO8601_TIME]
 			yyval32: INTERVAL [ISO8601_TIME]
+			yyval39: ARRAYED_LIST [INTERVAL [ISO8601_TIME]]
 			yyval8: ISO8601_DATE_TIME
 			yyval26: ARRAYED_LIST [ISO8601_DATE_TIME]
 			yyval34: INTERVAL [ISO8601_DATE_TIME]
+			yyval41: ARRAYED_LIST [INTERVAL [ISO8601_DATE_TIME]]
 			yyval10: ISO8601_DURATION
 			yyval27: ARRAYED_LIST [ISO8601_DURATION]
 			yyval35: INTERVAL [ISO8601_DURATION]
+			yyval42: ARRAYED_LIST [INTERVAL [ISO8601_DURATION]]
 			yyval11: TERMINOLOGY_CODE
 			yyval28: ARRAYED_LIST [TERMINOLOGY_CODE]
 			yyval12: URI
@@ -483,9 +539,9 @@ feature {NONE} -- Semantic actions
 			if not yy_retried then
 				inspect yy_act
 when 1 then
---|#line 118 "odin_validator.y"
+--|#line 126 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 118")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 126")
 end
 
 			output := complex_object_nodes.item
@@ -499,9 +555,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 2 then
---|#line 126 "odin_validator.y"
+--|#line 134 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 126")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 134")
 end
 
 			output := yyvs13.item (yyvsp13)
@@ -524,9 +580,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 3 then
---|#line 134 "odin_validator.y"
+--|#line 142 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 134")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 142")
 end
 
 debug("ODIN_parse")
@@ -539,9 +595,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 4 then
---|#line 146 "odin_validator.y"
+--|#line 154 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 146")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 154")
 end
 
 debug("ODIN_parse")
@@ -553,9 +609,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 5 then
---|#line 152 "odin_validator.y"
+--|#line 160 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 152")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 160")
 end
 
 debug("ODIN_parse")
@@ -568,9 +624,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 6 then
---|#line 158 "odin_validator.y"
+--|#line 166 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 158")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 166")
 end
 
 debug("ODIN_parse")
@@ -583,9 +639,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 7 then
---|#line 167 "odin_validator.y"
+--|#line 175 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 167")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 175")
 end
 
 debug("ODIN_parse")
@@ -600,9 +656,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 8 then
---|#line 177 "odin_validator.y"
+--|#line 185 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 177")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 185")
 end
 
 			-- create first anonymous object
@@ -652,9 +708,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 9 then
---|#line 212 "odin_validator.y"
+--|#line 220 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 212")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 220")
 end
 
 			abort_with_error (ec_SDAT, Void)
@@ -665,9 +721,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 10 then
---|#line 221 "odin_validator.y"
+--|#line 229 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 221")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 229")
 end
 
 			-- if object_block was an empty object then get rid of it from parent attribute
@@ -689,9 +745,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 11 then
---|#line 228 "odin_validator.y"
+--|#line 236 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 228")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 236")
 end
 
 
@@ -709,9 +765,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 12 then
---|#line 229 "odin_validator.y"
+--|#line 237 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 229")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 237")
 end
 
 
@@ -729,9 +785,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 13 then
---|#line 230 "odin_validator.y"
+--|#line 238 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 230")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 238")
 end
 
 			-- for single-valued attributes, remove the attribute
@@ -745,9 +801,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 14 then
---|#line 239 "odin_validator.y"
+--|#line 247 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 239")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 247")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
@@ -757,9 +813,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 15 then
---|#line 243 "odin_validator.y"
+--|#line 251 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 243")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 251")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
@@ -769,9 +825,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 16 then
---|#line 252 "odin_validator.y"
+--|#line 260 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 252")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 260")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
@@ -781,9 +837,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 17 then
---|#line 256 "odin_validator.y"
+--|#line 264 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 256")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 264")
 end
 
 			-- probably should set type name on owning attribute - it doesn't belong on each 
@@ -796,9 +852,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 18 then
---|#line 275 "odin_validator.y"
+--|#line 283 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 275")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 283")
 end
 
 			yyval13 := complex_object_nodes.item
@@ -842,9 +898,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 19 then
---|#line 328 "odin_validator.y"
+--|#line 336 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 328")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 336")
 end
 
 			-- if obj_key is set, it means we are inside a keyed object, and we have hit more keyed objects
@@ -892,9 +948,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 20 then
---|#line 372 "odin_validator.y"
+--|#line 380 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 372")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 380")
 end
 
 debug("ODIN_parse")
@@ -906,9 +962,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 21 then
---|#line 378 "odin_validator.y"
+--|#line 386 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 378")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 386")
 end
 
 debug("ODIN_parse")
@@ -921,9 +977,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 22 then
---|#line 386 "odin_validator.y"
+--|#line 394 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 386")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 394")
 end
 
 debug("ODIN_parse")
@@ -936,9 +992,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 23 then
---|#line 394 "odin_validator.y"
+--|#line 402 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 394")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 402")
 end
 
 			obj_key := yyvs15.item (yyvsp15).out
@@ -960,9 +1016,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 24 then
---|#line 414 "odin_validator.y"
+--|#line 422 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 414")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 422")
 end
 
 debug("ODIN_parse")
@@ -975,9 +1031,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 25 then
---|#line 421 "odin_validator.y"
+--|#line 429 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 421")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 429")
 end
 
 debug("ODIN_parse")
@@ -992,9 +1048,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 26 then
---|#line 439 "odin_validator.y"
+--|#line 447 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 439")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 447")
 end
 
 debug("ODIN_parse")
@@ -1019,9 +1075,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 27 then
---|#line 451 "odin_validator.y"
+--|#line 459 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 451")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 459")
 end
 
 			-- if parent attr is not multiple, create an anon object; else an object identified by a key
@@ -1064,9 +1120,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 28 then
---|#line 493 "odin_validator.y"
+--|#line 501 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 493")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 501")
 end
 
 debug("ODIN_parse")
@@ -1079,9 +1135,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 29 then
---|#line 500 "odin_validator.y"
+--|#line 508 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 500")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 508")
 end
 
 debug("ODIN_parse")
@@ -1096,9 +1152,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 30 then
---|#line 514 "odin_validator.y"
+--|#line 522 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 514")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 522")
 end
 
 			yyval14 := yyvs14.item (yyvsp14)
@@ -1120,9 +1176,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 31 then
---|#line 531 "odin_validator.y"
+--|#line 539 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 531")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 539")
 end
 
 			if not obj_key.is_empty then
@@ -1145,9 +1201,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 32 then
---|#line 539 "odin_validator.y"
+--|#line 547 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 539")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 547")
 end
 
 			if not obj_key.is_empty then
@@ -1170,9 +1226,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 33 then
---|#line 547 "odin_validator.y"
+--|#line 555 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 547")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 555")
 end
 
 			if not obj_key.is_empty then
@@ -1195,9 +1251,34 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 34 then
---|#line 555 "odin_validator.y"
+--|#line 563 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 555")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 563")
+end
+
+			if not obj_key.is_empty then
+				create {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} yyval14.make_identified (yyvs43.item (yyvsp43), obj_key)
+			else
+				create {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} yyval14.make_anonymous (yyvs43.item (yyvsp43))
+			end
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyvsp14 := yyvsp14 + 1
+	yyvsp43 := yyvsp43 -1
+	if yyvsp14 >= yyvsc14 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs14")
+		end
+		yyvsc14 := yyvsc14 + yyInitial_yyvs_size
+		yyvs14 := yyspecial_routines14.aliased_resized_area (yyvs14, yyvsc14)
+	end
+	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
+end
+when 35 then
+--|#line 571 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 571")
 end
 
 			if not obj_key.is_empty then
@@ -1219,10 +1300,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
-when 35 then
---|#line 563 "odin_validator.y"
+when 36 then
+--|#line 579 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 563")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 579")
 end
 
 			if not obj_key.is_empty then
@@ -1244,10 +1325,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
-when 36 then
---|#line 573 "odin_validator.y"
+when 37 then
+--|#line 589 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 573")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 589")
 end
 
 			yyval15 := yyvs4.item (yyvsp4)
@@ -1265,10 +1346,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 37 then
---|#line 577 "odin_validator.y"
+when 38 then
+--|#line 593 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 577")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 593")
 end
 
 			yyval15 := yyvs2.item (yyvsp2)
@@ -1286,10 +1367,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 38 then
---|#line 581 "odin_validator.y"
+when 39 then
+--|#line 597 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 581")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 597")
 end
 
 			yyval15 := yyvs3.item (yyvsp3)
@@ -1307,10 +1388,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 39 then
---|#line 585 "odin_validator.y"
+when 40 then
+--|#line 601 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 585")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 601")
 end
 
 			yyval15 := yyvs6.item (yyvsp6)
@@ -1328,10 +1409,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 40 then
---|#line 589 "odin_validator.y"
+when 41 then
+--|#line 605 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 589")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 605")
 end
 
 			yyval15 := yyvs5.item (yyvsp5)
@@ -1349,10 +1430,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 41 then
---|#line 593 "odin_validator.y"
+when 42 then
+--|#line 609 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 593")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 609")
 end
 
 			yyval15 := yyvs7.item (yyvsp7)
@@ -1370,10 +1451,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 42 then
---|#line 597 "odin_validator.y"
+when 43 then
+--|#line 613 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 597")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 613")
 end
 
 			yyval15 := yyvs9.item (yyvsp9)
@@ -1391,10 +1472,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 43 then
---|#line 601 "odin_validator.y"
+when 44 then
+--|#line 617 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 601")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 617")
 end
 
 			yyval15 := yyvs8.item (yyvsp8)
@@ -1412,10 +1493,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 44 then
---|#line 605 "odin_validator.y"
+when 45 then
+--|#line 621 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 605")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 621")
 end
 
 			yyval15 := yyvs10.item (yyvsp10)
@@ -1433,10 +1514,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 45 then
---|#line 609 "odin_validator.y"
+when 46 then
+--|#line 625 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 609")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 625")
 end
 
 			yyval15 := yyvs12.item (yyvsp12)
@@ -1454,10 +1535,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
-when 46 then
---|#line 615 "odin_validator.y"
+when 47 then
+--|#line 631 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 615")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 631")
 end
 
 			yyval29 := yyvs19.item (yyvsp19)
@@ -1475,10 +1556,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 47 then
---|#line 619 "odin_validator.y"
+when 48 then
+--|#line 635 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 619")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 635")
 end
 
 			yyval29 := yyvs20.item (yyvsp20)
@@ -1496,10 +1577,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 48 then
---|#line 623 "odin_validator.y"
+when 49 then
+--|#line 639 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 623")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 639")
 end
 
 			yyval29 := yyvs21.item (yyvsp21)
@@ -1517,10 +1598,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 49 then
---|#line 627 "odin_validator.y"
+when 50 then
+--|#line 643 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 627")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 643")
 end
 
 			yyval29 := yyvs23.item (yyvsp23)
@@ -1538,10 +1619,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 50 then
---|#line 631 "odin_validator.y"
+when 51 then
+--|#line 647 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 631")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 647")
 end
 
 			yyval29 := yyvs22.item (yyvsp22)
@@ -1559,10 +1640,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 51 then
---|#line 635 "odin_validator.y"
+when 52 then
+--|#line 651 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 635")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 651")
 end
 
 			yyval29 := yyvs24.item (yyvsp24)
@@ -1580,10 +1661,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 52 then
---|#line 639 "odin_validator.y"
+when 53 then
+--|#line 655 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 639")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 655")
 end
 
 			yyval29 := yyvs25.item (yyvsp25)
@@ -1601,10 +1682,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 53 then
---|#line 643 "odin_validator.y"
+when 54 then
+--|#line 659 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 643")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 659")
 end
 
 			yyval29 := yyvs26.item (yyvsp26)
@@ -1622,10 +1703,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 54 then
---|#line 647 "odin_validator.y"
+when 55 then
+--|#line 663 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 647")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 663")
 end
 
 			yyval29 := yyvs27.item (yyvsp27)
@@ -1643,10 +1724,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
-when 55 then
---|#line 653 "odin_validator.y"
+when 56 then
+--|#line 669 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 653")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 669")
 end
 
 			yyval36 := yyvs30.item (yyvsp30)
@@ -1664,10 +1745,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 56 then
---|#line 657 "odin_validator.y"
+when 57 then
+--|#line 673 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 657")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 673")
 end
 
 			yyval36 := yyvs31.item (yyvsp31)
@@ -1685,10 +1766,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 57 then
---|#line 661 "odin_validator.y"
+when 58 then
+--|#line 677 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 661")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 677")
 end
 
 			yyval36 := yyvs33.item (yyvsp33)
@@ -1706,10 +1787,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 58 then
---|#line 665 "odin_validator.y"
+when 59 then
+--|#line 681 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 665")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 681")
 end
 
 			yyval36 := yyvs32.item (yyvsp32)
@@ -1727,10 +1808,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 59 then
---|#line 669 "odin_validator.y"
+when 60 then
+--|#line 685 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 669")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 685")
 end
 
 			yyval36 := yyvs34.item (yyvsp34)
@@ -1748,10 +1829,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 60 then
---|#line 673 "odin_validator.y"
+when 61 then
+--|#line 689 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 673")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 689")
 end
 
 			yyval36 := yyvs35.item (yyvsp35)
@@ -1769,60 +1850,162 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
-when 61 then
---|#line 679 "odin_validator.y"
-debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 679")
-end
-
-			yyval4 := yyvs4.item (yyvsp4)
-		
-if yy_parsing_status >= yyContinue then
-	yyssp := yyssp - 3
-	yyvsp1 := yyvsp1 -2
-	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
-end
 when 62 then
---|#line 683 "odin_validator.y"
+--|#line 695 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 683")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 695")
 end
 
-			yyval4 := yyvs4.item (yyvsp4)
+			yyval43 := yyvs37.item (yyvsp37)
 		
 if yy_parsing_status >= yyContinue then
-	yyssp := yyssp - 3
-	yyvsp1 := yyvsp1 -2
-	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+	yyssp := yyssp - 1
+	yyvsp43 := yyvsp43 + 1
+	yyvsp37 := yyvsp37 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 63 then
---|#line 687 "odin_validator.y"
+--|#line 699 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 687")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 699")
 end
 
-			yyval4 := yyvs4.item (yyvsp4)
+			yyval43 := yyvs38.item (yyvsp38)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
-	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+	yyvsp43 := yyvsp43 + 1
+	yyvsp38 := yyvsp38 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 64 then
---|#line 691 "odin_validator.y"
+--|#line 703 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 691")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 703")
 end
 
-			yyval4 := yyvs4.item (yyvsp4)
+			yyval43 := yyvs40.item (yyvsp40)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
-	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+	yyvsp43 := yyvsp43 + 1
+	yyvsp40 := yyvsp40 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 65 then
---|#line 700 "odin_validator.y"
+--|#line 707 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 700")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 707")
+end
+
+			yyval43 := yyvs39.item (yyvsp39)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyvsp43 := yyvsp43 + 1
+	yyvsp39 := yyvsp39 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
+end
+when 66 then
+--|#line 711 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 711")
+end
+
+			yyval43 := yyvs41.item (yyvsp41)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyvsp43 := yyvsp43 + 1
+	yyvsp41 := yyvsp41 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
+end
+when 67 then
+--|#line 715 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 715")
+end
+
+			yyval43 := yyvs42.item (yyvsp42)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyvsp43 := yyvsp43 + 1
+	yyvsp42 := yyvsp42 -1
+	if yyvsp43 >= yyvsc43 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs43")
+		end
+		yyvsc43 := yyvsc43 + yyInitial_yyvs_size
+		yyvs43 := yyspecial_routines43.aliased_resized_area (yyvs43, yyvsc43)
+	end
+	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
+end
+when 68 then
+--|#line 721 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 721")
+end
+
+			yyval4 := yyvs4.item (yyvsp4)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -2
+	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+end
+when 69 then
+--|#line 725 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 725")
+end
+
+			yyval4 := yyvs4.item (yyvsp4)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -2
+	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+end
+when 70 then
+--|#line 729 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 729")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
@@ -1831,10 +2014,34 @@ if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
-when 66 then
---|#line 706 "odin_validator.y"
+when 71 then
+--|#line 733 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 706")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 733")
+end
+
+			yyval4 := yyvs4.item (yyvsp4)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+end
+when 72 then
+--|#line 742 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 742")
+end
+
+			yyval4 := yyvs4.item (yyvsp4)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 1
+	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
+end
+when 73 then
+--|#line 748 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 748")
 end
 
 			create yyval19.make(0)
@@ -1855,10 +2062,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
-when 67 then
---|#line 712 "odin_validator.y"
+when 74 then
+--|#line 754 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 712")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 754")
 end
 
 			yyvs19.item (yyvsp19).extend(yyvs4.item (yyvsp4))
@@ -1870,10 +2077,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp4 := yyvsp4 -1
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
-when 68 then
---|#line 720 "odin_validator.y"
+when 75 then
+--|#line 762 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 720")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 762")
 end
 
 			yyval19 := yyvs19.item (yyvsp19)
@@ -1883,10 +2090,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
-when 69 then
---|#line 724 "odin_validator.y"
+when 76 then
+--|#line 766 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 724")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 766")
 end
 
 			create yyval19.make (0)
@@ -1906,10 +2113,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
-when 70 then
---|#line 731 "odin_validator.y"
+when 77 then
+--|#line 773 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 731")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 773")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
@@ -1918,10 +2125,10 @@ if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
-when 71 then
---|#line 734 "odin_validator.y"
+when 78 then
+--|#line 776 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 734")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 776")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
@@ -1931,10 +2138,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
-when 72 then
---|#line 737 "odin_validator.y"
+when 79 then
+--|#line 779 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 737")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 779")
 end
 
 			yyval2 := - yyvs2.item (yyvsp2)
@@ -1944,10 +2151,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
-when 73 then
---|#line 742 "odin_validator.y"
+when 80 then
+--|#line 784 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 742")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 784")
 end
 
 			create yyval20.make(0)
@@ -1968,10 +2175,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
-when 74 then
---|#line 748 "odin_validator.y"
+when 81 then
+--|#line 790 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 748")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 790")
 end
 
 			yyvs20.item (yyvsp20).extend(yyvs2.item (yyvsp2))
@@ -1983,10 +2190,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp2 := yyvsp2 -1
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
-when 75 then
---|#line 753 "odin_validator.y"
+when 82 then
+--|#line 795 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 753")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 795")
 end
 
 			create yyval20.make(0)
@@ -2006,14 +2213,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
-when 76 then
---|#line 760 "odin_validator.y"
+when 83 then
+--|#line 802 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 760")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 802")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
-				create yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), True, True)
+				create {PROPER_INTERVAL [INTEGER]} yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
@@ -2032,14 +2239,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 77 then
---|#line 768 "odin_validator.y"
+when 84 then
+--|#line 810 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 768")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 810")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
-				create yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), False, True)
+				create {PROPER_INTERVAL [INTEGER]} yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
@@ -2058,14 +2265,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 78 then
---|#line 776 "odin_validator.y"
+when 85 then
+--|#line 818 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 776")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 818")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
-				create yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), True, False)
+				create {PROPER_INTERVAL [INTEGER]} yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
@@ -2084,14 +2291,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 79 then
---|#line 784 "odin_validator.y"
+when 86 then
+--|#line 826 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 784")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 826")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
-				create yyval30.make_bounded(yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), False, False)
+				create {PROPER_INTERVAL [INTEGER]} yyval30.make_bounded (yyvs2.item (yyvsp2 - 1), yyvs2.item (yyvsp2), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
@@ -2110,13 +2317,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 80 then
---|#line 792 "odin_validator.y"
+when 87 then
+--|#line 834 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 792")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 834")
 end
 
-			create yyval30.make_lower_unbounded(yyvs2.item (yyvsp2), False)
+			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2132,13 +2339,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 81 then
---|#line 796 "odin_validator.y"
+when 88 then
+--|#line 838 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 796")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 838")
 end
 
-			create yyval30.make_lower_unbounded(yyvs2.item (yyvsp2), True)
+			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2154,13 +2361,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 82 then
---|#line 800 "odin_validator.y"
+when 89 then
+--|#line 842 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 800")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 842")
 end
 
-			create yyval30.make_upper_unbounded(yyvs2.item (yyvsp2), False)
+			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2176,13 +2383,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 83 then
---|#line 804 "odin_validator.y"
+when 90 then
+--|#line 846 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 804")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 846")
 end
 
-			create yyval30.make_upper_unbounded(yyvs2.item (yyvsp2), True)
+			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2198,13 +2405,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 84 then
---|#line 808 "odin_validator.y"
+when 91 then
+--|#line 850 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 808")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 850")
 end
 
-			create yyval30.make_point(yyvs2.item (yyvsp2))
+			create {POINT_INTERVAL [INTEGER]} yyval30.make (yyvs2.item (yyvsp2))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -2220,10 +2427,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
-when 85 then
---|#line 814 "odin_validator.y"
+when 92 then
+--|#line 856 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 814")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 856")
+end
+
+			create yyval37.make(0)
+			yyval37.extend(yyvs30.item (yyvsp30 - 1))
+			yyval37.extend(yyvs30.item (yyvsp30))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp37 := yyvsp37 + 1
+	yyvsp30 := yyvsp30 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp37 >= yyvsc37 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs37")
+		end
+		yyvsc37 := yyvsc37 + yyInitial_yyvs_size
+		yyvs37 := yyspecial_routines37.aliased_resized_area (yyvs37, yyvsc37)
+	end
+	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
+end
+when 93 then
+--|#line 862 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 862")
+end
+
+			yyvs37.item (yyvsp37).extend(yyvs30.item (yyvsp30))
+			yyval37 := yyvs37.item (yyvsp37)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp30 := yyvsp30 -1
+	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
+end
+when 94 then
+--|#line 867 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 867")
+end
+
+			create yyval37.make(0)
+			yyval37.extend(yyvs30.item (yyvsp30))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp37 := yyvsp37 + 1
+	yyvsp30 := yyvsp30 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp37 >= yyvsc37 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs37")
+		end
+		yyvsc37 := yyvsc37 + yyInitial_yyvs_size
+		yyvs37 := yyspecial_routines37.aliased_resized_area (yyvs37, yyvsc37)
+	end
+	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
+end
+when 95 then
+--|#line 874 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 874")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
@@ -2232,10 +2501,10 @@ if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
-when 86 then
---|#line 818 "odin_validator.y"
+when 96 then
+--|#line 878 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 818")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 878")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
@@ -2245,10 +2514,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
-when 87 then
---|#line 822 "odin_validator.y"
+when 97 then
+--|#line 882 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 822")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 882")
 end
 
 			yyval3 := - yyvs3.item (yyvsp3)
@@ -2258,10 +2527,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
-when 88 then
---|#line 828 "odin_validator.y"
+when 98 then
+--|#line 888 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 828")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 888")
 end
 
 			create yyval21.make(0)
@@ -2282,10 +2551,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
-when 89 then
---|#line 834 "odin_validator.y"
+when 99 then
+--|#line 894 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 834")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 894")
 end
 
 			yyvs21.item (yyvsp21).extend(yyvs3.item (yyvsp3))
@@ -2297,10 +2566,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp3 := yyvsp3 -1
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
-when 90 then
---|#line 839 "odin_validator.y"
+when 100 then
+--|#line 899 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 839")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 899")
 end
 
 			create yyval21.make(0)
@@ -2320,14 +2589,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
-when 91 then
---|#line 846 "odin_validator.y"
+when 101 then
+--|#line 906 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 846")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 906")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
-				create yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), True, True)
+				create {PROPER_INTERVAL [REAL]} yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
@@ -2346,14 +2615,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 92 then
---|#line 854 "odin_validator.y"
+when 102 then
+--|#line 914 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 854")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 914")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
-				create yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), False, True)
+				create {PROPER_INTERVAL [REAL]} yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
@@ -2372,14 +2641,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 93 then
---|#line 862 "odin_validator.y"
+when 103 then
+--|#line 922 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 862")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 922")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
-				create yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), True, False)
+				create {PROPER_INTERVAL [REAL]} yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
@@ -2398,14 +2667,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 94 then
---|#line 870 "odin_validator.y"
+when 104 then
+--|#line 930 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 870")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 930")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
-				create yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), False, False)
+				create {PROPER_INTERVAL [REAL]} yyval31.make_bounded(yyvs3.item (yyvsp3 - 1), yyvs3.item (yyvsp3), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
@@ -2424,13 +2693,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 95 then
---|#line 878 "odin_validator.y"
+when 105 then
+--|#line 938 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 878")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 938")
 end
 
-			create yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), False)
+			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2446,13 +2715,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 96 then
---|#line 882 "odin_validator.y"
+when 106 then
+--|#line 942 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 882")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 942")
 end
 
-			create yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), True)
+			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2468,13 +2737,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 97 then
---|#line 886 "odin_validator.y"
+when 107 then
+--|#line 946 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 886")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 946")
 end
 
-			create yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), False)
+			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2490,13 +2759,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 98 then
---|#line 890 "odin_validator.y"
+when 108 then
+--|#line 950 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 890")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 950")
 end
 
-			create yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), True)
+			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2512,13 +2781,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 99 then
---|#line 894 "odin_validator.y"
+when 109 then
+--|#line 954 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 894")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 954")
 end
 
-			create yyval31.make_point(yyvs3.item (yyvsp3))
+			create {POINT_INTERVAL [REAL]} yyval31.make(yyvs3.item (yyvsp3))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -2534,10 +2803,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
-when 100 then
---|#line 900 "odin_validator.y"
+when 110 then
+--|#line 960 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 900")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 960")
+end
+
+			create yyval38.make(0)
+			yyval38.extend(yyvs31.item (yyvsp31 - 1))
+			yyval38.extend(yyvs31.item (yyvsp31))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp38 := yyvsp38 + 1
+	yyvsp31 := yyvsp31 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp38 >= yyvsc38 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs38")
+		end
+		yyvsc38 := yyvsc38 + yyInitial_yyvs_size
+		yyvs38 := yyspecial_routines38.aliased_resized_area (yyvs38, yyvsc38)
+	end
+	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
+end
+when 111 then
+--|#line 966 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 966")
+end
+
+			yyvs38.item (yyvsp38).extend(yyvs31.item (yyvsp31))
+			yyval38 := yyvs38.item (yyvsp38)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp31 := yyvsp31 -1
+	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
+end
+when 112 then
+--|#line 971 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 971")
+end
+
+			create yyval38.make(0)
+			yyval38.extend(yyvs31.item (yyvsp31))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp38 := yyvsp38 + 1
+	yyvsp31 := yyvsp31 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp38 >= yyvsc38 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs38")
+		end
+		yyvsc38 := yyvsc38 + yyInitial_yyvs_size
+		yyvs38 := yyspecial_routines38.aliased_resized_area (yyvs38, yyvsc38)
+	end
+	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
+end
+when 113 then
+--|#line 978 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 978")
 end
 
 			yyval6 := True
@@ -2555,10 +2886,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines6.force (yyvs6, yyval6, yyvsp6)
 end
-when 101 then
---|#line 904 "odin_validator.y"
+when 114 then
+--|#line 982 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 904")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 982")
 end
 
 			yyval6 := False
@@ -2576,10 +2907,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines6.force (yyvs6, yyval6, yyvsp6)
 end
-when 102 then
---|#line 910 "odin_validator.y"
+when 115 then
+--|#line 988 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 910")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 988")
 end
 
 			create yyval23.make(0)
@@ -2600,10 +2931,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
-when 103 then
---|#line 916 "odin_validator.y"
+when 116 then
+--|#line 994 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 916")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 994")
 end
 
 			yyvs23.item (yyvsp23).extend(yyvs6.item (yyvsp6))
@@ -2615,10 +2946,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp6 := yyvsp6 -1
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
-when 104 then
---|#line 921 "odin_validator.y"
+when 117 then
+--|#line 999 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 921")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 999")
 end
 
 			create yyval23.make(0)
@@ -2638,10 +2969,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
-when 105 then
---|#line 928 "odin_validator.y"
+when 118 then
+--|#line 1006 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 928")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1006")
 end
 
 			yyval5 := yyvs5.item (yyvsp5)
@@ -2650,10 +2981,10 @@ if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines5.force (yyvs5, yyval5, yyvsp5)
 end
-when 106 then
---|#line 934 "odin_validator.y"
+when 119 then
+--|#line 1012 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 934")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1012")
 end
 
 			create yyval22.make(0)
@@ -2674,10 +3005,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
-when 107 then
---|#line 940 "odin_validator.y"
+when 120 then
+--|#line 1018 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 940")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1018")
 end
 
 			yyvs22.item (yyvsp22).extend(yyvs5.item (yyvsp5))
@@ -2689,10 +3020,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp5 := yyvsp5 -1
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
-when 108 then
---|#line 945 "odin_validator.y"
+when 121 then
+--|#line 1023 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 945")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1023")
 end
 
 			create yyval22.make(0)
@@ -2712,10 +3043,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
-when 109 then
---|#line 952 "odin_validator.y"
+when 122 then
+--|#line 1030 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 952")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1030")
 end
 
 			if valid_iso8601_date(yyvs4.item (yyvsp4)) then
@@ -2737,10 +3068,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines7.force (yyvs7, yyval7, yyvsp7)
 end
-when 110 then
---|#line 962 "odin_validator.y"
+when 123 then
+--|#line 1040 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 962")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1040")
 end
 
 			create yyval24.make(0)
@@ -2761,10 +3092,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
-when 111 then
---|#line 968 "odin_validator.y"
+when 124 then
+--|#line 1046 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 968")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1046")
 end
 
 			yyvs24.item (yyvsp24).extend (yyvs7.item (yyvsp7))
@@ -2776,10 +3107,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp7 := yyvsp7 -1
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
-when 112 then
---|#line 973 "odin_validator.y"
+when 125 then
+--|#line 1051 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 973")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1051")
 end
 
 			create yyval24.make(0)
@@ -2799,14 +3130,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
-when 113 then
---|#line 980 "odin_validator.y"
+when 126 then
+--|#line 1058 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 980")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1058")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
-				create yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), True, True)
+				create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
@@ -2825,14 +3156,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 114 then
---|#line 988 "odin_validator.y"
+when 127 then
+--|#line 1066 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 988")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1066")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
-				create yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), False, True)
+				create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
@@ -2851,14 +3182,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 115 then
---|#line 996 "odin_validator.y"
+when 128 then
+--|#line 1074 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 996")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1074")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
-				create yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), True, False)
+				create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
@@ -2877,14 +3208,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 116 then
---|#line 1004 "odin_validator.y"
+when 129 then
+--|#line 1082 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1004")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1082")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
-				create yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), False, False)
+				create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_bounded(yyvs7.item (yyvsp7 - 1), yyvs7.item (yyvsp7), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
@@ -2903,13 +3234,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 117 then
---|#line 1012 "odin_validator.y"
+when 130 then
+--|#line 1090 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1012")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1090")
 end
 
-			create yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), False)
+			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2925,13 +3256,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 118 then
---|#line 1016 "odin_validator.y"
+when 131 then
+--|#line 1094 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1016")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1094")
 end
 
-			create yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), True)
+			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2947,13 +3278,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 119 then
---|#line 1020 "odin_validator.y"
+when 132 then
+--|#line 1098 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1020")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1098")
 end
 
-			create yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), False)
+			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2969,13 +3300,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 120 then
---|#line 1024 "odin_validator.y"
+when 133 then
+--|#line 1102 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1024")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1102")
 end
 
-			create yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), True)
+			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -2991,13 +3322,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 121 then
---|#line 1028 "odin_validator.y"
+when 134 then
+--|#line 1106 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1028")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1106")
 end
 
-			create yyval33.make_point(yyvs7.item (yyvsp7))
+			create {POINT_INTERVAL [ISO8601_DATE]} yyval33.make (yyvs7.item (yyvsp7))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -3013,10 +3344,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
-when 122 then
---|#line 1034 "odin_validator.y"
+when 135 then
+--|#line 1112 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1034")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1112")
+end
+
+			create yyval40.make(0)
+			yyval40.extend(yyvs33.item (yyvsp33 - 1))
+			yyval40.extend(yyvs33.item (yyvsp33))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp40 := yyvsp40 + 1
+	yyvsp33 := yyvsp33 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp40 >= yyvsc40 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs40")
+		end
+		yyvsc40 := yyvsc40 + yyInitial_yyvs_size
+		yyvs40 := yyspecial_routines40.aliased_resized_area (yyvs40, yyvsc40)
+	end
+	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
+end
+when 136 then
+--|#line 1118 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1118")
+end
+
+			yyvs40.item (yyvsp40).extend(yyvs33.item (yyvsp33))
+			yyval40 := yyvs40.item (yyvsp40)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp33 := yyvsp33 -1
+	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
+end
+when 137 then
+--|#line 1123 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1123")
+end
+
+			create yyval40.make(0)
+			yyval40.extend(yyvs33.item (yyvsp33))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp40 := yyvsp40 + 1
+	yyvsp33 := yyvsp33 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp40 >= yyvsc40 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs40")
+		end
+		yyvsc40 := yyvsc40 + yyInitial_yyvs_size
+		yyvs40 := yyspecial_routines40.aliased_resized_area (yyvs40, yyvsc40)
+	end
+	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
+end
+when 138 then
+--|#line 1130 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1130")
 end
 
 			if valid_iso8601_time(yyvs4.item (yyvsp4)) then
@@ -3038,10 +3431,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines9.force (yyvs9, yyval9, yyvsp9)
 end
-when 123 then
---|#line 1044 "odin_validator.y"
+when 139 then
+--|#line 1140 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1044")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1140")
 end
 
 			create yyval25.make(0)
@@ -3062,10 +3455,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
-when 124 then
---|#line 1050 "odin_validator.y"
+when 140 then
+--|#line 1146 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1050")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1146")
 end
 
 			yyvs25.item (yyvsp25).extend(yyvs9.item (yyvsp9))
@@ -3077,10 +3470,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp9 := yyvsp9 -1
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
-when 125 then
---|#line 1055 "odin_validator.y"
+when 141 then
+--|#line 1151 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1055")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1151")
 end
 
 			create yyval25.make(0)
@@ -3100,14 +3493,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
-when 126 then
---|#line 1062 "odin_validator.y"
+when 142 then
+--|#line 1158 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1062")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1158")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
-				create yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), True, True)
+				create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
@@ -3126,14 +3519,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 127 then
---|#line 1070 "odin_validator.y"
+when 143 then
+--|#line 1166 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1070")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1166")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
-				create yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), False, True)
+				create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
@@ -3152,14 +3545,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 128 then
---|#line 1078 "odin_validator.y"
+when 144 then
+--|#line 1174 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1078")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1174")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
-				create yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), True, False)
+				create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
@@ -3178,14 +3571,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 129 then
---|#line 1086 "odin_validator.y"
+when 145 then
+--|#line 1182 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1086")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1182")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
-				create yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), False, False)
+				create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_bounded(yyvs9.item (yyvsp9 - 1), yyvs9.item (yyvsp9), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
@@ -3204,13 +3597,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 130 then
---|#line 1094 "odin_validator.y"
+when 146 then
+--|#line 1190 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1094")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1190")
 end
 
-			create yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), False)
+			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3226,13 +3619,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 131 then
---|#line 1098 "odin_validator.y"
+when 147 then
+--|#line 1194 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1098")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1194")
 end
 
-			create yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), True)
+			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3248,13 +3641,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 132 then
---|#line 1102 "odin_validator.y"
+when 148 then
+--|#line 1198 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1102")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1198")
 end
 
-			create yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), False)
+			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3270,13 +3663,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 133 then
---|#line 1106 "odin_validator.y"
+when 149 then
+--|#line 1202 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1106")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1202")
 end
 
-			create yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), True)
+			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3292,13 +3685,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 134 then
---|#line 1110 "odin_validator.y"
+when 150 then
+--|#line 1206 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1110")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1206")
 end
 
-			create yyval32.make_point(yyvs9.item (yyvsp9))
+			create {POINT_INTERVAL [ISO8601_TIME]} yyval32.make (yyvs9.item (yyvsp9))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -3314,10 +3707,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
-when 135 then
---|#line 1116 "odin_validator.y"
+when 151 then
+--|#line 1212 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1116")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1212")
+end
+
+			create yyval39.make(0)
+			yyval39.extend(yyvs32.item (yyvsp32 - 1))
+			yyval39.extend(yyvs32.item (yyvsp32))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp39 := yyvsp39 + 1
+	yyvsp32 := yyvsp32 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp39 >= yyvsc39 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs39")
+		end
+		yyvsc39 := yyvsc39 + yyInitial_yyvs_size
+		yyvs39 := yyspecial_routines39.aliased_resized_area (yyvs39, yyvsc39)
+	end
+	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
+end
+when 152 then
+--|#line 1218 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1218")
+end
+
+			yyvs39.item (yyvsp39).extend(yyvs32.item (yyvsp32))
+			yyval39 := yyvs39.item (yyvsp39)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp32 := yyvsp32 -1
+	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
+end
+when 153 then
+--|#line 1223 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1223")
+end
+
+			create yyval39.make(0)
+			yyval39.extend(yyvs32.item (yyvsp32))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp39 := yyvsp39 + 1
+	yyvsp32 := yyvsp32 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp39 >= yyvsc39 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs39")
+		end
+		yyvsc39 := yyvsc39 + yyInitial_yyvs_size
+		yyvs39 := yyspecial_routines39.aliased_resized_area (yyvs39, yyvsc39)
+	end
+	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
+end
+when 154 then
+--|#line 1230 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1230")
 end
 
 			if valid_iso8601_date_time(yyvs4.item (yyvsp4)) then
@@ -3339,10 +3794,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines8.force (yyvs8, yyval8, yyvsp8)
 end
-when 136 then
---|#line 1126 "odin_validator.y"
+when 155 then
+--|#line 1240 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1126")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1240")
 end
 
 			create yyval26.make(0)
@@ -3363,10 +3818,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
-when 137 then
---|#line 1132 "odin_validator.y"
+when 156 then
+--|#line 1246 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1132")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1246")
 end
 
 			yyvs26.item (yyvsp26).extend(yyvs8.item (yyvsp8))
@@ -3378,10 +3833,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp8 := yyvsp8 -1
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
-when 138 then
---|#line 1137 "odin_validator.y"
+when 157 then
+--|#line 1251 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1137")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1251")
 end
 
 			create yyval26.make(0)
@@ -3401,14 +3856,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
-when 139 then
---|#line 1144 "odin_validator.y"
+when 158 then
+--|#line 1258 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1144")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1258")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
-				create yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), True, True)
+				create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
@@ -3427,14 +3882,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 140 then
---|#line 1152 "odin_validator.y"
+when 159 then
+--|#line 1266 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1152")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1266")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
-				create yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), False, True)
+				create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
@@ -3453,14 +3908,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 141 then
---|#line 1160 "odin_validator.y"
+when 160 then
+--|#line 1274 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1160")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1274")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
-				create yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), True, False)
+				create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
@@ -3479,14 +3934,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 142 then
---|#line 1168 "odin_validator.y"
+when 161 then
+--|#line 1282 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1168")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1282")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
-				create yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), False, False)
+				create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_bounded(yyvs8.item (yyvsp8 - 1), yyvs8.item (yyvsp8), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
@@ -3505,13 +3960,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 143 then
---|#line 1176 "odin_validator.y"
+when 162 then
+--|#line 1290 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1176")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1290")
 end
 
-			create yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), False)
+			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3527,13 +3982,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 144 then
---|#line 1180 "odin_validator.y"
+when 163 then
+--|#line 1294 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1180")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1294")
 end
 
-			create yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), True)
+			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3549,13 +4004,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 145 then
---|#line 1184 "odin_validator.y"
+when 164 then
+--|#line 1298 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1184")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1298")
 end
 
-			create yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), False)
+			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3571,13 +4026,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 146 then
---|#line 1188 "odin_validator.y"
+when 165 then
+--|#line 1302 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1188")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1302")
 end
 
-			create yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), True)
+			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3593,13 +4048,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 147 then
---|#line 1192 "odin_validator.y"
+when 166 then
+--|#line 1306 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1192")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1306")
 end
 
-			create yyval34.make_point(yyvs8.item (yyvsp8))
+			create {POINT_INTERVAL [ISO8601_DATE_TIME]} yyval34.make (yyvs8.item (yyvsp8))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -3615,10 +4070,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
-when 148 then
---|#line 1198 "odin_validator.y"
+when 167 then
+--|#line 1312 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1198")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1312")
+end
+
+			create yyval41.make(0)
+			yyval41.extend(yyvs34.item (yyvsp34 - 1))
+			yyval41.extend(yyvs34.item (yyvsp34))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp41 := yyvsp41 + 1
+	yyvsp34 := yyvsp34 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp41 >= yyvsc41 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs41")
+		end
+		yyvsc41 := yyvsc41 + yyInitial_yyvs_size
+		yyvs41 := yyspecial_routines41.aliased_resized_area (yyvs41, yyvsc41)
+	end
+	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
+end
+when 168 then
+--|#line 1318 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1318")
+end
+
+			yyvs41.item (yyvsp41).extend(yyvs34.item (yyvsp34))
+			yyval41 := yyvs41.item (yyvsp41)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp34 := yyvsp34 -1
+	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
+end
+when 169 then
+--|#line 1323 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1323")
+end
+
+			create yyval41.make(0)
+			yyval41.extend(yyvs34.item (yyvsp34))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp41 := yyvsp41 + 1
+	yyvsp34 := yyvsp34 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp41 >= yyvsc41 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs41")
+		end
+		yyvsc41 := yyvsc41 + yyInitial_yyvs_size
+		yyvs41 := yyspecial_routines41.aliased_resized_area (yyvs41, yyvsc41)
+	end
+	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
+end
+when 170 then
+--|#line 1330 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1330")
 end
 
 			if valid_iso8601_duration(yyvs4.item (yyvsp4)) then
@@ -3640,10 +4157,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines10.force (yyvs10, yyval10, yyvsp10)
 end
-when 149 then
---|#line 1208 "odin_validator.y"
+when 171 then
+--|#line 1340 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1208")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1340")
 end
 
 			create yyval27.make(0)
@@ -3664,10 +4181,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
-when 150 then
---|#line 1214 "odin_validator.y"
+when 172 then
+--|#line 1346 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1214")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1346")
 end
 
 			yyvs27.item (yyvsp27).extend(yyvs10.item (yyvsp10))
@@ -3679,10 +4196,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp10 := yyvsp10 -1
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
-when 151 then
---|#line 1219 "odin_validator.y"
+when 173 then
+--|#line 1351 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1219")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1351")
 end
 
 			create yyval27.make(0)
@@ -3702,14 +4219,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
-when 152 then
---|#line 1226 "odin_validator.y"
+when 174 then
+--|#line 1358 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1226")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1358")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
-				create yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), True, True)
+				create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), True, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
@@ -3728,14 +4245,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 153 then
---|#line 1234 "odin_validator.y"
+when 175 then
+--|#line 1366 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1234")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1366")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
-				create yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), False, True)
+				create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), False, True)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
@@ -3754,14 +4271,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 154 then
---|#line 1242 "odin_validator.y"
+when 176 then
+--|#line 1374 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1242")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1374")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
-				create yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), True, False)
+				create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), True, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
@@ -3780,14 +4297,14 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 155 then
---|#line 1250 "odin_validator.y"
+when 177 then
+--|#line 1382 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1250")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1382")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
-				create yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), False, False)
+				create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_bounded(yyvs10.item (yyvsp10 - 1), yyvs10.item (yyvsp10), False, False)
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
@@ -3806,13 +4323,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 156 then
---|#line 1258 "odin_validator.y"
+when 178 then
+--|#line 1390 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1258")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1390")
 end
 
-			create yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), False)
+			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3828,13 +4345,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 157 then
---|#line 1262 "odin_validator.y"
+when 179 then
+--|#line 1394 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1262")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1394")
 end
 
-			create yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), True)
+			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3850,13 +4367,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 158 then
---|#line 1266 "odin_validator.y"
+when 180 then
+--|#line 1398 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1266")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1398")
 end
 
-			create yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), False)
+			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), False)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3872,13 +4389,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 159 then
---|#line 1270 "odin_validator.y"
+when 181 then
+--|#line 1402 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1270")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1402")
 end
 
-			create yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), True)
+			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), True)
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
@@ -3894,13 +4411,13 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 160 then
---|#line 1274 "odin_validator.y"
+when 182 then
+--|#line 1406 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1274")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1406")
 end
 
-			create yyval35.make_point(yyvs10.item (yyvsp10))
+			create {POINT_INTERVAL [ISO8601_DURATION]} yyval35.make (yyvs10.item (yyvsp10))
 		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
@@ -3916,10 +4433,72 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
-when 161 then
---|#line 1280 "odin_validator.y"
+when 183 then
+--|#line 1412 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1280")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1412")
+end
+
+			create yyval42.make(0)
+			yyval42.extend(yyvs35.item (yyvsp35 - 1))
+			yyval42.extend(yyvs35.item (yyvsp35))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp42 := yyvsp42 + 1
+	yyvsp35 := yyvsp35 -2
+	yyvsp1 := yyvsp1 -1
+	if yyvsp42 >= yyvsc42 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs42")
+		end
+		yyvsc42 := yyvsc42 + yyInitial_yyvs_size
+		yyvs42 := yyspecial_routines42.aliased_resized_area (yyvs42, yyvsc42)
+	end
+	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
+end
+when 184 then
+--|#line 1418 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1418")
+end
+
+			yyvs42.item (yyvsp42).extend(yyvs35.item (yyvsp35))
+			yyval42 := yyvs42.item (yyvsp42)
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp1 := yyvsp1 -1
+	yyvsp35 := yyvsp35 -1
+	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
+end
+when 185 then
+--|#line 1423 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1423")
+end
+
+			create yyval42.make(0)
+			yyval42.extend(yyvs35.item (yyvsp35))
+		
+if yy_parsing_status >= yyContinue then
+	yyssp := yyssp - 3
+	yyvsp42 := yyvsp42 + 1
+	yyvsp35 := yyvsp35 -1
+	yyvsp1 := yyvsp1 -2
+	if yyvsp42 >= yyvsc42 then
+		debug ("GEYACC")
+			std.error.put_line ("Resize yyvs42")
+		end
+		yyvsc42 := yyvsc42 + yyInitial_yyvs_size
+		yyvs42 := yyspecial_routines42.aliased_resized_area (yyvs42, yyvsc42)
+	end
+	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
+end
+when 186 then
+--|#line 1430 "odin_validator.y"
+debug ("GEYACC")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1430")
 end
 
 			create yyval11.make_from_string (yyvs4.item (yyvsp4))
@@ -3937,10 +4516,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
-when 162 then
---|#line 1284 "odin_validator.y"
+when 187 then
+--|#line 1434 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1284")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1434")
 end
 
 			abort_with_error (ec_STNC, <<yyvs4.item (yyvsp4)>>)
@@ -3958,10 +4537,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
-when 163 then
---|#line 1288 "odin_validator.y"
+when 188 then
+--|#line 1438 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1288")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1438")
 end
 
 			abort_with_error (ec_STCV, <<yyvs4.item (yyvsp4)>>)
@@ -3979,10 +4558,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
-when 164 then
---|#line 1294 "odin_validator.y"
+when 189 then
+--|#line 1444 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1294")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1444")
 end
 
 			create yyval28.make(0)
@@ -4003,10 +4582,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
-when 165 then
---|#line 1300 "odin_validator.y"
+when 190 then
+--|#line 1450 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1300")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1450")
 end
 
 			yyvs28.item (yyvsp28).extend(yyvs11.item (yyvsp11))
@@ -4018,10 +4597,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp11 := yyvsp11 -1
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
-when 166 then
---|#line 1305 "odin_validator.y"
+when 191 then
+--|#line 1455 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1305")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1455")
 end
 
 			create yyval28.make(0)
@@ -4041,10 +4620,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
-when 167 then
---|#line 1312 "odin_validator.y"
+when 192 then
+--|#line 1462 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1312")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1462")
 end
 
 			create yyval12.make_from_string(yyvs4.item (yyvsp4))
@@ -4062,10 +4641,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines12.force (yyvs12, yyval12, yyvsp12)
 end
-when 168 then
---|#line 1322 "odin_validator.y"
+when 193 then
+--|#line 1472 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1322")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1472")
 end
 
 debug("ODIN_parse")
@@ -4085,10 +4664,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
-when 169 then
---|#line 1338 "odin_validator.y"
+when 194 then
+--|#line 1488 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1338")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1488")
 end
 
 			if not obj_key.is_empty then
@@ -4111,10 +4690,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
-when 170 then
---|#line 1347 "odin_validator.y"
+when 195 then
+--|#line 1497 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1347")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1497")
 end
 
 			if not obj_key.is_empty then
@@ -4137,10 +4716,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
-when 171 then
---|#line 1359 "odin_validator.y"
+when 196 then
+--|#line 1509 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1359")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1509")
 end
 
 			create yyval18.make(0)
@@ -4161,10 +4740,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
-when 172 then
---|#line 1365 "odin_validator.y"
+when 197 then
+--|#line 1515 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1365")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1515")
 end
 
 			yyvs18.item (yyvsp18).extend(yyvs16.item (yyvsp16))
@@ -4176,10 +4755,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp16 := yyvsp16 -1
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
-when 173 then
---|#line 1370 "odin_validator.y"
+when 198 then
+--|#line 1520 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1370")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1520")
 end
 
 			create yyval18.make(0)
@@ -4199,10 +4778,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
-when 174 then
---|#line 1382 "odin_validator.y"
+when 199 then
+--|#line 1532 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1382")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1532")
 end
 
 			create yyval16.make_root
@@ -4223,10 +4802,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
-when 175 then
---|#line 1389 "odin_validator.y"
+when 200 then
+--|#line 1539 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1389")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1539")
 end
 
 			yyval16 := yyvs16.item (yyvsp16)
@@ -4240,10 +4819,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
-when 176 then
---|#line 1397 "odin_validator.y"
+when 201 then
+--|#line 1547 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1397")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1547")
 end
 
 			yyval16 := yyvs16.item (yyvsp16 - 1)
@@ -4258,10 +4837,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
-when 177 then
---|#line 1407 "odin_validator.y"
+when 202 then
+--|#line 1557 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1407")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1557")
 end
 
 			create yyval16.make_relative(yyvs17.item (yyvsp17))
@@ -4279,10 +4858,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
-when 178 then
---|#line 1411 "odin_validator.y"
+when 203 then
+--|#line 1561 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1411")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1561")
 end
 
 			yyval16 := yyvs16.item (yyvsp16)
@@ -4294,10 +4873,10 @@ if yy_parsing_status >= yyContinue then
 	yyvsp17 := yyvsp17 -1
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
-when 179 then
---|#line 1418 "odin_validator.y"
+when 204 then
+--|#line 1568 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1418")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1568")
 end
 
 			create yyval17.make_with_object_id(yyvs4.item (yyvsp4 - 1), yyvs4.item (yyvsp4))
@@ -4319,10 +4898,10 @@ if yy_parsing_status >= yyContinue then
 	end
 	yyspecial_routines17.force (yyvs17, yyval17, yyvsp17)
 end
-when 180 then
---|#line 1425 "odin_validator.y"
+when 205 then
+--|#line 1575 "odin_validator.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1425")
+	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1575")
 end
 
 			create yyval17.make(yyvs4.item (yyvsp4))
@@ -4363,7 +4942,7 @@ end
 			-- Execute error action.
 		do
 			inspect yy_act
-			when 324 then
+			when 391 then
 					-- End-of-file expected action.
 				report_eof_expected_error
 			else
@@ -4415,26 +4994,29 @@ feature {NONE} -- Table templates
 			-- Template for `yyr1'
 		once
 			Result := yyfixed_array (<<
-			    0,   89,   89,   89,   90,   90,   90,   91,   92,   92,
-			   93,   93,   93,   93,   59,   59,   57,   57,   58,   94,
-			   95,   95,   96,   97,   55,   55,   56,   98,   61,   61,
-			   60,   63,   63,   63,   63,   63,   65,   65,   65,   65,
-			   65,   65,   65,   65,   65,   65,   81,   81,   81,   81,
-			   81,   81,   81,   81,   81,   88,   88,   88,   88,   88,
-			   88,   44,   44,   44,   44,   70,   71,   71,   71,   71,
-			   45,   45,   45,   72,   72,   72,   82,   82,   82,   82,
-			   82,   82,   82,   82,   82,   46,   46,   46,   73,   73,
-			   73,   83,   83,   83,   83,   83,   83,   83,   83,   83,
+			    0,   96,   96,   96,   97,   97,   97,   98,   99,   99,
+			  100,  100,  100,  100,   59,   59,   57,   57,   58,  101,
+			  102,  102,  103,  104,   55,   55,   56,  105,   61,   61,
+			   60,   63,   63,   63,   63,   63,   63,   65,   65,   65,
+			   65,   65,   65,   65,   65,   65,   65,   81,   81,   81,
+			   81,   81,   81,   81,   81,   81,   88,   88,   88,   88,
+			   88,   88,   95,   95,   95,   95,   95,   95,   44,   44,
+			   44,   44,   70,   71,   71,   71,   71,   45,   45,   45,
+			   72,   72,   72,   82,   82,   82,   82,   82,   82,   82,
+			   82,   82,   89,   89,   89,   46,   46,   46,   73,   73,
 
-			   47,   47,   75,   75,   75,   48,   74,   74,   74,   49,
-			   76,   76,   76,   85,   85,   85,   85,   85,   85,   85,
-			   85,   85,   51,   77,   77,   77,   84,   84,   84,   84,
-			   84,   84,   84,   84,   84,   50,   78,   78,   78,   86,
-			   86,   86,   86,   86,   86,   86,   86,   86,   52,   79,
-			   79,   79,   87,   87,   87,   87,   87,   87,   87,   87,
-			   87,   53,   53,   53,   80,   80,   80,   54,   62,   64,
-			   64,   69,   69,   69,   66,   66,   66,   67,   67,   68,
-			   68, yyDummy>>)
+			   73,   83,   83,   83,   83,   83,   83,   83,   83,   83,
+			   90,   90,   90,   47,   47,   75,   75,   75,   48,   74,
+			   74,   74,   49,   76,   76,   76,   85,   85,   85,   85,
+			   85,   85,   85,   85,   85,   92,   92,   92,   51,   77,
+			   77,   77,   84,   84,   84,   84,   84,   84,   84,   84,
+			   84,   91,   91,   91,   50,   78,   78,   78,   86,   86,
+			   86,   86,   86,   86,   86,   86,   86,   93,   93,   93,
+			   52,   79,   79,   79,   87,   87,   87,   87,   87,   87,
+			   87,   87,   87,   94,   94,   94,   53,   53,   53,   80,
+			   80,   80,   54,   62,   64,   64,   69,   69,   69,   66,
+
+			   66,   66,   67,   67,   68,   68, yyDummy>>)
 		end
 
 	yytypes1_template: SPECIAL [INTEGER]
@@ -4452,31 +5034,38 @@ feature {NONE} -- Table templates
 			    7,    8,    9,   10,   11,   14,   14,   15,   16,   18,
 			   19,   20,   21,   22,   23,   24,   25,   26,   27,   28,
 
-			   29,   30,   31,   32,   33,   34,   35,   36,    1,   14,
-			    3,    2,    3,    2,    1,    1,    4,   16,   17,    1,
-			    1,    1,    1,    2,    3,    7,    8,    9,   10,    1,
+			   29,   30,   31,   32,   33,   34,   35,   36,   37,   38,
+			   39,   40,   41,   42,   43,    1,   14,    3,    2,    3,
+			    2,    1,    1,    4,   16,   17,    1,    1,    1,    1,
+			    2,    3,    7,    8,    9,   10,    1,    1,    1,    1,
 			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    2,    3,    7,    8,
-			    9,   10,    2,    3,    7,    8,    9,   10,    2,    3,
-			    7,    8,    9,   10,    2,    3,    7,    8,    9,   10,
 			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    4,    1,    1,    1,    2,    1,    1,
+			    1,    1,    1,    1,    1,    2,    3,    7,    8,    9,
+			   10,    2,    3,    7,    8,    9,   10,    2,    3,    7,
+			    8,    9,   10,    2,    3,    7,    8,    9,   10,    1,
 
-			    1,    3,    1,    6,    1,    5,    1,    7,    1,    8,
-			    1,    9,    1,   10,    1,   11,   16,    1,   16,   16,
-			    1,    4,    2,    3,    5,    6,    7,    9,    8,   10,
-			   11,    4,   17,    1,    1,    1,    1,    1,    1,    1,
+			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+			    1,    1,    4,    1,    1,    1,    2,    1,    1,    1,
+			    3,    1,    6,    1,    5,    1,    7,    1,    8,    1,
+			    9,    1,   10,    1,   11,   16,    1,   16,   16,    1,
+			    4,    2,    3,    5,    6,    7,    9,    8,   10,   11,
+			    1,    1,   30,    1,    1,   31,    1,    1,   32,    1,
+			    1,   33,    1,    1,   34,    1,    1,   35,   30,   31,
+			   32,   33,   34,   35,    4,   17,    1,    1,    1,    1,
+			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+
+			    1,    1,    1,    1,    1,    1,    1,    2,    1,    3,
+			    1,    7,    1,    8,    1,    9,    1,   10,    1,    1,
 			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
 			    1,    1,    1,    1,    2,    1,    3,    1,    7,    1,
-			    8,    1,    9,    1,   10,    1,    1,    2,    1,    3,
-			    1,    7,    1,    8,    1,    9,    1,   10,    2,    1,
-			    3,    1,    7,    1,    8,    1,    9,    1,   10,    1,
-
-			    2,    1,    3,    1,    7,    1,    8,    1,    9,    1,
-			   10,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1, yyDummy>>)
+			    8,    1,    9,    1,   10,    2,    1,    3,    1,    7,
+			    1,    8,    1,    9,    1,   10,    1,    2,    1,    3,
+			    1,    7,    1,    8,    1,    9,    1,   10,    1,    1,
+			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
+			    1,    1,    1,    1, yyDummy>>)
 		end
 
 	yytypes2_template: SPECIAL [INTEGER]
@@ -4494,42 +5083,49 @@ feature {NONE} -- Table templates
 			-- Template for `yydefact'
 		once
 			Result := yyfixed_array (<<
-			    0,    0,   27,    0,   64,   63,    3,    0,   14,   24,
+			    0,    0,   27,    0,   71,   70,    3,    0,   14,   24,
 			   15,   16,    2,    1,    4,    0,    0,    0,    0,    0,
 			    9,   25,   17,    0,    5,    0,    0,    0,   20,    0,
-			    0,   62,   61,    6,   27,    0,   10,   28,   11,   12,
-			    7,    0,    0,  101,  100,  105,  167,  148,  135,  122,
-			  109,   65,   85,   70,   37,   38,   39,   40,   41,   43,
-			   42,   44,   45,    0,   36,   18,   21,    0,   26,  174,
-			  163,    0,   13,  162,  161,   65,   37,   38,   39,   40,
-			   41,   43,   42,   44,   34,    0,    0,   31,  169,  170,
-			   46,   47,   48,   50,   49,   51,   52,   53,   54,   35,
+			    0,   69,   68,    6,   27,    0,   10,   28,   11,   12,
+			    7,    0,    0,  114,  113,  118,  192,  170,  154,  138,
+			  122,   72,   95,   77,   38,   39,   40,   41,   42,   44,
+			   43,   45,   46,    0,   37,   18,   21,    0,   26,  199,
+			  188,    0,   13,  187,  186,   72,   38,   39,   40,   41,
+			   42,   44,   43,   45,   35,    0,    0,   31,  194,  195,
+			   47,   48,   49,   51,   50,   52,   53,   54,   55,   36,
 
-			   32,   55,   56,   58,   57,   59,   60,   33,   27,   29,
-			   87,   72,   86,   71,   23,   22,  180,  175,  177,    0,
+			   32,   56,   57,   59,   58,   60,   61,   33,   62,   63,
+			   65,   64,   66,   67,   34,   27,   29,   97,   79,   96,
+			   78,   23,   22,  205,  200,  202,    0,    0,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-			    0,    0,    0,    0,    0,    0,    0,    0,    0,   30,
-			  168,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,   30,  193,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
 			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
-			   84,    0,   99,    0,  121,    0,  147,    0,  134,    0,
-			  160,    0,   69,   66,    0,    0,   75,   73,    0,    0,
+			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,    0,    0,    0,   91,
 
-			   90,   88,  104,  102,  108,  106,  112,  110,  138,  136,
-			  125,  123,  151,  149,  166,  164,  176,  173,  171,  172,
-			   68,   67,   74,   89,  107,  103,  111,  124,  137,  150,
-			  165,    0,  178,   83,   98,  120,  146,  133,  159,   81,
-			   96,  118,  144,  131,  157,   82,    0,   97,    0,  119,
-			    0,  145,    0,  132,    0,  158,    0,   80,   95,  117,
-			  143,  130,  156,    0,    0,    0,    0,    0,    0,    0,
-			    0,    0,    0,    0,    0,  179,    0,    0,    0,    0,
-			    0,    0,    0,    0,    0,    0,    0,    0,    0,   76,
-			    0,   91,    0,  113,    0,  139,    0,  126,    0,  152,
+			    0,  109,    0,  134,    0,  166,    0,  150,    0,  182,
+			    0,   76,   73,    0,    0,   82,   80,    0,    0,  100,
+			   98,  117,  115,  121,  119,  125,  123,  157,  155,  141,
+			  139,  173,  171,  191,  189,  201,  198,  196,  197,   75,
+			   74,   81,   99,  120,  116,  124,  140,  156,  172,  190,
+			    0,   94,   92,    0,  112,  110,    0,  153,  151,    0,
+			  137,  135,    0,  169,  167,    0,  185,  183,   93,  111,
+			  152,  136,  168,  184,    0,  203,   90,  108,  133,  165,
+			  149,  181,   88,  106,  131,  163,  147,  179,   89,    0,
+			  107,    0,  132,    0,  164,    0,  148,    0,  180,    0,
 
-			    0,   77,    0,   92,    0,  114,    0,  140,    0,  127,
-			    0,  153,   78,   93,  115,  141,  128,  154,   79,   94,
-			  116,  142,  129,  155,    0,    0,    0, yyDummy>>)
+			   87,  105,  130,  162,  146,  178,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,  204,    0,    0,    0,    0,    0,    0,    0,
+			    0,    0,    0,    0,    0,    0,   83,    0,  101,    0,
+			  126,    0,  158,    0,  142,    0,  174,    0,   84,    0,
+			  102,    0,  127,    0,  159,    0,  143,    0,  175,   85,
+			  103,  128,  160,  144,  176,   86,  104,  129,  161,  145,
+			  177,    0,    0,    0, yyDummy>>)
 		end
 
 	yydefgoto_template: SPECIAL [INTEGER]
@@ -4538,162 +5134,197 @@ feature {NONE} -- Table templates
 			Result := yyfixed_array (<<
 			   35,   76,   77,   78,   79,   80,   81,   82,   83,   84,
 			   62,    8,    9,   10,   11,   36,   37,   38,   39,   85,
-			   86,   87,   88,  117,  118,   89,   64,   90,   91,   92,
+			   86,   87,   88,  124,  125,   89,   64,   90,   91,   92,
 			   93,   94,   95,   96,   97,   98,   99,  100,  101,  102,
-			  103,  104,  105,  106,  107,  324,   13,   14,   15,   40,
-			   16,   27,   28,   29,   17, yyDummy>>)
+			  103,  104,  105,  106,  107,  108,  109,  110,  111,  112,
+			  113,  114,  391,   13,   14,   15,   40,   16,   27,   28,
+			   29,   17, yyDummy>>)
 		end
 
 	yypact_template: SPECIAL [INTEGER]
 			-- Template for `yypact'
 		once
 			Result := yyfixed_array (<<
-			  139,  267,  358,    0, -32768, -32768, -32768,  371, -32768, -32768,
-			 -32768, -32768, -32768,   51, -32768,  357,  355,  350,  354,  353,
-			 -32768, -32768, -32768,  350, -32768,  200,  273,  165, -32768,  356,
-			   -5, -32768, -32768, -32768,   23,  352, -32768, -32768, -32768, -32768,
-			 -32768,  188,    7, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
+			  140,  380,  465,    0, -32768, -32768, -32768,  482, -32768, -32768,
+			 -32768, -32768, -32768,   56, -32768,  479,  462,  488,  458,  457,
+			 -32768, -32768, -32768,  488, -32768,  147,  151,  137, -32768,  474,
+			  170, -32768, -32768, -32768,   14,  475, -32768, -32768, -32768, -32768,
+			 -32768,  379,  377, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
 			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768,  351, -32768, -32768, -32768,  200, -32768,  330,
-			 -32768,  199, -32768, -32768, -32768,  347,  346,  345,  344,  343,
-			  342,  341,  340,  339,  338,  337,  336, -32768,   79,  335,
-			  334,  333,  331,  329,  328,  327,  326,  325,  324,  323,
+			 -32768, -32768, -32768,  391, -32768, -32768, -32768,  147, -32768,  415,
+			 -32768,  200, -32768, -32768, -32768,  452,  451,  450,  449,  448,
+			  447,  446,  445,  444,  443,  463,  442, -32768,  290,  441,
+			  440,  439,  438,  437,  436,  435,  434,  433,  432,  431,
 
-			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,  171, -32768,
-			 -32768, -32768, -32768, -32768, -32768, -32768,  322,  274, -32768,   13,
-			   13,   13,   13,  248,  247,  244,  238,  234,  233,  207,
-			   38,  148,  197,   -4,  144,  209,   -1,  211,  202, -32768,
-			 -32768,  330,  -15,  298,  192,   41,   74,  321,   47,  295,
-			  286,  291,  151,  140,  332,  330,  320,  319,  316,  313,
-			  312,  311,  310,  309,  308,  307,  306,  305,  229,  225,
-			  222,  221,  216,  176,  304,  303,  302,  301,  300,  299,
-			 -32768,   48, -32768,  117, -32768,  152, -32768,   58, -32768,  150,
-			 -32768,   98, -32768, -32768,  318,  317, -32768, -32768,  315,  314,
+			 -32768,  430,  429,  428,  427,  426,  425, -32768,  424,  423,
+			  422,  420,  419,  418, -32768,  243, -32768, -32768, -32768, -32768,
+			 -32768, -32768, -32768,  416,  359, -32768,   31,   31,   31,   31,
+			  335,  332,  331,  327,  324,  323,  256,   24,  108,  276,
+			  239,  110,   -6,   60,  203,  168, -32768, -32768,  415,  -11,
+			  384,  240,   51,   75,  421,  354,  375,  181,  338,  201,
+			  111,  353,  351,  349,  347,  341,  339,  414,  413,  412,
+			  411,  410,  409,  417,  415,  408,  407,  406,  403,  401,
+			  400,  398,  397,  396,  395,  394,  393,  315,  314,  305,
+			  288,  251,   -9,  392,  390,  389,  388,  387,  386, -32768,
 
+			   45, -32768,   57, -32768,  148, -32768,  153, -32768,   42, -32768,
+			  195, -32768, -32768,  405,  404, -32768, -32768,  402,  399, -32768,
 			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768, -32768, -32768, -32768,  274, -32768,  266,  266,
+			 -32768, -32768, -32768, -32768, -32768,  359, -32768,  357,  357, -32768,
 			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768,  279, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768, -32768, -32768, -32768,   26, -32768,  108, -32768,
-			   61, -32768,   50, -32768,  138, -32768,   -7, -32768, -32768, -32768,
-			 -32768, -32768, -32768,   41,  290,   74,  289,  295,  288,  291,
-			  287,  286,  285,  151,  284, -32768,   41,  283,   74,  282,
-			  295,  280,  291,  278,  286,  277,  151,  276,  272, -32768,
-			  271, -32768,  269, -32768,  268, -32768,  264, -32768,  263, -32768,
+			   48, -32768, -32768,  190, -32768, -32768,  260, -32768, -32768,  254,
+			 -32768, -32768,  209, -32768, -32768,  296, -32768, -32768, -32768, -32768,
+			 -32768, -32768, -32768, -32768,  361, -32768, -32768, -32768, -32768, -32768,
+			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,   18,
+			 -32768,   54, -32768,   58, -32768,  117, -32768,   -7, -32768,   52,
 
-			  251, -32768,  149, -32768,  145, -32768,  119, -32768,   95, -32768,
-			   27, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768, -32768,   73,   15, -32768, yyDummy>>)
+			 -32768, -32768, -32768, -32768, -32768, -32768,   51,  382,   75,  381,
+			  375,  378,  338,  376,  181,  374,  201,  373,   51,   51,
+			   51,   51,   75,   75,   75,   75,  181,  181,  181,  181,
+			  375,  375,  375,  375,  338,  338,  338,  338,  201,  201,
+			  201,  201, -32768,   51,  372,   75,  364,  375,  336,  338,
+			  316,  181,  309,  201,  287,  279, -32768,  272, -32768,  242,
+			 -32768,  226, -32768,  217, -32768,  199, -32768,  183, -32768,  179,
+			 -32768,  164, -32768,  125, -32768,  104, -32768,  -13, -32768, -32768,
+			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
+			 -32768,   88,   62, -32768, yyDummy>>)
 		end
 
 	yypgoto_template: SPECIAL [INTEGER]
 			-- Template for `yypgoto'
 		once
 			Result := yyfixed_array (<<
-			  359,   17,   10,  -23,  -20,  -14,  -18,  -22,  -26,  -76,
-			 -32768, -32768,  116, -32768,   56,  349,  362, -32768, -32768, -32768,
-			 -32768,  370,  136,  204,  189, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,
-			 -32768, -32768, -32768, -32768, -32768, -32768,  378,   62, -32768,  281,
-			 -32768, -32768,  363, -32768, -32768, yyDummy>>)
+			  454,   71,   43,  -24,  -20,   10,  -18,  -22,  -26,   35,
+			 -32768, -32768,   87, -32768,   78,  453,  470, -32768, -32768, -32768,
+			 -32768,  478,  244,  292,  265, -32768, -32768, -32768, -32768, -32768,
+			 -32768, -32768, -32768, -32768, -32768, -32768, -32768, -32768,  132,  129,
+			   61,  -41, -156, -159, -32768, -32768, -32768, -32768, -32768, -32768,
+			 -32768, -32768, -32768,  485,  220, -32768,  383, -32768, -32768,  476,
+			 -32768, -32768, yyDummy>>)
 		end
 
 	yytable_template: SPECIAL [INTEGER]
 			-- Template for `yytable'
 		once
 			Result := yyfixed_array (<<
-			   61,   20,    3,   56,   60,   47,   57,  217,   59,   49,
-			  113,  112,   58,   45,   68,  326,   53,   52,  204,  286,
-			   -8,  210,   50,   49,   48,   47,   53,   52,   69,   53,
-			   23,   75,   50,   49,   48,   47,   55,   74,   73,   46,
-			   45,   53,   72,   54,   53,  128,   71,   44,   43,  127,
-			  323,   53,  276,  126,   42,   41,   70,  125,    3,  -19,
-			  196,   48,  215,   22,   42,   41,   69,  195,  194,   48,
-			   50,   44,   43,  325,  263,   24,  282,  230,   52,  195,
-			  194,  124,  195,  194,  269,   33,   23,  280,  123,  195,
-			  194,   22,   24,  161,  167,  173,  179,  160,  166,  172,
+			   61,   20,   56,   49,   60,   48,   57,  267,   59,  264,
+			  390,  236,  299,  273,  298,  272,  227,   53,   52,  351,
+			   -8,   53,   75,   50,   49,   48,   47,   53,   74,   73,
+			   46,   45,   69,   72,   53,   52,   58,   71,   44,   43,
+			   50,   49,   48,   47,  343,  135,  215,   70,   53,  134,
+			  -19,   53,   49,  133,   53,   42,   41,   69,   52,  214,
+			  213,   52,  393,    3,   47,  214,  213,   50,  314,   55,
+			   49,  306,   42,   41,  321,  320,  319,  318,  353,   52,
+			  345,  132,  229,  308,  347,   22,  214,  213,  392,  214,
+			  213,   23,  214,  213,   21,  218,  217,   54,  218,  217,
 
-			  178,  159,  165,  171,  177,  158,  164,  170,  176,  203,
-			   47,  213,   52,  205,  211,  199,  198,  209,  322,  142,
-			  207,   52,  141,   21,  273,  225,  229,  224,  227,  157,
-			  163,  169,  175,  228,  278,  226,  156,  162,  168,  174,
-			    6,  201,  321,  265,    5,    4,    3,  197,   49,  199,
-			  198,   21,   52,   50,   74,   73,  223,    2,  199,  198,
-			   49,   50,  222,   47,  284,  274,  206,  272,  320,  270,
-			  200,  268,  319,   70,   53,   52,  271,    1,  267,   75,
-			   50,   49,   48,   47,   65,   74,   73,   46,   45,  199,
-			  198,  111,  110,  266,   71,   44,   43,  256,  264,  255,
+			  180,  186,  192,  198,  179,  185,  191,  197,  178,  184,
+			  190,  196,   52,   22,  131,  222,  218,  217,  232,   50,
+			  224,  230,   21,  261,  228,   74,   73,  389,   48,  271,
+			  219,  244,  225,  248,  243,  246,  177,  183,  189,  195,
+			  247,    6,  130,  349,   70,    5,    4,    3,  388,  218,
+			  217,  226,    5,    4,   53,   52,   65,   50,    2,   51,
+			   50,   49,   48,   47,   48,   34,  245,   46,   45,  176,
+			  182,  188,  194,   26,  310,   44,   43,    3,    1,  312,
+			  234,  220,   74,   73,  317,    1,  315,  387,  313,   68,
+			  233,   49,   42,   41,   52,  249,  242,  175,  181,  187,
 
-			  221,   26,   53,   52,   70,    5,    4,  -19,   50,   49,
-			   48,   47,   42,   41,  220,  193,   74,   73,   34,  202,
-			   48,   44,   43,   47,  214,  122,  121,  120,  119,  192,
-			  287,  208,  285,  212,  283,   70,  281,  254,    1,  253,
-			   42,   41,  252,  250,  251,  249,  248,  298,  247,  296,
-			  246,  294,  245,  292,  191,  189,  190,  188,  279,  187,
-			  310,  186,  308,  277,  306,  185,  304,  184,  183,  181,
-			  182,  180,   19,   18,  318,  290,   53,   52,  218,  219,
-			  288,   51,   50,   49,   48,   47,  317,  316,  302,   46,
-			   45,  315,  314,  300,  313,  312,   49,   44,   43,  311,
+			  193,   70,  386,   53,   52,   23,  385,   47,  216,   50,
+			   49,   48,   47,   47,  311,   47,  325,  324,  323,  322,
+			   48,  316,  384,  241,  258,  231,  129,  128,  127,  126,
+			  270,  218,  217,   24,  134,  337,  336,  335,  334,  135,
+			  383,   42,   41,   33,  133,  309,   53,   52,  240,  382,
+			   24,   75,   50,   49,   48,   47,   45,   74,   73,   46,
+			   45,  223,  239,   50,  212,  381,   71,   44,   43,  132,
+			   49,  307,  297,  354,  296,  352,   70,  350,  211,  -19,
+			  333,  332,  331,  330,   42,   41,  329,  328,  327,  326,
+			  365,  255,  363,  252,  361,  380,  131,  269,  221,  268,
 
-			  309,  307,   48,  305,   50,  303,  301,  299,  297,  141,
-			  295,  293,  291,  289,   42,   41,  275,  155,  112,  110,
-			  113,  111,  262,  261,  260,  259,  258,  257,  244,  243,
-			  242,  241,  240,  239,  238,  237,  236,  116,   45,  235,
-			  231,   69,  234,  233,  232,  216,    0,    0,  115,   12,
-			    0,    0,    0,    0,    0,  140,  139,    3,  154,    7,
-			    0,    0,    0,  153,  152,  151,  150,  149,  148,  147,
-			  108,  146,    0,  145,  144,  143,   67,   25,  138,  137,
-			  136,  135,  134,  133,  132,  131,  130,  129,  114,    2,
-			   66,   26,   32,   31,  -19,   30,   63,  109, yyDummy>>)
+			   44,   43,  379,  348,  179,  185,  191,  197,   47,  295,
+			  378,  294,  180,  186,  192,  198,  178,  184,  190,  196,
+			  359,  130,  341,  340,  339,  338,  293,  377,  292,  375,
+			  149,  373,  376,  148,  346,  291,  289,  290,  288,  374,
+			  177,  183,  189,  195,  210,  208,  209,  207,  206,   48,
+			  205,  357,  204,  202,  203,  201,  200,  371,  199,  372,
+			  344,  266,  265,  263,  262,  176,  182,  188,  194,  260,
+			  259,  257,  256,  254,  253,  251,  250,  355,   44,   43,
+			  120,  119,  118,  117,   50,   19,   18,  370,  369,  175,
+			  181,  187,  193,  237,  238,  368,  366,  364,  342,  362,
+
+			  148,  360,  174,  119,  358,  356,  117,  120,  118,  305,
+			  304,  303,  302,  301,  367,  300,  287,  286,  285,  284,
+			  283,  282,  123,  281,  280,  274,  279,   69,  121,  278,
+			  277,  276,  265,  262,  259,  256,  253,  250,   45,  275,
+			  235,    0,    0,    0,    0,    0,    0,    0,    0,    0,
+			  122,    0,  173,   12,    7,    0,    0,    0,  172,  171,
+			  170,  147,  169,  168,  167,  166,  165,  164,  163,  162,
+			  161,  160,  159,  158,  157,  156,  155,  154,  153,  152,
+			  151,  150,  146,  145,  144,  143,  142,  141,  140,  139,
+			  138,  137,  136,  115,   67,    3,   32,   31,   26,   25,
+
+			    2,  -19,   30,   66,   63,  116, yyDummy>>)
 		end
 
 	yycheck_template: SPECIAL [INTEGER]
 			-- Template for `yycheck'
 		once
 			Result := yyfixed_array (<<
-			   26,    1,    7,   26,   26,   12,   26,   22,   26,   10,
-			    3,    4,   26,   17,   19,    0,    3,    4,   22,   26,
-			   20,   22,    9,   10,   11,   12,    3,    4,   43,    3,
-			   35,    8,    9,   10,   11,   12,   26,   14,   15,   16,
-			   17,    3,   19,   26,    3,   71,   23,   24,   25,   71,
-			   23,    3,   26,   71,   41,   42,   33,   71,    7,   36,
-			   22,   11,  138,    7,   41,   42,   43,   41,   42,   11,
-			    9,   24,   25,    0,   26,   13,   26,  153,    4,   41,
-			   42,   71,   41,   42,   26,   23,   35,   26,   71,   41,
-			   42,   35,   30,  119,  120,  121,  122,  119,  120,  121,
+			   26,    1,   26,   10,   26,   11,   26,  166,   26,  165,
+			   23,   22,   21,  172,   23,  171,   22,    3,    4,   26,
+			   20,    3,    8,    9,   10,   11,   12,    3,   14,   15,
+			   16,   17,   43,   19,    3,    4,   26,   23,   24,   25,
+			    9,   10,   11,   12,   26,   71,   22,   33,    3,   71,
+			   36,    3,   10,   71,    3,   41,   42,   43,    4,   41,
+			   42,    4,    0,    7,   12,   41,   42,    9,   26,   26,
+			   10,   26,   41,   42,   26,   27,   28,   29,   26,    4,
+			   26,   71,   22,   26,   26,    7,   41,   42,    0,   41,
+			   42,   35,   41,   42,    7,   41,   42,   26,   41,   42,
 
-			  122,  119,  120,  121,  122,  119,  120,  121,  122,  132,
-			   12,  137,    4,  133,  136,   41,   42,  135,   23,   40,
-			  134,    4,   43,    7,   26,  148,  152,  147,  150,  119,
-			  120,  121,  122,  151,   26,  149,  119,  120,  121,  122,
-			    1,  131,   23,   26,    5,    6,    7,  130,   10,   41,
-			   42,   35,    4,    9,   14,   15,  146,   18,   41,   42,
-			   10,    9,  145,   12,   26,  191,   22,  189,   23,  187,
-			   22,  185,   23,   33,    3,    4,   26,   38,   26,    8,
-			    9,   10,   11,   12,   19,   14,   15,   16,   17,   41,
-			   42,    3,    4,  183,   23,   24,   25,   21,  181,   23,
+			  126,  127,  128,  129,  126,  127,  128,  129,  126,  127,
+			  128,  129,    4,   35,   71,  139,   41,   42,  144,    9,
+			  140,  143,   35,  164,  142,   14,   15,   23,   11,  170,
+			   22,  155,   22,  159,  154,  157,  126,  127,  128,  129,
+			  158,    1,   71,   26,   33,    5,    6,    7,   23,   41,
+			   42,  141,    5,    6,    3,    4,   19,    9,   18,    8,
+			    9,   10,   11,   12,   11,   18,  156,   16,   17,  126,
+			  127,  128,  129,   36,   26,   24,   25,    7,   38,   26,
+			  145,  138,   14,   15,  210,   38,  208,   23,  206,   19,
+			   22,   10,   41,   42,    4,  160,  153,  126,  127,  128,
 
-			    8,   36,    3,    4,   33,    5,    6,   36,    9,   10,
-			   11,   12,   41,   42,   22,    8,   14,   15,   18,   22,
-			   11,   24,   25,   12,   22,   26,   27,   28,   29,   22,
-			  256,   22,  254,   22,  252,   33,  250,   21,   38,   23,
-			   41,   42,   21,   21,   23,   23,   21,  273,   23,  271,
-			   21,  269,   23,  267,   21,   21,   23,   23,  248,   21,
-			  286,   23,  284,  246,  282,   21,  280,   23,   21,   21,
-			   23,   23,    5,    6,   23,  265,    3,    4,  142,  143,
-			  263,    8,    9,   10,   11,   12,   23,   23,  278,   16,
-			   17,   23,   23,  276,   23,   23,   10,   24,   25,   23,
+			  129,   33,   23,    3,    4,   35,   23,   12,  137,    9,
+			   10,   11,   12,   12,  204,   12,   26,   27,   28,   29,
+			   11,   26,   23,  152,  163,   22,   26,   27,   28,   29,
+			  169,   41,   42,   13,  256,   26,   27,   28,   29,  265,
+			   23,   41,   42,   23,  262,  202,    3,    4,    8,   23,
+			   30,    8,    9,   10,   11,   12,   17,   14,   15,   16,
+			   17,   22,   22,    9,    8,   23,   23,   24,   25,  259,
+			   10,  200,   21,  299,   23,  297,   33,  295,   22,   36,
+			   26,   27,   28,   29,   41,   42,   26,   27,   28,   29,
+			  316,  162,  314,  161,  312,   23,  253,  168,   22,  167,
 
-			   23,   23,   11,   23,    9,   23,   23,   23,   23,   43,
-			   23,   23,   23,   23,   41,   42,   37,   43,    4,    4,
-			    3,    3,   23,   23,   23,   23,   23,   23,   23,   23,
-			   23,   23,   23,   23,   23,   23,   23,    7,   17,   23,
-			    8,   43,   23,   23,  155,  141,   -1,   -1,   67,    0,
-			   -1,   -1,   -1,   -1,   -1,   19,   19,    7,   36,    0,
-			   -1,   -1,   -1,   40,   40,   40,   40,   40,   40,   40,
-			   18,   40,   -1,   40,   40,   40,   20,   20,   40,   40,
-			   40,   40,   40,   40,   40,   40,   40,   40,   37,   18,
-			   27,   36,   39,   39,   36,   17,   26,   35, yyDummy>>)
+			   24,   25,   23,  293,  326,  327,  328,  329,   12,   21,
+			   23,   23,  338,  339,  340,  341,  334,  335,  336,  337,
+			  310,  250,   26,   27,   28,   29,   21,  353,   23,  351,
+			   40,  349,   23,   43,  291,   21,   21,   23,   23,   23,
+			  330,  331,  332,  333,   21,   21,   23,   23,   21,   11,
+			   23,  308,   21,   21,   23,   23,   21,  347,   23,   23,
+			  289,   22,   23,   22,   23,  322,  323,  324,  325,   22,
+			   23,   22,   23,   22,   23,   22,   23,  306,   24,   25,
+			    3,    4,    3,    4,    9,    5,    6,   23,  345,  318,
+			  319,  320,  321,  149,  150,   23,   23,   23,   37,   23,
+
+			   43,   23,   43,    4,   23,   23,    4,    3,    3,   23,
+			   23,   23,   23,   23,  343,   23,   23,   23,   23,   23,
+			   23,   23,    7,   23,   23,    8,   23,   43,   37,   23,
+			   23,   23,   23,   23,   23,   23,   23,   23,   17,  174,
+			  148,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,   -1,
+			   67,   -1,   36,    0,    0,   -1,   -1,   -1,   40,   40,
+			   40,   19,   40,   40,   40,   40,   40,   40,   40,   40,
+			   40,   40,   40,   40,   40,   40,   40,   40,   40,   40,
+			   40,   40,   19,   40,   40,   40,   40,   40,   40,   40,
+			   40,   40,   40,   18,   20,    7,   39,   39,   36,   20,
+
+			   18,   36,   17,   27,   26,   35, yyDummy>>)
 		end
 
 feature {NONE} -- Semantic value stacks
@@ -5130,9 +5761,93 @@ feature {NONE} -- Semantic value stacks
 	yyspecial_routines36: KL_SPECIAL_ROUTINES [INTERVAL [PART_COMPARABLE]]
 			-- Routines that ought to be in SPECIAL [INTERVAL [PART_COMPARABLE]]
 
+	yyvs37: SPECIAL [ARRAYED_LIST [INTERVAL [INTEGER]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [INTEGER]]
+
+	yyvsc37: INTEGER
+			-- Capacity of semantic value stack `yyvs37'
+
+	yyvsp37: INTEGER
+			-- Top of semantic value stack `yyvs37'
+
+	yyspecial_routines37: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [INTEGER]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [INTEGER]]]
+
+	yyvs38: SPECIAL [ARRAYED_LIST [INTERVAL [REAL]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [REAL]]
+
+	yyvsc38: INTEGER
+			-- Capacity of semantic value stack `yyvs38'
+
+	yyvsp38: INTEGER
+			-- Top of semantic value stack `yyvs38'
+
+	yyspecial_routines38: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [REAL]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [REAL]]]
+
+	yyvs39: SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_TIME]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [ISO8601_TIME]]
+
+	yyvsc39: INTEGER
+			-- Capacity of semantic value stack `yyvs39'
+
+	yyvsp39: INTEGER
+			-- Top of semantic value stack `yyvs39'
+
+	yyspecial_routines39: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [ISO8601_TIME]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_TIME]]]
+
+	yyvs40: SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DATE]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [ISO8601_DATE]]
+
+	yyvsc40: INTEGER
+			-- Capacity of semantic value stack `yyvs40'
+
+	yyvsp40: INTEGER
+			-- Top of semantic value stack `yyvs40'
+
+	yyspecial_routines40: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [ISO8601_DATE]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DATE]]]
+
+	yyvs41: SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DATE_TIME]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [ISO8601_DATE_TIME]]
+
+	yyvsc41: INTEGER
+			-- Capacity of semantic value stack `yyvs41'
+
+	yyvsp41: INTEGER
+			-- Top of semantic value stack `yyvs41'
+
+	yyspecial_routines41: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [ISO8601_DATE_TIME]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DATE_TIME]]]
+
+	yyvs42: SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DURATION]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [ISO8601_DURATION]]
+
+	yyvsc42: INTEGER
+			-- Capacity of semantic value stack `yyvs42'
+
+	yyvsp42: INTEGER
+			-- Top of semantic value stack `yyvs42'
+
+	yyspecial_routines42: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [ISO8601_DURATION]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [ISO8601_DURATION]]]
+
+	yyvs43: SPECIAL [ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]]
+			-- Stack for semantic values of type ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]
+
+	yyvsc43: INTEGER
+			-- Capacity of semantic value stack `yyvs43'
+
+	yyvsp43: INTEGER
+			-- Top of semantic value stack `yyvs43'
+
+	yyspecial_routines43: KL_SPECIAL_ROUTINES [ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]]
+			-- Routines that ought to be in SPECIAL [ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]]
+
 feature {NONE} -- Constants
 
-	yyFinal: INTEGER = 326
+	yyFinal: INTEGER = 393
 			-- Termination state id
 
 	yyFlag: INTEGER = -32768
@@ -5141,14 +5856,14 @@ feature {NONE} -- Constants
 	yyNtbase: INTEGER = 44
 			-- Number of tokens
 
-	yyLast: INTEGER = 397
+	yyLast: INTEGER = 505
 			-- Upper bound of `yytable' and `yycheck'
 
 	yyMax_token: INTEGER = 289
 			-- Maximum token id
 			-- (upper bound of `yytranslate'.)
 
-	yyNsyms: INTEGER = 99
+	yyNsyms: INTEGER = 106
 			-- Number of symbols
 			-- (terminal and nonterminal)
 

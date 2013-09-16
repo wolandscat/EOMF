@@ -138,6 +138,7 @@ feature -- Definitions
 		ec_container_type_mismatch: STRING = "container_type_mismatch"
 		ec_dt_container_gen_param_type_mismatch: STRING = "dt_container_gen_param_type_mismatch"
 		ec_interval_type_mismatch: STRING = "interval_type_mismatch"
+		ec_interval_list_type_mismatch: STRING = "interval_list_type_mismatch"
 		ec_atomic_type_mismatch: STRING = "atomic_type_mismatch"
 		ec_primitive_type_mismatch: STRING = "primitive_type_mismatch"
 		ec_dt_proc_arg_type_mismatch: STRING = "dt_proc_arg_type_mismatch"

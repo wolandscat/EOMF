@@ -134,6 +134,19 @@ feature -- Visitor
 			last_result.append (symbol (SYM_END_DBLOCK) + format_item(FMT_NEWLINE))
 		end
 
+	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- start serialising a DT_OBJECT_SIMPLE
+		do
+			start_object_leaf (a_node, depth)
+			last_result.append (apply_style (a_node.as_string, STYLE_VALUE))
+		end
+
+	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- end serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (symbol (SYM_END_DBLOCK) + format_item(FMT_NEWLINE))
+		end
+
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE
 		do

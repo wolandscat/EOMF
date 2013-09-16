@@ -9,7 +9,6 @@ note
 
 class ODIN_PRIMITIVE_TYPES
 
-
 feature -- Access
 
 	my_character: CHARACTER assign set_my_character
@@ -19,8 +18,14 @@ feature -- Access
 --	my_character_32: CHARACTER_32 assign set_my_character_32
 
 	my_string: STRING assign set_my_string
+		attribute
+			create Result.make_empty
+		end
 
 	my_string_8: STRING_8 assign set_my_string_8
+		attribute
+			create Result.make_empty
+		end
 
 --	my_string_32: STRING_32 assign set_my_string_32
 
@@ -55,20 +60,44 @@ feature -- Access
 	my_double: DOUBLE assign set_my_double
 
 	my_date: DATE assign set_my_date
+		attribute
+			create Result.make_now
+		end
 
 	my_date_time: DATE_TIME assign set_my_date_time
+		attribute
+			create Result.make_now
+		end
 
 	my_time: TIME assign set_my_time
+		attribute
+			create Result.make_now
+		end
 
 	my_duration: DATE_TIME_DURATION assign set_my_duration
+		attribute
+			create Result.make_definite (0, 0, 0, 0)
+		end
 
 	my_iso8601_date: ISO8601_DATE assign set_my_iso8601_date
+		attribute
+			create Result.default_create
+		end
 
 	my_iso8601_date_time: ISO8601_DATE_TIME assign set_my_iso8601_date_time
+		attribute
+			create Result.default_create
+		end
 
 	my_iso8601_time: ISO8601_TIME assign set_my_iso8601_time
+		attribute
+			create Result.default_create
+		end
 
 	my_iso8601_duration: ISO8601_DURATION assign set_my_iso8601_duration
+		attribute
+			create Result.default_create
+		end
 
 feature -- Element change
 

@@ -143,6 +143,26 @@ feature -- Visitor
 			end_object_item (a_node, depth)
 		end
 
+	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- start serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (symbol (Sym_yaml_sequence_start))
+			start_object_item (a_node, depth)
+			last_result.append (a_node.as_serialised_string (
+					agent primitive_value_to_yaml_string,
+					agent (s: STRING):STRING do Result := s end,
+					agent (s: STRING): STRING do Result := s end,
+					symbol (SYM_YAML_EQ),
+					"%N"))
+		end
+
+	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- end serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (symbol (Sym_yaml_sequence_end))
+			end_object_item (a_node, depth)
+		end
+
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE
 		do

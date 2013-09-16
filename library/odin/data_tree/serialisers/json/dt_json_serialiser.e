@@ -145,6 +145,25 @@ feature -- Visitor
 			end_object_item (a_node, depth)
 		end
 
+	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- start serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (symbol (SYM_JSON_START_OBJECT) + "%N")
+			last_result.append (apply_style (a_node.as_serialised_string (
+					agent primitive_value_to_json_string,
+					agent format_attr_name,
+					agent (s: STRING): STRING do Result := s end,
+					symbol (SYM_JSON_EQ),
+					symbol (sym_json_item_delimiter) + "%N"), STYLE_VALUE))
+		end
+
+	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- end serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (symbol (SYM_JSON_END_ARRAY))
+			end_object_item (a_node, depth)
+		end
+
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE
 		do

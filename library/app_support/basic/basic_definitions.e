@@ -23,6 +23,15 @@ feature -- Definitions
 			end
 		end
 
+	format_real (a_real: REAL): STRING
+			-- add the missing ".0" to integral REAL, otherwise don't change
+		do
+			Result := a_real.out
+			if Result.index_of ('.', 1) = 0 then
+				Result.append (".0")
+			end
+		end
+
 	Terminology_separator: STRING = "::"
 
 	Regex_any_pattern: STRING = ".*"

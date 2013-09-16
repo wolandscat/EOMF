@@ -176,7 +176,11 @@ feature -- Modification
 			-- start serialising an DT_PRIMITIVE_OBJECT_LIST
 		do
 			-- generate an XML tag if object in a container
-			last_result.append (a_node.as_serialised_string (agent primitive_value_to_xml_tagged_string (a_node.parent.im_attr_name, depth//2, ?), Void, Void, agent xml_quote))
+			last_result.append (a_node.as_serialised_string (
+				agent primitive_value_to_xml_tagged_string (a_node.parent.im_attr_name, depth//2, ?),
+				Void,
+				Void,
+				agent xml_quote))
 			last_object_primitive := True
 		end
 
@@ -208,6 +212,17 @@ feature -- Modification
 				last_result.append (xml_tag_end (a_node.parent.im_attr_name))
 				last_result.append (format_item (FMT_NEWLINE))
 			end
+		end
+
+	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- start serialising a DT_OBJECT_SIMPLE
+		do
+			last_result.append (primitive_interval_list_to_xml_tagged_string (a_node.value))
+		end
+
+	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
+			-- end serialising a DT_OBJECT_SIMPLE
+		do
 		end
 
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
@@ -391,6 +406,15 @@ feature {NONE} -- Implementation
 					Result.append (primitive_value_to_simple_string (value.upper_included.to_reference))
 					Result.append (xml_tag_end ("upper_included"))
 				end
+			end
+		end
+
+	primitive_interval_list_to_xml_tagged_string (value: ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]): STRING
+			-- generate a structured, tagged form of this object
+		do
+			create Result.make_empty
+			across value as ivl_csr loop
+				Result.append (primitive_interval_to_xml_tagged_string (ivl_csr.item))
 			end
 		end
 

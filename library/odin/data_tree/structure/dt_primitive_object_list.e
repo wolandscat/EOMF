@@ -118,7 +118,9 @@ feature -- Conversion
 			end
 		end
 
-	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING]; delimiter, end_delimiter: detachable STRING; cleaner: detachable FUNCTION [ANY, TUPLE [STRING], STRING]): STRING
+	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING];
+			delimiter, end_delimiter: detachable STRING;
+			cleaner: detachable FUNCTION [ANY, TUPLE [STRING], STRING]): STRING
 			-- generate a cleaned form of this object as a structured string with specified delimiters, and cleaning with `cleaner'
 		do
 			create Result.make(0)

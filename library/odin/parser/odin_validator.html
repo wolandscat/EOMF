@@ -204,13 +204,15 @@
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#primitive_value">primitive_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#primitive_list_value">primitive_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#primitive_list">primitive_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#primitive_interval_value">primitive_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#primitive_interval">primitive_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#primitive_interval_list">primitive_interval_list</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#term_code">term_code</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#term_code_list_value">term_code_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#term_code_list">term_code_list</a> </span></div>
 </div>
 
 <div class="rule">
@@ -240,42 +242,59 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="primitive_list_value">primitive_list_value</span>: </div>
+<span class="lhs_variable" id="primitive_list">primitive_list</span>: </div>
 <div class="rhs">
-&nbsp; <span class="rhs_variable"><a href="#string_list_value">string_list_value</a> </span></div>
+&nbsp; <span class="rhs_variable"><a href="#string_list">string_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#integer_list_value">integer_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#integer_list">integer_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#real_list_value">real_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#real_list">real_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#boolean_list_value">boolean_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#boolean_list">boolean_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#character_list_value">character_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#character_list">character_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_list_value">date_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_list">date_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#time_list_value">time_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#time_list">time_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_time_list_value">date_time_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_time_list">date_time_list</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#duration_list_value">duration_list_value</a> </span></div>
+| <span class="rhs_variable"><a href="#duration_list">duration_list</a> </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="primitive_interval_value">primitive_interval_value</span>: </div>
+<span class="lhs_variable" id="primitive_interval">primitive_interval</span>: </div>
 <div class="rhs">
-&nbsp; <span class="rhs_variable"><a href="#integer_interval_value">integer_interval_value</a> </span></div>
+&nbsp; <span class="rhs_variable"><a href="#integer_interval">integer_interval</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#real_interval_value">real_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#real_interval">real_interval</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_interval_value">date_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_interval">date_interval</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#time_interval_value">time_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#time_interval">time_interval</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_time_interval_value">date_time_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_time_interval">date_time_interval</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#duration_interval_value">duration_interval_value</a> </span></div>
+| <span class="rhs_variable"><a href="#duration_interval">duration_interval</a> </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="primitive_interval_list">primitive_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#integer_interval_list">integer_interval_list</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#real_interval_list">real_interval_list</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_interval_list">date_interval_list</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#time_interval_list">time_interval_list</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_time_interval_list">date_time_interval_list</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#duration_interval_list">duration_interval_list</a> </span></div>
 </div>
 
 <div class="rule">
@@ -300,13 +319,13 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="string_list_value">string_list_value</span>: </div>
+<span class="lhs_variable" id="string_list">string_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_STRING </span><span class="literal_token">&#44; </span><span class="token">V_STRING </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#string_list_value">string_list_value</a> </span><span class="literal_token">&#44; </span><span class="token">V_STRING </span></div>
+| <span class="rhs_variable"><a href="#string_list">string_list</a> </span><span class="literal_token">&#44; </span><span class="token">V_STRING </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#string_list_value">string_list_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+| <span class="rhs_variable"><a href="#string_list">string_list</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 <div class="rhs">
 | <span class="token">V_STRING </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
@@ -324,18 +343,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="integer_list_value">integer_list_value</span>: </div>
+<span class="lhs_variable" id="integer_list">integer_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#integer_value">integer_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#integer_value">integer_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#integer_list_value">integer_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#integer_value">integer_value</a> </span></div>
+| <span class="rhs_variable"><a href="#integer_list">integer_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#integer_value">integer_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#integer_value">integer_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="integer_interval_value">integer_interval_value</span>: </div>
+<span class="lhs_variable" id="integer_interval">integer_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#integer_value">integer_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#integer_value">integer_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -358,6 +377,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="integer_interval_list">integer_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#integer_interval">integer_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#integer_interval">integer_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#integer_interval_list">integer_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#integer_interval">integer_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#integer_interval">integer_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="real_value">real_value</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_REAL </span></div>
@@ -369,18 +399,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="real_list_value">real_list_value</span>: </div>
+<span class="lhs_variable" id="real_list">real_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#real_value">real_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#real_value">real_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#real_list_value">real_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#real_value">real_value</a> </span></div>
+| <span class="rhs_variable"><a href="#real_list">real_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#real_value">real_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#real_value">real_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="real_interval_value">real_interval_value</span>: </div>
+<span class="lhs_variable" id="real_interval">real_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#real_value">real_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#real_value">real_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -403,6 +433,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="real_interval_list">real_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#real_interval">real_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#real_interval">real_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#real_interval_list">real_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#real_interval">real_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#real_interval">real_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="boolean_value">boolean_value</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_TRUE </span></div>
@@ -412,11 +453,11 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="boolean_list_value">boolean_list_value</span>: </div>
+<span class="lhs_variable" id="boolean_list">boolean_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#boolean_value">boolean_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#boolean_value">boolean_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#boolean_list_value">boolean_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#boolean_value">boolean_value</a> </span></div>
+| <span class="rhs_variable"><a href="#boolean_list">boolean_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#boolean_value">boolean_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#boolean_value">boolean_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
@@ -430,11 +471,11 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="character_list_value">character_list_value</span>: </div>
+<span class="lhs_variable" id="character_list">character_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#character_value">character_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#character_value">character_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#character_list_value">character_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#character_value">character_value</a> </span></div>
+| <span class="rhs_variable"><a href="#character_list">character_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#character_value">character_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#character_value">character_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
@@ -448,18 +489,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="date_list_value">date_list_value</span>: </div>
+<span class="lhs_variable" id="date_list">date_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#date_value">date_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_value">date_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_list_value">date_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_value">date_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_list">date_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_value">date_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#date_value">date_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="date_interval_value">date_interval_value</span>: </div>
+<span class="lhs_variable" id="date_interval">date_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#date_value">date_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#date_value">date_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -482,6 +523,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="date_interval_list">date_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#date_interval">date_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_interval">date_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_interval_list">date_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_interval">date_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_interval">date_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="time_value">time_value</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_ISO8601_EXTENDED_TIME </span></div>
@@ -489,18 +541,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="time_list_value">time_list_value</span>: </div>
+<span class="lhs_variable" id="time_list">time_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#time_value">time_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#time_value">time_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#time_list_value">time_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#time_value">time_value</a> </span></div>
+| <span class="rhs_variable"><a href="#time_list">time_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#time_value">time_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#time_value">time_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="time_interval_value">time_interval_value</span>: </div>
+<span class="lhs_variable" id="time_interval">time_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#time_value">time_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#time_value">time_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -523,6 +575,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="time_interval_list">time_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#time_interval">time_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#time_interval">time_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#time_interval_list">time_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#time_interval">time_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#time_interval">time_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="date_time_value">date_time_value</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_ISO8601_EXTENDED_DATE_TIME </span></div>
@@ -530,18 +593,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="date_time_list_value">date_time_list_value</span>: </div>
+<span class="lhs_variable" id="date_time_list">date_time_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#date_time_list_value">date_time_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span></div>
+| <span class="rhs_variable"><a href="#date_time_list">date_time_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="date_time_interval_value">date_time_interval_value</span>: </div>
+<span class="lhs_variable" id="date_time_interval">date_time_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#date_time_value">date_time_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -564,6 +627,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="date_time_interval_list">date_time_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#date_time_interval">date_time_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_time_interval">date_time_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_time_interval_list">date_time_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#date_time_interval">date_time_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#date_time_interval">date_time_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="duration_value">duration_value</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_ISO8601_DURATION </span></div>
@@ -571,18 +645,18 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="duration_list_value">duration_list_value</span>: </div>
+<span class="lhs_variable" id="duration_list">duration_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#duration_value">duration_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#duration_value">duration_value</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#duration_list_value">duration_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#duration_value">duration_value</a> </span></div>
+| <span class="rhs_variable"><a href="#duration_list">duration_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#duration_value">duration_value</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#duration_value">duration_value</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="duration_interval_value">duration_interval_value</span>: </div>
+<span class="lhs_variable" id="duration_interval">duration_interval</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">SYM_INTERVAL_DELIM </span><span class="rhs_variable"><a href="#duration_value">duration_value</a> </span><span class="token">SYM_ELLIPSIS </span><span class="rhs_variable"><a href="#duration_value">duration_value</a> </span><span class="token">SYM_INTERVAL_DELIM </span></div>
 <div class="rhs">
@@ -605,6 +679,17 @@
 
 <div class="rule">
 <div class="lhs">
+<span class="lhs_variable" id="duration_interval_list">duration_interval_list</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#duration_interval">duration_interval</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#duration_interval">duration_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#duration_interval_list">duration_interval_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#duration_interval">duration_interval</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#duration_interval">duration_interval</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
 <span class="lhs_variable" id="term_code">term_code</span>: </div>
 <div class="rhs">
 &nbsp; <span class="token">V_QUALIFIED_TERM_CODE_REF </span></div>
@@ -616,11 +701,11 @@
 
 <div class="rule">
 <div class="lhs">
-<span class="lhs_variable" id="term_code_list_value">term_code_list_value</span>: </div>
+<span class="lhs_variable" id="term_code_list">term_code_list</span>: </div>
 <div class="rhs">
 &nbsp; <span class="rhs_variable"><a href="#term_code">term_code</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#term_code">term_code</a> </span></div>
 <div class="rhs">
-| <span class="rhs_variable"><a href="#term_code_list_value">term_code_list_value</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#term_code">term_code</a> </span></div>
+| <span class="rhs_variable"><a href="#term_code_list">term_code_list</a> </span><span class="literal_token">&#44; </span><span class="rhs_variable"><a href="#term_code">term_code</a> </span></div>
 <div class="rhs">
 | <span class="rhs_variable"><a href="#term_code">term_code</a> </span><span class="literal_token">&#44; </span><span class="token">SYM_LIST_CONTINUE </span></div>
 </div>

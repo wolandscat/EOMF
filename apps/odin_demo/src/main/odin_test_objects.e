@@ -38,31 +38,32 @@ feature -- Access
 		once
 			create Result.make(0)
 			Result.extend ([round_trip_tests, agent round_trip, "Round trip tests"])
-			Result.extend ([from_dadl_tests, agent from_dadl, "From dadl tests"])
+			Result.extend ([from_odin_tests, agent from_odin, "From odin tests"])
 		end
 
-	from_dadl_tests: HASH_TABLE [STRING, STRING]
+	from_odin_tests: HASH_TABLE [STRING, STRING]
 			-- table of dadl test texts keyed by their name
 		local
 			dir: DIRECTORY
-			a_dadl_file: PLAIN_TEXT_FILE
+			an_odin_file: PLAIN_TEXT_FILE
 			file_name, file_path, dir_path: STRING
 			file_names: ARRAYED_LIST [STRING]
+			m_ivl: MULTIPLICITY_INTERVAL
 		once
 			create Result.make(0)
-			dir_path := file_system.pathname (application_startup_directory, "test_files")
+			dir_path := file_system.pathname (file_system.pathname (file_system.pathname (file_system.dirname (application_startup_directory), "resources"), "test_files"), "odin")
 			create dir.make (dir_path)
 			if dir.exists then
 				dir.open_read
 				file_names := dir.linear_representation
 				from file_names.start until file_names.off loop
 					file_name := file_names.item
-					if file_name.ends_with (".dadl") then
+					if file_name.ends_with (".odin") then
 						file_path := file_system.pathname (dir_path, file_name)
-						create a_dadl_file.make (file_path)
-						a_dadl_file.open_read
-						a_dadl_file.read_stream (a_dadl_file.count)
-						Result.put(a_dadl_file.last_string, file_name.substring (1, file_name.count - 5))
+						create an_odin_file.make (file_path)
+						an_odin_file.open_read
+						an_odin_file.read_stream (an_odin_file.count)
+						Result.put (an_odin_file.last_string, file_name.substring (1, file_name.count - 5))
 					end
 					file_names.forth
 				end
@@ -73,13 +74,14 @@ feature -- Access
 			-- table of round trip test objects keyed by their type
 		once
 			create Result.make(0)
-			Result.put (dadl_primitive_types, "Primitive atoms")
-			Result.put (dadl_primitive_interval_types, "Primitive intervals")
-			Result.put (dadl_primitive_sequence_types_1, "ARRAYED_LIST [primitive]")
-			Result.put (dadl_primitive_sequence_types_2, "ARRAYED_LIST [primitive], single element lists")
+			Result.put (odin_primitive_types, "Primitive atoms")
+			Result.put (odin_primitive_interval_types, "Primitive intervals")
+			Result.put (odin_primitive_sequence_types_1, "ARRAYED_LIST [primitive]")
+			Result.put (odin_primitive_sequence_types_2, "ARRAYED_LIST [primitive], single element lists")
+			Result.put (odin_primitive_sequence_interval_types, "ARRAYED_LIST [INTERVAL [primitive]]")
 		end
 
-	dadl_primitive_types: ODIN_PRIMITIVE_TYPES
+	odin_primitive_types: ODIN_PRIMITIVE_TYPES
 		do
 			create Result
 			Result.set_my_character ('T')
@@ -111,38 +113,38 @@ feature -- Access
 			Result.set_my_iso8601_duration (create {ISO8601_DURATION}.make_from_string("P1Y2D"))
 		end
 
-	dadl_primitive_interval_types: ODIN_PRIMITIVE_INTERVAL_TYPES
+	odin_primitive_interval_types: ODIN_PRIMITIVE_INTERVAL_TYPES
 		once
 			create Result
-			Result.set_my_integer_interval (create {INTERVAL[INTEGER]}.make_bounded_included(40, 3000))
-			Result.set_my_integer_8_interval (create {INTERVAL[INTEGER_8]}.make_bounded_included(10, 20))
-			Result.set_my_integer_16_interval (create {INTERVAL[INTEGER_16]}.make_bounded_included(-10, 20))
-			Result.set_my_integer_32_interval (create {INTERVAL[INTEGER_32]}.make_bounded_included(-300, 50000))
-			Result.set_my_integer_64_interval (create {INTERVAL[INTEGER_64]}.make_bounded_included(1000, 20000000))
+			Result.set_my_integer_interval (create {PROPER_INTERVAL[INTEGER]}.make_bounded_included(40, 3000))
+			Result.set_my_integer_8_interval (create {PROPER_INTERVAL[INTEGER_8]}.make_bounded_included(10, 20))
+			Result.set_my_integer_16_interval (create {PROPER_INTERVAL[INTEGER_16]}.make_bounded_included(-10, 20))
+			Result.set_my_integer_32_interval (create {PROPER_INTERVAL[INTEGER_32]}.make_bounded_included(-300, 50000))
+			Result.set_my_integer_64_interval (create {PROPER_INTERVAL[INTEGER_64]}.make_bounded_included(1000, 20000000))
 
-			Result.set_my_natural_interval (create {INTERVAL[NATURAL]}.make_bounded_included(40, 3000))
-			Result.set_my_natural_8_interval (create {INTERVAL[NATURAL_8]}.make_bounded_included(10, 20))
-			Result.set_my_natural_16_interval (create {INTERVAL[NATURAL_16]}.make_bounded_included(10, 20))
-			Result.set_my_natural_32_interval (create {INTERVAL[NATURAL_32]}.make_bounded_included(300, 50000))
-			Result.set_my_natural_64_interval (create {INTERVAL[NATURAL_64]}.make_bounded_included(1000, 20000000))
+			Result.set_my_natural_interval (create {PROPER_INTERVAL[NATURAL]}.make_bounded_included(40, 3000))
+			Result.set_my_natural_8_interval (create {PROPER_INTERVAL[NATURAL_8]}.make_bounded_included(10, 20))
+			Result.set_my_natural_16_interval (create {PROPER_INTERVAL[NATURAL_16]}.make_bounded_included(10, 20))
+			Result.set_my_natural_32_interval (create {PROPER_INTERVAL[NATURAL_32]}.make_bounded_included(300, 50000))
+			Result.set_my_natural_64_interval (create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(1000, 20000000))
 
-			Result.set_my_real_interval (create {INTERVAL[REAL]}.make_bounded_included(40.0, 3000.0))
-			Result.set_my_real_32_interval (create {INTERVAL[REAL_32]}.make_bounded_included(10.1, 20.234))
-			Result.set_my_real_64_interval (create {INTERVAL[REAL_64]}.make_bounded_included(10.0, 20.0))
-			Result.set_my_double_interval (create {INTERVAL[DOUBLE]}.make_bounded_included(300.0, 50000.0))
+			Result.set_my_real_interval (create {PROPER_INTERVAL[REAL]}.make_bounded_included(40.0, 3000.0))
+			Result.set_my_real_32_interval (create {PROPER_INTERVAL[REAL_32]}.make_bounded_included(10.1, 20.234))
+			Result.set_my_real_64_interval (create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(10.0, 20.0))
+			Result.set_my_double_interval (create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(300.0, 50000.0))
 
-			Result.set_my_date_interval (create {INTERVAL[DATE]}.make_bounded_included(create {DATE}.make(2000, 1, 3), create {DATE}.make(2005, 12, 19)))
-			Result.set_my_date_time_interval (create {INTERVAL[DATE_TIME]}.make_bounded_included(create {DATE_TIME}.make(2000, 1, 3, 11, 30, 0), create {DATE_TIME}.make(2005, 12, 19, 11, 30, 0)))
-			Result.set_my_time_interval (create {INTERVAL[TIME]}.make_bounded_included(create {TIME}.make(11, 30, 0), create {TIME}.make(11, 30, 0)))
-			Result.set_my_duration_interval (create {INTERVAL[DATE_TIME_DURATION]}.make_bounded_included(create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0), create {DATE_TIME_DURATION}.make_definite (5, 0, 0, 0)))
+			Result.set_my_date_interval (create {PROPER_INTERVAL[DATE]}.make_bounded_included(create {DATE}.make(2000, 1, 3), create {DATE}.make(2005, 12, 19)))
+			Result.set_my_date_time_interval (create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included(create {DATE_TIME}.make(2000, 1, 3, 11, 30, 0), create {DATE_TIME}.make(2005, 12, 19, 11, 30, 0)))
+			Result.set_my_time_interval (create {POINT_INTERVAL[TIME]}.make(create {TIME}.make(11, 30, 0)))
+			Result.set_my_duration_interval (create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included(create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0), create {DATE_TIME_DURATION}.make_definite (5, 0, 0, 0)))
 
-			Result.set_my_iso8601_date_interval (create {INTERVAL[ISO8601_DATE]}.make_bounded_included(create {ISO8601_DATE}.make_from_string("2001-08-12"), create {ISO8601_DATE}.make_from_string("2004-12-25")))
-			Result.set_my_iso8601_date_time_interval (create {INTERVAL[ISO8601_DATE_TIME]}.make_bounded_included(create {ISO8601_DATE_TIME}.make_from_string("2001-08-12T03:46:00"), create {ISO8601_DATE_TIME}.make_from_string("2003-01-12T03:46:00")))
-			Result.set_my_iso8601_time_interval (create {INTERVAL[ISO8601_TIME]}.make_bounded_included(create {ISO8601_TIME}.make_from_string("03:46:00"), create {ISO8601_TIME}.make_from_string("22:12:00")))
-			Result.set_my_iso8601_duration_interval (create {INTERVAL[ISO8601_DURATION]}.make_bounded_included(create {ISO8601_DURATION}.make_from_string("P1Y2D"), create {ISO8601_DURATION}.make_from_string("P2Y66D")))
+			Result.set_my_iso8601_date_interval (create {PROPER_INTERVAL[ISO8601_DATE]}.make_bounded_included(create {ISO8601_DATE}.make_from_string("2001-08-12"), create {ISO8601_DATE}.make_from_string("2004-12-25")))
+			Result.set_my_iso8601_date_time_interval (create {PROPER_INTERVAL[ISO8601_DATE_TIME]}.make_bounded_included(create {ISO8601_DATE_TIME}.make_from_string("2001-08-12T03:46:00"), create {ISO8601_DATE_TIME}.make_from_string("2003-01-12T03:46:00")))
+			Result.set_my_iso8601_time_interval (create {PROPER_INTERVAL[ISO8601_TIME]}.make_bounded_included(create {ISO8601_TIME}.make_from_string("03:46:00"), create {ISO8601_TIME}.make_from_string("22:12:00")))
+			Result.set_my_iso8601_duration_interval (create {PROPER_INTERVAL[ISO8601_DURATION]}.make_bounded_included(create {ISO8601_DURATION}.make_from_string("P1Y2D"), create {ISO8601_DURATION}.make_from_string("P2Y66D")))
 		end
 
-	dadl_primitive_sequence_types_1: ODIN_PRIMITIVE_SEQUENCE_TYPES
+	odin_primitive_sequence_types_1: ODIN_PRIMITIVE_SEQUENCE_TYPES
 		once
 			create Result
 			Result.set_my_integer_arrayed_list (create {ARRAYED_LIST[INTEGER]}.make_from_array(<<1, 2, 3, 4>>))
@@ -182,7 +184,7 @@ feature -- Access
 			Result.set_my_iso8601_duration_arrayed_list (create {ARRAYED_LIST[ISO8601_DURATION]}.make_from_array(<<create {ISO8601_DURATION}.make_from_string("P1Y2D")>>))
 		end
 
-	dadl_primitive_sequence_types_2: ODIN_PRIMITIVE_SEQUENCE_TYPES
+	odin_primitive_sequence_types_2: ODIN_PRIMITIVE_SEQUENCE_TYPES
 		once
 			create Result
 			Result.set_my_integer_arrayed_list (create {ARRAYED_LIST[INTEGER]}.make_from_array(<<1>>))
@@ -222,6 +224,90 @@ feature -- Access
 			Result.set_my_iso8601_duration_arrayed_list (create {ARRAYED_LIST[ISO8601_DURATION]}.make_from_array(<<create {ISO8601_DURATION}.make_from_string("P1Y2D")>>))
 		end
 
+	odin_primitive_sequence_interval_types: ODIN_PRIMITIVE_SEQUENCE_INTERVAL_TYPES
+		once
+			create Result
+			Result.set_my_arrayed_list_interval_integer (create {ARRAYED_LIST[INTERVAL[INTEGER]]}.make_from_array (<<
+				create {PROPER_INTERVAL[INTEGER]}.make_bounded_included(40, 3000), create {PROPER_INTERVAL[INTEGER]}.make_upper_unbounded(2, True)
+			>>))
+			Result.set_my_arrayed_list_interval_integer_8 (create {ARRAYED_LIST[INTERVAL[INTEGER_8]]}.make_from_array (<<
+				create {PROPER_INTERVAL[INTEGER_8]}.make_bounded_included(40, 127), create {PROPER_INTERVAL[INTEGER_8]}.make_upper_unbounded(2, True)
+			>>))
+			Result.set_my_arrayed_list_interval_integer_16 (create {ARRAYED_LIST[INTERVAL[INTEGER_16]]}.make_from_array (<<
+				create {PROPER_INTERVAL[INTEGER_16]}.make_bounded_included(-20, 15000), create {PROPER_INTERVAL[INTEGER_16]}.make_upper_unbounded(-14789, True)
+			>>))
+			Result.set_my_arrayed_list_interval_integer_32 (create {ARRAYED_LIST[INTERVAL[INTEGER_32]]}.make_from_array (<<
+				create {PROPER_INTERVAL[INTEGER_32]}.make_bounded_included(-20, 24000111), create {PROPER_INTERVAL[INTEGER_32]}.make_lower_unbounded(24, True)
+			>>))
+			Result.set_my_arrayed_list_interval_integer_64 (create {ARRAYED_LIST[INTERVAL[INTEGER_64]]}.make_from_array (<<
+				create {PROPER_INTERVAL[INTEGER_64]}.make_bounded_included(-201, 24000111), create {PROPER_INTERVAL[INTEGER_64]}.make_lower_unbounded(24, True)
+			>>))
+
+			Result.set_my_arrayed_list_interval_natural (create {ARRAYED_LIST[INTERVAL[NATURAL]]}.make_from_array (<<
+				create {PROPER_INTERVAL[NATURAL]}.make_bounded_included(40, 3000), create {PROPER_INTERVAL[NATURAL]}.make_upper_unbounded(2, True)
+			>>))
+			Result.set_my_arrayed_list_interval_natural_8 (create {ARRAYED_LIST[INTERVAL[NATURAL_8]]}.make_from_array (<<
+				create {PROPER_INTERVAL[NATURAL_8]}.make_bounded_included(40, 255), create {PROPER_INTERVAL[NATURAL_8]}.make_upper_unbounded(2, True)
+			>>))
+			Result.set_my_arrayed_list_interval_natural_16 (create {ARRAYED_LIST[INTERVAL[NATURAL_16]]}.make_from_array (<<
+				create {PROPER_INTERVAL[NATURAL_16]}.make_bounded_included(20, 456), create {PROPER_INTERVAL[NATURAL_16]}.make_upper_unbounded(2000, True)
+			>>))
+			Result.set_my_arrayed_list_interval_natural_32 (create {ARRAYED_LIST[INTERVAL[NATURAL_32]]}.make_from_array (<<
+				create {PROPER_INTERVAL[NATURAL_32]}.make_bounded_included(20, 24000111), create {PROPER_INTERVAL[NATURAL_32]}.make_lower_unbounded(24, True)
+			>>))
+			Result.set_my_arrayed_list_interval_natural_64 (create {ARRAYED_LIST[INTERVAL[NATURAL_64]]}.make_from_array (<<
+				create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(24000111, 20111222333444), create {PROPER_INTERVAL[NATURAL_64]}.make_lower_unbounded(24, True)
+			>>))
+
+			Result.set_my_arrayed_list_interval_real (create {ARRAYED_LIST[INTERVAL[REAL]]}.make_from_array (<<
+				create {PROPER_INTERVAL[REAL]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[REAL]}.make_upper_unbounded(29.09894, True)
+			>>))
+			Result.set_my_arrayed_list_interval_real_32 (create {ARRAYED_LIST[INTERVAL[REAL_32]]}.make_from_array (<<
+				create {PROPER_INTERVAL[REAL_32]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[REAL_32]}.make_upper_unbounded(29.09894, True)
+			>>))
+			Result.set_my_arrayed_list_interval_real_64 (create {ARRAYED_LIST[INTERVAL[REAL_64]]}.make_from_array (<<
+				create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(-102943440.0345, 3000.23), create {PROPER_INTERVAL[REAL_64]}.make_upper_unbounded(29.09894, True)
+			>>))
+			Result.set_my_arrayed_list_interval_double (create {ARRAYED_LIST[INTERVAL[DOUBLE]]}.make_from_array (<<
+				create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[DOUBLE]}.make_upper_unbounded(29.09894, True)
+			>>))
+
+			Result.set_my_arrayed_list_interval_date (create {ARRAYED_LIST[INTERVAL[DATE]]}.make_from_array (<<
+				create {PROPER_INTERVAL[DATE]}.make_bounded_included (create {DATE}.make_day_month_year(12, 8, 1965), create {DATE}.make_now),
+				create {PROPER_INTERVAL[DATE]}.make_upper_unbounded (create {DATE}.make_day_month_year(02, 12, 2009), True)
+			>>))
+			Result.set_my_arrayed_list_interval_date_time (create {ARRAYED_LIST[INTERVAL[DATE_TIME]]}.make_from_array (<<
+				create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included (create {DATE_TIME}.make(1965, 8, 12, 14, 8, 0), create {DATE_TIME}.make_now),
+				create {PROPER_INTERVAL[DATE_TIME]}.make_upper_unbounded (create {DATE_TIME}.make(2013, 4, 22, 10, 30, 0), True)
+			>>))
+			Result.set_my_arrayed_list_interval_time (create {ARRAYED_LIST[INTERVAL[TIME]]}.make_from_array (<<
+				create {PROPER_INTERVAL[TIME]}.make_bounded_included (create {TIME}.make(2, 30, 0), create {TIME}.make_now),
+				create {PROPER_INTERVAL[TIME]}.make_upper_unbounded (create {TIME}.make(2, 30, 0), True)
+			>>))
+			Result.set_my_arrayed_list_interval_duration (create {ARRAYED_LIST[INTERVAL[DATE_TIME_DURATION]]}.make_from_array(<<
+				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included (create {DATE_TIME_DURATION}.make_definite (0, 4, 0, 0), create {DATE_TIME_DURATION}.make_definite (1, 4, 0, 0)),
+				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_upper_unbounded (create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0), True)
+			>>))
+
+			Result.set_my_arrayed_list_interval_iso8601_date (create {ARRAYED_LIST[INTERVAL[ISO8601_DATE]]}.make_from_array (<<
+				create {PROPER_INTERVAL[ISO8601_DATE]}.make_bounded_included (create {ISO8601_DATE}.make_from_string("2001-01-02"), create {ISO8601_DATE}.make_from_string("2007-07-22")),
+				create {PROPER_INTERVAL[ISO8601_DATE]}.make_upper_unbounded (create {ISO8601_DATE}.make_from_string("2001-01-02"), True)
+			>>))
+			Result.set_my_arrayed_list_interval_iso8601_date_time (create {ARRAYED_LIST[INTERVAL[ISO8601_DATE_TIME]]}.make_from_array (<<
+				create {PROPER_INTERVAL[ISO8601_DATE_TIME]}.make_bounded_included (create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T00:47:00"), create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T03:45:00")),
+				create {PROPER_INTERVAL[ISO8601_DATE_TIME]}.make_upper_unbounded (create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T00:47:00"), True)
+
+			>>))
+			Result.set_my_arrayed_list_interval_iso8601_time (create {ARRAYED_LIST[INTERVAL[ISO8601_TIME]]}.make_from_array (<<
+				create {PROPER_INTERVAL[ISO8601_TIME]}.make_bounded_included (create {ISO8601_TIME}.make_from_string("11:15:02"), create {ISO8601_TIME}.make_from_string("13:47:30")),
+				create {PROPER_INTERVAL[ISO8601_TIME]}.make_upper_unbounded (create {ISO8601_TIME}.make_from_string("11:15:02"), True)
+			>>))
+			Result.set_my_arrayed_list_interval_iso8601_duration (create {ARRAYED_LIST[INTERVAL[ISO8601_DURATION]]}.make_from_array (<<
+				create {PROPER_INTERVAL[ISO8601_DURATION]}.make_bounded_included (create {ISO8601_DURATION}.make_from_string("P1Y2D"), create {ISO8601_DURATION}.make_from_string("P2Y2D")),
+				create {PROPER_INTERVAL[ISO8601_DURATION]}.make_upper_unbounded (create {ISO8601_DURATION}.make_from_string("P1Y2D"), True)
+			>>))
+		end
+
 feature -- Status setting
 
 feature -- Test procedures
@@ -233,41 +319,41 @@ feature -- Test procedures
 			append_status ("%NCreate Data Tree from " + an_obj.generator + " object%N")
 			create dt.make_from_object (an_obj)
 
-			append_status ("Serialise Data Tree to dADL%N")
-			dadl_engine.set_tree (dt)
-			dadl_engine.serialise ("dadl", False, True)
-			set_source_text (dadl_engine.serialised)
+			append_status ("Serialise Data Tree to ODIN%N")
+			odin_engine.set_tree (dt)
+			odin_engine.serialise ("odin", False, True)
+			set_source_text (odin_engine.serialised)
 
-			append_status("Parse dADL%N")
-			dadl_engine.set_source (dadl_engine.serialised, 1)
-			dadl_engine.parse
-			if dadl_engine.parse_succeeded then
+			append_status("Parse ODIN%N")
+			odin_engine.set_source (odin_engine.serialised, 1)
+			odin_engine.parse
+			if odin_engine.parse_succeeded then
 				-- display tree in node explorer
-				if attached dadl_engine.tree.as_object_from_string (an_obj.generator, Void) as new_obj then
-					append_status("%TSuccessfully created " + new_obj.generator + " object from DADL%N")
+				if attached odin_engine.tree.as_object_from_string (an_obj.generator, Void) as new_obj then
+					append_status("%TSuccessfully created " + new_obj.generator + " object from ODIN%N")
 				else
-					append_status("%TFailed to create " + an_obj.generator + " object from DADL Error%N")
+					append_status("%TFailed to create " + an_obj.generator + " object from ODIN Error%N")
 				end
 			else
-				append_status (dadl_engine.errors.as_string)
+				append_status (odin_engine.errors.as_string)
 			end
 		end
 
-	from_dadl (a_dadl_text: STRING)
+	from_odin (an_odin_text: STRING)
 		do
-			set_source_text(a_dadl_text)
-			dadl_engine.set_source (a_dadl_text, 1)
-			dadl_engine.parse
-			if dadl_engine.parse_succeeded then
-				append_status("%TParse succeeded%N")
+			set_source_text (an_odin_text)
+			odin_engine.set_source (an_odin_text, 1)
+			odin_engine.parse
+			if odin_engine.parse_succeeded then
+				append_status ("%TParse succeeded%N")
 			else
-				append_status ("%TParse failed " + dadl_engine.errors.as_string + "%N")
+				append_status ("%TParse failed " + odin_engine.errors.as_string + "%N")
 			end
 		end
 
 feature {NONE} -- Implementation
 
-	dadl_engine: ODIN_ENGINE
+	odin_engine: ODIN_ENGINE
 		once
 			create Result.make
 		end

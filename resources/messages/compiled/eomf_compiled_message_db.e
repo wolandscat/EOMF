@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (152)
+			create message_table.make (153)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -152,7 +152,8 @@ feature -- Initialisation
 			message_table.put ("[Exception caught]: Exception type $1 - trace: $2", ec_dt_unknown_error)
 			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies container type but is not in model", ec_container_type_mismatch)
 			message_table.put ("Mismatch in data and model for generic parameter $1 in type $2. Expected $3 but got $4", ec_dt_container_gen_param_type_mismatch)
-			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies interval type but is not in model", ec_interval_type_mismatch)
+			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies Interval<T> type but is not in model", ec_interval_type_mismatch)
+			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies List<Interval<T>> type but is not in model", ec_interval_list_type_mismatch)
 			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies atomic type but no conversion available", ec_atomic_type_mismatch)
 			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies primitive, sequence<primitive> or interval<primitive> type but model does not", ec_primitive_type_mismatch)
 			message_table.put ("[Exception caught]: Mismatch between data and model for $1.$2. Expecting $3, read a $4", ec_dt_proc_arg_type_mismatch)
