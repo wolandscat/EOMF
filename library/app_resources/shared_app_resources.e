@@ -59,11 +59,11 @@ feature -- Access
 			-- accessor object for application config file
 		once
 			Result := app_cfg_cell.item
-			if file_system.file_exists (user_config_file_path) then
+	--		if file_system.file_exists (user_config_file_path) then
 				Result.initialise (user_config_file_path)
-			else
-				Result.initialise (Default_user_config_file_path)
-			end
+	--		else
+	--			Result.initialise (Default_user_config_file_path)
+	--		end
 			app_cfg_initialise
 		end
 
