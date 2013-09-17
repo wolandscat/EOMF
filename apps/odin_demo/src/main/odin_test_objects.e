@@ -51,7 +51,9 @@ feature -- Access
 			m_ivl: MULTIPLICITY_INTERVAL
 		once
 			create Result.make(0)
-			dir_path := file_system.pathname (file_system.pathname (file_system.pathname (file_system.dirname (application_startup_directory), "resources"), "test_files"), "odin")
+			dir_path := file_system.pathname (file_system.pathname (file_system.pathname (
+				file_system.dirname (file_system.dirname (file_system.dirname (application_startup_directory))),
+				 "resources"), "test_files"), "odin")
 			create dir.make (dir_path)
 			if dir.exists then
 				dir.open_read
@@ -325,7 +327,7 @@ feature -- Test procedures
 			set_source_text (odin_engine.serialised)
 
 			append_status("Parse ODIN%N")
-			odin_engine.set_source (odin_engine.serialised, 1)
+			odin_engine.set_source (odin_engine.serialised, 0)
 			odin_engine.parse
 			if odin_engine.parse_succeeded then
 				-- display tree in node explorer
@@ -342,7 +344,7 @@ feature -- Test procedures
 	from_odin (an_odin_text: STRING)
 		do
 			set_source_text (an_odin_text)
-			odin_engine.set_source (an_odin_text, 1)
+			odin_engine.set_source (an_odin_text, 0)
 			odin_engine.parse
 			if odin_engine.parse_succeeded then
 				append_status ("%TParse succeeded%N")

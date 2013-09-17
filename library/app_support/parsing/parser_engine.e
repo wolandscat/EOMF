@@ -67,7 +67,7 @@ feature -- Commands
 	set_source (in_text: STRING; a_source_start_line: INTEGER)
 			-- Set `in_text' as working artifact.
 		require
-			start_line_positive: a_source_start_line > 0
+			start_line_positive: a_source_start_line >= 0
 		do
 			source := in_text
 			source_start_line := a_source_start_line

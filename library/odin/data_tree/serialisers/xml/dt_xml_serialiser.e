@@ -217,7 +217,7 @@ feature -- Modification
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_SIMPLE
 		do
-			last_result.append (primitive_interval_list_to_xml_tagged_string (a_node.value))
+			last_result.append (indented (primitive_interval_list_to_xml_tagged_string (a_node.value), create_indent (depth//2 + 1)))
 		end
 
 	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
@@ -396,7 +396,7 @@ feature {NONE} -- Implementation
 				Result.append (xml_tag_start ("upper_unbounded", Void))
 				Result.append (primitive_value_to_simple_string (value.upper_unbounded))
 				Result.append (xml_tag_end ("upper_unbounded"))
-			elseif attached value.upper as val_u then
+			elseif attached value.upper as val_u and not value.is_point then
 				Result.append (xml_tag_start ("upper", Void))
 				Result.append (primitive_value_to_simple_string (val_u))
 				Result.append (xml_tag_end ("upper"))

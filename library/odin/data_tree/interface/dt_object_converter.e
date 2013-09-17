@@ -286,7 +286,7 @@ end
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_from_object: field_name = " + eif_fld_name + "%N")
 end
-						eif_fld_dynamic_type := dynamic_type (eif_fld_val)
+						eif_fld_dynamic_type := attached_type (dynamic_type (eif_fld_val))
 						eif_fld_static_type := field_static_type_of_type (i, dynamic_type (an_obj))
 
 						-- the Eiffel object field is an INTERVAL[PART_COMPARABLE]; convert to DT_PRIMITIVE_OBJECT_INTERVAL
