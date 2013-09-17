@@ -7,10 +7,13 @@ note
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class
-	EVX_DEFINITIONS
+class EVX_DEFINITIONS
 
 feature -- Definitions
+
+	Sane_screen_coord: INTEGER = -2500
+			-- assumed 'most negative' screen X or Y position that app could, due to use of multiple screens. If it is more negative
+			-- than this, at least on windows, assume that the app was minimised and start it in a default screen location instead
 
 	Default_padding_width: INTEGER = 3
 

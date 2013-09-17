@@ -198,26 +198,35 @@ feature -- Modification
 			if a_node.parent.is_container_type then
 				last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, Void))
 			end
+
+			-- generate value as a multi-line text
 			str := primitive_interval_to_xml_tagged_string (a_node.value)
-			str.append ("%N")
 			last_result.append (indented (str, create_indent (depth//2 + 1)))
-			last_object_primitive := True
 		end
 
 	end_primitive_object_interval (a_node: DT_PRIMITIVE_OBJECT_INTERVAL; depth: INTEGER)
 			-- end serialising a DT_PRIMITIVE_OBJECT_INTERVAL
 		do
 			if a_node.parent.is_container_type then
-				last_result.append (create_indent (depth//2))
-				last_result.append (xml_tag_end (a_node.parent.im_attr_name))
-				last_result.append (format_item (FMT_NEWLINE))
+				last_result.append (create_indent (depth//2) + xml_tag_end (a_node.parent.im_attr_name) + format_item (FMT_NEWLINE))
 			end
 		end
 
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_SIMPLE
 		do
-			last_result.append (indented (primitive_interval_list_to_xml_tagged_string (a_node.value), create_indent (depth//2 + 1)))
+			across a_node.value as ivl_csr loop
+				-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
+				if not ivl_csr.is_first then
+					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, Void) + format_item (FMT_NEWLINE))
+				end
+				last_result.append (indented (primitive_interval_to_xml_tagged_string (ivl_csr.item), create_indent (depth//2 + 1)))
+
+				-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
+				if not ivl_csr.is_last then
+					last_result.append (create_indent (depth//2) + xml_tag_end (a_node.parent.im_attr_name) + format_item (FMT_NEWLINE))
+				end
+			end
 		end
 
 	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
@@ -396,25 +405,18 @@ feature {NONE} -- Implementation
 				Result.append (xml_tag_start ("upper_unbounded", Void))
 				Result.append (primitive_value_to_simple_string (value.upper_unbounded))
 				Result.append (xml_tag_end ("upper_unbounded"))
+				Result.append ("%N")
 			elseif attached value.upper as val_u and not value.is_point then
 				Result.append (xml_tag_start ("upper", Void))
 				Result.append (primitive_value_to_simple_string (val_u))
 				Result.append (xml_tag_end ("upper"))
+				Result.append ("%N")
 				if not value.upper_included then
-					Result.append ("%N")
 					Result.append (xml_tag_start ("upper_included", Void))
 					Result.append (primitive_value_to_simple_string (value.upper_included.to_reference))
 					Result.append (xml_tag_end ("upper_included"))
+					Result.append ("%N")
 				end
-			end
-		end
-
-	primitive_interval_list_to_xml_tagged_string (value: ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]): STRING
-			-- generate a structured, tagged form of this object
-		do
-			create Result.make_empty
-			across value as ivl_csr loop
-				Result.append (primitive_interval_to_xml_tagged_string (ivl_csr.item))
 			end
 		end
 

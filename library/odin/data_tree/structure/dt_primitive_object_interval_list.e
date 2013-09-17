@@ -50,6 +50,7 @@ feature -- Conversion
 	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING];
 			attr_name_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];
 			ivl_value_string_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];
+			obj_start_sym, obj_end_sym: STRING
 			equal_symbol, attr_delimiter: STRING): STRING
 			-- generate a cleaned form of this object as a structured string following the general model (in ODIN)
 			-- 		lower = <0.0>
@@ -59,10 +60,12 @@ feature -- Conversion
 			-- 		"upper_unbounded": true
 			-- The agent `attr_name_formatter' can be used to format the agent name e.g. add "" as in JSON
 			-- The agent `ivl_value_string_formatter' is used to format the value, e.g. add <> as in ODIN
+			-- The agent `list_formatter' is used to format whole list of values, e.g. add [] as in JSON
 			-- FIXME: the 'to_reference' in the below should not be required, but BOOLEAN does not conform to ANY when it is an agent argument!
 		do
 			create Result.make(0)
 			across value as ivl_csr loop
+				Result.append (obj_start_sym)
 				if ivl_csr.item.lower_unbounded then
 					Result.append (attr_name_formatter.item (["lower_unbounded"]))
 					Result.append (equal_symbol)
@@ -95,9 +98,10 @@ feature -- Conversion
 						Result.append (ivl_value_string_formatter.item ([value_serialiser.item ([ivl_csr.item.upper_included.to_reference])]))
 					end
 				end
+				Result.append (obj_end_sym)
 
 				if not ivl_csr.is_last then
-					Result.append (", ")
+					Result.append (",%N")
 				end
 			end
 		end

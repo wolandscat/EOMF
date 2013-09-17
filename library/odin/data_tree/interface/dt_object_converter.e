@@ -717,7 +717,7 @@ feature {NONE} -- Conversion to object
 			-- This is currently a total hack, awaiting ES to implement INTEGER_GENERAL, REAL_GENERAL etc from the ECMA spec.
 		do
 			-- perform required type conversions for Integers and Reals
-			if attached {INTERVAL [INTEGER_64]} dt_ivl_value as src_ivl_int then
+			if attached {INTERVAL [INTEGER_32]} dt_ivl_value as src_ivl_int then
 				if src_ivl_int.is_point then
 					check attached {INTERVAL [PART_COMPARABLE]} new_instance_of (point_interval_type_ids.item (eif_result_type)) as ivl then
 						Result := ivl
@@ -784,13 +784,13 @@ feature {NONE} -- Conversion to object
 					end
 				end
 
-			elseif attached {INTERVAL[REAL_64]} dt_ivl_value as src_ivl_real then
+			elseif attached {INTERVAL[REAL_32]} dt_ivl_value as src_ivl_real then
 				if src_ivl_real.is_point then
 					check attached {INTERVAL[PART_COMPARABLE]} new_instance_of (point_interval_type_ids.item (eif_result_type)) as ivl then
 						Result := ivl
 					end
 					if attached {POINT_INTERVAL[REAL_32]} Result as targ_ivl_real_32 then
-						targ_ivl_real_32.make (src_ivl_real.lower.truncated_to_real)
+						targ_ivl_real_32.make (src_ivl_real.lower)
 
 					elseif attached {POINT_INTERVAL[REAL_64]} Result as targ_ivl_int_64 then
 						targ_ivl_int_64.make (src_ivl_real.lower)
@@ -800,7 +800,7 @@ feature {NONE} -- Conversion to object
 						Result := ivl
 					end
 					if attached {PROPER_INTERVAL[REAL_32]} Result as targ_ivl_real_32 then
-						targ_ivl_real_32.make (src_ivl_real.lower.truncated_to_real, src_ivl_real.upper.truncated_to_real, src_ivl_real.lower_unbounded, src_ivl_real.upper_unbounded,
+						targ_ivl_real_32.make (src_ivl_real.lower, src_ivl_real.upper, src_ivl_real.lower_unbounded, src_ivl_real.upper_unbounded,
 							src_ivl_real.lower_included, src_ivl_real.upper_included)
 
 					elseif attached {PROPER_INTERVAL[REAL_64]} Result as targ_ivl_int_64 then

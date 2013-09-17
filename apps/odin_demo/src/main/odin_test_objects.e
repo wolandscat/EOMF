@@ -23,12 +23,13 @@ inherit
 
 feature -- Initialisation
 
-	initialise (a_status_reporting_proc, a_source_text_proc: PROCEDURE [ANY, TUPLE [STRING]])
+	initialise (a_status_reporting_proc, a_source_text_proc, a_serialised_text_proc: PROCEDURE [ANY, TUPLE [STRING]])
 			-- initialise with a status reporting function; if none supplied,
 			-- write to std out
 		do
 			status_reporting_proc := a_status_reporting_proc
 			source_text_proc := a_source_text_proc
+			serialised_text_proc := a_serialised_text_proc
 		end
 
 feature -- Access
@@ -120,9 +121,9 @@ feature -- Access
 			create Result
 			Result.set_my_integer_interval (create {PROPER_INTERVAL[INTEGER]}.make_bounded_included(40, 3000))
 			Result.set_my_integer_8_interval (create {PROPER_INTERVAL[INTEGER_8]}.make_bounded_included(10, 20))
-			Result.set_my_integer_16_interval (create {PROPER_INTERVAL[INTEGER_16]}.make_bounded_included(-10, 20))
+			Result.set_my_integer_16_interval (create {PROPER_INTERVAL[INTEGER_16]}.make_bounded (-10, 20, True, False))
 			Result.set_my_integer_32_interval (create {PROPER_INTERVAL[INTEGER_32]}.make_bounded_included(-300, 50000))
-			Result.set_my_integer_64_interval (create {PROPER_INTERVAL[INTEGER_64]}.make_bounded_included(1000, 20000000))
+			Result.set_my_integer_64_interval (create {PROPER_INTERVAL[INTEGER_64]}.make_upper_unbounded (1000, True))
 
 			Result.set_my_natural_interval (create {PROPER_INTERVAL[NATURAL]}.make_bounded_included(40, 3000))
 			Result.set_my_natural_8_interval (create {PROPER_INTERVAL[NATURAL_8]}.make_bounded_included(10, 20))
@@ -131,7 +132,7 @@ feature -- Access
 			Result.set_my_natural_64_interval (create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(1000, 20000000))
 
 			Result.set_my_real_interval (create {PROPER_INTERVAL[REAL]}.make_bounded_included(40.0, 3000.0))
-			Result.set_my_real_32_interval (create {PROPER_INTERVAL[REAL_32]}.make_bounded_included(10.1, 20.234))
+			Result.set_my_real_32_interval (create {PROPER_INTERVAL[REAL_32]}.make_lower_unbounded (10.1, False))
 			Result.set_my_real_64_interval (create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(10.0, 20.0))
 			Result.set_my_double_interval (create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(300.0, 50000.0))
 
@@ -310,18 +311,16 @@ feature -- Access
 			>>))
 		end
 
-feature -- Status setting
-
 feature -- Test procedures
 
-	round_trip (an_obj: ANY)
+	round_trip (an_obj: ANY; a_serialise_format: STRING)
 		local
 			dt: DT_COMPLEX_OBJECT_NODE
 		do
 			append_status ("%NCreate Data Tree from " + an_obj.generator + " object%N")
 			create dt.make_from_object (an_obj)
 
-			append_status ("Serialise Data Tree to ODIN%N")
+			append_status ("Save Data Tree to ODIN%N")
 			odin_engine.set_tree (dt)
 			odin_engine.serialise ("odin", False, True)
 			set_source_text (odin_engine.serialised)
@@ -339,6 +338,11 @@ feature -- Test procedures
 			else
 				append_status (odin_engine.errors.as_string)
 			end
+
+			append_status ("Serialise Data Tree to " + a_serialise_format + "%N")
+			odin_engine.set_tree (dt)
+			odin_engine.serialise (a_serialise_format, False, True)
+			set_serialised_text (odin_engine.serialised)
 		end
 
 	from_odin (an_odin_text: STRING)
@@ -374,10 +378,22 @@ feature {NONE} -- Implementation
 
 	source_text_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
+	serialised_text_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
+
 	set_source_text (a_text: STRING)
 			-- write a_text to source text location, or else stdout if none
 		do
 			if attached source_text_proc as proc then
+				proc.call([a_text])
+			else
+				io.put_string (a_text)
+			end
+		end
+
+	set_serialised_text (a_text: STRING)
+			-- write a_text to serialised text location, or else stdout if none
+		do
+			if attached serialised_text_proc as proc then
 				proc.call([a_text])
 			else
 				io.put_string (a_text)

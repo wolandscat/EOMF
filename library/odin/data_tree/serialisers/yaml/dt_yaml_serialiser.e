@@ -150,8 +150,10 @@ feature -- Visitor
 			start_object_item (a_node, depth)
 			last_result.append (a_node.as_serialised_string (
 					agent primitive_value_to_yaml_string,
-					agent (s: STRING):STRING do Result := s end,
 					agent (s: STRING): STRING do Result := s end,
+					agent (s: STRING): STRING do Result := s end,
+					symbol (Sym_yaml_sequence_entry) + "%N",
+					"%N" + symbol (Sym_yaml_sequence_end),
 					symbol (SYM_YAML_EQ),
 					"%N"))
 		end
