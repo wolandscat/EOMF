@@ -30,7 +30,7 @@ create
 
 feature -- Visitor
 
-	start_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	start_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- start serialising a DT_COMPLEX_OBJECT_NODE
 		do
 			if a_node.is_root then
@@ -51,7 +51,7 @@ feature -- Visitor
 			end
 		end
 
-	end_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- end serialising a DT_COMPLEX_OBJECT_NODE
 		do
 			if last_result.item (last_result.count) /= '%N'  then
@@ -64,7 +64,7 @@ feature -- Visitor
 			end
 		end
 
-	start_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising a DT_ATTRIBUTE_NODE
 		do
 			-- output: indent, if not the first line of a new complex object where a '  - '
@@ -84,7 +84,7 @@ feature -- Visitor
 			end
 		end
 
-	end_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
 			if a_node.is_container_type then

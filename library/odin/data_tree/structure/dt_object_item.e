@@ -34,7 +34,7 @@ feature -- Access
 			Result := representation.node_id
 		end
 
-	parent: detachable DT_ATTRIBUTE_NODE
+	parent: detachable DT_ATTRIBUTE
 			-- parent of all object types must be an attribute node
 
 feature -- Comparison

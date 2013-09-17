@@ -27,7 +27,7 @@ create
 
 feature -- Visitor
 
-	start_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	start_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- start serialising a DT_COMPLEX_OBJECT_NODE
 		do
 			if not a_node.is_root then
@@ -36,7 +36,7 @@ feature -- Visitor
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + format_item (FMT_NEWLINE))
 		end
 
-	end_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- end serialising a DT_COMPLEX_OBJECT_NODE
 		do
 			last_result.append (create_indent (depth//2 + multiple_attr_count))
@@ -46,7 +46,7 @@ feature -- Visitor
 			end
 		end
 
-	start_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising a DT_ATTRIBUTE_NODE
 		do
 			-- output: indent "$attr_name":
@@ -70,7 +70,7 @@ feature -- Visitor
 			end
 		end
 
-	end_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
 			if a_node.is_container_type then

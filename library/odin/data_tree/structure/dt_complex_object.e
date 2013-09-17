@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class DT_COMPLEX_OBJECT_NODE
+class DT_COMPLEX_OBJECT
 
 inherit
 	SHARED_DT_OBJECT_CONVERTER
@@ -32,7 +32,7 @@ inherit
 			out, default_create, is_equal
 		end
 
-	ITERABLE [DT_ATTRIBUTE_NODE]
+	ITERABLE [DT_ATTRIBUTE]
 		undefine
 			out, default_create, is_equal
 		end
@@ -70,31 +70,31 @@ feature -- Initialisation
 
 feature -- Access
 
-	parent: detachable DT_ATTRIBUTE_NODE
+	parent: detachable DT_ATTRIBUTE
 
-	attributes: ARRAYED_LIST [DT_ATTRIBUTE_NODE]
+	attributes: ARRAYED_LIST [DT_ATTRIBUTE]
 			-- next nodes, keyed by node id or attribute name
 		attribute
 			create Result.make (0)
 		end
 
-	first: DT_ATTRIBUTE_NODE
+	first: DT_ATTRIBUTE
 		do
 			Result := attributes.first
 		end
 
-	last: DT_ATTRIBUTE_NODE
+	last: DT_ATTRIBUTE
 			--
 		do
 			Result := attributes.last
 		end
 
-	attribute_node (an_attr_name: STRING): detachable DT_ATTRIBUTE_NODE
+	attribute_node (an_attr_name: STRING): detachable DT_ATTRIBUTE
 			-- return attribute node at an_attr_name
 		require
 			An_attr_name_valid: has_attribute (an_attr_name)
 		do
-			if attached {DT_ATTRIBUTE_NODE} representation.child_with_id (an_attr_name).content_item as dt_attr then
+			if attached {DT_ATTRIBUTE} representation.child_with_id (an_attr_name).content_item as dt_attr then
 				Result := dt_attr
 			end
 		end
@@ -109,12 +109,12 @@ feature -- Access
 			end
 		end
 
-	attribute_node_at_path (a_path: STRING): detachable DT_ATTRIBUTE_NODE
+	attribute_node_at_path (a_path: STRING): detachable DT_ATTRIBUTE
 			-- find the child at the relative path `a_path'; paths can only ever return an object
 		require
 			Path_valid: has_path (a_path)
 		do
-			if attached {DT_ATTRIBUTE_NODE} representation.attribute_node_at_path (create {OG_PATH}.make_from_string(a_path)).content_item as dt_attr then
+			if attached {DT_ATTRIBUTE} representation.attribute_node_at_path (create {OG_PATH}.make_from_string(a_path)).content_item as dt_attr then
 				Result := dt_attr
 			end
 		end
@@ -170,7 +170,7 @@ feature -- Access
 			end
 		end
 
-	new_cursor: ITERATION_CURSOR [DT_ATTRIBUTE_NODE]
+	new_cursor: ITERATION_CURSOR [DT_ATTRIBUTE]
 			-- Fresh cursor associated with current structure
 		do
 			Result := attributes.new_cursor
@@ -202,7 +202,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	put_attribute (an_attr_node: DT_ATTRIBUTE_NODE)
+	put_attribute (an_attr_node: DT_ATTRIBUTE)
 			-- put a new child node
 		require
 			Node_exists: not has_attribute (an_attr_node.im_attr_name)
@@ -270,8 +270,8 @@ feature -- Modification
 			a_path_can_be_created: (create {OG_PATH}.make_root).valid_path_string (a_path)
 		local
 			an_og_path: OG_PATH
-			dt_attr: detachable DT_ATTRIBUTE_NODE
-			parent_dt_obj: DT_COMPLEX_OBJECT_NODE
+			dt_attr: detachable DT_ATTRIBUTE
+			parent_dt_obj: DT_COMPLEX_OBJECT
 			dt_obj: detachable DT_OBJECT_ITEM
 		do
 			parent_dt_obj := Current
@@ -297,20 +297,20 @@ feature -- Modification
 						if dt_attr.has_child_with_id (an_og_path.item.object_id) then
 							dt_obj := dt_attr.child_with_id (an_og_path.item.object_id)
 						else
-							create {DT_COMPLEX_OBJECT_NODE} dt_obj.make_identified (an_og_path.item.object_id)
+							create {DT_COMPLEX_OBJECT} dt_obj.make_identified (an_og_path.item.object_id)
 							dt_attr.put_child (dt_obj)
 						end
 					elseif not dt_attr.is_container_type and not an_og_path.item.is_addressable then
 						if dt_attr.children.count = 1 then
 							dt_obj := dt_attr.first_child
 						else
-							create {DT_COMPLEX_OBJECT_NODE} dt_obj.make_anonymous
+							create {DT_COMPLEX_OBJECT} dt_obj.make_anonymous
 							dt_attr.put_child (dt_obj)
 						end
 					else
 						-- error state
 					end
-					if attached {DT_COMPLEX_OBJECT_NODE} dt_obj as dt_complex_obj then
+					if attached {DT_COMPLEX_OBJECT} dt_obj as dt_complex_obj then
 						parent_dt_obj := dt_complex_obj
 					end
 				end

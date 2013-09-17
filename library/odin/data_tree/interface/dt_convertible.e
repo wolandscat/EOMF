@@ -27,7 +27,7 @@ feature -- Initialisation
 
 feature -- Representation
 
-	dt_representation: detachable DT_COMPLEX_OBJECT_NODE
+	dt_representation: detachable DT_COMPLEX_OBJECT
 			-- representation as a data tree
 		note
 			option: transient
@@ -53,7 +53,7 @@ feature -- Duplication
 
 	safe_deep_twin: like Current
 		local
-			dt_co: detachable DT_COMPLEX_OBJECT_NODE
+			dt_co: detachable DT_COMPLEX_OBJECT
 		do
 			dt_co := dt_representation
 			dt_representation := Void

@@ -493,7 +493,7 @@ feature {NONE} -- Semantic actions
 		local
 			yy_retried: BOOLEAN
 			yyval1: detachable ANY
-			yyval13: DT_COMPLEX_OBJECT_NODE
+			yyval13: DT_COMPLEX_OBJECT
 			yyval14: DT_OBJECT_LEAF
 			yyval15: ANY
 			yyval29: ARRAYED_LIST [ANY]
@@ -5473,7 +5473,7 @@ feature {NONE} -- Semantic value stacks
 	yyspecial_routines12: KL_SPECIAL_ROUTINES [URI]
 			-- Routines that ought to be in SPECIAL [URI]
 
-	yyvs13: SPECIAL [DT_COMPLEX_OBJECT_NODE]
+	yyvs13: SPECIAL [DT_COMPLEX_OBJECT]
 			-- Stack for semantic values of type DT_COMPLEX_OBJECT_NODE
 
 	yyvsc13: INTEGER
@@ -5482,7 +5482,7 @@ feature {NONE} -- Semantic value stacks
 	yyvsp13: INTEGER
 			-- Top of semantic value stack `yyvs13'
 
-	yyspecial_routines13: KL_SPECIAL_ROUTINES [DT_COMPLEX_OBJECT_NODE]
+	yyspecial_routines13: KL_SPECIAL_ROUTINES [DT_COMPLEX_OBJECT]
 			-- Routines that ought to be in SPECIAL [DT_COMPLEX_OBJECT_NODE]
 
 	yyvs14: SPECIAL [DT_OBJECT_LEAF]
@@ -5930,16 +5930,16 @@ feature -- Access
 	source_start_line: INTEGER
 			-- offset of source in other document, else 0
 
-	output: detachable DT_COMPLEX_OBJECT_NODE
+	output: detachable DT_COMPLEX_OBJECT
 			-- parsed structure
 
 feature {NONE} -- Parse Tree
 
-	complex_object_nodes: ARRAYED_STACK [DT_COMPLEX_OBJECT_NODE]
-	complex_object_node: DT_COMPLEX_OBJECT_NODE
+	complex_object_nodes: ARRAYED_STACK [DT_COMPLEX_OBJECT]
+	complex_object_node: DT_COMPLEX_OBJECT
 
-	attr_nodes: ARRAYED_STACK [DT_ATTRIBUTE_NODE]
-	attr_node: DT_ATTRIBUTE_NODE
+	attr_nodes: ARRAYED_STACK [DT_ATTRIBUTE]
+	attr_node: DT_ATTRIBUTE
 
 	obj_key: STRING
 			-- qualifier of last rel name; use for next object creation

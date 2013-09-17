@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class DT_ATTRIBUTE_NODE
+class DT_ATTRIBUTE
 
 inherit
 	DT_ITEM
@@ -68,7 +68,7 @@ feature -- Initialisation
 
 feature -- Access
 
-	parent: detachable DT_COMPLEX_OBJECT_NODE
+	parent: detachable DT_COMPLEX_OBJECT
 
 	children: ARRAYED_LIST [DT_OBJECT_ITEM]
 			-- next nodes, keyed by node id or attribute name

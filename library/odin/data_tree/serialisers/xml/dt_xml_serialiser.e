@@ -35,7 +35,7 @@ create
 
 feature -- Modification
 
-	start_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	start_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- start serialising an DT_COMPLEX_OBJECT_NODE
 		local
 			doc_attr_name, doc_hdr: STRING
@@ -84,7 +84,7 @@ feature -- Modification
 			end
 		end
 
-	end_complex_object_node (a_node: DT_COMPLEX_OBJECT_NODE; depth: INTEGER)
+	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- end serialising an DT_COMPLEX_OBJECT_NODE
 		local
 			doc_ftr: STRING
@@ -107,7 +107,7 @@ feature -- Modification
 			end
 		end
 
-	start_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising an DT_ATTRIBUTE_NODE
 		local
 			xml_attrs: detachable HASH_TABLE [STRING, STRING]
@@ -120,7 +120,7 @@ feature -- Modification
 				if not a_node.is_container_type and not attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child then
 					-- if we are on single-valued node, look at child, and see if there are
 					-- any rules for that type in the rule set for the overall context
-					if attached {DT_COMPLEX_OBJECT_NODE} a_node.first_child as dt_obj then
+					if attached {DT_COMPLEX_OBJECT} a_node.first_child as dt_obj then
 						xml_attrs := xml_attrs_for_dt_complex_object (dt_obj)
 					end
 					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.im_attr_name, xml_attrs) +
@@ -129,7 +129,7 @@ feature -- Modification
 			end
 		end
 
-	end_attribute_node (a_node: DT_ATTRIBUTE_NODE; depth: INTEGER)
+	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
 			if dt_attr_nodes_to_ignore.has (a_node) then
@@ -308,7 +308,7 @@ feature {NONE} -- Implementation
 			last_result.append (a_node.as_string)
 		end
 
-	xml_attrs_for_dt_complex_object (a_dt_obj: DT_COMPLEX_OBJECT_NODE): detachable HASH_TABLE [STRING, STRING]
+	xml_attrs_for_dt_complex_object (a_dt_obj: DT_COMPLEX_OBJECT): detachable HASH_TABLE [STRING, STRING]
 			-- generate XML attribute table for `a_dt_obj' based on XML rules, if any found
 		do
 			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as srt then
@@ -365,7 +365,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	dt_attr_nodes_to_ignore: ARRAYED_LIST [DT_ATTRIBUTE_NODE]
+	dt_attr_nodes_to_ignore: ARRAYED_LIST [DT_ATTRIBUTE]
 		once
 			create Result.make (0)
 		end

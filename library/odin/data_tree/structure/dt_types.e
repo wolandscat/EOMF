@@ -357,6 +357,8 @@ end
 		end
 
 	dt_dynamic_type_from_string (a_type_str: STRING): INTEGER
+			-- generates an attached type_id unless `a_type_str' is of form
+			-- "attached T"
 		do
 			if not dt_dynamic_types.has (a_type_str) then
 				dt_dynamic_types.put (dynamic_type_from_string (a_type_str), a_type_str)

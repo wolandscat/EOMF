@@ -60,7 +60,7 @@ feature -- Commands
 			end
 		end
 
-	save (a_dt_tree: DT_COMPLEX_OBJECT_NODE)
+	save (a_dt_tree: DT_COMPLEX_OBJECT)
 		local
 			a_dt_iterator: DT_VISITOR_ITERATOR
 			res_file: PLAIN_TEXT_FILE

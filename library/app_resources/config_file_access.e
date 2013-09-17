@@ -125,7 +125,7 @@ feature -- Access
 			-- get complex object at `a_path'
 		do
 			if has_resource(a_path) then
-				if attached {DT_COMPLEX_OBJECT_NODE} dt_tree.node_at_path (a_path) as dt_obj then
+				if attached {DT_COMPLEX_OBJECT} dt_tree.node_at_path (a_path) as dt_obj then
 					Result := dt_obj.as_object_from_string (a_type_name, Void)
 				end
 			end
@@ -165,7 +165,7 @@ feature -- Modification
 			-- convert a complex object to Data Tree form and put at `a_path' in current tree
 			-- FIXME: currently only works for single child paths, i.e. not where the paths ends with xxx[zzz]
 		local
-			obj_dt_tree: DT_COMPLEX_OBJECT_NODE
+			obj_dt_tree: DT_COMPLEX_OBJECT
 		do
 			if not attached dt_tree then
 				create_default_dt_tree
@@ -243,7 +243,7 @@ feature {NONE} -- Implementation
 
 	env_var_pattern: STRING = "\$[a-zA-Z0-9_]+"
 
-	dt_tree: detachable DT_COMPLEX_OBJECT_NODE
+	dt_tree: detachable DT_COMPLEX_OBJECT
 
 	create_default_dt_tree
 		do

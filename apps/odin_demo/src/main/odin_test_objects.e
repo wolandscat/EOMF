@@ -315,7 +315,7 @@ feature -- Test procedures
 
 	round_trip (an_obj: ANY; a_serialise_format: STRING)
 		local
-			dt: DT_COMPLEX_OBJECT_NODE
+			dt: DT_COMPLEX_OBJECT
 		do
 			append_status ("%NCreate Data Tree from " + an_obj.generator + " object%N")
 			create dt.make_from_object (an_obj)

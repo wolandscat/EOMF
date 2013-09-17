@@ -14,7 +14,7 @@ inherit
 
 feature -- Access
 
-	create_complex_object_node (a_parent: DT_ATTRIBUTE_NODE; a_node_id: detachable STRING): DT_COMPLEX_OBJECT_NODE
+	create_complex_object_node (a_parent: DT_ATTRIBUTE; a_node_id: detachable STRING): DT_COMPLEX_OBJECT
 		require
 			a_node_id_valid: attached a_node_id implies not a_node_id.is_empty
 		do
@@ -26,7 +26,7 @@ feature -- Access
 			a_parent.put_child(Result)
 		end
 
-	create_attribute_node (a_parent: DT_COMPLEX_OBJECT_NODE; a_rel_name: STRING; is_multiple: BOOLEAN): DT_ATTRIBUTE_NODE
+	create_attribute_node (a_parent: DT_COMPLEX_OBJECT; a_rel_name: STRING; is_multiple: BOOLEAN): DT_ATTRIBUTE
 			-- create a rel_node with a simple name like "text" or "description"
 			-- is_multiple flag indicates if multiple cardinality
 		do
@@ -38,7 +38,7 @@ feature -- Access
 			a_parent.put_attribute(Result)
 		end
 
-	create_dt_primitive_object (a_parent: DT_ATTRIBUTE_NODE; an_item: ANY; a_node_id: detachable STRING): DT_PRIMITIVE_OBJECT
+	create_dt_primitive_object (a_parent: DT_ATTRIBUTE; an_item: ANY; a_node_id: detachable STRING): DT_PRIMITIVE_OBJECT
 			-- an_item must be STRING, INTEGER, REAL, DOUBLE, BOOLEAN, CHARACTER,
 			-- DATE, TIME, DATE_TIME, DATE_TIME_DURATION
 		require
@@ -53,7 +53,7 @@ feature -- Access
 			a_parent.put_child(Result)
 		end
 
-	create_primitive_object_list (a_parent: DT_ATTRIBUTE_NODE; an_item: LIST [ANY]; a_node_id: detachable STRING): DT_PRIMITIVE_OBJECT_LIST
+	create_primitive_object_list (a_parent: DT_ATTRIBUTE; an_item: LIST [ANY]; a_node_id: detachable STRING): DT_PRIMITIVE_OBJECT_LIST
 			-- an_item must conform to LIST of STRING, INTEGER, REAL, DOUBLE, BOOLEAN, CHARACTER,
 			-- DATE, TIME, DATE_TIME, DATE_TIME_DURATION
 		require
@@ -68,7 +68,7 @@ feature -- Access
 			a_parent.put_child(Result)
 		end
 
-	create_primitive_object_term (a_parent: attached DT_ATTRIBUTE_NODE; a_qualified_code: attached STRING; a_node_id: STRING): DT_PRIMITIVE_OBJECT
+	create_primitive_object_term (a_parent: attached DT_ATTRIBUTE; a_qualified_code: attached STRING; a_node_id: STRING): DT_PRIMITIVE_OBJECT
 			-- an_item must be in the form TERMINOLOGY_ID::CODE
 		require
 			a_qualified_code_valid: not a_qualified_code.is_empty
@@ -82,7 +82,7 @@ feature -- Access
 			a_parent.put_child(Result)
 		end
 
-	create_primitive_object_term_list (a_parent: attached DT_ATTRIBUTE_NODE; an_item: attached LIST [ANY]; a_node_id: STRING): DT_PRIMITIVE_OBJECT_LIST
+	create_primitive_object_term_list (a_parent: attached DT_ATTRIBUTE; an_item: attached LIST [ANY]; a_node_id: STRING): DT_PRIMITIVE_OBJECT_LIST
 			-- an_item must conform to LIST of STRINGs representing terms
 		require
 			an_item_valid: has_dt_primitive_sequence_type(an_item)

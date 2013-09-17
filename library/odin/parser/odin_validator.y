@@ -81,9 +81,9 @@ create
 %type <TERMINOLOGY_CODE> term_code
 %type <URI> uri_value
 
-%type <DT_COMPLEX_OBJECT_NODE> single_attr_object_block, untyped_single_attr_object_block
-%type <DT_COMPLEX_OBJECT_NODE> container_attr_object_block, untyped_container_attr_object_block
-%type <DT_COMPLEX_OBJECT_NODE> complex_object_block
+%type <DT_COMPLEX_OBJECT> single_attr_object_block, untyped_single_attr_object_block
+%type <DT_COMPLEX_OBJECT> container_attr_object_block, untyped_container_attr_object_block
+%type <DT_COMPLEX_OBJECT> complex_object_block
 %type <DT_OBJECT_LEAF> untyped_primitive_object_block, primitive_object_block object_reference_block
 %type <DT_OBJECT_LEAF> primitive_object absolute_path_object_value
 %type <ANY> primitive_value
@@ -1646,16 +1646,16 @@ feature -- Access
 	source_start_line: INTEGER
 			-- offset of source in other document, else 0
 
-	output: detachable DT_COMPLEX_OBJECT_NODE
+	output: detachable DT_COMPLEX_OBJECT
 			-- parsed structure
 
 feature {NONE} -- Parse Tree
 
-	complex_object_nodes: ARRAYED_STACK [DT_COMPLEX_OBJECT_NODE]
-	complex_object_node: DT_COMPLEX_OBJECT_NODE
+	complex_object_nodes: ARRAYED_STACK [DT_COMPLEX_OBJECT]
+	complex_object_node: DT_COMPLEX_OBJECT
 
-	attr_nodes: ARRAYED_STACK [DT_ATTRIBUTE_NODE]
-	attr_node: DT_ATTRIBUTE_NODE
+	attr_nodes: ARRAYED_STACK [DT_ATTRIBUTE]
+	attr_node: DT_ATTRIBUTE
 
 	obj_key: STRING
 			-- qualifier of last rel name; use for next object creation

@@ -41,7 +41,7 @@ feature -- Access
 	file_path: STRING
 			-- path to resource file
 
-	dt_tree: detachable DT_COMPLEX_OBJECT_NODE
+	dt_tree: detachable DT_COMPLEX_OBJECT
 			-- result of parsing
 
 	errors: ERROR_ACCUMULATOR
@@ -63,7 +63,7 @@ feature -- Commands
 		deferred
 		end
 
-	save (a_dt_tree: DT_COMPLEX_OBJECT_NODE)
+	save (a_dt_tree: DT_COMPLEX_OBJECT)
 		deferred
 		end
 

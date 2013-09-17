@@ -14,7 +14,7 @@ create
 
 feature -- Initialisation
 
-	make(a_target: DT_COMPLEX_OBJECT_NODE; a_visitor: DT_VISITOR)
+	make(a_target: DT_COMPLEX_OBJECT; a_visitor: DT_VISITOR)
 			-- create a new iterator targetted to the DT tree `a_target'
 		require
 			Target_exists: a_target /= Void

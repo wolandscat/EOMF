@@ -33,7 +33,7 @@ feature {NONE} -- Initialisation
 
 feature -- Access
 
-	tree: detachable DT_COMPLEX_OBJECT_NODE
+	tree: detachable DT_COMPLEX_OBJECT
 			-- Set if parse succeeded.
 
 feature -- Commands
