@@ -176,10 +176,23 @@ feature {NONE} -- Initialization
 			main_notebook.extend (source_text)
 			main_notebook.set_item_text (source_text, "Source")
 
-			-- serialised text area tab
-			create serialised_text
-			main_notebook.extend (serialised_text)
-			main_notebook.set_item_text (serialised_text, "Serialised")
+			-- XML serialised text area tab
+			create xml_serialised_text
+			main_notebook.extend (xml_serialised_text)
+			main_notebook.set_item_text (xml_serialised_text, "XML serialised")
+			serialised_panes.put (xml_serialised_text, "xml")
+
+			-- JSON serialised text area tab
+			create json_serialised_text
+			main_notebook.extend (json_serialised_text)
+			main_notebook.set_item_text (json_serialised_text, "JSON serialised")
+			serialised_panes.put (json_serialised_text, "json")
+
+			-- YAML serialised text area tab
+			create yaml_serialised_text
+			main_notebook.extend (yaml_serialised_text)
+			main_notebook.set_item_text (yaml_serialised_text, "YAML serialised")
+			serialised_panes.put (yaml_serialised_text, "yaml")
 
 			-- ODIN tree tab
 			create odin_tree
@@ -233,7 +246,7 @@ feature -- Events
 				attached {PROCEDURE [ANY, TUPLE[ANY]]} node.parent.data as test_proc
 			then
 				status_area.set_text ("")
-				test_proc.call ([node_data, "json"])
+				test_proc.call ([node_data])
 			end
 		end
 
@@ -306,10 +319,10 @@ feature {NONE} -- Implementation
 			source_text.set_text (text)
 		end
 
-	update_serialised_area (text: STRING)
+	update_serialised_area (text, format: STRING)
 			-- Write `text' to `serialised_text'.
 		do
-			serialised_text.set_text (text)
+			serialised_panes.item (format).set_text (text)
 		end
 
 feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be managing automatically
@@ -338,11 +351,16 @@ feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be manag
 	explorer_tree, odin_tree: EV_TREE
 	main_split_area: EV_VERTICAL_SPLIT_AREA
 	main_notebook: EV_NOTEBOOK
-	source_text, serialised_text: EV_RICH_TEXT
+	source_text, xml_serialised_text, json_serialised_text, yaml_serialised_text: EV_RICH_TEXT
 	status_area: EV_TEXT
 
 	l_ev_menu_bar_1: EV_MENU_BAR
 	l_ev_menu_separator_1: EV_MENU_SEPARATOR
 	l_ev_label_1: EV_LABEL
+
+	serialised_panes: HASH_TABLE [EV_RICH_TEXT, STRING]
+		once
+			create Result.make (0)
+		end
 
 end

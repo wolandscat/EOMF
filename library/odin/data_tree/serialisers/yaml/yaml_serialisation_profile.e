@@ -1,4 +1,5 @@
-note component:   "Eiffel Object Modelling Framework"
+note
+	component:   "Eiffel Object Modelling Framework"
 	description: "Common routines for YAML DT serialisation"
 	keywords:    "YAML, serialisation"
 	author:      "Thomas Beale <thomas.beale@OceanInformatics.com>"
@@ -13,7 +14,7 @@ inherit
 
 feature -- Definitions
 
-	Indent_count: INTEGER = 4
+	Yaml_indent: INTEGER = 4
 
 feature {ANY_SERIALISER} -- Access
 
@@ -23,7 +24,7 @@ feature {ANY_SERIALISER} -- Access
 			create Result.make(0)
 			Result.put(" ",			FMT_SPACE)
 			Result.put("%N",		FMT_NEWLINE)
-			Result.put(create {STRING}.make_filled (' ', Indent_count),		FMT_INDENT)
+			Result.put(create {STRING}.make_filled (' ', Yaml_indent),		FMT_INDENT)
 			Result.put(", ",		FMT_LIST_ITEM_SEPARATOR)
 			Result.put("%%YAML 1.1%N---%N",		FMT_START_BODY)
 			Result.put("...",		FMT_END_BODY)

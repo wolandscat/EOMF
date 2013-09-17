@@ -157,6 +157,7 @@ feature -- Visitor
 					agent (s: STRING): STRING do Result := s end,
 					symbol (SYM_JSON_START_OBJECT) + "%N",
 					"%N" + symbol (SYM_JSON_END_OBJECT),
+					format_item (FMT_INDENT),
 					symbol (SYM_JSON_EQ),
 					symbol (sym_json_item_delimiter) + "%N")
 			str.append ("%N")

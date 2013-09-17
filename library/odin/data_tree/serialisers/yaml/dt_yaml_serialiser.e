@@ -145,17 +145,23 @@ feature -- Visitor
 
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_SIMPLE
+		local
+			str: STRING
 		do
 			last_result.append (symbol (Sym_yaml_sequence_start))
+			last_result.append ("%N")
 			start_object_item (a_node, depth)
-			last_result.append (a_node.as_serialised_string (
+			str := a_node.as_serialised_string (
 					agent primitive_value_to_yaml_string,
 					agent (s: STRING): STRING do Result := s end,
 					agent (s: STRING): STRING do Result := s end,
-					symbol (Sym_yaml_sequence_entry) + "%N",
-					"%N" + symbol (Sym_yaml_sequence_end),
+					symbol (Sym_yaml_sequence_entry),
+					"%N",
+					format_item (FMT_INDENT),
 					symbol (SYM_YAML_EQ),
-					"%N"))
+					"%N")
+			str.append ("%N")
+			last_result.append (indented (str, create_indent (depth//2 + multiple_attr_count + 1 + addressable_complex_object_count)))
 		end
 
 	end_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
@@ -205,8 +211,8 @@ feature {NONE} -- Implementation
 	start_object_item (a_node: DT_OBJECT_ITEM; depth: INTEGER)
 			-- start serialising a DT_OBJECT_LEAF
 		do
-			-- for containers contianing primitive types, put out the key as if it were an attribute name (YAML doesn't distinguish between hash
-			-- keys and proper attribute names)
+			-- for containers containing primitive types, put out the key as if it were an attribute name
+			-- (YAML doesn't distinguish between hash keys and proper attribute names)
 			if a_node.is_addressable then
 				-- indent
 				last_result.append (create_indent (depth//2 + multiple_attr_count + addressable_complex_object_count))

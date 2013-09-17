@@ -31,7 +31,7 @@ feature {NONE} -- Implementation
 			create Result.make(0)
 			Result.put ("[", Sym_yaml_sequence_start)
 			Result.put ("]", Sym_yaml_sequence_end)
-			Result.put (create {STRING}.make_filled (' ', Indent_count - Sym_yaml_sequence_entry_string.count) + Sym_yaml_sequence_entry_string, Sym_yaml_sequence_entry)
+			Result.put (create {STRING}.make_filled (' ', Yaml_indent - Sym_yaml_sequence_entry_string.count) + Sym_yaml_sequence_entry_string, Sym_yaml_sequence_entry)
 			Result.put (",", SYM_YAML_ITEM_DELIMITER)
 			Result.put (": ", SYM_YAML_EQ)
 		end

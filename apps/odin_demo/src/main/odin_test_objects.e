@@ -23,7 +23,7 @@ inherit
 
 feature -- Initialisation
 
-	initialise (a_status_reporting_proc, a_source_text_proc, a_serialised_text_proc: PROCEDURE [ANY, TUPLE [STRING]])
+	initialise (a_status_reporting_proc, a_source_text_proc: like source_text_proc; a_serialised_text_proc: like serialised_text_proc)
 			-- initialise with a status reporting function; if none supplied,
 			-- write to std out
 		do
@@ -78,10 +78,10 @@ feature -- Access
 		once
 			create Result.make(0)
 			Result.put (odin_primitive_types, "Primitive atoms")
-			Result.put (odin_primitive_interval_types, "Primitive intervals")
-			Result.put (odin_primitive_sequence_types_1, "ARRAYED_LIST [primitive]")
-			Result.put (odin_primitive_sequence_types_2, "ARRAYED_LIST [primitive], single element lists")
-			Result.put (odin_primitive_sequence_interval_types, "ARRAYED_LIST [INTERVAL [primitive]]")
+			Result.put (odin_primitive_interval_types, "INTERVAL [ANY]")
+			Result.put (odin_primitive_sequence_types_1, "ARRAYED_LIST [ANY]")
+			Result.put (odin_primitive_sequence_types_2, "ARRAYED_LIST [ANY], (single element)")
+			Result.put (odin_primitive_sequence_interval_types, "ARRAYED_LIST [INTERVAL [ANY]]")
 		end
 
 	odin_primitive_types: ODIN_PRIMITIVE_TYPES
@@ -129,7 +129,7 @@ feature -- Access
 			Result.set_my_natural_8_interval (create {PROPER_INTERVAL[NATURAL_8]}.make_bounded_included(10, 20))
 			Result.set_my_natural_16_interval (create {PROPER_INTERVAL[NATURAL_16]}.make_bounded_included(10, 20))
 			Result.set_my_natural_32_interval (create {PROPER_INTERVAL[NATURAL_32]}.make_bounded_included(300, 50000))
-			Result.set_my_natural_64_interval (create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(1000, 20000000))
+			Result.set_my_natural_64_interval (create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(1000, 2000000))
 
 			Result.set_my_real_interval (create {PROPER_INTERVAL[REAL]}.make_bounded_included(40.0, 3000.0))
 			Result.set_my_real_32_interval (create {PROPER_INTERVAL[REAL_32]}.make_lower_unbounded (10.1, False))
@@ -256,10 +256,10 @@ feature -- Access
 				create {PROPER_INTERVAL[NATURAL_16]}.make_bounded_included(20, 456), create {PROPER_INTERVAL[NATURAL_16]}.make_upper_unbounded(2000, True)
 			>>))
 			Result.set_my_arrayed_list_interval_natural_32 (create {ARRAYED_LIST[INTERVAL[NATURAL_32]]}.make_from_array (<<
-				create {PROPER_INTERVAL[NATURAL_32]}.make_bounded_included(20, 24000111), create {PROPER_INTERVAL[NATURAL_32]}.make_lower_unbounded(24, True)
+				create {PROPER_INTERVAL[NATURAL_32]}.make_bounded_included(20, 240111), create {PROPER_INTERVAL[NATURAL_32]}.make_lower_unbounded(24, True)
 			>>))
 			Result.set_my_arrayed_list_interval_natural_64 (create {ARRAYED_LIST[INTERVAL[NATURAL_64]]}.make_from_array (<<
-				create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(24000111, 20111222333444), create {PROPER_INTERVAL[NATURAL_64]}.make_lower_unbounded(24, True)
+				create {PROPER_INTERVAL[NATURAL_64]}.make_bounded_included(2411, 201333444), create {PROPER_INTERVAL[NATURAL_64]}.make_lower_unbounded(24, True)
 			>>))
 
 			Result.set_my_arrayed_list_interval_real (create {ARRAYED_LIST[INTERVAL[REAL]]}.make_from_array (<<
@@ -269,7 +269,7 @@ feature -- Access
 				create {PROPER_INTERVAL[REAL_32]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[REAL_32]}.make_upper_unbounded(29.09894, True)
 			>>))
 			Result.set_my_arrayed_list_interval_real_64 (create {ARRAYED_LIST[INTERVAL[REAL_64]]}.make_from_array (<<
-				create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(-102943440.0345, 3000.23), create {PROPER_INTERVAL[REAL_64]}.make_upper_unbounded(29.09894, True)
+				create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(-10293440.0345, 3000.23), create {PROPER_INTERVAL[REAL_64]}.make_upper_unbounded(29.09894, True)
 			>>))
 			Result.set_my_arrayed_list_interval_double (create {ARRAYED_LIST[INTERVAL[DOUBLE]]}.make_from_array (<<
 				create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[DOUBLE]}.make_upper_unbounded(29.09894, True)
@@ -313,7 +313,7 @@ feature -- Access
 
 feature -- Test procedures
 
-	round_trip (an_obj: ANY; a_serialise_format: STRING)
+	round_trip (an_obj: ANY)
 		local
 			dt: DT_COMPLEX_OBJECT
 		do
@@ -339,10 +339,17 @@ feature -- Test procedures
 				append_status (odin_engine.errors.as_string)
 			end
 
-			append_status ("Serialise Data Tree to " + a_serialise_format + "%N")
+			serialise_dt (dt, "xml")
+			serialise_dt (dt, "json")
+			serialise_dt (dt, "yaml")
+		end
+
+	serialise_dt (dt: DT_COMPLEX_OBJECT; a_format: STRING)
+		do
+			append_status ("Serialise Data Tree to " + a_format + "%N")
 			odin_engine.set_tree (dt)
-			odin_engine.serialise (a_serialise_format, False, True)
-			set_serialised_text (odin_engine.serialised)
+			odin_engine.serialise (a_format, False, True)
+			set_serialised_text (odin_engine.serialised, a_format)
 		end
 
 	from_odin (an_odin_text: STRING)
@@ -378,7 +385,7 @@ feature {NONE} -- Implementation
 
 	source_text_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
-	serialised_text_proc: detachable PROCEDURE [ANY, TUPLE [STRING]]
+	serialised_text_proc: detachable PROCEDURE [ANY, TUPLE [a_text: STRING; a_format: STRING]]
 
 	set_source_text (a_text: STRING)
 			-- write a_text to source text location, or else stdout if none
@@ -390,11 +397,11 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	set_serialised_text (a_text: STRING)
+	set_serialised_text (a_text, a_format: STRING)
 			-- write a_text to serialised text location, or else stdout if none
 		do
 			if attached serialised_text_proc as proc then
-				proc.call([a_text])
+				proc.call([a_text, a_format])
 			else
 				io.put_string (a_text)
 			end
