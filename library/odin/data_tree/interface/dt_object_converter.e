@@ -608,19 +608,29 @@ end
 												end
 
 											-- it is an INTERVAL[primitive type]
-											elseif attached {DT_PRIMITIVE_OBJECT_INTERVAL} a_dt_obj_leaf then
-												if is_eiffel_interval_type (fld_att_static_tid) then -- Eiffel field type is compatible
-													set_eif_object_primitive_interval_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
-												else -- type in parsed DT is INTERVAL, but not in Eiffel class		
+											elseif attached {DT_PRIMITIVE_OBJECT_INTERVAL} a_dt_obj_leaf as dt_po_ivl then
+												-- Eiffel field type is directly compatible
+												if is_eiffel_interval_type (fld_att_static_tid) then
+													set_eif_object_primitive_interval_field (i, Result, fld_att_static_tid, dt_po_ivl.value)
+
+												-- Eiffel type is a LIST [INTERVAL [G]] but the ODIN data only had one item and no continuation
+												-- marker, so it has scanned as a DT_PRIMITIVE_OBJECT_INTERVAL rather than a DT_PRIMITIVE_OBJECT_INTERVAL_LIST
+												elseif is_eiffel_interval_list_type (fld_att_static_tid) then
+													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, dt_po_ivl.value)
+
+												-- type in parsed DT is INTERVAL, but not in Eiffel class
+												else
 													errors.add_error (ec_interval_type_mismatch,
 														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
 												end
 
 											-- it is an LIST [INTERVAL[primitive type]]
-											elseif attached {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} a_dt_obj_leaf then
-												if is_eiffel_interval_list_type (fld_att_static_tid) then -- Eiffel field type is compatible
-													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
-												else -- type in parsed DT is INTERVAL, but not in Eiffel class		
+											elseif attached {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} a_dt_obj_leaf as dt_po_ivl_list then
+												-- Eiffel field type is compatible
+												if is_eiffel_interval_list_type (fld_att_static_tid) then
+													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, dt_po_ivl_list.value)
+												-- type in parsed DT is INTERVAL, but not in Eiffel class
+												else
 													errors.add_error (ec_interval_list_type_mismatch,
 														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
 												end
@@ -635,10 +645,6 @@ end
 													-- a SEQUENCE; this can happen if the ODIN text does not follow the rules, and
 													-- uses e.g. xxx = <val> for a list containing one value, instead of xxx = <val, ...>,
 													-- which is the correct syntax; however, this is common, so we deal with it.
-
-													-- FIXME: the code below deals with conversion of an atom to a list OR a ISO8601 date/tme
-													-- type to an Eiffel type, but not both at once yet!!!
-
 													if is_eiffel_container_type (fld_att_static_tid) then
 														set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
 													elseif attached cvt_dt_to_obj (a_dt_obj_leaf.value) as tc_val then
@@ -700,17 +706,17 @@ end
 
 feature {NONE} -- Conversion to object
 
-	set_eif_object_primitive_interval_field (eif_fld_idx: INTEGER; eif_obj: ANY; fld_att_static_tid:INTEGER; value: ANY)
+	set_eif_object_primitive_interval_field (eif_fld_idx: INTEGER; eif_obj: ANY; fld_att_static_tid:INTEGER; dt_ivl_value: INTERVAL [PART_COMPARABLE])
 			-- set a field of a specific Eiffel type like INTERVAL[INTEGER_8] from the parsed form, which is always (currently)
 			-- INTERVAL[INTEGER_32] (larger numbers will have to be parsed as INTERVAL[INTEGER_64]; same for large reals => REAL_64).
 			-- This is currently a total hack, awaiting ES to implement INTEGER_GENERAL, REAL_GENERAL etc from the ECMA spec.
 		require
 			index_large_enough: eif_fld_idx >= 1
 		do
-			set_reference_field (eif_fld_idx, eif_obj, cvt_eif_interval (fld_att_static_tid, value))
+			set_reference_field (eif_fld_idx, eif_obj, cvt_eif_interval (fld_att_static_tid, dt_ivl_value))
 		end
 
-	cvt_eif_interval (att_result_tid:INTEGER; dt_ivl: ANY): INTERVAL [PART_COMPARABLE]
+	cvt_eif_interval (att_result_tid: INTEGER; dt_ivl: INTERVAL [PART_COMPARABLE]): INTERVAL [PART_COMPARABLE]
 			-- generate a specific Eiffel type like INTERVAL[INTEGER_8] from the DT parsed form of the same kind of INTERVAL,
 			-- which is always (currently) INTERVAL[INTEGER_32] (larger numbers will have to be parsed as INTERVAL[INTEGER_64];
 			-- same for large reals => REAL_64).
@@ -932,7 +938,7 @@ end
 
 					-- normally the ODIN data scanned as a DT_PRIMITIVE_OBJECT_INTERVAL_LIST,
 					-- which means its value field is guaranteed to be an ARRAYED_LIST
-					if attached {ARRAYED_LIST[ANY]} dt_seq_value as dt_al then
+					if attached {ARRAYED_LIST[INTERVAL [PART_COMPARABLE]]} dt_seq_value as dt_al then
 						across dt_al as dt_al_csr loop
 							eif_seq_ivl.extend (cvt_eif_interval (eif_seq_ivl_item_tid, dt_al_csr.item))
 						end
@@ -941,8 +947,11 @@ end
 					-- any list of one item. The ODIN syntax is to use "<xx, ...>" to
 					-- show it is a list, but this is often forgotten
 					-- So...we do a conversion, to fill the Eiffel list
+					elseif attached {INTERVAL [PART_COMPARABLE]} dt_seq_value as dt_ivl_value then
+						eif_seq_ivl.extend (cvt_eif_interval (eif_seq_ivl_item_tid, dt_ivl_value))
+
 					else
-						eif_seq_ivl.extend (cvt_eif_interval (eif_seq_ivl_item_tid, dt_seq_value))
+						raise ("set_eif_primitive_sequence_field location #1")
 					end
 
 				elseif attached {SEQUENCE[ANY]} field (eif_fld_idx, eif_object) as eif_seq then
