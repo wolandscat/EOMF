@@ -6,7 +6,7 @@
 			<exclude>/\.svn$</exclude>
 			<exclude>/\.git$</exclude>
 		</file_rule>
-		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="none" syntax="standard" namespace="openehr">
+		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard" namespace="openehr">
 			<debug name="__unnamed_debug__" enabled="false"/>
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 			<warning name="export_class_missing" enabled="true"/>
@@ -27,9 +27,13 @@
 		<setting name="multithreaded" value="true"/>
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
-		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
-		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
-		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
+		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
+		<library name="gobo_lexical" location="$GOBO\library\lexical\library.ecf"/>
+		<library name="gobo_lexical_skl" location="$GOBO\library\lexical\library_skl.ecf"/>
+		<library name="gobo_parse" location="$GOBO\library\parse\library.ecf"/>
+		<library name="gobo_parse_skl" location="$GOBO\library\parse\library_skl.ecf"/>
+		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
+		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
 		<library name="i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
 		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
@@ -83,12 +87,6 @@
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
-
-		<cluster name="gobo_pattern" location="$ISE_LIBRARY\contrib\library\gobo\library\pattern\" recursive="true"/>
-		<cluster name="gobo_regexp" location="$ISE_LIBRARY\contrib\library\gobo\library\regexp\" recursive="true"/>
-		<cluster name="gobo_string" location="$ISE_LIBRARY\contrib\library\gobo\library\string\" recursive="true"/>
-		<cluster name="gobo_structure" location="$ISE_LIBRARY\contrib\library\gobo\library\structure\" recursive="true"/>
-		<cluster name="gobo_utility" location="$ISE_LIBRARY\contrib\library\gobo\library\utility\" recursive="true"/>
 
 		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\" recursive="true">
 			<option void_safety="initialization">

@@ -130,20 +130,20 @@ feature {NONE} -- GUI Widgets
 			Result := True
 		end
 
-	evx_text: EVX_TEXT_CONTROL
-	evx_frame: EVX_FRAME_CONTROL
-	evx_boolean: EVX_BOOLEAN_RADIO_CONTROL
-	evx_mlist: EVX_MLIST_CONTROL
-	evx_combo_control: EVX_COMBO_CONTROL
-	evx_combo_text_selector: EVX_COMBO_TEXT_SELECTOR_CONTROL
-	evx_grid: EVX_GRID
-	evx_treeview: EVX_TREEVIEW_CONTROL
-	evx_dir_setter: EVX_DIRECTORY_SETTER
-	evx_file_path_setter: EVX_FILE_PATH_SETTER
-	evx_ok_cancel_controls: EVX_OK_CANCEL_CONTROLS
-	evx_control_panel: EVX_CONTROL_PANEL
-	evx_multi_column_table_control: EVX_MULTI_COLUMN_TABLE_CONTROL
-	evx_button: EVX_BUTTON
+	evx_text: detachable EVX_TEXT_CONTROL
+	evx_frame: detachable EVX_FRAME_CONTROL
+	evx_boolean: detachable EVX_BOOLEAN_RADIO_CONTROL
+	evx_mlist: detachable EVX_MLIST_CONTROL
+	evx_combo_control: detachable EVX_COMBO_CONTROL
+	evx_combo_text_selector: detachable EVX_COMBO_TEXT_SELECTOR_CONTROL
+	evx_grid: detachable EVX_GRID
+	evx_treeview: detachable EVX_TREEVIEW_CONTROL
+	evx_dir_setter: detachable EVX_DIRECTORY_SETTER
+	evx_file_path_setter: detachable EVX_FILE_PATH_SETTER
+	evx_ok_cancel_controls: detachable EVX_OK_CANCEL_CONTROLS
+	evx_control_panel: detachable EVX_CONTROL_PANEL
+	evx_multi_column_table_control: detachable EVX_MULTI_COLUMN_TABLE_CONTROL
+	evx_button: detachable EVX_BUTTON
 
 end
 
