@@ -16,9 +16,6 @@ feature -- Initialisation
 
 	make(a_target: DT_COMPLEX_OBJECT; a_visitor: DT_VISITOR)
 			-- create a new iterator targetted to the DT tree `a_target'
-		require
-			Target_exists: a_target /= Void
-			Visitor_exists: a_visitor /= Void
 		do
 			create tree_iterator.make (a_target.representation)
 			visitor := a_visitor
@@ -38,12 +35,12 @@ feature {NONE} -- Implementation
 
 	visitor: DT_VISITOR
 
-	node_enter_action (a_node: attached OG_ITEM; indent_level: INTEGER)
+	node_enter_action (a_node: OG_ITEM; indent_level: INTEGER)
 		do
 			a_node.enter_subtree (visitor, indent_level)
 		end
 
-	node_exit_action (a_node: attached OG_ITEM; indent_level: INTEGER)
+	node_exit_action (a_node: OG_ITEM; indent_level: INTEGER)
 		do
 			a_node.exit_subtree (visitor, indent_level)
 		end

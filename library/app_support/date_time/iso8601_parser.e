@@ -2,7 +2,6 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "ISO 8601 Date/time parser"
 	keywords:    "date, time, iso8601"
-
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2006- The openEHR Foundation <http://www.openEHR.org>"

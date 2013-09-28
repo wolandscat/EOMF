@@ -2,15 +2,10 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Date/time constants"
 	keywords:    "date time"
-
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.biz>"
-	copyright:   "Copyright (c) 2000-2004 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2000- Ocean Informatics <http://www.oceaninformatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
-
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
 
 class DATE_TIME_CONSTANTS
 

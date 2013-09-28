@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Parent class for generated ICON_XXX classs based on icon files"
+	description: "Parent class for ICON_XXX classes generated from icon (.ico and .png) files"
 	keywords:    "Embedded icons"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
