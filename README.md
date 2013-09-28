@@ -16,9 +16,9 @@ EOMF is a holding project for various generic facilities for Eiffel applications
 
 * [Error reporting objects](library/app_support/app_framework/error_reporting)
 
-* [Message DB](apps/message_db) - Multi-lingual error message / UI text database facility; [example message sources and compiled output] (resources/messages).
+* [Message DB](apps/msg_code_gen) - Multi-lingual error message / UI text database facility; [example message sources and compiled output] (resources/messages).
 
-* [Icon DB](apps/icon_db) - convert a directory of .ico / .png files to inline code for fast loading and fewer files for distribution; [example icon files and compiled output] (resources/icons).
+* [Icon DB](apps/icon_code_gen) - convert a directory of .ico / .png files to inline code for fast loading and fewer files for distribution; [example icon files and compiled output] (resources/icons).
 
 Preferably, some of the App support and other minor classes would be replaced by either ISE Eiffel classes, gobo classes, or EiffelHub classes. These include:
 
@@ -28,9 +28,7 @@ Preferably, some of the App support and other minor classes would be replaced by
 
 * The [INTERVAL](library/app_support/basic/interval.e) class and the associated converter class [TYPE_UTILITIES](library/app_support/utility/misc/type_utilities.e).
 
-* The [STRING_UTILITIES](library/app_support/utility/formatting/string_utilities.e) class.
-
-* The [XML_TOOLS](library/app_support/utility/formatting/xml_tools.e) class.
+* The [STRING_UTILITIES](library/app_support/utility/formatting/string_utilities.e) class. This provides routines to: indent text; add line numbers to text; do utf8 / 32 conversions; validate a regex string; generate a soundex translation of a string.
 
 * The [Error reporting](library/app_support/app_framework/error_reporting) classes.
 
@@ -40,7 +38,7 @@ Preferably, some of the App support and other minor classes would be replaced by
 
 * [The Method dispatcher classes](library/app_support/method_dispatch).
 
-* The Message DB and Icon DB tools above should be built into Eiffel Studio.
+* The mstg_code_gen and icon_code_gen tools above should be built into Eiffel Studio.
 
 * The [vendor fixes](library/vendor-fixes/eiffel_software).
 
