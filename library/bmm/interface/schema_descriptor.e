@@ -4,7 +4,7 @@ note
 				 Descriptor for a BMM schema. Contains a meta-data table of attributes obtained from a mini-ODIN parse of the 
 				 schema file.
 	             ]"
-	keywords:    "ADL, archetype, reference model"
+	keywords:    "meta-model, object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -130,7 +130,7 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			-- load schema into in-memory form
 		local
 			model_file: PLAIN_TEXT_FILE
-			parser: ODIN_VALIDATOR
+			parser: ODIN_PARSER
 		do
 			reset
 			schema := Void

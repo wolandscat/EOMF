@@ -37,7 +37,7 @@ feature -- Commands
 			-- if file not readable, or not there, or in wrong syntax, do nothing.
 		local
 			res_file: PLAIN_TEXT_FILE
-			parser: ODIN_VALIDATOR
+			parser: ODIN_PARSER
 		do
 			if file_system.file_exists (file_path) then
 				create res_file.make (file_path)
