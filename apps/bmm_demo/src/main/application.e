@@ -57,6 +57,8 @@ feature -- Initialization
 
 	make
 			-- Run application.
+		local
+			rm_schema: BMM_SCHEMA
 		do
 			if ready_to_initialise_app then
 				Initialise_app
@@ -120,8 +122,10 @@ feature -- Initialization
 				io.put_character ('%T')
 
 				-- column 3 - lifecycle state
-				if schema_meta_data.has (Metadata_schema_lifecycle_state) then
-					io.put_string (schema_meta_data.item (Metadata_schema_lifecycle_state))
+				if schema_meta_data.has (Metadata_schema_lifecycle_state) and then attached
+					schema_meta_data.item (Metadata_schema_lifecycle_state) as att_md
+				then
+					io.put_string (att_md)
 				else
 					io.put_string ("(unknown)")
 				end
@@ -157,11 +161,6 @@ feature -- Initialization
 				add_error (Ec_bmm_schema_dir_not_valid, << rm_schema_directory >>)
 			end
 		end
-
-feature -- Access
-
-	rm_schema: BMM_SCHEMA
-			-- set if this archetype has a valid package-class_name
 
 feature -- Status Report
 
