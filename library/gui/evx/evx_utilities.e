@@ -66,26 +66,35 @@ feature {NONE} -- Implementation
 			-- Note that the value type is assumed to have a sensible outpur from its 'out' function
 		local
 			ev_list_row: EV_MULTI_COLUMN_LIST_ROW
-			item_list: LIST [ANY]
 		do
 			if attached ht then
 				ev_mlist.wipe_out
-				from ht.start until ht.off loop
+				across ht as ht_csr loop
 					create ev_list_row
-					ev_list_row.extend (utf8_to_utf32 (ht.key_for_iteration))
-					if attached {GENERIC_RENDERABLE} ht.item_for_iteration as gr_item then
-						item_list := gr_item.as_vector
-						from item_list.start until item_list.off loop
-							ev_list_row.extend (utf8_to_utf32 (item_list.item.out))
-							item_list.forth
-						end
-					else
-						ev_list_row.extend (utf8_to_utf32 (ht.item_for_iteration.out))
-					end
-					ev_mlist.extend(ev_list_row)
-					ht.forth
+					ev_list_row.extend (utf8_to_utf32 (ht_csr.key))
+					ev_list_row.extend (utf8_to_utf32 (ht_csr.item.out))
+					ev_mlist.extend (ev_list_row)
 				end
+				resize_ev_multi_list (ev_mlist)
+			end
+		end
 
+	populate_ev_multi_list_from_hash_list (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable HASH_TABLE [LIST[STRING], STRING])
+			-- populate rows of a multi-column list with name - value pairs in a HASH_TABLE
+			-- Note that the value type is assumed to have a sensible outpur from its 'out' function
+		local
+			ev_list_row: EV_MULTI_COLUMN_LIST_ROW
+		do
+			if attached ht then
+				ev_mlist.wipe_out
+				across ht as ht_csr loop
+					create ev_list_row
+					ev_list_row.extend (utf8_to_utf32 (ht_csr.key))
+					across ht_csr.item as items_csr loop
+						ev_list_row.extend (utf8_to_utf32 (items_csr.item))
+					end
+					ev_mlist.extend (ev_list_row)
+				end
 				resize_ev_multi_list (ev_mlist)
 			end
 		end

@@ -6,7 +6,7 @@
 			<exclude>/\.svn$</exclude>
 			<exclude>/\.git$</exclude>
 		</file_rule>
-		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard" namespace="openehr">
+		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
 			<debug name="__unnamed_debug__" enabled="false"/>
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 			<warning name="export_class_missing" enabled="true"/>
@@ -25,8 +25,7 @@
 		<setting name="inlining_size" value="4"/>
 		<setting name="line_generation" value="false"/>
 		<setting name="multithreaded" value="true"/>
-		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
-		<library name="encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
+
 		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
 		<library name="gobo_lexical" location="$GOBO\library\lexical\library.ecf"/>
 		<library name="gobo_lexical_skl" location="$GOBO\library\lexical\library_skl.ecf"/>
@@ -34,13 +33,16 @@
 		<library name="gobo_parse_skl" location="$GOBO\library\parse\library_skl.ecf"/>
 		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
 		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
-		<library name="i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
-		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
+
+		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
+		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
+		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
-		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
-		<library name="process" location="$ISE_LIBRARY\library\process\process-safe.ecf"/>
-		<library name="docking" location="$ISE_LIBRARY\library\docking\docking-safe.ecf"/>
+		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
+		<library name="ise_process" location="$ISE_LIBRARY\library\process\process-safe.ecf"/>
+		<library name="ise_docking" location="$ISE_LIBRARY\library\docking\docking-safe.ecf"/>
 
 		<cluster name="app" location="..\src\" recursive="true"/>
 
@@ -64,32 +66,32 @@
 			</file_rule>
 		</cluster>
 
-		<cluster name="app_resources" location="$EOMF\library\app_resources\" recursive="true">
-			<option void_safety="initialization">
+		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\" recursive="true">
+			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 
 		<cluster name="eomf_gui" location="$EOMF\library\gui\" recursive="true">
-			<option void_safety="initialization">
+			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 
-		<cluster name="messages" location="$EOMF\resources\messages\compiled\">
-			<option void_safety="initialization">
+		<cluster name="eomf_messages" location="$EOMF\resources\messages\compiled\">
+			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 
-		<cluster name="icons" location="$EOMF\resources\icons\compiled\">
-			<option void_safety="initialization">
+		<cluster name="eomf_icons" location="$EOMF\resources\icons\compiled\">
+			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 
 		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\" recursive="true">
-			<option void_safety="initialization">
+			<option>
 			</option>
 			<file_rule>
 				<exclude>/base_net$</exclude>

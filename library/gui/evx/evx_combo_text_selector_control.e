@@ -142,8 +142,8 @@ feature {NONE} -- Implementation
 
 	propagate_select_action
 		do
-			if attached linked_data_controls then
-				linked_data_controls.do_all (agent (a_ctl: EVX_DATA_CONTROL) do a_ctl.populate end)
+			if attached linked_data_controls as att_ldc then
+				att_ldc.do_all (agent (a_ctl: EVX_DATA_CONTROL) do a_ctl.populate end)
 			end
 		end
 

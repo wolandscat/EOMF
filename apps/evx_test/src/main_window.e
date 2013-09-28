@@ -21,11 +21,6 @@ inherit
 			is_equal, default_create, copy
 		end
 
-	EVX_WINDOW_ACCELERATORS
-		undefine
-			copy, default_create
-		end
-
 	SHARED_APP_ROOT
 		undefine
 			copy, default_create
