@@ -6,16 +6,26 @@
 			<exclude>/\.git$</exclude>
 			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="none" syntax="standard"/>
+		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard"/>
 		<setting name="console_application" value="true"/>
 		<setting name="dead_code_removal" value="true"/>
-		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
-		<library name="encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
-		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
-		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
-		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
-		<library name="i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
-		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
+
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="eomf_odin" location="$EOMF\library\odin\odin.ecf"/>
+		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
+		<library name="gobo_lexical" location="$GOBO\library\lexical\library.ecf"/>
+		<library name="gobo_parse" location="$GOBO\library\parse\library.ecf"/>
+		<library name="gobo_lexical_skl" location="$GOBO\library\lexical\library_skl.ecf"/>
+		<library name="gobo_parse_skl" location="$GOBO\library\parse\library_skl.ecf"/>
+		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
+		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
+		<library name="gobo_structure" location="$GOBO\library\structure\library.ecf"/>
+		<library name="gobo_pattern" location="$GOBO\library\pattern\library.ecf"/>
+		<library name="gobo_string" location="$GOBO\library\string\library.ecf"/>
+		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
+		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
+		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 
@@ -25,88 +35,16 @@
 			</option>
 		</cluster>
 
-		<cluster name="app_resources" location="$EOMF\library\app_resources\">
+		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
 			<option void_safety="initialization">
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 
-		<cluster name="bmm" location="$EOMF\library\bmm\" recursive="true">
+		<cluster name="eomf_bmm" location="$EOMF\library\bmm\" recursive="true">
 			<option void_safety="initialization">
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
-
-		<cluster name="messages" location="$EOMF\resources\messages\compiled\">
-			<option void_safety="initialization">
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-
-		<cluster name="eomf_app_support" location="$EOMF\library\app_support\" recursive="true">
-			<option void_safety="initialization">
-				<assertions precondition="true"/>
-			</option>
-			<file_rule>
-				<exclude>/other$</exclude>
-				<include>/windows$</include>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/windows$</exclude>
-				<include>/other$</include>
-				<condition>
-					<platform excluded_value="windows"/>
-				</condition>
-			</file_rule>
-		</cluster>
-
-		<cluster name="odin" location="$EOMF\library\odin\" recursive="true">
-			<option void_safety="initialization">
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-
-		<cluster name="gobo_pattern" location="$ISE_LIBRARY\contrib\library\gobo\library\pattern\" recursive="true"/>
-		<cluster name="gobo_regexp" location="$ISE_LIBRARY\contrib\library\gobo\library\regexp\" recursive="true"/>
-		<cluster name="gobo_string" location="$ISE_LIBRARY\contrib\library\gobo\library\string\" recursive="true"/>
-		<cluster name="gobo_structure" location="$ISE_LIBRARY\contrib\library\gobo\library\structure\" recursive="true"/>
-		<cluster name="gobo_utility" location="$ISE_LIBRARY\contrib\library\gobo\library\utility\" recursive="true"/>
-
-		<cluster name="parsers" location="$EOMF\parsers\" recursive="true">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-
-		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\" recursive="true">
-			<option void_safety="initialization">
-			</option>
-			<file_rule>
-				<exclude>/base_net$</exclude>
-			</file_rule>
-			<file_rule>
-				<exclude>/implementation_gtk$</exclude>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/other$</exclude>
-				<include>/windows$</include>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/windows$</exclude>
-				<include>/other$</include>
-				<condition>
-					<platform excluded_value="windows"/>
-				</condition>
-			</file_rule>
-		</override>
 	</target>
 </system>
