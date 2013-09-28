@@ -1,5 +1,5 @@
 note
-	support:     "http://www.openehr.org/issues/browse/AWB"
+	component:   "Eiffel Object Modelling Framework"
 	description : "[
 				   Generator for Eiffel class source text of form
 

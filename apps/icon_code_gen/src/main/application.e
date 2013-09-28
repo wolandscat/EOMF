@@ -1,22 +1,24 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description : "[
-				   Icon DB compiler. Converts a directory of icon files (.png and .ico) of the form:
-				   	aaa
-						bbb
+	description: "[
+				   Icon code generator. Converts a directory of icon files (.png and .ico) of the following form 
+				   to code:
+
+				   	aaa/
+						bbb/
 							icon1.png
 							icon2.ico
 							icon2.ico
-						ccc
+						ccc/
 							icon4.ico
 							icon5.png
-					ddd
+					ddd/
 						icon6.ico
 					
 					The result is a set of classes containing the icon PIXMAP image data that is used by the class
 
 					USAGE:
-					   icondbc.exe [-q] [-s <directory>] [-o <directory>] [-v] [-nologo]
+					   icon_code_gen [-q] [-s <directory>] [-o <directory>] [-v] [-nologo]
 
 					OPTIONS:
 					   Options should be prefixed with: '-' or '/'

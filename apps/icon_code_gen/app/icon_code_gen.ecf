@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-10-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-10-0 http://www.eiffel.com/developers/xml/configuration-1-10-0.xsd" name="icon_code_gen" uuid="EBD4FF43-80E5-4722-879D-128F1B947BA6">
+	<target name="icon_code_gen">
+		<root class="APPLICATION" feature="make"/>
+		<file_rule>
+			<exclude>/.git$</exclude>
+			<exclude>/EIFGENs$</exclude>
+			<exclude>/CVS$</exclude>
+			<exclude>/.svn$</exclude>
+		</file_rule>
+		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
+			<assertions precondition="true" postcondition="true" check="true" supplier_precondition="true"/>
+		</option>
+		<setting name="console_application" value="true"/>
+
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
+		<library name="ise_argument_parser" location="$ISE_LIBRARY\library\argument_parser\argument_parser-safe.ecf"/>
+		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
+		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
+		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
+
+		<cluster name="app" location="..\src\" recursive="true"/>
+		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\"/>
+	</target>
+</system>

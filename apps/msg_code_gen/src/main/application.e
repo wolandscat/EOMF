@@ -1,7 +1,9 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description : "[
-				   Message DB compiler. Validates any number of ODIN files which look like:
+				   Message DB compiler. Validates any number of ODIN files having the following form to 
+				   code:
+
 				   	templates = <
 						["lang1"] = <
 							["CodeA"] = <"text $1 text $2">
@@ -57,7 +59,7 @@ note
 
 	usage:		 "[
 						USAGE:
-						   msgdbc.exe [-l <lang>] [-s <directory>] [-o <directory>] [-v] [-nologo]
+						   msg_code_gen.exe [-l <lang>] [-s <directory>] [-o <directory>] [-v] [-nologo]
 
 						OPTIONS:
 						   Options should be prefixed with: '-' or '/'

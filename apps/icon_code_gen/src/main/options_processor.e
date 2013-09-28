@@ -1,5 +1,5 @@
 note
-	support:     "http://www.openehr.org/issues/browse/AWB"	description: "Options  definitions and processor for icondbc command line tool."
+	support:     "http://www.openehr.org/issues/browse/AWB"	description: "Options  definitions and processor for icon_code_gen command line tool."
 	keywords:    "Embedded icons, options"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Options  definitions and processor for msgdb command line tool."
+	description: "Options  definitions and processor for msg_code_gen command line tool."
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
