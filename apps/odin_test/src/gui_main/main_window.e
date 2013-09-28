@@ -21,7 +21,9 @@ inherit
 			copy, default_create
 		end
 
-	EVX_WINDOW_ACCELERATORS
+	EV_KEY_CONSTANTS
+		export
+			{NONE} all
 		undefine
 			copy, default_create
 		end
@@ -51,8 +53,6 @@ feature -- Status setting
 	show
 			-- Do a few adjustments and load the repository before displaying the window.
 		do
-			initialise_session_ui_basic
-
 			Precursor
 
 			initialise_splitter (explorer_split_area, explorer_split_position)
@@ -83,7 +83,7 @@ feature {NONE} -- Initialization
 			close_request_actions.extend (agent exit_app)
 
 			-- attach root widgets
-			set_menu_bar (l_ev_menu_bar_1)
+			set_menu_bar (evx_menu_bar.ev_menu_bar)
 			extend (explorer_split_area)
 
 			set_minimum_width (500)
@@ -97,51 +97,25 @@ feature {NONE} -- Initialization
 
 			text_widget_handler.set_root (Current)
 
+			initialise_ui_basic
+
 			test_objects.initialise (agent append_status_area, agent update_source_area, agent update_serialised_area)
 		end
 
 	create_interface_objects
 			-- Create objects
 		do
-			-- ============ create menu =============
-			create l_ev_menu_bar_1
+			create evx_menu_bar.make
 
-			-- file menu
-			create file_menu
-			file_menu.set_text ("&File")
-			l_ev_menu_bar_1.extend (file_menu)
+			evx_menu_bar.add_menu ("File", "&File")
+			evx_menu_bar.add_menu_item ("File>Open", "&Open", Void, Void)
+			evx_menu_bar.add_menu_item ("File>Save As", "&Save As", Void, Void)
+			evx_menu_bar.add_menu_separator
+			evx_menu_bar.add_menu_item ("Exit", "E&xit", Void, agent exit_app)
 
-			create file_menu_open
-			file_menu_open.set_text ("&Open")
-			file_menu.extend (file_menu_open)
-
-			create file_menu_save_as
-			file_menu_save_as.set_text ("&Save As")
-			file_menu.extend (file_menu_save_as)
-			file_menu_save_as.select_actions.extend (agent exit_app)
-
-			create l_ev_menu_separator_1
-			file_menu.extend (l_ev_menu_separator_1)
-
-			create file_menu_exit
-			file_menu_exit.set_text ("E&xit")
-			file_menu.extend (file_menu_exit)
-			file_menu_exit.select_actions.extend (agent exit_app)
-
-			-- edit menu
-			create edit_menu
-			edit_menu.set_text ("&Edit")
-			l_ev_menu_bar_1.extend (edit_menu)
-
-			create edit_menu_copy
-			edit_menu_copy.set_text ("&Copy")
-			edit_menu.extend (edit_menu_copy)
-			edit_menu_copy.select_actions.extend (agent text_widget_handler.on_copy)
-
-			create edit_menu_select_all
-			edit_menu_select_all.set_text ("Select &All")
-			edit_menu.extend (edit_menu_select_all)
-			edit_menu_select_all.select_actions.extend (agent text_widget_handler.on_select_all)
+			evx_menu_bar.add_menu ("Edit", "&Edit")
+			evx_menu_bar.add_menu_item ("Edit>Copy", "&Copy", Void, agent text_widget_handler.on_copy)
+			evx_menu_bar.add_menu_item ("Edit>Select All", "Select &All", Void, agent text_widget_handler.on_select_all)
 
 			-- ============ Left hand explorer / main work area split =============
 			create explorer_split_area
@@ -207,7 +181,7 @@ feature {NONE} -- Initialization
 
 		end
 
-	initialise_session_ui_basic
+	initialise_ui_basic
 			-- initialise visual settings of window remembered from previous session
 		do
 			if app_x_position > Sane_screen_coord and app_y_position > Sane_screen_coord then
@@ -229,11 +203,15 @@ feature {NONE} -- Initialization
 
 	initialise_accelerators
 			-- Initialise keyboard accelerators for various widgets.
+		local
+			evx_accelerators: EVX_ACCELERATORS
 		do
-			add_menu_shortcut (file_menu_open, key_o, True, False, False)
-			add_menu_shortcut (file_menu_save_as, key_s, True, False, False)
-			add_menu_shortcut_for_action (edit_menu_copy, agent text_widget_handler.call_unless_text_focused (agent text_widget_handler.on_copy), key_c, True, False, False)
-			add_menu_shortcut (edit_menu_select_all, key_a, True, False, False)
+			create evx_accelerators.make (accelerators)
+			evx_menu_bar.set_accelerators (evx_accelerators)
+			evx_menu_bar.add_menu_shortcut ("File>Open", key_o, True, False, False)
+			evx_menu_bar.add_menu_shortcut ("File>Save As", key_s, True, False, False)
+			evx_menu_bar.add_menu_shortcut_for_action ("Edit>Copy", agent text_widget_handler.call_unless_text_focused (agent text_widget_handler.on_copy), key_c, True, False, False)
+			evx_menu_bar.add_menu_shortcut ("Edit>Select All", key_a, True, False, False)
 		end
 
 feature -- Events
@@ -343,9 +321,6 @@ feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be manag
 			Result := True
 		end
 
-	file_menu, edit_menu: EV_MENU
-	file_menu_open, file_menu_save_as, file_menu_exit, edit_menu_copy,
-	edit_menu_select_all: EV_MENU_ITEM
 	explorer_split_area: EV_HORIZONTAL_SPLIT_AREA
 	explorer_area: EV_VERTICAL_BOX
 	explorer_tree, odin_tree: EV_TREE
@@ -354,8 +329,7 @@ feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be manag
 	source_text, xml_serialised_text, json_serialised_text, yaml_serialised_text: EV_RICH_TEXT
 	status_area: EV_TEXT
 
-	l_ev_menu_bar_1: EV_MENU_BAR
-	l_ev_menu_separator_1: EV_MENU_SEPARATOR
+	evx_menu_bar: EVX_MENU_BAR
 	l_ev_label_1: EV_LABEL
 
 	serialised_panes: HASH_TABLE [EV_RICH_TEXT, STRING]

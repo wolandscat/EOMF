@@ -1,14 +1,14 @@
 %{
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Validating parser for data Archetype Description Language (ODIN)"
-	keywords:    "ODIN"
+	description: "Parser for Object Data Instance Notation (ODIN)"
+	keywords:    "ODIN, data syntax"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2004- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class ODIN_VALIDATOR
+class ODIN_PARSER
 
 inherit
 	PARSER_VALIDATOR
@@ -24,12 +24,12 @@ inherit
 			{NONE} all
 		end
 
-	DATE_TIME_ROUTINES
+	SHARED_MESSAGE_DB
 		export
 			{NONE} all
 		end
 
-	SHARED_MESSAGE_DB
+	ISO8601_ROUTINES
 		export
 			{NONE} all
 		end

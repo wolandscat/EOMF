@@ -78,7 +78,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	parser: ODIN_VALIDATOR
+	parser: ODIN_PARSER
 			-- ODIN parser.
 
 end
