@@ -539,9 +539,9 @@ feature {NONE} -- Semantic actions
 			if not yy_retried then
 				inspect yy_act
 when 1 then
---|#line 126 "odin_validator.y"
+--|#line 126 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 126")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 126")
 end
 
 			output := complex_object_nodes.item
@@ -549,15 +549,15 @@ debug("ODIN_parse")
 	io.put_string("Object data definition validated (non-delimited)%N")
 end
 			accept
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 2 then
---|#line 134 "odin_validator.y"
+--|#line 134 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 134")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 134")
 end
 
 			output := yyvs13.item (yyvsp13)
@@ -565,7 +565,7 @@ debug("ODIN_parse")
 	io.put_string("Object data definition validated%N")
 end
 			accept
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -580,68 +580,68 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 3 then
---|#line 142 "odin_validator.y"
+--|#line 142 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 142")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 142")
 end
 
 debug("ODIN_parse")
 	io.put_string("ODIN text NOT validated%N")
 end
 			abort
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 4 then
---|#line 154 "odin_validator.y"
+--|#line 154 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 154")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 154")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 5 then
---|#line 160 "odin_validator.y"
+--|#line 160 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 160")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 160")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 6 then
---|#line 166 "odin_validator.y"
+--|#line 166 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 166")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 166")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 7 then
---|#line 175 "odin_validator.y"
+--|#line 175 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 175")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 175")
 end
 
 debug("ODIN_parse")
@@ -649,16 +649,16 @@ debug("ODIN_parse")
 	indent.remove_tail(1)
 end
 			attr_nodes.remove
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 8 then
---|#line 185 "odin_validator.y"
+--|#line 185 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 185")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 185")
 end
 
 			-- create first anonymous object
@@ -678,7 +678,7 @@ end
 			create attr_node.make_single(yyvs4.item (yyvsp4))
 
 debug("ODIN_parse")
-	io.put_string(indent + "attr_id: complex_object_nodes.item(" + complex_object_nodes.item.id +
+	io.put_string(indent + "attr_id: complex_object_nodes.item(" + complex_object_nodes.item.id + 
 			").put_attribute(<<" + attr_node.im_attr_name + ">>)%N")
 end
 			if not complex_object_nodes.item.has_attribute(attr_node.im_attr_name) then
@@ -693,7 +693,7 @@ debug("ODIN_parse")
 end
 			attr_nodes.extend(attr_node)
 			create obj_key.make_empty
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -708,29 +708,29 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 9 then
---|#line 220 "odin_validator.y"
+--|#line 220 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 220")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 220")
 end
 
 			abort_with_error (ec_SDAT, Void)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 10 then
---|#line 229 "odin_validator.y"
+--|#line 229 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 229")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 229")
 end
 
 			-- if object_block was an empty object then get rid of it from parent attribute
 			if complex_object_nodes.item.is_empty then
 				attr_nodes.item.remove_child (complex_object_nodes.item)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -745,9 +745,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 11 then
---|#line 236 "odin_validator.y"
+--|#line 236 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 236")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 236")
 end
 
 
@@ -765,9 +765,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 12 then
---|#line 237 "odin_validator.y"
+--|#line 237 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 237")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 237")
 end
 
 
@@ -785,81 +785,81 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 13 then
---|#line 238 "odin_validator.y"
+--|#line 238 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 238")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 238")
 end
 
 			-- for single-valued attributes, remove the attribute
 			if obj_key.is_empty then
 				complex_object_nodes.item.remove_attribute (attr_node.im_attr_name)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 14 then
---|#line 247 "odin_validator.y"
+--|#line 247 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 247")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 247")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 15 then
---|#line 251 "odin_validator.y"
+--|#line 251 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 251")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 251")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 16 then
---|#line 260 "odin_validator.y"
+--|#line 260 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 260")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 260")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 17 then
---|#line 264 "odin_validator.y"
+--|#line 264 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 264")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 264")
 end
 
-			-- probably should set type name on owning attribute - it doesn't belong on each
+			-- probably should set type name on owning attribute - it doesn't belong on each 
 			-- object, since it is essentially a constraint
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 18 then
---|#line 283 "odin_validator.y"
+--|#line 283 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 283")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 283")
 end
 
 			yyval13 := complex_object_nodes.item
 
-			-- if the keyed_objects were all empty, then the attribute can be thrown away
+			-- if the keyed_objects were all empty, then the attribute can be thrown away 
 			-- as well, since we don't create void object structures
 			if attr_nodes.item.is_empty then
 				attr_nodes.item.parent.remove_attribute (attr_nodes.item.im_attr_name)
@@ -870,20 +870,20 @@ end
 			if complex_object_nodes.item.is_addressable and attr_nodes.item.is_nested then
 				-- pop the generic attr node
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block: POP attr node (" +
+	io.put_string(indent + "container_attr_object_block: POP attr node (" +  
 		attr_nodes.item.im_attr_name+ ")%N")
 	indent.remove_tail(1)
 end
 				attr_nodes.remove
 
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block: POP Object node(" +
+	io.put_string(indent + "container_attr_object_block: POP Object node(" + 
 		complex_object_nodes.item.id + ")%N")
 	indent.remove_tail(1)
 end
 				complex_object_nodes.remove
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp13 := yyvsp13 + 1
@@ -898,9 +898,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 19 then
---|#line 336 "odin_validator.y"
+--|#line 336 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 336")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 336")
 end
 
 			-- if obj_key is set, it means we are inside a keyed object, and we have hit more keyed objects
@@ -908,8 +908,8 @@ end
 				create complex_object_node.make_identified (obj_key)
 				if not attr_nodes.item.has_child_with_id (complex_object_node.id) then
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block_head; attr_nodes(<<" +
-		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" +
+	io.put_string(indent + "container_attr_object_block_head; attr_nodes(<<" + 
+		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" + 
 		complex_object_node.id + "))%N")
 end
 					attr_nodes.item.put_child (complex_object_node)
@@ -923,7 +923,7 @@ debug("ODIN_parse")
 end
 				complex_object_nodes.extend(complex_object_node)
 
-				-- now create a generic attribute node to stand for the hidden attribute of the
+				-- now create a generic attribute node to stand for the hidden attribute of the 
 				-- generic object, e.g. it might be List<T>.items or whatever
 debug("ODIN_parse")
 	io.put_string(indent + "container_attr_object_block_head: create_attr_node.make_nested_container%N")
@@ -931,7 +931,7 @@ end
 				create attr_node.make_nested_container
 
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block_head: complex_object_node(" +
+	io.put_string(indent + "container_attr_object_block_head: complex_object_node(" + 
 			complex_object_node.id + ").put_attribute(" + attr_node.im_attr_name + ")%N")
 end
 				complex_object_node.put_attribute(attr_node)
@@ -942,65 +942,65 @@ debug("ODIN_parse")
 end
 				attr_nodes.extend(attr_node)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 20 then
---|#line 380 "odin_validator.y"
+--|#line 380 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 380")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 380")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "one keyed object%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 21 then
---|#line 386 "odin_validator.y"
+--|#line 386 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 386")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 386")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "multiple keyed objects%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 22 then
---|#line 394 "odin_validator.y"
+--|#line 394 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 394")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 394")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "(keyed object)%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 23 then
---|#line 402 "odin_validator.y"
+--|#line 402 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 402")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 402")
 end
 
 			obj_key := yyvs15.item (yyvsp15).out
 
 debug("ODIN_parse")
-		io.put_string(indent + "object_key: " + obj_key +
+		io.put_string(indent + "object_key: " + obj_key + 
 			" (setting " + attr_nodes.item.im_attr_name + " to Multiple)%N")
 end
 			if not attr_nodes.is_empty then
@@ -1008,7 +1008,7 @@ end
 			else
 				abort_with_error (ec_SGEE, <<attr_node.im_attr_name>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -1016,24 +1016,24 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 24 then
---|#line 422 "odin_validator.y"
+--|#line 422 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 422")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 422")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "untyped single_attr_object_block%N")
 end
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 25 then
---|#line 429 "odin_validator.y"
+--|#line 429 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 429")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 429")
 end
 
 debug("ODIN_parse")
@@ -1041,26 +1041,26 @@ debug("ODIN_parse")
 end
 			yyvs13.item (yyvsp13).set_visible_type_name(yyvs4.item (yyvsp4))
 			yyval13 := yyvs13.item (yyvsp13)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 26 then
---|#line 447 "odin_validator.y"
+--|#line 447 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 447")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 447")
 end
 
 debug("ODIN_parse")
-	io.put_string(indent + "single_attr_object_complex_block: POP Object node(" +
+	io.put_string(indent + "single_attr_object_complex_block: POP Object node(" + 
 		complex_object_nodes.item.id + ")%N")
 	indent.remove_tail(1)
 end
 			yyval13 := complex_object_nodes.item
 			complex_object_nodes.remove
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp13 := yyvsp13 + 1
@@ -1075,9 +1075,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
 end
 when 27 then
---|#line 459 "odin_validator.y"
+--|#line 459 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 459")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 459")
 end
 
 			-- if parent attr is not multiple, create an anon object; else an object identified by a key
@@ -1098,8 +1098,8 @@ end
 			if not attr_nodes.is_empty then
 				if not attr_nodes.item.has_child_with_id (complex_object_node.id) then
 debug("ODIN_parse")
-	io.put_string(indent + "single_attr_object_complex_head: attr_nodes(<<" +
-		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" +
+	io.put_string(indent + "single_attr_object_complex_head: attr_nodes(<<" + 
+		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" + 
 		complex_object_node.id + "))%N")
 end
 					attr_nodes.item.put_child(complex_object_node)
@@ -1114,30 +1114,30 @@ debug("ODIN_parse")
 	indent.append("%T")
 end
 			complex_object_nodes.extend(complex_object_node)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
 end
 when 28 then
---|#line 501 "odin_validator.y"
+--|#line 501 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 501")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 501")
 end
 
 debug("ODIN_parse")
 	io.put_string(indent + "untyped primitive_object_block%N")
 end
 			yyval14 := yyvs14.item (yyvsp14)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 29 then
---|#line 508 "odin_validator.y"
+--|#line 508 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 508")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 508")
 end
 
 debug("ODIN_parse")
@@ -1145,23 +1145,23 @@ debug("ODIN_parse")
 end
 			yyvs14.item (yyvsp14).set_visible_type_name (yyvs4.item (yyvsp4))
 			yyval14 := yyvs14.item (yyvsp14)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 30 then
---|#line 522 "odin_validator.y"
+--|#line 522 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 522")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 522")
 end
 
 			yyval14 := yyvs14.item (yyvsp14)
 			create obj_key.make_empty
 debug("ODIN_parse")
-	io.put_string(indent + "untyped_primitive_object_block; attr_nodes(<<" +
-			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" +
+	io.put_string(indent + "untyped_primitive_object_block; attr_nodes(<<" + 
+			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
 			yyval14.as_string + ">>)%N")
 end
 			if not attr_nodes.item.has_child_with_id (yyval14.id) then
@@ -1169,16 +1169,16 @@ end
 			else
 				abort_with_error (ec_VOKU, <<yyval14.id, attr_nodes.item.im_attr_name >>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 31 then
---|#line 539 "odin_validator.y"
+--|#line 539 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 539")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 539")
 end
 
 			if not obj_key.is_empty then
@@ -1186,7 +1186,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT} yyval14.make_anonymous (yyvs15.item (yyvsp15))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1201,9 +1201,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 32 then
---|#line 547 "odin_validator.y"
+--|#line 547 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 547")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 547")
 end
 
 			if not obj_key.is_empty then
@@ -1211,7 +1211,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_LIST} yyval14.make_anonymous (yyvs29.item (yyvsp29))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1226,9 +1226,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 33 then
---|#line 555 "odin_validator.y"
+--|#line 555 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 555")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 555")
 end
 
 			if not obj_key.is_empty then
@@ -1236,7 +1236,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_INTERVAL} yyval14.make_anonymous (yyvs36.item (yyvsp36))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1251,9 +1251,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 34 then
---|#line 563 "odin_validator.y"
+--|#line 563 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 563")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 563")
 end
 
 			if not obj_key.is_empty then
@@ -1261,7 +1261,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} yyval14.make_anonymous (yyvs43.item (yyvsp43))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1276,9 +1276,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 35 then
---|#line 571 "odin_validator.y"
+--|#line 571 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 571")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 571")
 end
 
 			if not obj_key.is_empty then
@@ -1286,7 +1286,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT} yyval14.make_anonymous (yyvs11.item (yyvsp11))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1301,9 +1301,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 36 then
---|#line 579 "odin_validator.y"
+--|#line 579 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 579")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 579")
 end
 
 			if not obj_key.is_empty then
@@ -1311,7 +1311,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_LIST} yyval14.make_anonymous (yyvs28.item (yyvsp28))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1326,13 +1326,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 37 then
---|#line 589 "odin_validator.y"
+--|#line 589 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 589")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 589")
 end
 
 			yyval15 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1347,13 +1347,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 38 then
---|#line 593 "odin_validator.y"
+--|#line 593 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 593")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 593")
 end
 
 			yyval15 := yyvs2.item (yyvsp2)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1368,13 +1368,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 39 then
---|#line 597 "odin_validator.y"
+--|#line 597 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 597")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 597")
 end
 
 			yyval15 := yyvs3.item (yyvsp3)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1389,13 +1389,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 40 then
---|#line 601 "odin_validator.y"
+--|#line 601 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 601")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 601")
 end
 
 			yyval15 := yyvs6.item (yyvsp6)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1410,13 +1410,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 41 then
---|#line 605 "odin_validator.y"
+--|#line 605 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 605")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 605")
 end
 
 			yyval15 := yyvs5.item (yyvsp5)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1431,13 +1431,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 42 then
---|#line 609 "odin_validator.y"
+--|#line 609 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 609")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 609")
 end
 
 			yyval15 := yyvs7.item (yyvsp7)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1452,13 +1452,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 43 then
---|#line 613 "odin_validator.y"
+--|#line 613 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 613")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 613")
 end
 
 			yyval15 := yyvs9.item (yyvsp9)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1473,13 +1473,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 44 then
---|#line 617 "odin_validator.y"
+--|#line 617 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 617")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 617")
 end
 
 			yyval15 := yyvs8.item (yyvsp8)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1494,13 +1494,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 45 then
---|#line 621 "odin_validator.y"
+--|#line 621 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 621")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 621")
 end
 
 			yyval15 := yyvs10.item (yyvsp10)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1515,13 +1515,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 46 then
---|#line 625 "odin_validator.y"
+--|#line 625 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 625")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 625")
 end
 
 			yyval15 := yyvs12.item (yyvsp12)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1536,13 +1536,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines15.force (yyvs15, yyval15, yyvsp15)
 end
 when 47 then
---|#line 631 "odin_validator.y"
+--|#line 631 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 631")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 631")
 end
 
 			yyval29 := yyvs19.item (yyvsp19)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1557,13 +1557,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 48 then
---|#line 635 "odin_validator.y"
+--|#line 635 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 635")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 635")
 end
 
 			yyval29 := yyvs20.item (yyvsp20)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1578,13 +1578,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 49 then
---|#line 639 "odin_validator.y"
+--|#line 639 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 639")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 639")
 end
 
 			yyval29 := yyvs21.item (yyvsp21)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1599,13 +1599,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 50 then
---|#line 643 "odin_validator.y"
+--|#line 643 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 643")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 643")
 end
 
 			yyval29 := yyvs23.item (yyvsp23)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1620,13 +1620,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 51 then
---|#line 647 "odin_validator.y"
+--|#line 647 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 647")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 647")
 end
 
 			yyval29 := yyvs22.item (yyvsp22)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1641,13 +1641,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 52 then
---|#line 651 "odin_validator.y"
+--|#line 651 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 651")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 651")
 end
 
 			yyval29 := yyvs24.item (yyvsp24)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1662,13 +1662,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 53 then
---|#line 655 "odin_validator.y"
+--|#line 655 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 655")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 655")
 end
 
 			yyval29 := yyvs25.item (yyvsp25)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1683,13 +1683,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 54 then
---|#line 659 "odin_validator.y"
+--|#line 659 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 659")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 659")
 end
 
 			yyval29 := yyvs26.item (yyvsp26)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1704,13 +1704,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 55 then
---|#line 663 "odin_validator.y"
+--|#line 663 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 663")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 663")
 end
 
 			yyval29 := yyvs27.item (yyvsp27)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1725,13 +1725,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines29.force (yyvs29, yyval29, yyvsp29)
 end
 when 56 then
---|#line 669 "odin_validator.y"
+--|#line 669 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 669")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 669")
 end
 
 			yyval36 := yyvs30.item (yyvsp30)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1746,13 +1746,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 57 then
---|#line 673 "odin_validator.y"
+--|#line 673 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 673")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 673")
 end
 
 			yyval36 := yyvs31.item (yyvsp31)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1767,13 +1767,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 58 then
---|#line 677 "odin_validator.y"
+--|#line 677 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 677")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 677")
 end
 
 			yyval36 := yyvs33.item (yyvsp33)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1788,13 +1788,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 59 then
---|#line 681 "odin_validator.y"
+--|#line 681 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 681")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 681")
 end
 
 			yyval36 := yyvs32.item (yyvsp32)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1809,13 +1809,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 60 then
---|#line 685 "odin_validator.y"
+--|#line 685 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 685")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 685")
 end
 
 			yyval36 := yyvs34.item (yyvsp34)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1830,13 +1830,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 61 then
---|#line 689 "odin_validator.y"
+--|#line 689 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 689")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 689")
 end
 
 			yyval36 := yyvs35.item (yyvsp35)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1851,13 +1851,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines36.force (yyvs36, yyval36, yyvsp36)
 end
 when 62 then
---|#line 695 "odin_validator.y"
+--|#line 695 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 695")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 695")
 end
 
 			yyval43 := yyvs37.item (yyvsp37)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1872,13 +1872,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 63 then
---|#line 699 "odin_validator.y"
+--|#line 699 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 699")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 699")
 end
 
 			yyval43 := yyvs38.item (yyvsp38)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1893,13 +1893,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 64 then
---|#line 703 "odin_validator.y"
+--|#line 703 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 703")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 703")
 end
 
 			yyval43 := yyvs40.item (yyvsp40)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1914,13 +1914,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 65 then
---|#line 707 "odin_validator.y"
+--|#line 707 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 707")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 707")
 end
 
 			yyval43 := yyvs39.item (yyvsp39)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1935,13 +1935,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 66 then
---|#line 711 "odin_validator.y"
+--|#line 711 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 711")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 711")
 end
 
 			yyval43 := yyvs41.item (yyvsp41)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1956,13 +1956,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 67 then
---|#line 715 "odin_validator.y"
+--|#line 715 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 715")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 715")
 end
 
 			yyval43 := yyvs42.item (yyvsp42)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1977,77 +1977,77 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines43.force (yyvs43, yyval43, yyvsp43)
 end
 when 68 then
---|#line 721 "odin_validator.y"
+--|#line 721 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 721")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 721")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 69 then
---|#line 725 "odin_validator.y"
+--|#line 725 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 725")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 725")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 70 then
---|#line 729 "odin_validator.y"
+--|#line 729 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 729")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 729")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 71 then
---|#line 733 "odin_validator.y"
+--|#line 733 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 733")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 733")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 72 then
---|#line 742 "odin_validator.y"
+--|#line 742 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 742")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 742")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
 end
 when 73 then
---|#line 748 "odin_validator.y"
+--|#line 748 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 748")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 748")
 end
 
 			create yyval19.make(0)
 			yyval19.extend(yyvs4.item (yyvsp4 - 1))
 			yyval19.extend(yyvs4.item (yyvsp4))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp19 := yyvsp19 + 1
@@ -2063,14 +2063,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
 when 74 then
---|#line 754 "odin_validator.y"
+--|#line 754 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 754")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 754")
 end
 
 			yyvs19.item (yyvsp19).extend(yyvs4.item (yyvsp4))
 			yyval19 := yyvs19.item (yyvsp19)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2078,27 +2078,27 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
 when 75 then
---|#line 762 "odin_validator.y"
+--|#line 762 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 762")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 762")
 end
 
 			yyval19 := yyvs19.item (yyvsp19)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
 when 76 then
---|#line 766 "odin_validator.y"
+--|#line 766 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 766")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 766")
 end
 
 			create yyval19.make (0)
 			yyval19.extend (yyvs4.item (yyvsp4))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp19 := yyvsp19 + 1
@@ -2114,53 +2114,53 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines19.force (yyvs19, yyval19, yyvsp19)
 end
 when 77 then
---|#line 773 "odin_validator.y"
+--|#line 773 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 773")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 773")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
 when 78 then
---|#line 776 "odin_validator.y"
+--|#line 776 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 776")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 776")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
 when 79 then
---|#line 779 "odin_validator.y"
+--|#line 779 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 779")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 779")
 end
 
 			yyval2 := - yyvs2.item (yyvsp2)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
 end
 when 80 then
---|#line 784 "odin_validator.y"
+--|#line 784 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 784")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 784")
 end
 
 			create yyval20.make(0)
 			yyval20.extend(yyvs2.item (yyvsp2 - 1))
 			yyval20.extend(yyvs2.item (yyvsp2))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp20 := yyvsp20 + 1
@@ -2176,14 +2176,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
 when 81 then
---|#line 790 "odin_validator.y"
+--|#line 790 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 790")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 790")
 end
 
 			yyvs20.item (yyvsp20).extend(yyvs2.item (yyvsp2))
 			yyval20 := yyvs20.item (yyvsp20)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2191,14 +2191,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
 when 82 then
---|#line 795 "odin_validator.y"
+--|#line 795 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 795")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 795")
 end
 
 			create yyval20.make(0)
 			yyval20.extend(yyvs2.item (yyvsp2))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp20 := yyvsp20 + 1
@@ -2214,9 +2214,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines20.force (yyvs20, yyval20, yyvsp20)
 end
 when 83 then
---|#line 802 "odin_validator.y"
+--|#line 802 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 802")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 802")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
@@ -2224,7 +2224,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp30 := yyvsp30 + 1
@@ -2240,9 +2240,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 84 then
---|#line 810 "odin_validator.y"
+--|#line 810 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 810")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 810")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
@@ -2250,7 +2250,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp30 := yyvsp30 + 1
@@ -2266,9 +2266,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 85 then
---|#line 818 "odin_validator.y"
+--|#line 818 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 818")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 818")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
@@ -2276,7 +2276,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp30 := yyvsp30 + 1
@@ -2292,9 +2292,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 86 then
---|#line 826 "odin_validator.y"
+--|#line 826 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 826")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 826")
 end
 
 			if yyvs2.item (yyvsp2 - 1) <= yyvs2.item (yyvsp2) then
@@ -2302,7 +2302,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp30 := yyvsp30 + 1
@@ -2318,13 +2318,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 87 then
---|#line 834 "odin_validator.y"
+--|#line 834 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 834")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 834")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2340,13 +2340,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 88 then
---|#line 838 "odin_validator.y"
+--|#line 838 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 838")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 838")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2362,13 +2362,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 89 then
---|#line 842 "odin_validator.y"
+--|#line 842 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 842")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 842")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2384,13 +2384,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 90 then
---|#line 846 "odin_validator.y"
+--|#line 846 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 846")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 846")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2406,13 +2406,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 91 then
---|#line 850 "odin_validator.y"
+--|#line 850 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 850")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 850")
 end
 
 			create {POINT_INTERVAL [INTEGER]} yyval30.make (yyvs2.item (yyvsp2))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp30 := yyvsp30 + 1
@@ -2428,15 +2428,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines30.force (yyvs30, yyval30, yyvsp30)
 end
 when 92 then
---|#line 856 "odin_validator.y"
+--|#line 856 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 856")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 856")
 end
 
 			create yyval37.make(0)
 			yyval37.extend(yyvs30.item (yyvsp30 - 1))
 			yyval37.extend(yyvs30.item (yyvsp30))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp37 := yyvsp37 + 1
@@ -2452,14 +2452,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
 end
 when 93 then
---|#line 862 "odin_validator.y"
+--|#line 862 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 862")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 862")
 end
 
 			yyvs37.item (yyvsp37).extend(yyvs30.item (yyvsp30))
 			yyval37 := yyvs37.item (yyvsp37)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2467,14 +2467,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
 end
 when 94 then
---|#line 867 "odin_validator.y"
+--|#line 867 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 867")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 867")
 end
 
 			create yyval37.make(0)
 			yyval37.extend(yyvs30.item (yyvsp30))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp37 := yyvsp37 + 1
@@ -2490,53 +2490,53 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines37.force (yyvs37, yyval37, yyvsp37)
 end
 when 95 then
---|#line 874 "odin_validator.y"
+--|#line 874 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 874")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 874")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
 when 96 then
---|#line 878 "odin_validator.y"
+--|#line 878 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 878")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 878")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
 when 97 then
---|#line 882 "odin_validator.y"
+--|#line 882 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 882")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 882")
 end
 
 			yyval3 := - yyvs3.item (yyvsp3)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
 end
 when 98 then
---|#line 888 "odin_validator.y"
+--|#line 888 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 888")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 888")
 end
 
 			create yyval21.make(0)
 			yyval21.extend(yyvs3.item (yyvsp3 - 1))
 			yyval21.extend(yyvs3.item (yyvsp3))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp21 := yyvsp21 + 1
@@ -2552,14 +2552,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
 when 99 then
---|#line 894 "odin_validator.y"
+--|#line 894 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 894")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 894")
 end
 
 			yyvs21.item (yyvsp21).extend(yyvs3.item (yyvsp3))
 			yyval21 := yyvs21.item (yyvsp21)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2567,14 +2567,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
 when 100 then
---|#line 899 "odin_validator.y"
+--|#line 899 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 899")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 899")
 end
 
 			create yyval21.make(0)
 			yyval21.extend(yyvs3.item (yyvsp3))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp21 := yyvsp21 + 1
@@ -2590,9 +2590,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines21.force (yyvs21, yyval21, yyvsp21)
 end
 when 101 then
---|#line 906 "odin_validator.y"
+--|#line 906 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 906")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 906")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
@@ -2600,7 +2600,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp31 := yyvsp31 + 1
@@ -2616,9 +2616,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 102 then
---|#line 914 "odin_validator.y"
+--|#line 914 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 914")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 914")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
@@ -2626,7 +2626,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp31 := yyvsp31 + 1
@@ -2642,9 +2642,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 103 then
---|#line 922 "odin_validator.y"
+--|#line 922 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 922")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 922")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
@@ -2652,7 +2652,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp31 := yyvsp31 + 1
@@ -2668,9 +2668,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 104 then
---|#line 930 "odin_validator.y"
+--|#line 930 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 930")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 930")
 end
 
 			if yyvs3.item (yyvsp3 - 1) <= yyvs3.item (yyvsp3) then
@@ -2678,7 +2678,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp31 := yyvsp31 + 1
@@ -2694,13 +2694,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 105 then
---|#line 938 "odin_validator.y"
+--|#line 938 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 938")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 938")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2716,13 +2716,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 106 then
---|#line 942 "odin_validator.y"
+--|#line 942 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 942")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 942")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2738,13 +2738,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 107 then
---|#line 946 "odin_validator.y"
+--|#line 946 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 946")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 946")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2760,13 +2760,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 108 then
---|#line 950 "odin_validator.y"
+--|#line 950 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 950")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 950")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2782,13 +2782,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 109 then
---|#line 954 "odin_validator.y"
+--|#line 954 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 954")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 954")
 end
 
 			create {POINT_INTERVAL [REAL]} yyval31.make(yyvs3.item (yyvsp3))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp31 := yyvsp31 + 1
@@ -2804,15 +2804,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines31.force (yyvs31, yyval31, yyvsp31)
 end
 when 110 then
---|#line 960 "odin_validator.y"
+--|#line 960 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 960")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 960")
 end
 
 			create yyval38.make(0)
 			yyval38.extend(yyvs31.item (yyvsp31 - 1))
 			yyval38.extend(yyvs31.item (yyvsp31))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp38 := yyvsp38 + 1
@@ -2828,14 +2828,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
 end
 when 111 then
---|#line 966 "odin_validator.y"
+--|#line 966 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 966")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 966")
 end
 
 			yyvs38.item (yyvsp38).extend(yyvs31.item (yyvsp31))
 			yyval38 := yyvs38.item (yyvsp38)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2843,14 +2843,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
 end
 when 112 then
---|#line 971 "odin_validator.y"
+--|#line 971 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 971")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 971")
 end
 
 			create yyval38.make(0)
 			yyval38.extend(yyvs31.item (yyvsp31))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp38 := yyvsp38 + 1
@@ -2866,13 +2866,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines38.force (yyvs38, yyval38, yyvsp38)
 end
 when 113 then
---|#line 978 "odin_validator.y"
+--|#line 978 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 978")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 978")
 end
 
 			yyval6 := True
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp6 := yyvsp6 + 1
@@ -2887,13 +2887,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines6.force (yyvs6, yyval6, yyvsp6)
 end
 when 114 then
---|#line 982 "odin_validator.y"
+--|#line 982 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 982")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 982")
 end
 
 			yyval6 := False
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp6 := yyvsp6 + 1
@@ -2908,15 +2908,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines6.force (yyvs6, yyval6, yyvsp6)
 end
 when 115 then
---|#line 988 "odin_validator.y"
+--|#line 988 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 988")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 988")
 end
 
 			create yyval23.make(0)
 			yyval23.extend(yyvs6.item (yyvsp6 - 1))
 			yyval23.extend(yyvs6.item (yyvsp6))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp23 := yyvsp23 + 1
@@ -2932,14 +2932,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
 when 116 then
---|#line 994 "odin_validator.y"
+--|#line 994 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 994")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 994")
 end
 
 			yyvs23.item (yyvsp23).extend(yyvs6.item (yyvsp6))
 			yyval23 := yyvs23.item (yyvsp23)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2947,14 +2947,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
 when 117 then
---|#line 999 "odin_validator.y"
+--|#line 999 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 999")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 999")
 end
 
 			create yyval23.make(0)
 			yyval23.extend(yyvs6.item (yyvsp6))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp23 := yyvsp23 + 1
@@ -2970,27 +2970,27 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines23.force (yyvs23, yyval23, yyvsp23)
 end
 when 118 then
---|#line 1006 "odin_validator.y"
+--|#line 1006 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1006")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1006")
 end
 
 			yyval5 := yyvs5.item (yyvsp5)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines5.force (yyvs5, yyval5, yyvsp5)
 end
 when 119 then
---|#line 1012 "odin_validator.y"
+--|#line 1012 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1012")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1012")
 end
 
 			create yyval22.make(0)
 			yyval22.extend(yyvs5.item (yyvsp5 - 1))
 			yyval22.extend(yyvs5.item (yyvsp5))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp22 := yyvsp22 + 1
@@ -3006,14 +3006,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
 when 120 then
---|#line 1018 "odin_validator.y"
+--|#line 1018 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1018")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1018")
 end
 
 			yyvs22.item (yyvsp22).extend(yyvs5.item (yyvsp5))
 			yyval22 := yyvs22.item (yyvsp22)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3021,14 +3021,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
 when 121 then
---|#line 1023 "odin_validator.y"
+--|#line 1023 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1023")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1023")
 end
 
 			create yyval22.make(0)
 			yyval22.extend(yyvs5.item (yyvsp5))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp22 := yyvsp22 + 1
@@ -3044,9 +3044,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines22.force (yyvs22, yyval22, yyvsp22)
 end
 when 122 then
---|#line 1030 "odin_validator.y"
+--|#line 1030 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1030")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1030")
 end
 
 			if valid_iso8601_date(yyvs4.item (yyvsp4)) then
@@ -3054,7 +3054,7 @@ end
 			else
 				abort_with_error (ec_VIDV, <<yyvs4.item (yyvsp4)>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp7 := yyvsp7 + 1
@@ -3069,15 +3069,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines7.force (yyvs7, yyval7, yyvsp7)
 end
 when 123 then
---|#line 1040 "odin_validator.y"
+--|#line 1040 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1040")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1040")
 end
 
 			create yyval24.make(0)
 			yyval24.extend (yyvs7.item (yyvsp7 - 1))
 			yyval24.extend (yyvs7.item (yyvsp7))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp24 := yyvsp24 + 1
@@ -3093,14 +3093,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
 when 124 then
---|#line 1046 "odin_validator.y"
+--|#line 1046 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1046")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1046")
 end
 
 			yyvs24.item (yyvsp24).extend (yyvs7.item (yyvsp7))
 			yyval24 := yyvs24.item (yyvsp24)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3108,14 +3108,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
 when 125 then
---|#line 1051 "odin_validator.y"
+--|#line 1051 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1051")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1051")
 end
 
 			create yyval24.make(0)
 			yyval24.extend (yyvs7.item (yyvsp7))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp24 := yyvsp24 + 1
@@ -3131,9 +3131,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines24.force (yyvs24, yyval24, yyvsp24)
 end
 when 126 then
---|#line 1058 "odin_validator.y"
+--|#line 1058 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1058")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1058")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
@@ -3141,7 +3141,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp33 := yyvsp33 + 1
@@ -3157,9 +3157,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 127 then
---|#line 1066 "odin_validator.y"
+--|#line 1066 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1066")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1066")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
@@ -3167,7 +3167,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp33 := yyvsp33 + 1
@@ -3183,9 +3183,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 128 then
---|#line 1074 "odin_validator.y"
+--|#line 1074 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1074")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1074")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
@@ -3193,7 +3193,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp33 := yyvsp33 + 1
@@ -3209,9 +3209,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 129 then
---|#line 1082 "odin_validator.y"
+--|#line 1082 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1082")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1082")
 end
 
 			if yyvs7.item (yyvsp7 - 1) <= yyvs7.item (yyvsp7) then
@@ -3219,7 +3219,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp33 := yyvsp33 + 1
@@ -3235,13 +3235,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 130 then
---|#line 1090 "odin_validator.y"
+--|#line 1090 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1090")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1090")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3257,13 +3257,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 131 then
---|#line 1094 "odin_validator.y"
+--|#line 1094 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1094")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1094")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3279,13 +3279,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 132 then
---|#line 1098 "odin_validator.y"
+--|#line 1098 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1098")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1098")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3301,13 +3301,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 133 then
---|#line 1102 "odin_validator.y"
+--|#line 1102 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1102")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1102")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3323,13 +3323,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 134 then
---|#line 1106 "odin_validator.y"
+--|#line 1106 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1106")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1106")
 end
 
 			create {POINT_INTERVAL [ISO8601_DATE]} yyval33.make (yyvs7.item (yyvsp7))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp33 := yyvsp33 + 1
@@ -3345,15 +3345,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines33.force (yyvs33, yyval33, yyvsp33)
 end
 when 135 then
---|#line 1112 "odin_validator.y"
+--|#line 1112 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1112")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1112")
 end
 
 			create yyval40.make(0)
 			yyval40.extend(yyvs33.item (yyvsp33 - 1))
 			yyval40.extend(yyvs33.item (yyvsp33))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp40 := yyvsp40 + 1
@@ -3369,14 +3369,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
 end
 when 136 then
---|#line 1118 "odin_validator.y"
+--|#line 1118 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1118")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1118")
 end
 
 			yyvs40.item (yyvsp40).extend(yyvs33.item (yyvsp33))
 			yyval40 := yyvs40.item (yyvsp40)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3384,14 +3384,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
 end
 when 137 then
---|#line 1123 "odin_validator.y"
+--|#line 1123 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1123")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1123")
 end
 
 			create yyval40.make(0)
 			yyval40.extend(yyvs33.item (yyvsp33))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp40 := yyvsp40 + 1
@@ -3407,9 +3407,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines40.force (yyvs40, yyval40, yyvsp40)
 end
 when 138 then
---|#line 1130 "odin_validator.y"
+--|#line 1130 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1130")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1130")
 end
 
 			if valid_iso8601_time(yyvs4.item (yyvsp4)) then
@@ -3417,7 +3417,7 @@ end
 			else
 				abort_with_error (ec_VITV, <<yyvs4.item (yyvsp4)>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp9 := yyvsp9 + 1
@@ -3432,15 +3432,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines9.force (yyvs9, yyval9, yyvsp9)
 end
 when 139 then
---|#line 1140 "odin_validator.y"
+--|#line 1140 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1140")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1140")
 end
 
 			create yyval25.make(0)
 			yyval25.extend(yyvs9.item (yyvsp9 - 1))
 			yyval25.extend(yyvs9.item (yyvsp9))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp25 := yyvsp25 + 1
@@ -3456,14 +3456,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
 when 140 then
---|#line 1146 "odin_validator.y"
+--|#line 1146 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1146")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1146")
 end
 
 			yyvs25.item (yyvsp25).extend(yyvs9.item (yyvsp9))
 			yyval25 := yyvs25.item (yyvsp25)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3471,14 +3471,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
 when 141 then
---|#line 1151 "odin_validator.y"
+--|#line 1151 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1151")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1151")
 end
 
 			create yyval25.make(0)
 			yyval25.extend(yyvs9.item (yyvsp9))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp25 := yyvsp25 + 1
@@ -3494,9 +3494,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines25.force (yyvs25, yyval25, yyvsp25)
 end
 when 142 then
---|#line 1158 "odin_validator.y"
+--|#line 1158 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1158")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1158")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
@@ -3504,7 +3504,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp32 := yyvsp32 + 1
@@ -3520,9 +3520,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 143 then
---|#line 1166 "odin_validator.y"
+--|#line 1166 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1166")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1166")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
@@ -3530,7 +3530,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp32 := yyvsp32 + 1
@@ -3546,9 +3546,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 144 then
---|#line 1174 "odin_validator.y"
+--|#line 1174 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1174")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1174")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
@@ -3556,7 +3556,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp32 := yyvsp32 + 1
@@ -3572,9 +3572,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 145 then
---|#line 1182 "odin_validator.y"
+--|#line 1182 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1182")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1182")
 end
 
 			if yyvs9.item (yyvsp9 - 1) <= yyvs9.item (yyvsp9) then
@@ -3582,7 +3582,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp32 := yyvsp32 + 1
@@ -3598,13 +3598,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 146 then
---|#line 1190 "odin_validator.y"
+--|#line 1190 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1190")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1190")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3620,13 +3620,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 147 then
---|#line 1194 "odin_validator.y"
+--|#line 1194 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1194")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1194")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3642,13 +3642,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 148 then
---|#line 1198 "odin_validator.y"
+--|#line 1198 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1198")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1198")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3664,13 +3664,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 149 then
---|#line 1202 "odin_validator.y"
+--|#line 1202 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1202")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1202")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3686,13 +3686,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 150 then
---|#line 1206 "odin_validator.y"
+--|#line 1206 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1206")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1206")
 end
 
 			create {POINT_INTERVAL [ISO8601_TIME]} yyval32.make (yyvs9.item (yyvsp9))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp32 := yyvsp32 + 1
@@ -3708,15 +3708,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines32.force (yyvs32, yyval32, yyvsp32)
 end
 when 151 then
---|#line 1212 "odin_validator.y"
+--|#line 1212 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1212")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1212")
 end
 
 			create yyval39.make(0)
 			yyval39.extend(yyvs32.item (yyvsp32 - 1))
 			yyval39.extend(yyvs32.item (yyvsp32))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp39 := yyvsp39 + 1
@@ -3732,14 +3732,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
 end
 when 152 then
---|#line 1218 "odin_validator.y"
+--|#line 1218 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1218")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1218")
 end
 
 			yyvs39.item (yyvsp39).extend(yyvs32.item (yyvsp32))
 			yyval39 := yyvs39.item (yyvsp39)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3747,14 +3747,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
 end
 when 153 then
---|#line 1223 "odin_validator.y"
+--|#line 1223 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1223")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1223")
 end
 
 			create yyval39.make(0)
 			yyval39.extend(yyvs32.item (yyvsp32))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp39 := yyvsp39 + 1
@@ -3770,9 +3770,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines39.force (yyvs39, yyval39, yyvsp39)
 end
 when 154 then
---|#line 1230 "odin_validator.y"
+--|#line 1230 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1230")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1230")
 end
 
 			if valid_iso8601_date_time(yyvs4.item (yyvsp4)) then
@@ -3780,7 +3780,7 @@ end
 			else
 				abort_with_error (ec_VIDTV, <<yyvs4.item (yyvsp4)>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp8 := yyvsp8 + 1
@@ -3795,15 +3795,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines8.force (yyvs8, yyval8, yyvsp8)
 end
 when 155 then
---|#line 1240 "odin_validator.y"
+--|#line 1240 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1240")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1240")
 end
 
 			create yyval26.make(0)
 			yyval26.extend(yyvs8.item (yyvsp8 - 1))
 			yyval26.extend(yyvs8.item (yyvsp8))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp26 := yyvsp26 + 1
@@ -3819,14 +3819,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
 when 156 then
---|#line 1246 "odin_validator.y"
+--|#line 1246 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1246")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1246")
 end
 
 			yyvs26.item (yyvsp26).extend(yyvs8.item (yyvsp8))
 			yyval26 := yyvs26.item (yyvsp26)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3834,14 +3834,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
 when 157 then
---|#line 1251 "odin_validator.y"
+--|#line 1251 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1251")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1251")
 end
 
 			create yyval26.make(0)
 			yyval26.extend(yyvs8.item (yyvsp8))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp26 := yyvsp26 + 1
@@ -3857,9 +3857,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines26.force (yyvs26, yyval26, yyvsp26)
 end
 when 158 then
---|#line 1258 "odin_validator.y"
+--|#line 1258 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1258")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1258")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
@@ -3867,7 +3867,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp34 := yyvsp34 + 1
@@ -3883,9 +3883,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 159 then
---|#line 1266 "odin_validator.y"
+--|#line 1266 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1266")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1266")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
@@ -3893,7 +3893,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp34 := yyvsp34 + 1
@@ -3909,9 +3909,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 160 then
---|#line 1274 "odin_validator.y"
+--|#line 1274 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1274")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1274")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
@@ -3919,7 +3919,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp34 := yyvsp34 + 1
@@ -3935,9 +3935,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 161 then
---|#line 1282 "odin_validator.y"
+--|#line 1282 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1282")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1282")
 end
 
 			if yyvs8.item (yyvsp8 - 1) <= yyvs8.item (yyvsp8) then
@@ -3945,7 +3945,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp34 := yyvsp34 + 1
@@ -3961,13 +3961,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 162 then
---|#line 1290 "odin_validator.y"
+--|#line 1290 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1290")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1290")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -3983,13 +3983,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 163 then
---|#line 1294 "odin_validator.y"
+--|#line 1294 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1294")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1294")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4005,13 +4005,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 164 then
---|#line 1298 "odin_validator.y"
+--|#line 1298 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1298")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1298")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4027,13 +4027,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 165 then
---|#line 1302 "odin_validator.y"
+--|#line 1302 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1302")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1302")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4049,13 +4049,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 166 then
---|#line 1306 "odin_validator.y"
+--|#line 1306 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1306")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1306")
 end
 
 			create {POINT_INTERVAL [ISO8601_DATE_TIME]} yyval34.make (yyvs8.item (yyvsp8))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp34 := yyvsp34 + 1
@@ -4071,15 +4071,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines34.force (yyvs34, yyval34, yyvsp34)
 end
 when 167 then
---|#line 1312 "odin_validator.y"
+--|#line 1312 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1312")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1312")
 end
 
 			create yyval41.make(0)
 			yyval41.extend(yyvs34.item (yyvsp34 - 1))
 			yyval41.extend(yyvs34.item (yyvsp34))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp41 := yyvsp41 + 1
@@ -4095,14 +4095,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
 end
 when 168 then
---|#line 1318 "odin_validator.y"
+--|#line 1318 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1318")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1318")
 end
 
 			yyvs41.item (yyvsp41).extend(yyvs34.item (yyvsp34))
 			yyval41 := yyvs41.item (yyvsp41)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4110,14 +4110,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
 end
 when 169 then
---|#line 1323 "odin_validator.y"
+--|#line 1323 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1323")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1323")
 end
 
 			create yyval41.make(0)
 			yyval41.extend(yyvs34.item (yyvsp34))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp41 := yyvsp41 + 1
@@ -4133,9 +4133,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines41.force (yyvs41, yyval41, yyvsp41)
 end
 when 170 then
---|#line 1330 "odin_validator.y"
+--|#line 1330 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1330")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1330")
 end
 
 			if valid_iso8601_duration(yyvs4.item (yyvsp4)) then
@@ -4143,7 +4143,7 @@ end
 			else
 				abort_with_error (ec_VIDUV, <<yyvs4.item (yyvsp4)>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp10 := yyvsp10 + 1
@@ -4158,15 +4158,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines10.force (yyvs10, yyval10, yyvsp10)
 end
 when 171 then
---|#line 1340 "odin_validator.y"
+--|#line 1340 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1340")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1340")
 end
 
 			create yyval27.make(0)
 			yyval27.extend(yyvs10.item (yyvsp10 - 1))
 			yyval27.extend(yyvs10.item (yyvsp10))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp27 := yyvsp27 + 1
@@ -4182,14 +4182,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
 when 172 then
---|#line 1346 "odin_validator.y"
+--|#line 1346 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1346")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1346")
 end
 
 			yyvs27.item (yyvsp27).extend(yyvs10.item (yyvsp10))
 			yyval27 := yyvs27.item (yyvsp27)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4197,14 +4197,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
 when 173 then
---|#line 1351 "odin_validator.y"
+--|#line 1351 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1351")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1351")
 end
 
 			create yyval27.make(0)
 			yyval27.extend(yyvs10.item (yyvsp10))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp27 := yyvsp27 + 1
@@ -4220,9 +4220,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines27.force (yyvs27, yyval27, yyvsp27)
 end
 when 174 then
---|#line 1358 "odin_validator.y"
+--|#line 1358 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1358")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1358")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
@@ -4230,7 +4230,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp35 := yyvsp35 + 1
@@ -4246,9 +4246,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 175 then
---|#line 1366 "odin_validator.y"
+--|#line 1366 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1366")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1366")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
@@ -4256,7 +4256,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp35 := yyvsp35 + 1
@@ -4272,9 +4272,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 176 then
---|#line 1374 "odin_validator.y"
+--|#line 1374 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1374")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1374")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
@@ -4282,7 +4282,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp35 := yyvsp35 + 1
@@ -4298,9 +4298,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 177 then
---|#line 1382 "odin_validator.y"
+--|#line 1382 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1382")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1382")
 end
 
 			if yyvs10.item (yyvsp10 - 1) <= yyvs10.item (yyvsp10) then
@@ -4308,7 +4308,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp35 := yyvsp35 + 1
@@ -4324,13 +4324,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 178 then
---|#line 1390 "odin_validator.y"
+--|#line 1390 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1390")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1390")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4346,13 +4346,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 179 then
---|#line 1394 "odin_validator.y"
+--|#line 1394 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1394")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1394")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4368,13 +4368,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 180 then
---|#line 1398 "odin_validator.y"
+--|#line 1398 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1398")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1398")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), False)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4390,13 +4390,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 181 then
---|#line 1402 "odin_validator.y"
+--|#line 1402 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1402")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1402")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), True)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4412,13 +4412,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 182 then
---|#line 1406 "odin_validator.y"
+--|#line 1406 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1406")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1406")
 end
 
 			create {POINT_INTERVAL [ISO8601_DURATION]} yyval35.make (yyvs10.item (yyvsp10))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp35 := yyvsp35 + 1
@@ -4434,15 +4434,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines35.force (yyvs35, yyval35, yyvsp35)
 end
 when 183 then
---|#line 1412 "odin_validator.y"
+--|#line 1412 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1412")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1412")
 end
 
 			create yyval42.make(0)
 			yyval42.extend(yyvs35.item (yyvsp35 - 1))
 			yyval42.extend(yyvs35.item (yyvsp35))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp42 := yyvsp42 + 1
@@ -4458,14 +4458,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
 end
 when 184 then
---|#line 1418 "odin_validator.y"
+--|#line 1418 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1418")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1418")
 end
 
 			yyvs42.item (yyvsp42).extend(yyvs35.item (yyvsp35))
 			yyval42 := yyvs42.item (yyvsp42)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4473,14 +4473,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
 end
 when 185 then
---|#line 1423 "odin_validator.y"
+--|#line 1423 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1423")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1423")
 end
 
 			create yyval42.make(0)
 			yyval42.extend(yyvs35.item (yyvsp35))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp42 := yyvsp42 + 1
@@ -4496,13 +4496,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines42.force (yyvs42, yyval42, yyvsp42)
 end
 when 186 then
---|#line 1430 "odin_validator.y"
+--|#line 1430 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1430")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1430")
 end
 
 			create yyval11.make_from_string (yyvs4.item (yyvsp4))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4517,13 +4517,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
 when 187 then
---|#line 1434 "odin_validator.y"
+--|#line 1434 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1434")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1434")
 end
 
 			abort_with_error (ec_STNC, <<yyvs4.item (yyvsp4)>>)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4538,13 +4538,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
 when 188 then
---|#line 1438 "odin_validator.y"
+--|#line 1438 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1438")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1438")
 end
 
 			abort_with_error (ec_STCV, <<yyvs4.item (yyvsp4)>>)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4559,15 +4559,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines11.force (yyvs11, yyval11, yyvsp11)
 end
 when 189 then
---|#line 1444 "odin_validator.y"
+--|#line 1444 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1444")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1444")
 end
 
 			create yyval28.make(0)
 			yyval28.extend(yyvs11.item (yyvsp11 - 1))
 			yyval28.extend(yyvs11.item (yyvsp11))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp28 := yyvsp28 + 1
@@ -4583,14 +4583,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
 when 190 then
---|#line 1450 "odin_validator.y"
+--|#line 1450 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1450")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1450")
 end
 
 			yyvs28.item (yyvsp28).extend(yyvs11.item (yyvsp11))
 			yyval28 := yyvs28.item (yyvsp28)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4598,14 +4598,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
 when 191 then
---|#line 1455 "odin_validator.y"
+--|#line 1455 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1455")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1455")
 end
 
 			create yyval28.make(0)
 			yyval28.extend(yyvs11.item (yyvsp11))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp28 := yyvsp28 + 1
@@ -4621,13 +4621,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines28.force (yyvs28, yyval28, yyvsp28)
 end
 when 192 then
---|#line 1462 "odin_validator.y"
+--|#line 1462 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1462")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1462")
 end
 
 			create yyval12.make_from_string(yyvs4.item (yyvsp4))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp12 := yyvsp12 + 1
@@ -4642,14 +4642,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines12.force (yyvs12, yyval12, yyvsp12)
 end
 when 193 then
---|#line 1472 "odin_validator.y"
+--|#line 1472 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1472")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1472")
 end
 
 debug("ODIN_parse")
-	io.put_string(indent + "object_reference_block; attr_nodes(<<" +
-			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" +
+	io.put_string(indent + "object_reference_block; attr_nodes(<<" + 
+			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
 			yyvs14.item (yyvsp14).as_string + ">>)%N")
 end
 			if not attr_nodes.item.has_child_with_id(yyvs14.item (yyvsp14).id) then
@@ -4658,16 +4658,16 @@ end
 			else
 				abort_with_error (ec_VOKU, <<yyvs14.item (yyvsp14).id, attr_nodes.item.im_attr_name >>)
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 194 then
---|#line 1488 "odin_validator.y"
+--|#line 1488 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1488")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1488")
 end
 
 			if not obj_key.is_empty then
@@ -4676,7 +4676,7 @@ end
 			else
 				create {DT_OBJECT_REFERENCE} yyval14.make_anonymous(yyvs16.item (yyvsp16))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -4691,9 +4691,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 195 then
---|#line 1497 "odin_validator.y"
+--|#line 1497 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1497")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1497")
 end
 
 			if not obj_key.is_empty then
@@ -4702,7 +4702,7 @@ end
 			else
 				create {DT_OBJECT_REFERENCE_LIST} yyval14.make_anonymous(yyvs18.item (yyvsp18))
 			end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -4717,15 +4717,15 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
 end
 when 196 then
---|#line 1509 "odin_validator.y"
+--|#line 1509 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1509")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1509")
 end
 
 			create yyval18.make(0)
 			yyval18.extend(yyvs16.item (yyvsp16 - 1))
 			yyval18.extend(yyvs16.item (yyvsp16))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp18 := yyvsp18 + 1
@@ -4741,14 +4741,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
 when 197 then
---|#line 1515 "odin_validator.y"
+--|#line 1515 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1515")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1515")
 end
 
 			yyvs18.item (yyvsp18).extend(yyvs16.item (yyvsp16))
 			yyval18 := yyvs18.item (yyvsp18)
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4756,14 +4756,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
 when 198 then
---|#line 1520 "odin_validator.y"
+--|#line 1520 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1520")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1520")
 end
 
 			create yyval18.make(0)
 			yyval18.extend(yyvs16.item (yyvsp16))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp18 := yyvsp18 + 1
@@ -4779,16 +4779,16 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines18.force (yyvs18, yyval18, yyvsp18)
 end
 when 199 then
---|#line 1532 "odin_validator.y"
+--|#line 1532 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1532")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1532")
 end
 
 			create yyval16.make_root
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path (root); %N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp16 := yyvsp16 + 1
@@ -4803,9 +4803,9 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
 when 200 then
---|#line 1539 "odin_validator.y"
+--|#line 1539 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1539")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1539")
 end
 
 			yyval16 := yyvs16.item (yyvsp16)
@@ -4813,16 +4813,16 @@ end
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path; %N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
 when 201 then
---|#line 1547 "odin_validator.y"
+--|#line 1547 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1547")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1547")
 end
 
 			yyval16 := yyvs16.item (yyvsp16 - 1)
@@ -4830,7 +4830,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path (appended relative path); %N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp16 := yyvsp16 -1
@@ -4838,13 +4838,13 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
 when 202 then
---|#line 1557 "odin_validator.y"
+--|#line 1557 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1557")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1557")
 end
 
 			create yyval16.make_relative(yyvs17.item (yyvsp17))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp16 := yyvsp16 + 1
@@ -4859,14 +4859,14 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
 when 203 then
---|#line 1561 "odin_validator.y"
+--|#line 1561 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1561")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1561")
 end
 
 			yyval16 := yyvs16.item (yyvsp16)
 			yyval16.append_segment(yyvs17.item (yyvsp17))
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4874,16 +4874,16 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines16.force (yyvs16, yyval16, yyvsp16)
 end
 when 204 then
---|#line 1568 "odin_validator.y"
+--|#line 1568 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1568")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1568")
 end
 
 			create yyval17.make_with_object_id(yyvs4.item (yyvsp4 - 1), yyvs4.item (yyvsp4))
 debug("OG_PATH_parse")
 	io.put_string("...path_segment: " + yyvs4.item (yyvsp4 - 1) + "[" + yyvs4.item (yyvsp4) + "]%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp17 := yyvsp17 + 1
@@ -4899,16 +4899,16 @@ if yy_parsing_status >= yyContinue then
 	yyspecial_routines17.force (yyvs17, yyval17, yyvsp17)
 end
 when 205 then
---|#line 1575 "odin_validator.y"
+--|#line 1575 "odin_parser.y"
 debug ("GEYACC")
-	std.error.put_line ("Executing parser user-code from file 'odin_validator.y' at line 1575")
+	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 1575")
 end
 
 			create yyval17.make(yyvs4.item (yyvsp4))
 debug("OG_PATH_parse")
 	io.put_string("...path_segment: " + yyvs4.item (yyvsp4) + "%N")
 end
-
+		
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp17 := yyvsp17 + 1
@@ -5474,7 +5474,7 @@ feature {NONE} -- Semantic value stacks
 			-- Routines that ought to be in SPECIAL [URI]
 
 	yyvs13: SPECIAL [DT_COMPLEX_OBJECT]
-			-- Stack for semantic values of type DT_COMPLEX_OBJECT_NODE
+			-- Stack for semantic values of type DT_COMPLEX_OBJECT
 
 	yyvsc13: INTEGER
 			-- Capacity of semantic value stack `yyvs13'
@@ -5483,7 +5483,7 @@ feature {NONE} -- Semantic value stacks
 			-- Top of semantic value stack `yyvs13'
 
 	yyspecial_routines13: KL_SPECIAL_ROUTINES [DT_COMPLEX_OBJECT]
-			-- Routines that ought to be in SPECIAL [DT_COMPLEX_OBJECT_NODE]
+			-- Routines that ought to be in SPECIAL [DT_COMPLEX_OBJECT]
 
 	yyvs14: SPECIAL [DT_OBJECT_LEAF]
 			-- Stack for semantic values of type DT_OBJECT_LEAF
@@ -5910,7 +5910,7 @@ feature -- Commands
 
 			create time_vc
 			create date_vc
-
+	
 			set_input_buffer (new_string_buffer (in_text))
 			parse
 		end
@@ -5947,8 +5947,8 @@ feature {NONE} -- Parse Tree
 	time_vc: TIME_VALIDITY_CHECKER
 	date_vc: DATE_VALIDITY_CHECKER
 
-feature {NONE} -- Implementation
-
+feature {NONE} -- Implementation 
+	
 	indent: STRING
 
 end

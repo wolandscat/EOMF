@@ -28,8 +28,8 @@ feature -- Definitions
 
 	Ontological_path_separator: STRING = "/"
 
-	Section_separator: CHARACTER = '-'
-			-- separator between sections in an archetype identifier axis
+	Qualified_name_delimiter: CHARACTER = '-'
+			-- delimiter between class_name and qualifiying closure name, e.g. EHR-ENTRY
 
 	Schema_name_delimiter: STRING = "::"
 
@@ -88,31 +88,31 @@ feature -- Definitions
 	Bmm_schema_file_extension: STRING = ".bmm"
 
 	Metadata_bmm_version: STRING = "bmm_version"
-			-- dADL attribute name of logical attribute 'bmm_version' in schema file;
+			-- ODIN attribute name of logical attribute 'bmm_version' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	metadata_rm_publisher: STRING = "rm_publisher"
-			-- dADL attribute name of logical attribute 'model_publisher' in schema file;
+			-- ODIN attribute name of logical attribute 'model_publisher' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	metadata_schema_name: STRING = "schema_name"
-			-- dADL attribute name of logical attribute 'schema_name' in schema file;
+			-- ODIN attribute name of logical attribute 'schema_name' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	metadata_rm_release: STRING = "rm_release"
-			-- dADL attribute name of logical attribute 'model_release' in schema file;
+			-- ODIN attribute name of logical attribute 'model_release' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	Metadata_schema_revision: STRING = "schema_revision"
-			-- dADL attribute name of logical attribute 'schema_revision' in schema file;
+			-- ODIN attribute name of logical attribute 'schema_revision' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	Metadata_schema_lifecycle_state: STRING = "schema_lifecycle_state"
-			-- dADL attribute name of logical attribute 'schema_lifecycle_state' in schema file;
+			-- ODIN attribute name of logical attribute 'schema_lifecycle_state' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	Metadata_schema_description: STRING = "schema_description"
-			-- dADL attribute name of logical attribute 'schema_description' in schema file;
+			-- ODIN attribute name of logical attribute 'schema_description' in schema file;
 			-- MUST correspond to attribute of same name in P_BMM_SCHEMA class
 
 	Metadata_schema_path: STRING = "schema_path"
@@ -230,7 +230,7 @@ feature -- Conversion
 			Model_publisher_valid: not a_rm_publisher.is_empty
 			Closure_name_valid: not a_rm_closure_name.is_empty
 		do
-			Result := a_rm_publisher + section_separator.out + package_base_name (a_rm_closure_name).as_upper
+			Result := a_rm_publisher + Qualified_name_delimiter.out + package_base_name (a_rm_closure_name).as_upper
 		end
 
 	rm_closure_qualified_class_name (a_rm_closure_name, a_class_name: STRING): STRING
@@ -239,7 +239,7 @@ feature -- Conversion
 			Rm_closure_name_valid: not a_rm_closure_name.is_empty
 			Class_name_valid: not a_class_name.is_empty
 		do
-			Result := a_rm_closure_name + section_separator.out + a_class_name
+			Result := a_rm_closure_name + Qualified_name_delimiter.out + a_class_name
 		end
 
 	type_name_as_flat_list (a_type_name: STRING): ARRAYED_LIST [STRING]

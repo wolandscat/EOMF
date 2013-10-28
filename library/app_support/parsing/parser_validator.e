@@ -40,6 +40,7 @@ feature {YY_PARSER_ACTION} -- Basic Operations
 		end
 
 	abort_with_error (err_code: STRING; args: detachable ARRAY [STRING])
+			-- abort with error code, args
 		do
 			add_error_with_location (err_code, args, error_loc)
 			abort
@@ -48,6 +49,7 @@ feature {YY_PARSER_ACTION} -- Basic Operations
 		end
 
 	abort_with_errors (errs: ERROR_ACCUMULATOR)
+			-- abort with errors from some other process
 		do
 			merge_errors (errs)
 			abort
