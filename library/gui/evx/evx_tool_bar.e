@@ -71,7 +71,7 @@ feature -- Status Report
 feature -- Modification
 
 	add_label (a_text: STRING; a_min_width: INTEGER; expandable, align_right: BOOLEAN)
-			-- add an EV_LABEL. If `a_min_width' = 0, don't set width
+			-- add an EV_LABEL with text `a_text'. If `a_min_width' = 0, don't set width
 		local
 			new_label: EV_LABEL
 		do
@@ -91,6 +91,8 @@ feature -- Modification
 		end
 
 	add_titled_label (a_title, a_text, a_tooltip_text: STRING; a_min_width: INTEGER)
+			-- add 2 EV_LABELs, first with text `a_title', second with with text `a_text'
+			-- and tooltip. If `a_min_width' = 0, don't set width.
 		do
 			add_label (a_title, 0, False, True)
 			if not a_tooltip_text.is_empty and attached last_label as new_label then
@@ -122,7 +124,7 @@ feature -- Modification
 			if attached last_text_field as new_text_field then
 				new_text_field.set_minimum_width (a_min_width)
 				ev_root_container.disable_item_expand (new_text_field)
-		end
+			end
 		end
 
 	add_expanding_combo_box (a_title, a_tooltip_text: STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])

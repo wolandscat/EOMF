@@ -35,6 +35,14 @@ feature -- Definitions
 	File_ext_yaml_default: STRING = ".yaml"
 			-- Default extension for YAML format archetype files that don't have some other extension
 
+	Odin_left_delim: CHARACTER = '<'
+
+	Odin_right_delim: CHARACTER = '>'
+
+	Odin_key_left_delim: CHARACTER = '['
+
+	Odin_key_right_delim: CHARACTER = ']'
+
 end
 
 
