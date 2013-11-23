@@ -15,7 +15,7 @@ inherit
 	EVX_DEFINITIONS
 		export
 			{NONE} all;
-			{ANY} standard_is_equal, is_deep_equal, deep_copy, deep_twin
+			{ANY} standard_is_equal, is_deep_equal, deep_copy, deep_twin, max_padding_width, max_border_width
 		end
 
 	EVX_UTILITIES
@@ -225,6 +225,21 @@ feature -- Modification
 		do
 			if attached {EVX_TOOL_BAR_BUTTON} a_tool_bar_button.data as gui_button then
 				gui_button.disable_active
+			end
+		end
+
+	set_visual_appearance (a_padding_width, a_border_width: INTEGER)
+			-- change visual characteristics including padding width, border width. 
+			-- A 0 value means keep the default
+		require
+			Sane_padding_width: a_padding_width >= 0 and a_padding_width <= max_padding_width
+			Sane_border_width: a_border_width >= 0 and a_border_width <= max_border_width
+		do
+			if a_padding_width > 0 then
+				ev_root_container.set_padding_width (a_padding_width)
+			end
+			if a_border_width > 0 then
+				ev_root_container.set_border_width (a_border_width)
 			end
 		end
 

@@ -19,6 +19,10 @@ feature -- Definitions
 
 	Default_border_width: INTEGER = 4
 
+	Max_padding_width: INTEGER = 10
+
+	Max_border_width: INTEGER = 10
+
 	editable_colour: EV_COLOR
 		once
 			create Result.make_with_8_bit_rgb (255, 255, 255)
@@ -54,5 +58,4 @@ feature -- Definitions
 			-- number of pixels to add to height of grid row to enhance readability
 
 end
-
 
