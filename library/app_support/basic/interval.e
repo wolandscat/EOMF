@@ -17,7 +17,7 @@ deferred class INTERVAL [G -> PART_COMPARABLE]
 inherit
 	ANY
 		redefine
-			out
+			out, is_equal
 		end
 
 feature -- Access
@@ -85,9 +85,18 @@ feature -- Comparison
 		deferred
 		end
 
-	equal_interval (other: like Current): BOOLEAN
-			-- compare two intervals, allows subtypes like MULTIPLICITY_INTERVAL to be compared
-		deferred
+feature -- Comparison
+
+	is_equal  (other: like Current): BOOLEAN
+			-- True if current object's interval is semantically same as `other'
+			-- even if the concrete types are different
+		do
+			Result := lower ~ other.lower and
+				upper ~ other.upper and
+				upper_included = other.upper_included and
+				upper_unbounded = other.upper_unbounded and
+				lower_included = other.lower_included and
+				lower_unbounded = other.lower_unbounded
 		end
 
 feature -- Output

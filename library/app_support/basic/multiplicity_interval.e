@@ -16,7 +16,7 @@ inherit PROPER_INTERVAL [INTEGER]
 		make_bounded as make_bounded_interval,
 		make_upper_unbounded as make_upper_unbounded_interval
 	redefine
-		as_string, equal_interval
+		as_string
 	end
 
 create
@@ -216,17 +216,6 @@ feature -- Operations
 				upper := upper + other.upper
 			end
 			lower := lower + other.lower
-		end
-
-feature -- Comparison
-
-	equal_interval (other: PROPER_INTERVAL [INTEGER]): BOOLEAN
-			-- True if current object's interval is same as `other'
-		do
-			Result := lower = other.lower and
-				upper = other.upper and
-				upper_included = other.upper_included and
-				upper_unbounded = other.upper_unbounded
 		end
 
 feature -- Output

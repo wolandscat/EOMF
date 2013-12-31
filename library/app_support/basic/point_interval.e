@@ -19,7 +19,7 @@ inherit
 		export
 			{NONE} all
 		undefine
-			out
+		out, is_equal
 		end
 
 create
@@ -111,13 +111,7 @@ feature -- Comparison
 	contains (other: like Current): BOOLEAN
 			-- Does current interval properly contain `other'?
 		do
-			Result := equal_interval (other)
-		end
-
-	equal_interval (other: like Current): BOOLEAN
-			-- compare two intervals, allows subtypes like MULTIPLICITY_INTERVAL to be compared
-		do
-			Result := other.is_point and then lower = other.lower
+			Result := is_equal (other)
 		end
 
 feature -- Output

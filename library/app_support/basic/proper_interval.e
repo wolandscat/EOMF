@@ -23,7 +23,7 @@ inherit
 		export
 			{NONE} all
 		undefine
-			default_create, out
+		default_create, out, is_equal
 		end
 
 create
@@ -238,26 +238,6 @@ feature -- Comparison
 					Result := l < other_l
 				else
 					Result :=  l < other_l and other_u < u
-				end
-			end
-		end
-
-	equal_interval (other: like Current): BOOLEAN
-			-- compare two intervals, allows subtypes like MULTIPLICITY_INTERVAL to be compared
-		do
-			if lower_unbounded then
-				Result := not attached other.lower
-			else
-				Result := attached lower as l and then attached other.lower as other_l and then
-						((lower_included = other.lower_included) and l.is_equal (other_l))
-			end
-
-			if Result then
-				if upper_unbounded then
-					Result := not attached other.upper
-				else
-					Result := attached upper as u and then attached other.upper as other_u and then
-					((upper_included = other.upper_included) and u.is_equal (other_u))
 				end
 			end
 		end
