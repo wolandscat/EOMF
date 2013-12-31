@@ -229,7 +229,6 @@ feature {OG_OBJECT_NODE} -- Implementation
 			child_paths: like all_paths
 			attr_node: like child_type
 			a_path: OG_PATH
-			child_objs: HASH_TABLE [OG_OBJECT, STRING]
 			obj_predicate_required, created_attr_path: BOOLEAN
 		do
 			create Result.make(0)
@@ -241,9 +240,8 @@ feature {OG_OBJECT_NODE} -- Implementation
 					attr_node := child_csr.item
 
 					-- get the objects of this attribute
-					child_objs := attr_node.children
 					created_attr_path := False
-					across child_objs as child_objs_csr loop
+					across attr_node.children as child_objs_csr loop
 						if attached {OG_OBJECT} child_objs_csr.item as child_obj then
 							obj_predicate_required := is_unique or
 													(attr_node.is_single and child_obj.is_addressable) or

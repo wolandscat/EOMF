@@ -1,11 +1,11 @@
 note
-	component:   "Eiffel Object Modelling Framework (EOMF) project"
+	component:   "Eiffel Object Modelling Framework"
 	description: "Generated class from message text files"
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2012 Ocean Informatics Pty Ltd"
-	license:     "See notice at bottom of class"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class EOMF_COMPILED_MESSAGE_DB
 
@@ -149,7 +149,7 @@ feature -- Initialisation
 			message_table.put ("No left delimiter ('<') found in line $1", ec_parse_odin_missing_left_delim)
 			message_table.put ("Missing right delimiter ('>') in line $1", ec_parse_odin_missing_right_delim)
 			message_table.put ("No attributes found, was expecting $1", ec_parse_odin_no_attribs_found)
-			message_table.put ("[Exception caught]: Exception type $1 - trace: $2", ec_dt_unknown_error)
+			message_table.put ("[Exception caught]: Exception type $1 - trace:%N $2", ec_dt_unknown_error)
 			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies container type but is not in model", ec_container_type_mismatch)
 			message_table.put ("Mismatch in data and model for generic parameter $1 in type $2. Expected $3 but got $4", ec_dt_container_gen_param_type_mismatch)
 			message_table.put ("Mismatch in data and model for field $1 in type $2. Parsed data implies Interval<T> type but is not in model", ec_interval_type_mismatch)

@@ -62,6 +62,13 @@ feature -- Access
 			create Result.make
 		end
 
+feature -- Commands
+
+	reset
+		do
+			errors.wipe_out
+		end
+
 feature -- Conversion
 
 	object_to_dt (an_obj: ANY): DT_COMPLEX_OBJECT
@@ -82,15 +89,12 @@ feature -- Conversion
 			-- make an object whose classes and attributes correspond to the structure
 			-- of this DT_OBJECT
 		do
-			errors.wipe_out
 			Result := dt_to_object (a_dt_co, dt_dynamic_type_from_string (a_type_name), make_args)
 		end
 
 	dt_to_object (a_dt_co: DT_COMPLEX_OBJECT; a_type_id: INTEGER; make_args: detachable ARRAY[ANY]): detachable ANY
 			-- make an object whose classes and attributes correspond to the structure
 			-- of this DT_OBJECT; should be called externally only on top-level DT structure;
-			-- recursive calling from populate_object_from_dt calling
-			-- set_container_object_data_from_dt also occurs.
 			-- The main job of this routine is to set up cross references.
 		local
 			src_obj_fld: INTEGER
@@ -101,76 +105,74 @@ debug ("DT")
 		a_dt_co.generating_type + "%N")
 	inc_indent
 end
-			if not errors.has_errors then
-				-- wipe the reference list out if on a top-level object
-				if a_dt_co.is_root then
-					object_ref_list.wipe_out
-				end
+			errors.wipe_out
 
-				-- make the object
-				Result := populate_object_from_dt (a_dt_co, a_type_id, make_args)
+			-- wipe the reference list out if on a top-level object
+			if a_dt_co.is_root then
+				object_ref_list.wipe_out
+			end
 
-				-- if there were object references in the DT structure, process them now
-				if a_dt_co.is_root and not object_ref_list.is_empty then
-					across object_ref_list as obj_ref_csr loop
-						if attached obj_ref_csr.item.source_object_ref as src_obj then
-							src_obj_fld := obj_ref_csr.item.source_object_field_index
-							if attached {DT_OBJECT_REFERENCE} obj_ref_csr.item as a_dt_obj_ref then
-								if a_dt_co.has_path (a_dt_obj_ref.value.as_string) then
-									if attached a_dt_co.node_at_path (a_dt_obj_ref.value.as_string).as_object_ref as targ_obj then
-										if a_dt_obj_ref.is_source_object_container then
-											if attached {HASH_TABLE [ANY, HASHABLE]} src_obj as a_hash_table and attached a_dt_obj_ref.hash_key as hk then
-												a_hash_table.extend (targ_obj, hk)
-											elseif attached {SEQUENCE [ANY]} src_obj as eif_seq then
-												eif_seq.extend (targ_obj)
-											end
-										else
-											set_reference_field (src_obj_fld, src_obj, targ_obj)
+			-- make the object
+			Result := create_object_from_dt (a_dt_co, a_type_id, make_args)
+
+			-- if there were object references in the DT structure, process them now
+			if a_dt_co.is_root and not object_ref_list.is_empty then
+				across object_ref_list as obj_ref_csr loop
+					if attached obj_ref_csr.item.source_object_ref as src_obj then
+						src_obj_fld := obj_ref_csr.item.source_object_field_index
+						if attached {DT_OBJECT_REFERENCE} obj_ref_csr.item as a_dt_obj_ref then
+							if a_dt_co.has_path (a_dt_obj_ref.value.as_string) then
+								if attached a_dt_co.node_at_path (a_dt_obj_ref.value.as_string).as_object_ref as targ_obj then
+									if a_dt_obj_ref.is_source_object_container then
+										if attached {HASH_TABLE [ANY, HASHABLE]} src_obj as a_hash_table and attached a_dt_obj_ref.hash_key as hk then
+											a_hash_table.extend (targ_obj, hk)
+										elseif attached {SEQUENCE [ANY]} src_obj as eif_seq then
+											eif_seq.extend (targ_obj)
 										end
 									else
-										-- should not arrive here
-										raise ("dt_to_object software exception LOC #1")
+										set_reference_field (src_obj_fld, src_obj, targ_obj)
 									end
 								else
-									errors.add_error (ec_non_existent_path, <<a_dt_obj_ref.value.as_string>>, "dt_to_object")
+									-- should not arrive here
+									raise ("dt_to_object software exception LOC #1")
 								end
-							elseif attached {DT_OBJECT_REFERENCE_LIST} obj_ref_csr.item as a_dt_obj_ref_list then
-								-- make the generic container, it will be a SEQUENCE (some kind of list)
-								if attached {SEQUENCE[ANY]} new_instance_of (field_static_type_of_type (src_obj_fld, dynamic_type (src_obj))) as a_sequence2 then
-									-- do a reasonable make call on it
-									if attached {ARRAYED_LIST[ANY]} a_sequence2 as an_arr_list then
-										an_arr_list.make (0)
-									end
+							else
+								errors.add_error (ec_non_existent_path, <<a_dt_obj_ref.value.as_string>>, "dt_to_object")
+							end
+						elseif attached {DT_OBJECT_REFERENCE_LIST} obj_ref_csr.item as a_dt_obj_ref_list then
+							-- make the generic container, it will be a SEQUENCE (some kind of list)
+							if attached {SEQUENCE[ANY]} new_instance_of (field_static_type_of_type (src_obj_fld, dynamic_type (src_obj))) as a_sequence2 then
+								-- do a reasonable make call on it
+								if attached {ARRAYED_LIST[ANY]} a_sequence2 as an_arr_list then
+									an_arr_list.make (0)
+								end
 
-									path_list := a_dt_obj_ref_list.value
-									from path_list.start until path_list.off loop
-										if a_dt_co.has_path (path_list.item.as_string) and attached a_dt_co.node_at_path (path_list.item.as_string) as dt_co_at_path and then
-											attached dt_co_at_path.as_object_ref as seq_obj
-										then
-											a_sequence2.extend (seq_obj)
-										else
-											errors.add_error (ec_non_existent_path_in_list, <<path_list.item.as_string>>, "dt_to_object")
-										end
-										path_list.forth
-									end
-
-									-- now we detect if the whole thing is going inside another container, or a standard object
-									if a_dt_obj_ref_list.is_source_object_container then
-										if attached {HASH_TABLE [ANY, HASHABLE]} src_obj as a_hash_table2 and attached a_dt_obj_ref_list.hash_key as hk then
-											a_hash_table2.extend (a_sequence2, hk)
-										elseif attached {SEQUENCE [ANY]} src_obj as a_sequence3 then
-											a_sequence3.extend (a_sequence2)
-										end
+								path_list := a_dt_obj_ref_list.value
+								from path_list.start until path_list.off loop
+									if a_dt_co.has_path (path_list.item.as_string) and attached a_dt_co.node_at_path (path_list.item.as_string) as dt_co_at_path and then
+										attached dt_co_at_path.as_object_ref as seq_obj
+									then
+										a_sequence2.extend (seq_obj)
 									else
-										set_reference_field (src_obj_fld, src_obj, a_sequence2)
+										errors.add_error (ec_non_existent_path_in_list, <<path_list.item.as_string>>, "dt_to_object")
 									end
+									path_list.forth
+								end
+
+								-- now we detect if the whole thing is going inside another container, or a standard object
+								if a_dt_obj_ref_list.is_source_object_container then
+									if attached {HASH_TABLE [ANY, HASHABLE]} src_obj as a_hash_table2 and attached a_dt_obj_ref_list.hash_key as hk then
+										a_hash_table2.extend (a_sequence2, hk)
+									elseif attached {SEQUENCE [ANY]} src_obj as a_sequence3 then
+										a_sequence3.extend (a_sequence2)
+									end
+								else
+									set_reference_field (src_obj_fld, src_obj, a_sequence2)
 								end
 							end
 						end
 					end
 				end
-			else
-				Result := Void
 			end
 debug ("DT")
 	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.dt_to_object: populating from a " +
@@ -391,7 +393,7 @@ debug ("DT")
 end
 		end
 
-	populate_object_from_dt (a_dt_co: DT_COMPLEX_OBJECT; a_type_id: INTEGER; make_args: detachable ARRAY[ANY]): ANY
+	create_object_from_dt (a_dt_co: DT_COMPLEX_OBJECT; a_type_id: INTEGER; make_args: detachable ARRAY[ANY]): ANY
 			-- make an object whose classes and attributes correspond to the structure
 			-- of this DT_OBJECT; recursive. Be careful of the 3 'kinds' of type id in Eiffel:
 			-- an 'abstract type' is defined in INTERNAL; all ref types have one abstract type
@@ -406,7 +408,7 @@ end
 			a_gen_field: detachable ANY
 		do
 debug ("DT")
-	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_object_from_dt%N")
+	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.create_object_from_dt%N")
 	inc_indent
 end
 			if is_special_any_type (a_type_id) then
@@ -443,10 +445,10 @@ end
 							else
 								-- should never get here: it means that the DT data parsed as a
 								-- nested generic, but that the corresponding object types are not
-								errors.add_error (ec_dt_nested_type_mismatch, <<Result.generating_type, a_dt_attr.im_attr_name>>, "populate_object_from_dt")
+								errors.add_error (ec_dt_nested_type_mismatch, <<Result.generating_type, a_dt_attr.im_attr_name>>, "create_object_from_dt")
 							end
 						else
-							raise ("populate_object_from_dt software exception LOC #1")
+							raise ("create_object_from_dt software exception LOC #1")
 						end
 
 					else -- even if it is empty, we still have to create the generic object properly
@@ -496,7 +498,7 @@ end
 								-- type in parsed DT is container, but not in Eiffel class		
 								else
 									errors.add_error (ec_container_type_mismatch,
-										<<type_name_of_type (fld_att_static_tid), type_name_of_type (a_type_id)>>, "populate_object_from_dt")
+										<<type_name_of_type (fld_att_static_tid), type_name_of_type (a_type_id)>>, "create_object_from_dt")
 								end
 
 							-- according to DT tree, it is a single-valued attribute (note in DT,
@@ -586,7 +588,7 @@ end
 											else
 												-- unsupported: Pointer_type (0), Expanded_type (7), Bit_type (8)
 												-- should never get here, because ODIN parser never generates these types
-												raise ("populate_object_from_dt software exception LOC #2")
+												raise ("create_object_from_dt software exception LOC #2")
 											end
 
 										-- Eiffel object field is an Eiffel reference type
@@ -604,7 +606,7 @@ end
 													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
 												else -- type in parsed DT is container, but not in Eiffel class		
 													errors.add_error (ec_container_type_mismatch,
-														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
+														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
 											-- it is an INTERVAL[primitive type]
@@ -621,7 +623,7 @@ end
 												-- type in parsed DT is INTERVAL, but not in Eiffel class
 												else
 													errors.add_error (ec_interval_type_mismatch,
-														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
+														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
 											-- it is an LIST [INTERVAL[primitive type]]
@@ -632,7 +634,7 @@ end
 												-- type in parsed DT is INTERVAL, but not in Eiffel class
 												else
 													errors.add_error (ec_interval_list_type_mismatch,
-														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
+														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
 											-- must be an atomic reference type
@@ -651,7 +653,7 @@ end
 														set_reference_field (i, Result, tc_val)
 													else
 														errors.add_error (ec_atomic_type_mismatch,
-															<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "populate_object_from_dt")
+															<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 													end
 												end
 											end
@@ -665,7 +667,7 @@ end
 									if a_dt_attr.first_child.type_visible then
 										fld_att_static_tid := dt_dynamic_type_from_string (a_dt_attr.first_child.im_type_name)
 									end
-									set_reference_field (i, Result, populate_object_from_dt (a_dt_co_fld, fld_att_static_tid, Void))
+									set_reference_field (i, Result, create_object_from_dt (a_dt_co_fld, fld_att_static_tid, Void))
 								end
 							end
 						else
@@ -679,17 +681,17 @@ end
 				end
 			end
 debug ("DT")
-	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.populate_object_from_dt%N")
+	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.create_object_from_dt%N")
 	dec_indent
 end
 		rescue
 			if dt_val_att_dyn_tid /= 0 then
 				errors.add_error (ec_dt_proc_arg_type_mismatch,
-					<<type_name_of_type (a_type_id), fld_name, type_name_of_type (fld_att_static_tid), type_name (a_dt_obj_leaf.value)>>, "populate_object_from_dt")
+					<<type_name_of_type (a_type_id), fld_name, type_name_of_type (fld_att_static_tid), type_name (a_dt_obj_leaf.value)>>, "create_object_from_dt")
 			elseif attached exception_trace as et then
-				errors.add_error (ec_dt_unknown_error, <<exception.out, et>>, "populate_object_from_dt")
+				errors.add_error (ec_dt_unknown_error, <<exception.out, et>>, "create_object_from_dt")
 			else
-				errors.add_error (ec_dt_unknown_error, <<exception.out, "no stack trace available">>, "populate_object_from_dt")
+				errors.add_error (ec_dt_unknown_error, <<exception.out, "no stack trace available">>, "create_object_from_dt")
 			end
 			retry
 		end
@@ -1104,6 +1106,7 @@ end
 debug ("DT")
 	io.put_string (indent_str + ">>>>>>>>>>>> set_container_object_data_from_dt reached forbidden 'else'<<<<<<<<<<<<<<<<<%N")
 end
+					raise ("populate_eif_container_from_dt software exception LOC #1")
 			end
 debug ("DT")
 	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.populate_eif_container_from_dt%N")
@@ -1124,7 +1127,7 @@ end
 			if is_dt_primitive_interval_conforming_type (dynamic_hash_item_type) then
 				across a_hash_table as ht_csr loop
 debug ("DT")
-	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.create_dt_from_generic_obj (Hash of INTERVAL[DT primitive type]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
+	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of INTERVAL[DT primitive type]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
 		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type + ", " + ht_csr.key.out + ")%N")
 	inc_indent
 end
@@ -1137,7 +1140,7 @@ end
 			elseif is_dt_primitive_sequence_conforming_type (dynamic_hash_item_type) then
 				across a_hash_table as ht_csr loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (Hash of SEQUENCE): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of SEQUENCE): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
 		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type + ", " + ht_csr.key.out + ")%N")
 end
 					if attached {SEQUENCE[ANY]} ht_csr.item as eif_prim_seq then
@@ -1149,7 +1152,7 @@ end
 			elseif is_dt_primitive_atomic_type (dynamic_hash_item_type) then
 				across a_hash_table as ht_csr loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (hash of DT primitive type): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (hash of DT primitive type): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
 		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type +
 		", " + ht_csr.key.out + ")%N")
 end
@@ -1161,7 +1164,7 @@ end
 				static_hash_item_tid := generic_dynamic_type_of_type (a_static_tid, 1)
 				across a_hash_table as ht_csr loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (Hash of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
 		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type +
 		", " + ht_csr.key.out + ")%N")
 end
@@ -1170,7 +1173,7 @@ end
 				end
 			end
 debug ("DT")
-	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.create_dt_from_generic_obj%N")
+	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash%N")
 	dec_indent
 end
 		end
@@ -1196,7 +1199,7 @@ end
 				a_dt_attr.put_child (dt_prim_ivl_list)
 --				from an_eif_seq.start until an_eif_seq.off loop
 --debug ("DT")
---	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.create_dt_from_generic_obj (SEQUENCE of INTERVAL [DT primitive]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
+--	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of INTERVAL [DT primitive]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
 --		a_dt_attr.im_attr_name + "), " + an_eif_seq.item.generating_type + ", " + an_eif_seq.index.out + ")%N")
 --	inc_indent
 --end
@@ -1210,7 +1213,7 @@ end
 			elseif is_dt_primitive_sequence_conforming_type (dyn_seq_item_tid) then
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
 		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
 end
 					if attached {SEQUENCE[ANY]} an_eif_seq.item as v_typed then
@@ -1223,7 +1226,7 @@ end
 			elseif is_dt_primitive_atomic_type (dyn_seq_item_tid) then
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
 		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
 end
 					a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_identified (an_eif_seq.item, an_eif_seq.index.out))
@@ -1235,7 +1238,7 @@ end
 				static_seq_item_tid := generic_dynamic_type_of_type (a_static_tid, 1)
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
-	io.put_string (indent_str + "DT_OBJECT_CONVERTER.create_dt_from_generic_obj (SEQUENCE of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
+	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
 		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
 end
 					populate_dt_from_object (an_eif_seq.item, create_complex_object_node (a_dt_attr, an_eif_seq.index.out), static_seq_item_tid)
@@ -1243,7 +1246,7 @@ end
 				end
 			end
 debug ("DT")
-	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.create_dt_from_generic_obj%N")
+	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence%N")
 	dec_indent
 end
 		end

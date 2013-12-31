@@ -19,7 +19,7 @@ templates = <
 		["parse_odin_no_attribs_found"] = <"No attributes found, was expecting $1">
 
 		-- DT_OBJECT_CONVERTER.dt_to_object
-		["dt_unknown_error"] = <"[Exception caught]: Exception type $1 - trace: $2">
+		["dt_unknown_error"] = <"[Exception caught]: Exception type $1 - trace:%N $2">
 		["container_type_mismatch"] = <"Mismatch in data and model for field $1 in type $2. Parsed data implies container type but is not in model">
 		["dt_container_gen_param_type_mismatch"] = <"Mismatch in data and model for generic parameter $1 in type $2. Expected $3 but got $4">
 		["interval_type_mismatch"] = <"Mismatch in data and model for field $1 in type $2. Parsed data implies Interval<T> type but is not in model">
