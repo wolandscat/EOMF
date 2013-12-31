@@ -264,6 +264,12 @@ feature -- Status Report
 			end
 		end
 
+	type_conforms_to (this_type, other_type: STRING): BOOLEAN
+			-- True if `this_type' conforms to 'other_type'
+		do
+			Result := type_name_conforms_to (this_type, other_type) or is_descendant_of (this_type, other_type)
+		end
+
 feature -- Modification
 
 	add_class_definition (a_class_def: BMM_CLASS_DEFINITION; a_package_def: BMM_PACKAGE_DEFINITION)

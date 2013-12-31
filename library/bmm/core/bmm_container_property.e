@@ -38,7 +38,7 @@ feature -- Access
 			Result.append (": " + type.container_type.name + Generic_left_delim.out + Generic_right_delim.out)
 		end
 
-	cardinality: detachable MULTIPLICITY_INTERVAL
+	cardinality: MULTIPLICITY_INTERVAL
 
 	type: BMM_CONTAINER_TYPE_REFERENCE
 			-- type of the contained type
