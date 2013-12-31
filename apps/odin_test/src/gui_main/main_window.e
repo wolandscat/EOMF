@@ -219,12 +219,18 @@ feature -- Events
 	select_explorer_item
 			-- Called by `select_actions' of `explorer_tree'.
 		do
-			if attached {EV_TREE_NODE} explorer_tree.selected_item as node and then
-				attached node.data as node_data and then
-				attached {PROCEDURE [ANY, TUPLE[ANY]]} node.parent.data as test_proc
-			then
-				status_area.set_text ("")
-				test_proc.call ([node_data])
+			if attached {EV_TREE_NODE} explorer_tree.selected_item as node then
+				if attached {STRING} node.data as node_data and then
+					attached {PROCEDURE [ANY, TUPLE[STRING]]} node.parent.data as test_proc
+				then
+					status_area.set_text ("")
+					test_proc.call ([node_data])
+				elseif attached node.data as node_data and then
+					attached {PROCEDURE [ANY, TUPLE[ANY]]} node.parent.data as test_proc
+				then
+					status_area.set_text ("")
+					test_proc.call ([node_data])
+				end
 			end
 		end
 

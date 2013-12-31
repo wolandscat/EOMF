@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-6-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-6-0 http://www.eiffel.com/developers/xml/configuration-1-6-0.xsd" name="odin_test" uuid="C99BD5CC-111C-4EE7-9BCF-337A924E2783">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="odin_test" uuid="C99BD5CC-111C-4EE7-9BCF-337A924E2783">
 	<target name="odin_test">
 		<root class="GUI_APP_ROOT" feature="make_and_launch"/>
 		<file_rule>
-			<exclude>/\.svn$</exclude>
 			<exclude>/\.git$</exclude>
+			<exclude>/\.svn$</exclude>
 		</file_rule>
 		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
 			<debug name="__unnamed_debug__" enabled="false"/>
@@ -44,22 +44,19 @@
 		<setting name="inlining" value="false"/>
 		<setting name="inlining_size" value="4"/>
 		<setting name="line_generation" value="false"/>
-		<setting name="multithreaded" value="true"/>
-
+		<setting name="concurrency" value="thread"/>
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="eomf_gui" location="$EOMF\library\gui\eomf_gui.ecf"/>
-
 		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
 		<library name="gobo_lexical" location="$GOBO\library\lexical\library.ecf"/>
-		<library name="gobo_parse" location="$GOBO\library\parse\library.ecf"/>
 		<library name="gobo_lexical_skl" location="$GOBO\library\lexical\library_skl.ecf"/>
+		<library name="gobo_parse" location="$GOBO\library\parse\library.ecf"/>
 		<library name="gobo_parse_skl" location="$GOBO\library\parse\library_skl.ecf"/>
-		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
-		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
-		<library name="gobo_structure" location="$GOBO\library\structure\library.ecf"/>
 		<library name="gobo_pattern" location="$GOBO\library\pattern\library.ecf"/>
+		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
 		<library name="gobo_string" location="$GOBO\library\string\library.ecf"/>
-
+		<library name="gobo_structure" location="$GOBO\library\structure\library.ecf"/>
+		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
@@ -68,19 +65,17 @@
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
-
 		<cluster name="app" location="..\src\" recursive="true"/>
-
 		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
 			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
-
 		<cluster name="eomf_odin" location="$EOMF\library\odin\" recursive="true">
 			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
+		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\eiffel_software\time" recursive="true"/>
 	</target>
 </system>
