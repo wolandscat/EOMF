@@ -27,6 +27,8 @@ create
 
 feature -- Definitions
 
+	uri_template: STRING = "http://$terminology_id.info/id/$code_string"
+
 	default_terminology_id: STRING = "local"
 
 	default_code_string: STRING = "000001"
@@ -100,6 +102,19 @@ feature -- Comparison
 			s_other.append (other.code_string)
 
 			Result := s < s_other
+		end
+
+feature -- Conversion
+
+	to_uri: URI
+			-- convert to a URI string
+		local
+			uri_str: STRING
+		do
+			create uri_str.make_from_string (uri_template)
+			uri_str.replace_substring_all ("$terminology_id", terminology_id)
+			uri_str.replace_substring_all ("$code_string", code_string)
+			create Result.make_from_string (uri_str)
 		end
 
 feature -- Output
