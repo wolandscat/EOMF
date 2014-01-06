@@ -1,8 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Any leaf OBJECT node in object graph
-			 ]"
+	description: "Any leaf OBJECT node in object graph"
 	keywords:    "object graph"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

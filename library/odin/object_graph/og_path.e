@@ -84,7 +84,7 @@ feature -- Initialisation
 		end
 
 	make_from_string (s: STRING)
-			--
+			-- make from `s'
 		require
 			valid_path_string (s)
 		do
@@ -96,6 +96,7 @@ feature -- Initialisation
 
 	make_pure_from_string (s: STRING)
 			-- make a path containing no predicates, only attribute names
+			-- stripping predicates from `s' if necessary
 		require
 			valid_path_string(s)
 		local
@@ -197,7 +198,7 @@ feature -- Access
 	sub_path_from_item: OG_PATH
 			-- the section of the current path from current `item' position to the end
 		do
-			create Result.make_relative(item.deep_twin)
+			create Result.make_relative (item.deep_twin)
 			if is_terminal then
 				Result.set_terminal
 			end

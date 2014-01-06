@@ -1,20 +1,15 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "[
-				ADL archetype path segment, consisting of an attribute name and an object id, which is 
-				either empty, as in the case of single attributes, or some identifier, needed to discriminate
-				among objects in a container referenced by the attribute.
+				 Object Graph path segment, consisting of an attribute name and an object id, which is 
+				 either empty, as in the case of single attributes, or some identifier, needed to discriminate
+				 among objects in a container referenced by the attribute.
 				 ]"
-	keywords:    "test, ADL"
-	author:      "Thomas Beale"
-	support:     "Ocean Informatics <support@OceanInformatics.biz>"
-	copyright:   "Copyright (c) 2003 Ocean Informatics Pty Ltd"
+	keywords:    "object graph, document object model"
+	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	support:     "http://www.openehr.org/issues/browse/AWB"
+	copyright:   "Copyright (c) 2003- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
-	void_safety: "initial"
-
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
 
 class OG_PATH_ITEM
 
@@ -28,8 +23,6 @@ create
 	make, make_with_object_id, make_feature_call, make_from_other
 
 feature -- Definitions
-
-	Anonymous_node_id: STRING = "unknown"
 
 	feature_call_arg_delimiters: STRING = "()"
 
@@ -49,7 +42,7 @@ feature -- Initialisation
 		do
 			create attr_name.make_empty
 			attr_name.append (an_attr_name)
-			create object_id.make(0)
+			create object_id.make_empty
 		ensure
 			Attr_name_set: attr_name.is_equal(an_attr_name)
 			Object_id_empty: object_id.is_empty
@@ -62,14 +55,10 @@ feature -- Initialisation
 			an_attr_name_valid: not an_attr_name.is_empty
 		do
 			attr_name := an_attr_name
-	--		if an_object_id.has_substring(Anonymous_node_id) then
-	--			create object_id.make(0)
-	--		else
-				object_id := an_object_id
-	--		end
+			object_id := an_object_id
 		ensure
-			Attr_name_set: attr_name.is_equal(an_attr_name)
-			Object_id_set: object_id.is_equal(an_object_id) or else object_id.is_empty
+			Attr_name_set: attr_name = an_attr_name
+			Object_id_set: object_id = an_object_id
 		end
 
 	make_feature_call (a_feat_name: STRING)
@@ -78,9 +67,10 @@ feature -- Initialisation
 		do
 			attr_name := a_feat_name
 			is_feature_call := True
-			create object_id.make(0)
+			create object_id.make_empty
 		ensure
-			Attr_name_set: attr_name.is_equal(a_feat_name)
+			Attr_name_set: attr_name = a_feat_name
+			Object_id_empty: object_id.is_empty
 			Is_feature_call: is_feature_call
 		end
 
@@ -90,6 +80,9 @@ feature -- Initialisation
 			is_feature_call := other.is_feature_call
 			attr_name := other.attr_name.twin
 			object_id := other.object_id.twin
+		ensure
+			Attr_name_set: attr_name.is_equal (other.attr_name)
+			Object_id_set: object_id.is_equal (other.object_id)
 		end
 
 feature -- Access
@@ -113,10 +106,8 @@ feature -- Status Report
 	is_equal (other: OG_PATH_ITEM): BOOLEAN
 			-- True if `other' and this path item are identical
 		do
-			if other /= Void then
-				Result := attr_name.is_equal(other.attr_name) and object_id.is_equal(other.object_id) and
-						is_feature_call = other.is_feature_call
-			end
+			Result := attr_name.is_equal(other.attr_name) and object_id.is_equal(other.object_id) and
+					is_feature_call = other.is_feature_call
 		end
 
 	is_compressed: BOOLEAN

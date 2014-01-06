@@ -4,7 +4,7 @@ note
 	keywords:    "archetype, constraint, definition"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2005-2012 Ocean Informatics Pty Ltd"
+	copyright:   "Copyright (c) 2005- Ocean Informatics Pty Ltd"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class OG_CONTENT_ITERATOR

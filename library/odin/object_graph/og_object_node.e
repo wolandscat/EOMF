@@ -1,9 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Any complex OBJECT node in object parse tree
-			 ]"
-	keywords:    "object graph, ADL"
+	description: "Non-terminal OBJECT node in Object Graph"
+	keywords:    "object graph, document object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2004- The openEHR Foundation <http://www.openEHR.org>"
@@ -31,86 +29,130 @@ feature -- Access
 
 	parent: detachable OG_ATTRIBUTE_NODE
 
-	all_paths: HASH_TABLE [detachable OG_OBJECT, OG_PATH]
-			-- all paths below this point, including this node
-			-- with OG_OJBECT at each path, for those paths that are OG_OBJECTs
+	all_paths: HASH_TABLE [OG_ITEM, OG_PATH]
+			-- obtain all paths below this point
+			-- compute in an efficient fashion
+		local
+			child_attr: like child_type
+			a_path: OG_PATH
+			created_attr_path: BOOLEAN
+			sub_child_obj: OG_OBJECT
 		do
-			Result := generate_all_paths (False)
+			create Result.make(0)
+
+			-- get the attributes of this object
+			across children as child_attrs_csr loop
+				child_attr := child_attrs_csr.item
+
+				-- get the objects of this attribute
+				created_attr_path := False
+				across child_attr.children as sub_child_objs_csr loop
+					sub_child_obj := sub_child_objs_csr.item
+
+					-- obtain paths from the object level below and prepend them with a
+					-- path item representing the current node
+					if attached {OG_OBJECT_NODE} sub_child_obj as sub_child_obj_node then
+						across sub_child_obj_node.all_paths as sub_child_all_paths_csr loop
+							a_path := sub_child_all_paths_csr.key.twin
+							if sub_child_obj.is_addressable then
+								a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj_node.node_id))
+							else
+								a_path.prepend_segment (create {OG_PATH_ITEM}.make (child_attr.node_id))
+							end
+							if child_attr.has_differential_path then
+								a_path.prepend_path (child_attr.differential_path.deep_twin)
+							end
+							if is_root then
+								a_path.set_absolute
+							end
+							Result.put (sub_child_all_paths_csr.item, a_path)
+						end
+					end
+
+					-- add path for the current child object
+					if sub_child_obj.is_addressable then
+						create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
+					else
+						create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
+						created_attr_path := True -- this kind of path (with no node id) is the same as the path to the attribute...
+					end
+
+					-- prepend any differential path above to the path for the current object
+					if child_attr.has_differential_path then
+						a_path.prepend_path (child_attr.differential_path.deep_twin)
+					end
+					if is_root then
+						a_path.set_absolute
+					end
+					Result.put (sub_child_obj, a_path)
+				end
+
+				-- add an attribute path, if one didn't already get added
+				if not created_attr_path then
+					create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
+					if is_root then
+						a_path.set_absolute
+					end
+					Result.put (child_attr, a_path)
+				end
+			end
+
+			-- root path is a special case that doesn't literally correspond to a real node
 			if is_root then
 				Result.put (Current, path)
 			end
 		end
 
-	all_unique_paths: HASH_TABLE [detachable OG_OBJECT, OG_PATH]
-			-- all paths below this point, including this node, including with auto-generate
-			-- uniqueness predicates, e.g. like [1] or [unknown_1] etc
-		do
-			Result := generate_all_paths (True)
-		end
-
-	object_node_at_path (a_path: OG_PATH): detachable OG_OBJECT
+	object_nodes_at_path (a_path: STRING): ARRAYED_LIST [OG_OBJECT]
 			-- find the object node at the relative path `a_path'
-		require
-			Path_valid: has_path (a_path)
 		local
-			s_path: OG_PATH
+			og_path: OG_PATH
 		do
-			if a_path.is_root then
-				Result := Current
+			create Result.make (0)
+			create og_path.make_from_string (a_path)
+			if og_path.is_root then
+				Result.extend (Current)
 			else
 				-- check for compressed paths & convert path if necessary
-				s_path := compress_path(a_path)
-				s_path.start
-				Result := internal_object_node_at_path (s_path)
+				Result := object_nodes_at_cpath (compress_path (og_path))
 			end
 		end
 
-	attribute_node_at_path (a_path: OG_PATH): detachable OG_ATTRIBUTE_NODE
+	attribute_nodes_at_path (a_path: STRING): ARRAYED_LIST [OG_ATTRIBUTE_NODE]
 			-- find the attribute node corresponding the the terminal segment of `a_path'
-		require
-			Path_valid: has_path(a_path)
-		local
-			s_path: OG_PATH
 		do
 			-- check for compressed paths & convert path if necessary
-			s_path := compress_path(a_path)
-			s_path.start
-			Result := internal_attribute_node_at_path (s_path)
+			Result := attribute_nodes_at_cpath (compress_path (create {OG_PATH}.make_from_string (a_path)))
 		end
 
 feature -- Status Report
 
-	has_path (a_path: attached OG_PATH): BOOLEAN
+	has_path (a_path: OG_PATH): BOOLEAN
 			-- `a_path' exists in object structure
 		require
 			Path_valid: a_path.is_absolute implies is_root
-		local
-			s_path: OG_PATH
 		do
 			if a_path.is_root then
 				Result := True
 			else
 				-- check for compressed paths & convert path if necessary
-				s_path := compress_path(a_path)
-				s_path.start
-				Result := internal_has_path(s_path)
+				Result := has_cpath (compress_path (a_path))
 			end
 		end
 
-	has_object_path (a_path: attached OG_PATH): BOOLEAN
+	has_object_path (a_path: OG_PATH): BOOLEAN
 			-- `a_path' refers to an object node in structure
 		require
 			Path_valid: a_path.is_absolute implies is_root
 		local
-			s_path: OG_PATH
+			og_path: OG_PATH
 		do
 			if a_path.is_root then
 				Result := True
 			else
 				-- check for compressed paths & convert path if necessary
-				s_path := compress_path(a_path)
-				s_path.start
-				Result := internal_object_node_at_path(s_path) /= Void
+				og_path := compress_path (a_path)
+				Result := not object_nodes_at_cpath (og_path).is_empty
 			end
 		end
 
@@ -119,15 +161,14 @@ feature -- Status Report
 		require
 			Path_valid: a_path.is_absolute implies is_root
 		local
-			s_path: OG_PATH
+			og_path: OG_PATH
 		do
 			if a_path.is_root then
-				Result := True
+				Result := False
 			else
 				-- check for compressed paths & convert path if necessary
-				s_path := compress_path (a_path)
-				s_path.start
-				Result := attached internal_attribute_node_at_path (s_path)
+				og_path := compress_path (a_path)
+				Result := not attribute_nodes_at_cpath (og_path).is_empty
 			end
 		end
 
@@ -151,147 +192,85 @@ feature {OG_OBJECT_NODE} -- Implementation
 			create Result.make_single (Anonymous_node_id)
 		end
 
-	internal_has_path (a_path: OG_PATH): BOOLEAN
-			-- find the child at the path `a_path'
+	has_cpath (a_cpath: OG_PATH): BOOLEAN
+			-- True if there is any node at the possibly compressed path `a_cpath'
+		local
+			child_objs: ARRAYED_LIST [OG_OBJECT]
+			child_path: OG_PATH
 		do
-			-- find child node relating to first relation path item
-			if has_object_at_path_segment(a_path.item) and then attached object_at_path_segment (a_path.item) as child_obj then
-				a_path.forth
-				if not a_path.off then
-					if attached {OG_OBJECT_NODE} child_obj as child_obj_node then
-						Result := child_obj_node.internal_has_path(a_path)
-					end
+			if a_cpath.is_final then
+				if a_cpath.first.is_addressable then
+					Result := not objects_at_path_segment (a_cpath.first).is_empty
 				else
-					Result := True
+					Result := attached attribute_at_path_segment (a_cpath.first)
 				end
-				a_path.back
-			else -- if it's the last segment, it could be valid as an attribute name, only if no object_id
-				Result := a_path.is_last and not a_path.last.is_addressable and has_child_with_id (a_path.last.attr_name)
-			end
-		end
-
-	internal_object_node_at_path (a_path: OG_PATH): detachable OG_OBJECT
-			-- find the child at the path `a_path'
-		do
-			if has_object_at_path_segment (a_path.item) and then attached object_at_path_segment (a_path.item) as child_obj then
-				a_path.forth
-				if not a_path.off then
-					if attached {OG_OBJECT_NODE} child_obj as child_obj_node then
-						Result := child_obj_node.internal_object_node_at_path (a_path)
-					end
-				else
-					Result := child_obj
+			else
+				child_path := a_cpath.sub_path
+				child_objs := objects_at_path_segment (a_cpath.first)
+				Result := across child_objs as child_objs_csr some
+					attached {OG_OBJECT_NODE} child_objs_csr.item as att_obj_node and then
+					att_obj_node.has_cpath (child_path)
 				end
 			end
 		end
 
-	internal_attribute_node_at_path(a_path: OG_PATH): detachable OG_ATTRIBUTE_NODE
-			-- find the child at the path `a_path'
+	object_nodes_at_cpath (a_cpath: OG_PATH): ARRAYED_LIST [OG_OBJECT]
+			-- find the child objects matching possibly compressed path `a_cpath'
+		local
+			child_objs: ARRAYED_LIST [OG_OBJECT]
+			child_path: OG_PATH
 		do
-			if has_object_at_path_segment (a_path.item) and then attached object_at_path_segment (a_path.item) as child_obj then
-				a_path.forth
-				if not a_path.off then
-					if attached {OG_OBJECT_NODE} child_obj as child_obj_node then
-						Result := child_obj_node.internal_attribute_node_at_path (a_path)   -- if no predicate in segment, only gets first item
+			create Result.make (0)
+			child_objs := objects_at_path_segment (a_cpath.first)
+			if a_cpath.is_final then
+				Result := child_objs
+			else
+				child_path := a_cpath.sub_path
+				across child_objs as child_objs_csr loop
+					if attached {OG_OBJECT_NODE} child_objs_csr.item as att_obj_node then
+						Result.append (att_obj_node.object_nodes_at_cpath (child_path))
 					end
-				else
-					Result := child_with_id (a_path.last.attr_name)
 				end
-			elseif a_path.is_last and has_child_with_id (a_path.last.attr_name) then
-				Result := child_with_id (a_path.last.attr_name)
 			end
 		end
 
-	has_object_at_path_segment (a_path_segment: OG_PATH_ITEM): BOOLEAN
-			-- True if this object node has an attribute node and an object node below that
-			-- that match the path_segment
+	attribute_nodes_at_cpath (a_cpath: OG_PATH): ARRAYED_LIST [OG_ATTRIBUTE_NODE]
+			-- find the child attributes matching possibly compressed path `a_cpath'
+		local
+			child_path: OG_PATH
+		do
+			create Result.make (0)
+			if a_cpath.is_final then
+				if attached attribute_at_path_segment (a_cpath.first) as att_og_attr then
+					Result.extend (att_og_attr)
+				end
+			else
+				child_path := a_cpath.sub_path
+				across objects_at_path_segment (a_cpath.first) as child_objs_csr loop
+					if attached {OG_OBJECT_NODE} child_objs_csr.item as att_obj_node then
+						Result.append (att_obj_node.attribute_nodes_at_cpath (child_path))
+					end
+				end
+			end
+		end
+
+	attribute_at_path_segment (a_path_segment: OG_PATH_ITEM): detachable OG_ATTRIBUTE_NODE
+			-- attribute node(s) at `a_path_segment'
 		do
 			if children.has (a_path_segment.attr_name) and then attached children.item (a_path_segment.attr_name) as an_attr_node then
-				Result := an_attr_node.has_children and then an_attr_node.has_child_with_id (a_path_segment.object_id)
+				Result := an_attr_node
 			end
 		end
 
-	object_at_path_segment (a_path_segment: OG_PATH_ITEM): detachable OG_OBJECT
-			-- object node at path_segment - strict match on object part
-		require
-			has_object_at_path_segment (a_path_segment)
+	objects_at_path_segment (a_path_segment: OG_PATH_ITEM): ARRAYED_LIST [OG_OBJECT]
+			-- object node(s) at `a_path_segment'
 		do
-			if attached children.item (a_path_segment.attr_name) as an_attr_node then
-				Result := an_attr_node.child_with_id (a_path_segment.object_id)
-			end
-		end
-
-	generate_all_paths (is_unique: BOOLEAN): HASH_TABLE [detachable OG_OBJECT, OG_PATH]
-			-- all paths below this point, including this node; if `is_unique' is True,
-			-- then include the "unknown" ids on non-identified object nodes to give
-			-- completely unique paths
-		local
-			child_paths: like all_paths
-			attr_node: like child_type
-			a_path: OG_PATH
-			obj_predicate_required, created_attr_path: BOOLEAN
-		do
-			create Result.make(0)
-			Result.compare_objects
-
-			-- get the attributes of this object
-			if has_children then
-				across children as child_csr loop
-					attr_node := child_csr.item
-
-					-- get the objects of this attribute
-					created_attr_path := False
-					across attr_node.children as child_objs_csr loop
-						if attached {OG_OBJECT} child_objs_csr.item as child_obj then
-							obj_predicate_required := is_unique or
-													(attr_node.is_single and child_obj.is_addressable) or
-													-- use this line of code to get rid of node ids on single nodes	
-													--	(attr_node.is_single and attr_node.child_count > 1 and child_obj.is_addressable) or
-													attr_node.is_multiple
-							if attached {OG_OBJECT_NODE} child_obj as child_obj_node then
-								child_paths := child_obj_node.all_paths
-								across child_paths as child_paths_csr loop
-									a_path := child_paths_csr.key.twin
-									if obj_predicate_required then
-										a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (attr_node.node_id, child_obj_node.node_id))
-									else
-										a_path.prepend_segment (create {OG_PATH_ITEM}.make (attr_node.node_id))
-									end
-									if attr_node.has_differential_path then
-										a_path.prepend_path (attr_node.differential_path.deep_twin)
-									end
-									if is_root then
-										a_path.set_absolute
-									end
-									Result.put (child_paths_csr.item, a_path)
-								end
-							end
-
-							-- add path for the current child
-							if obj_predicate_required then
-								create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (attr_node.node_id, child_obj.node_id))
-							else
-								create a_path.make_relative (create {OG_PATH_ITEM}.make (attr_node.node_id))
-								created_attr_path := True -- this kind of path (with no node id) is the same as the path to the attribute...
-							end
-							if attr_node.has_differential_path then
-								a_path.prepend_path (attr_node.differential_path.deep_twin)
-							end
-							if is_root then
-								a_path.set_absolute
-							end
-							Result.put (child_obj, a_path)
-						end
-					end
-
-					-- add an attribute path, if one didn't already get added
-					if not created_attr_path then
-						create a_path.make_relative (create {OG_PATH_ITEM}.make (attr_node.node_id))
-						if is_root then
-							a_path.set_absolute
-						end
-						Result.put (Void, a_path)
-					end
+			create Result.make (0)
+			if attached attribute_at_path_segment (a_path_segment) as an_attr_node then
+				if a_path_segment.is_addressable and an_attr_node.has_child_with_id (a_path_segment.object_id) then
+					Result.extend (an_attr_node.child_with_id (a_path_segment.object_id))
+				else
+					Result.append (an_attr_node.all_children)
 				end
 			end
 		end
@@ -329,6 +308,31 @@ feature {OG_OBJECT_NODE} -- Implementation
 			else
 				Result := a_path
 			end
+		end
+
+feature {NONE} -- Alternative Path Routines
+
+	generate_paths: HASH_TABLE [OG_ITEM, OG_PATH]
+		local
+			og_iterator: OG_ITERATOR
+		do
+			create Result.make (0)
+			create og_iterator.make (Current)
+			og_iterator.do_all (agent get_path_enter (?, ?, Result), agent get_path_exit)
+		end
+
+	get_path_enter (a_node: OG_ITEM; indent_level: INTEGER; path_table: HASH_TABLE [OG_ITEM, OG_PATH])
+		do
+			path_table.put (a_node, a_node.path)
+
+			-- generate extra paths if this node is a reference node
+			if attached {OG_OBJECT_PROXY} a_node as int_ref then
+
+			end
+		end
+
+	get_path_exit (a_node: OG_ITEM; indent_level: INTEGER)
+		do
 		end
 
 end

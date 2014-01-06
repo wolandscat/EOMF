@@ -101,20 +101,22 @@ feature -- Access
 
 	node_at_path (a_path: STRING): detachable DT_OBJECT_ITEM
 			-- find the child at the relative path `a_path'; paths can only ever return an object
-		require
-			Path_valid: has_path(a_path)
+		local
+			og_objs: ARRAYED_LIST [OG_OBJECT]
 		do
-			if attached {DT_OBJECT_ITEM} representation.object_node_at_path(create {OG_PATH}.make_from_string(a_path)).content_item as dt_obj then
+			og_objs := representation.object_nodes_at_path (a_path)
+			if not og_objs.is_empty and then attached {DT_OBJECT_ITEM} og_objs.first.content_item as dt_obj then
 				Result := dt_obj
 			end
 		end
 
 	attribute_node_at_path (a_path: STRING): detachable DT_ATTRIBUTE
 			-- find the child at the relative path `a_path'; paths can only ever return an object
-		require
-			Path_valid: has_path (a_path)
+		local
+			og_attrs: ARRAYED_LIST [OG_ATTRIBUTE_NODE]
 		do
-			if attached {DT_ATTRIBUTE} representation.attribute_node_at_path (create {OG_PATH}.make_from_string(a_path)).content_item as dt_attr then
+			og_attrs := representation.attribute_nodes_at_path (a_path)
+			if not og_attrs.is_empty and then attached {DT_ATTRIBUTE} og_attrs.first.content_item as dt_attr then
 				Result := dt_attr
 			end
 		end
@@ -122,7 +124,7 @@ feature -- Access
 	all_paths: ARRAYED_LIST [STRING]
 			-- all paths below this point, including this node
 		local
-			og_paths: HASH_TABLE [detachable OG_OBJECT, OG_PATH]
+			og_paths: HASH_TABLE [OG_ITEM, OG_PATH]
 		do
 			og_paths := representation.all_paths
 			create Result.make(0)

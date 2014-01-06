@@ -1,10 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Attribute node in ADL parse tree. This class does not model a direct idea of 'is_multiple' because it can be used
-				 to represent single attribute constraints which need multiple 'children' to represent the constraint.
-				 ]"
-	keywords:    "ADL"
+	description: "Attribute node in an Object Graph."
+	keywords:    "object graph, document object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2004- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -85,8 +82,6 @@ feature -- Status Report
 	is_addressable: BOOLEAN = True
 			-- True if this node has a non-anonymous node_id
 
-	is_object_node: BOOLEAN = False
-
 	has_differential_path: BOOLEAN
 			-- True if this node has a differential path
 		do
@@ -96,7 +91,7 @@ feature -- Status Report
 	valid_child_for_insertion (a_node: like child_type): BOOLEAN
 			-- valid OBJ children of a REL node might not all be unique
 		do
-			Result := not children_ordered.has(a_node)
+			Result := not children.has_item (a_node)
 		end
 
 feature -- Status Setting
@@ -180,7 +175,7 @@ feature -- Modification
 				reparent_to_root
 			end
 		ensure
-			Differential_path_set: differential_path /= Void
+			Differential_path_set: attached differential_path
 		end
 
 feature {NONE} -- Implementation

@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "node in ADL parse tree"
-	keywords:    "test, ADL"
+	description: "Object Graph abstract node type"
+	keywords:    "object graph, document object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -19,27 +19,19 @@ inherit
 
 feature -- Access
 
+	all_children: ARRAYED_LIST [like child_type]
+		do
+			Result := children.linear_representation
+		end
+
 	child_with_id (a_node_key: STRING): like child_type
 			-- find the child node with `a_node_key'
 		require
 			has_child_with_id (a_node_key)
 		do
-			-- FIXME: should just be able to search with node_key, but we are still
-			-- using the 'unknown' node_keys rather than empty strings
-			if a_node_key.is_empty then
-				Result := first_child
-			else
-				check attached children.item (a_node_key) as c then
-					Result := c
-				end
+			check attached children.item (a_node_key) as c then
+				Result := c
 			end
-		end
-
-	first_child: like child_type
-			-- 	get first child; typically used when it is known that there is only one child
-			-- and we don't care what it is called
-		do
-			Result := children_ordered.first
 		end
 
 	child_count: INTEGER
@@ -69,14 +61,10 @@ feature -- Status Report
 		end
 
 	has_child_with_id (a_node_key: STRING): BOOLEAN
+		require
+			Valid_node_id: not node_key.is_empty
 		do
-			-- FIXME: should just be able to search with node_key, but we are still
-			-- using the 'unknown' node_keys rather than empty strings
-			if a_node_key.is_empty then
-				Result := has_children
-			else
-				Result := children.has (a_node_key)
-			end
+			Result := children.has (a_node_key)
 		end
 
 	has_child (a_node: like child_type): BOOLEAN
@@ -140,7 +128,7 @@ feature -- Modification
 			a_node.set_parent (Current)
 		end
 
-	remove_child (a_node: attached like child_type)
+	remove_child (a_node: like child_type)
 			-- remove the child node `a_node'
 		require
 			Node_exists: has_child (a_node)
@@ -189,7 +177,7 @@ feature -- Modification
 feature {OG_NODE} -- Implementation
 
 	children: HASH_TABLE [like child_type, STRING]
-			-- next nodes, keyed by node id or attribute name
+			-- next nodes, keyed by node id or attribute name, or compressed attribute path
 		attribute
 			create Result.make (0)
 		end

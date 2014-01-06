@@ -3,8 +3,8 @@ note
 	description: "Serialiser Manager for all DT serialiser types"
 	keywords:    "Data Tree"
 	author:      "Thomas Beale"
-	support:     "Ocean Informatics <support@OceanInformatics.biz>"
-	copyright:   "Copyright (c) 2003, 2004 Ocean Informatics Pty Ltd"
+	support:     "Ocean Informatics <support@OceanInformatics.com>"
+	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class DT_VISITOR_ITERATOR
@@ -14,7 +14,7 @@ create
 
 feature -- Initialisation
 
-	make(a_target: DT_COMPLEX_OBJECT; a_visitor: DT_VISITOR)
+	make (a_target: DT_COMPLEX_OBJECT; a_visitor: DT_VISITOR)
 			-- create a new iterator targetted to the DT tree `a_target'
 		do
 			create tree_iterator.make (a_target.representation)
@@ -26,7 +26,7 @@ feature -- Command
 	do_all
 			-- start the serialisation process; the result will be in `serialiser_output'
 		do
-			tree_iterator.do_all (agent node_enter_action (?,?), agent node_exit_action (?,?))
+			tree_iterator.do_all (agent node_enter_action, agent node_exit_action)
 		end
 
 feature {NONE} -- Implementation

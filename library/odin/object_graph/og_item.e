@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "item in an OBJECT/ATTRIBUTE parse tree"
-	keywords:    "test, ADL"
+	description: "item in an Object Graph"
+	keywords:    "object graph, document object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -48,19 +48,13 @@ feature -- Access
 	path: OG_PATH
 			-- absolute path of this node relative to the root; may produce non-unique paths
 		do
-			Result := generate_path (False, Void)
+			Result := generate_path (Void)
 		end
 
-	path_to_node (a_node: OG_ITEM): OG_PATH
-			-- absolute path of this node relative to the root; may produce non-unique paths
+	path_to_node (a_node: OG_OBJECT): OG_PATH
+			-- absolute path of this node relative to the root
 		do
-			Result := generate_path (False, a_node)
-		end
-
-	unique_path: OG_PATH
-			-- absolute unique path of this node relative to the root
-		do
-			Result := generate_path (True, Void)
+			Result := generate_path (a_node)
 		end
 
 	parent: detachable OG_NODE
@@ -99,11 +93,6 @@ feature -- Status Report
 
 	is_addressable: BOOLEAN
 			-- True if this node has a non-anonymous node_id
-		deferred
-		end
-
-	is_object_node: BOOLEAN
-			-- True if this node is an object type
 		deferred
 		end
 
@@ -169,64 +158,58 @@ feature -- Serialisation
 
 feature {NONE} -- Implementation
 
-	generate_path (unique_flag: BOOLEAN; stop_node: detachable OG_ITEM): OG_PATH
-			-- absolute path of this node relative to the root; if unique_flag set then
-			-- generate a completely unique path by including the "unknown" ids that are
-			-- automatically set at node-creation time on nodes that otherwise would have no id
+	generate_path (stop_node: detachable OG_OBJECT): OG_PATH
+			-- absolute path of this node relative to `stop_node' or if Void, the root;
 		local
-			csr: detachable OG_NODE
+			csr: OG_ITEM
 			og_nodes: ARRAYED_LIST [OG_ITEM]
 			a_path_item: OG_PATH_ITEM
 			og_path: detachable OG_PATH
 		do
 			-- get the node list from here back up to the root, but don't include the root OG_OBJECT_NODE
 			create og_nodes.make(0)
-			if attached parent as p then
-				og_nodes.extend (Current)
-				from csr := p until csr = Void or csr.parent = Void or csr ~ stop_node loop
-					og_nodes.put_front (csr)
-					csr := csr.parent
+			from csr := Current until csr.parent = Void or csr ~ stop_node loop
+				og_nodes.put_front (csr)
+				check attached csr.parent as p then
+					csr := p
 				end
 			end
 
-			if og_nodes.is_empty then
+			if csr.is_root then
 				create og_path.make_root
-			else -- process the node list; we are starting on an OG_ATTR_NODE
-				from
-					og_nodes.start
-					if attached {OG_ATTRIBUTE_NODE} og_nodes.item as og_attr and then og_attr.has_differential_path then
-						og_path := og_attr.differential_path.deep_twin
-					end
-				until
-					og_nodes.off
-				loop
-					-- now on an OG_ATTR_NODE
-					if attached {OG_ATTRIBUTE_NODE} og_nodes.item as og_attr then
-						create a_path_item.make (og_attr.node_id)
-						if attached og_path as ogp then
-							ogp.append_segment (a_path_item)
+			end
+			from og_nodes.start until og_nodes.off loop
+				-- now on an OG_ATTR_NODE
+				if attached {OG_ATTRIBUTE_NODE} og_nodes.item as og_attr then
+					create a_path_item.make (og_attr.node_id)
+					if og_attr.has_differential_path then
+						if attached og_path as att_path then
+							att_path.append_path (og_attr.differential_path.deep_twin)
 						else
-							create og_path.make_absolute (a_path_item)
+							og_path := og_attr.differential_path.deep_twin
 						end
+						check attached og_path as att_path then
+							att_path.append_segment (a_path_item)
+						end
+					elseif attached og_path as att_path then
+						att_path.append_segment (a_path_item)
+					else
+						create og_path.make_absolute (a_path_item)
+					end
+					og_nodes.forth
 
-						og_nodes.forth
-						if not og_nodes.off then -- now on an OG_OBJECT_NODE
-							if unique_flag or og_attr.is_multiple or
-									(og_attr.is_single and og_nodes.item.is_addressable) then
-								-- use this line of code to get rid of codes on single attributes
-								--	(og_attr.is_single and og_attr.child_count > 1 and og_nodes.item.is_addressable) then
-								a_path_item.set_object_id (og_nodes.item.node_id)
-							end
-							og_nodes.forth
+					-- now on an OG_OBJECT_NODE
+					if not og_nodes.off then
+						if og_nodes.item.is_addressable then
+							a_path_item.set_object_id (og_nodes.item.node_id)
 						end
+						og_nodes.forth
 					end
 				end
 			end
 			check attached og_path as ogp then
 				Result := ogp
 			end
-		ensure
-			not unique_flag implies not Result.as_string.has_substring (anonymous_node_id)
 		end
 
 invariant

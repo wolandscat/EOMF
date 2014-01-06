@@ -5,7 +5,7 @@ note
 				 simple OBJECTs, real OBJECT 'use' references, and OBJECTs
 				 which represent constraints on other archetypes.
 				 ]"
-	keywords:    "object graph, ADL"
+	keywords:    "object graph, document object model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2004- The openEHR Foundation <http://www.openEHR.org>"
@@ -23,6 +23,8 @@ feature -- Initialisation
 
 	make_anonymous
 			-- make an anonymous node with optional content item
+		obsolete
+			"deprecated form of node creation; all nodes should have ids"
 		do
 			make (Anonymous_node_id)
 		end
@@ -32,8 +34,6 @@ feature -- Access
 	parent: detachable OG_ATTRIBUTE_NODE
 
 feature -- Status Report
-
-	is_object_node: BOOLEAN = True
 
 	is_addressable: BOOLEAN
 			-- True if this node has a proper node_id
