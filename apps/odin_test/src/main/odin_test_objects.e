@@ -59,8 +59,8 @@ feature -- Access
 			if dir.exists then
 				dir.open_read
 				file_names := dir.linear_representation
-				from file_names.start until file_names.off loop
-					file_name := file_names.item
+				across file_names as file_names_csr loop
+					file_name := file_names_csr.item
 					if file_name.ends_with (".odin") then
 						file_path := file_system.pathname (dir_path, file_name)
 						create an_odin_file.make (file_path)
@@ -68,7 +68,6 @@ feature -- Access
 						an_odin_file.read_stream (an_odin_file.count)
 						Result.put (an_odin_file.last_string, file_name.substring (1, file_name.count - 5))
 					end
-					file_names.forth
 				end
 			end
 		end
@@ -276,16 +275,16 @@ feature -- Access
 			>>))
 
 			Result.set_my_arrayed_list_interval_date (create {ARRAYED_LIST[INTERVAL[DATE]]}.make_from_array (<<
-				create {PROPER_INTERVAL[DATE]}.make_bounded_included (create {DATE}.make_day_month_year(12, 8, 1965), create {DATE}.make_now),
-				create {PROPER_INTERVAL[DATE]}.make_upper_unbounded (create {DATE}.make_day_month_year(02, 12, 2009), True)
+				create {PROPER_INTERVAL[DATE]}.make_bounded_included (create {DATE}.make_day_month_year (12, 8, 1965), create {DATE}.make_now),
+				create {PROPER_INTERVAL[DATE]}.make_upper_unbounded (create {DATE}.make_day_month_year (02, 12, 2009), True)
 			>>))
 			Result.set_my_arrayed_list_interval_date_time (create {ARRAYED_LIST[INTERVAL[DATE_TIME]]}.make_from_array (<<
-				create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included (create {DATE_TIME}.make(1965, 8, 12, 14, 8, 0), create {DATE_TIME}.make_now),
-				create {PROPER_INTERVAL[DATE_TIME]}.make_upper_unbounded (create {DATE_TIME}.make(2013, 4, 22, 10, 30, 0), True)
+				create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included (create {DATE_TIME}.make (1965, 8, 12, 14, 8, 0), create {DATE_TIME}.make_now),
+				create {PROPER_INTERVAL[DATE_TIME]}.make_upper_unbounded (create {DATE_TIME}.make (2013, 4, 22, 10, 30, 0), True)
 			>>))
 			Result.set_my_arrayed_list_interval_time (create {ARRAYED_LIST[INTERVAL[TIME]]}.make_from_array (<<
-				create {PROPER_INTERVAL[TIME]}.make_bounded_included (create {TIME}.make(2, 30, 0), create {TIME}.make_now),
-				create {PROPER_INTERVAL[TIME]}.make_upper_unbounded (create {TIME}.make(2, 30, 0), True)
+				create {PROPER_INTERVAL[TIME]}.make_bounded_included (create {TIME}.make (2, 30, 0), create {TIME}.make (2, 45, 0)),
+				create {PROPER_INTERVAL[TIME]}.make_upper_unbounded (create {TIME}.make (2, 30, 0), True)
 			>>))
 			Result.set_my_arrayed_list_interval_duration (create {ARRAYED_LIST[INTERVAL[DATE_TIME_DURATION]]}.make_from_array(<<
 				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included (create {DATE_TIME_DURATION}.make_definite (0, 4, 0, 0), create {DATE_TIME_DURATION}.make_definite (1, 4, 0, 0)),
