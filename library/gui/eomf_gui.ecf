@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-5-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-5-0 http://www.eiffel.com/developers/xml/configuration-1-5-0.xsd" name="eomf_gui" uuid="29B54FE1-4AFA-972B-B06F-1F5C982B6E38" library_target="eomf_gui">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="eomf_gui" uuid="29B54FE1-4AFA-972B-B06F-1F5C982B6E38" library_target="eomf_gui">
 	<target name="eomf_gui">
 		<root all_classes="true"/>
 		<file_rule>
