@@ -29,9 +29,12 @@ feature -- Access
 
 	parent: detachable OG_ATTRIBUTE_NODE
 
-	all_paths: HASH_TABLE [OG_ITEM, OG_PATH]
+	path_map: HASH_TABLE [OG_ITEM, OG_PATH]
 			-- obtain all paths below this point
 			-- compute in an efficient fashion
+			-- While node_ids on object nodes are optional, this routine is not guaranteed to get every object, s
+			-- ince the only path to some objects is the path to the parent attribute. In these cases, the object
+			-- node is favoured, and therefore some attributes nodes could be missing.
 		local
 			child_attr: like child_type
 			a_path: OG_PATH
@@ -52,7 +55,7 @@ feature -- Access
 					-- obtain paths from the object level below and prepend them with a
 					-- path item representing the current node
 					if attached {OG_OBJECT_NODE} sub_child_obj as sub_child_obj_node then
-						across sub_child_obj_node.all_paths as sub_child_all_paths_csr loop
+						across sub_child_obj_node.path_map as sub_child_all_paths_csr loop
 							a_path := sub_child_all_paths_csr.key.twin
 							if sub_child_obj.is_addressable then
 								a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj_node.node_id))
@@ -127,48 +130,45 @@ feature -- Access
 
 feature -- Status Report
 
-	has_path (a_path: OG_PATH): BOOLEAN
+	has_path (a_path: STRING): BOOLEAN
 			-- `a_path' exists in object structure
-		require
-			Path_valid: a_path.is_absolute implies is_root
+		local
+			og_path: OG_PATH
 		do
-			if a_path.is_root then
-				Result := True
+			create og_path.make_from_string (a_path)
+			if og_path.is_root then
+				Result := is_root
 			else
 				-- check for compressed paths & convert path if necessary
-				Result := has_cpath (compress_path (a_path))
+				Result := has_cpath (compress_path (og_path))
 			end
 		end
 
-	has_object_path (a_path: OG_PATH): BOOLEAN
+	has_object_path (a_path: STRING): BOOLEAN
 			-- `a_path' refers to an object node in structure
-		require
-			Path_valid: a_path.is_absolute implies is_root
 		local
 			og_path: OG_PATH
 		do
-			if a_path.is_root then
-				Result := True
+			create og_path.make_from_string (a_path)
+			if og_path.is_root then
+				Result := is_root
 			else
 				-- check for compressed paths & convert path if necessary
-				og_path := compress_path (a_path)
-				Result := not object_nodes_at_cpath (og_path).is_empty
+				Result := not object_nodes_at_cpath (compress_path (og_path)).is_empty
 			end
 		end
 
-	has_attribute_path (a_path: OG_PATH): BOOLEAN
+	has_attribute_path (a_path: STRING): BOOLEAN
 			-- `a_path' refers to an attribute node in structure
-		require
-			Path_valid: a_path.is_absolute implies is_root
 		local
 			og_path: OG_PATH
 		do
-			if a_path.is_root then
+			create og_path.make_from_string (a_path)
+			if og_path.is_root then
 				Result := False
 			else
 				-- check for compressed paths & convert path if necessary
-				og_path := compress_path (a_path)
-				Result := not attribute_nodes_at_cpath (og_path).is_empty
+				Result := not attribute_nodes_at_cpath (compress_path (og_path)).is_empty
 			end
 		end
 
@@ -267,8 +267,10 @@ feature {OG_OBJECT_NODE} -- Implementation
 		do
 			create Result.make (0)
 			if attached attribute_at_path_segment (a_path_segment) as an_attr_node then
-				if a_path_segment.is_addressable and an_attr_node.has_child_with_id (a_path_segment.object_id) then
-					Result.extend (an_attr_node.child_with_id (a_path_segment.object_id))
+				if a_path_segment.is_addressable then
+					if an_attr_node.has_child_with_id (a_path_segment.object_id) then
+						Result.extend (an_attr_node.child_with_id (a_path_segment.object_id))
+					end
 				else
 					Result.append (an_attr_node.all_children)
 				end

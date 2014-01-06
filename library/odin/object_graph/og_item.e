@@ -48,13 +48,13 @@ feature -- Access
 	path: OG_PATH
 			-- absolute path of this node relative to the root; may produce non-unique paths
 		do
-			Result := generate_path (Void)
+			Result := get_path (Void)
 		end
 
 	path_to_node (a_node: OG_OBJECT): OG_PATH
 			-- absolute path of this node relative to the root
 		do
-			Result := generate_path (a_node)
+			Result := get_path (a_node)
 		end
 
 	parent: detachable OG_NODE
@@ -158,7 +158,7 @@ feature -- Serialisation
 
 feature {NONE} -- Implementation
 
-	generate_path (stop_node: detachable OG_OBJECT): OG_PATH
+	get_path (stop_node: detachable OG_OBJECT): OG_PATH
 			-- absolute path of this node relative to `stop_node' or if Void, the root;
 		local
 			csr: OG_ITEM

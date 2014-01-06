@@ -126,7 +126,7 @@ feature -- Access
 		local
 			og_paths: HASH_TABLE [OG_ITEM, OG_PATH]
 		do
-			og_paths := representation.all_paths
+			og_paths := representation.path_map
 			create Result.make(0)
 			Result.compare_objects
 			across og_paths as paths_csr loop
@@ -185,7 +185,7 @@ feature -- Status Report
 		require
 			Path_valid: not a_path.is_empty
 		do
-			Result := representation.has_path (create {OG_PATH}.make_from_string (a_path))
+			Result := representation.has_path (a_path)
 		end
 
 	has_attribute (an_attr_name: STRING): BOOLEAN
