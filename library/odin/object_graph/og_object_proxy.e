@@ -40,9 +40,16 @@ feature -- Initialisation
 			-- make with a path
 		require
 			is_valid_path (a_ref_path)
+		local
+			og_path: OG_PATH
 		do
 			create target_path.make_from_string (a_ref_path)
-			make_anonymous_object
+			create og_path.make_from_string (a_ref_path)
+			if not og_path.last_object_node_id.is_empty then
+				make_object (og_path.last_object_node_id)
+			else
+				make_anonymous_object
+			end
 		end
 
 feature -- Access
