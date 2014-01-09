@@ -27,11 +27,13 @@ create
 
 feature -- Definitions
 
-	uri_template: STRING = "http://$terminology_id.info/id/$code_string"
-
 	default_terminology_id: STRING = "local"
 
 	default_code_string: STRING = "000001"
+
+	version_left_delimiter: CHARACTER ='(' 
+
+	version_right_delimiter: CHARACTER =')' 
 
 	separator: STRING = "::"
 
@@ -44,10 +46,20 @@ feature -- Initialization
 		require
 			Key_valid: not str.is_empty
 		local
-			sep_pos: INTEGER
+			lpos, rpos, sep_pos: INTEGER
 		do
 			sep_pos := str.substring_index (separator, 1)
-			create terminology_id.make_from_string (str.substring (1, sep_pos-1))
+			lpos := str.index_of (version_left_delimiter, 1)
+			if lpos > 0 then
+				rpos := str.index_of (version_right_delimiter, lpos)
+				if rpos > lpos then
+					terminology_version := str.substring (lpos + 1, rpos - 1)
+				end
+				terminology_id := str.substring (1, lpos-1)
+			else
+				terminology_id := str.substring (1, sep_pos-1)
+			end
+
 			if str.count >= sep_pos + separator.count then
 				code_string := str.substring (sep_pos+separator.count, str.count)
 			else
@@ -68,6 +80,21 @@ feature -- Initialization
 			Code_string_set: code_string = a_code_string
 		end
 
+	make_with_version (a_terminology_id, a_terminology_version, a_code_string: STRING)
+			-- make from three strings
+		require
+			Terminology_id_valid: not a_terminology_id.is_empty
+			Terminology_version_valid: not a_terminology_version.is_empty
+			Code_string_valid: not a_code_string.is_empty
+		do
+			terminology_id := a_terminology_id
+			terminology_version := a_terminology_version
+			code_string := a_code_string
+		ensure
+			Terminology_id_set: terminology_id.is_equal(a_terminology_id)
+			Code_string_set: code_string = a_code_string
+		end
+
 feature -- Access
 
 	terminology_id: STRING
@@ -76,6 +103,9 @@ feature -- Access
 		attribute
 			create Result.make_from_string (default_terminology_id)
 		end
+
+	terminology_version: detachable STRING
+			-- optional terminology version
 
 	code_string: STRING
 			-- The key used by the terminology service to identify a concept or
@@ -104,19 +134,6 @@ feature -- Comparison
 			Result := s < s_other
 		end
 
-feature -- Conversion
-
-	to_uri: URI
-			-- convert to a URI string
-		local
-			uri_str: STRING
-		do
-			create uri_str.make_from_string (uri_template)
-			uri_str.replace_substring_all ("$terminology_id", terminology_id)
-			uri_str.replace_substring_all ("$code_string", code_string)
-			create Result.make_from_string (uri_str)
-		end
-
 feature -- Output
 
 	as_string: STRING
@@ -124,6 +141,11 @@ feature -- Output
 		do
 			create Result.make(0)
 			Result.append (terminology_id)
+			if attached terminology_version as ver then
+				Result.append_character (version_left_delimiter)
+				Result.append (ver)
+				Result.append_character (version_right_delimiter)
+			end
 			Result.append (separator)
 			Result.append (code_string)
 		end
