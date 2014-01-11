@@ -40,15 +40,18 @@ feature -- Definitions
 feature -- Initialization
 
 	make_from_string (str: STRING)
-			-- make from a string of the form terminology_id::code_string, e.g. ICD10(1998)::M10
-			-- the form terminology_id:: is also allowable, in which case the default_code_string will
-			-- be used
+			-- make from a string of three possible forms:
+			--     terminology_id::							e.g. ICD10AM
+			--     terminology_id::code_string, 			e.g. ICD10AM::M10
+			--     terminology_id(version)::code_string, 	e.g. SNOMED_CT(2011_06_01)::200003495
 		require
 			Key_valid: not str.is_empty
 		local
 			lpos, rpos, sep_pos: INTEGER
 		do
 			sep_pos := str.substring_index (separator, 1)
+
+			-- extract a version if there is one
 			lpos := str.index_of (version_left_delimiter, 1)
 			if lpos > 0 then
 				rpos := str.index_of (version_right_delimiter, lpos)
@@ -61,9 +64,7 @@ feature -- Initialization
 			end
 
 			if str.count >= sep_pos + separator.count then
-				code_string := str.substring (sep_pos+separator.count, str.count)
-			else
-				code_string := default_code_string.twin
+				code_string := str.substring (sep_pos + separator.count, str.count)
 			end
 		end
 

@@ -72,8 +72,12 @@ feature -- Access
 						end
 					end
 
-					-- add path for the current child object
-					if sub_child_obj.is_addressable then
+					-- add path for the current child object, except in the case of a leaf object under a single-valued attribute
+					-- (typically most leaf objects), since this generates paths like /a/b/c[leaf_id], when below, an attribute
+					-- path will be created of the form /a/b/c, which can also be used for this object. Ignoring this case 
+					-- causes the generated number of paths to more or less double, for no practical utility
+					if sub_child_obj.is_addressable and (not sub_child_obj.is_leaf or else child_attr.is_multiple) then
+						create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
 						create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
 					else
 						create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
@@ -310,31 +314,6 @@ feature {OG_OBJECT_NODE} -- Implementation
 			else
 				Result := a_path
 			end
-		end
-
-feature {NONE} -- Alternative Path Routines
-
-	generate_paths: HASH_TABLE [OG_ITEM, OG_PATH]
-		local
-			og_iterator: OG_ITERATOR
-		do
-			create Result.make (0)
-			create og_iterator.make (Current)
-			og_iterator.do_all (agent get_path_enter (?, ?, Result), agent get_path_exit)
-		end
-
-	get_path_enter (a_node: OG_ITEM; indent_level: INTEGER; path_table: HASH_TABLE [OG_ITEM, OG_PATH])
-		do
-			path_table.put (a_node, a_node.path)
-
-			-- generate extra paths if this node is a reference node
-			if attached {OG_OBJECT_PROXY} a_node as int_ref then
-
-			end
-		end
-
-	get_path_exit (a_node: OG_ITEM; indent_level: INTEGER)
-		do
 		end
 
 end
