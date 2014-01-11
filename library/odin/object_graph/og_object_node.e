@@ -38,7 +38,6 @@ feature -- Access
 		local
 			child_attr: like child_type
 			a_path: OG_PATH
-			created_attr_path: BOOLEAN
 			sub_child_obj: OG_OBJECT
 		do
 			create Result.make(0)
@@ -47,8 +46,14 @@ feature -- Access
 			across children as child_attrs_csr loop
 				child_attr := child_attrs_csr.item
 
+				-- add an attribute path
+				create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
+				if is_root then
+					a_path.set_absolute
+				end
+				Result.put (child_attr, a_path)
+
 				-- get the objects of this attribute
-				created_attr_path := False
 				across child_attr.children as sub_child_objs_csr loop
 					sub_child_obj := sub_child_objs_csr.item
 
@@ -72,19 +77,8 @@ feature -- Access
 						end
 					end
 
-					-- add path for the current child object, except in the case of a leaf object under a single-valued attribute
-					-- (typically most leaf objects), since this generates paths like /a/b/c[leaf_id], when below, an attribute
-					-- path will be created of the form /a/b/c, which can also be used for this object. Ignoring this case 
-					-- causes the generated number of paths to more or less double, for no practical utility
-					if sub_child_obj.is_addressable and (not sub_child_obj.is_leaf or else child_attr.is_multiple) then
-						create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
-						create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
-					else
-						create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
-						created_attr_path := True -- this kind of path (with no node id) is the same as the path to the attribute...
-					end
-
-					-- prepend any differential path above to the path for the current object
+					-- add path for the current child object
+					create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
 					if child_attr.has_differential_path then
 						a_path.prepend_path (child_attr.differential_path.deep_twin)
 					end
@@ -92,15 +86,6 @@ feature -- Access
 						a_path.set_absolute
 					end
 					Result.put (sub_child_obj, a_path)
-				end
-
-				-- add an attribute path, if one didn't already get added
-				if not created_attr_path then
-					create a_path.make_relative (create {OG_PATH_ITEM}.make (child_attr.node_id))
-					if is_root then
-						a_path.set_absolute
-					end
-					Result.put (child_attr, a_path)
 				end
 			end
 
