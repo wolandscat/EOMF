@@ -62,7 +62,7 @@ feature -- Status Report
 
 	has_child_with_id (a_node_key: STRING): BOOLEAN
 		require
-			Valid_node_id: not node_key.is_empty
+			Valid_node_id: not a_node_key.is_empty
 		do
 			Result := children.has (a_node_key)
 		end

@@ -66,6 +66,19 @@ feature -- Access
 			end
 		end
 
+	proxy_child_with_target_id (a_node_key: STRING): OG_OBJECT_PROXY
+		require
+			Valid_node_id: has_proxy_child_with_target_id (a_node_key)
+		do
+			from children.start until children.off or attached {OG_OBJECT_PROXY} children.item_for_iteration as og_proxy
+				and then og_proxy.target_object.node_id.is_equal (a_node_key)
+			loop
+			end
+			check attached {OG_OBJECT_PROXY} children.item_for_iteration as ogp then
+				Result := ogp
+			end
+		end
+
 feature -- Status Report
 
 	is_multiple: BOOLEAN
@@ -92,6 +105,15 @@ feature -- Status Report
 			-- valid OBJ children of a REL node might not all be unique
 		do
 			Result := not children.has_item (a_node)
+		end
+
+	has_proxy_child_with_target_id (a_node_key: STRING): BOOLEAN
+		require
+			Valid_node_id: not a_node_key.is_empty
+		do
+			Result := across children as child_obj_csr some
+				attached {OG_OBJECT_PROXY} child_obj_csr.item as og_proxy and then og_proxy.target_object.node_id.is_equal (a_node_key)
+			end
 		end
 
 feature -- Status Setting

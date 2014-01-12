@@ -62,8 +62,13 @@ feature -- Access
 					if attached {OG_OBJECT_NODE} sub_child_obj as sub_child_obj_node then
 						across sub_child_obj_node.path_map as sub_child_all_paths_csr loop
 							a_path := sub_child_all_paths_csr.key.twin
-							if sub_child_obj.is_addressable then
-								a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj_node.node_id))
+
+							if sub_child_obj_node.is_addressable then
+								if attached {OG_OBJECT_PROXY} sub_child_obj_node as og_proxy and then not og_proxy.has_sibling_target then
+									a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, og_proxy.target_object.node_id))
+								else
+									a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj_node.node_id))
+								end
 							else
 								a_path.prepend_segment (create {OG_PATH_ITEM}.make (child_attr.node_id))
 							end
@@ -259,6 +264,8 @@ feature {OG_OBJECT_NODE} -- Implementation
 				if a_path_segment.is_addressable then
 					if an_attr_node.has_child_with_id (a_path_segment.object_id) then
 						Result.extend (an_attr_node.child_with_id (a_path_segment.object_id))
+					elseif an_attr_node.has_proxy_child_with_target_id (a_path_segment.object_id) then
+						Result.extend (an_attr_node.proxy_child_with_target_id (a_path_segment.object_id))
 					end
 				else
 					Result.append (an_attr_node.all_children)

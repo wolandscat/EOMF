@@ -17,13 +17,13 @@ class OG_OBJECT_PROXY
 inherit
 	OG_OBJECT_NODE
 		rename
-			make as make_object, make_anonymous as make_anonymous_object
+			make as make_object
 		redefine
 			path_map, has_cpath, object_nodes_at_cpath, attribute_nodes_at_cpath
 		end
 
 create
-	make, make_anonymous
+	make
 
 feature -- Initialisation
 
@@ -36,25 +36,12 @@ feature -- Initialisation
 			make_object (a_node_id)
 		end
 
-	make_anonymous (a_ref_path: STRING)
-			-- make with a path
-		require
-			is_valid_path (a_ref_path)
-		local
-			og_path: OG_PATH
-		do
-			create target_path.make_from_string (a_ref_path)
-			create og_path.make_from_string (a_ref_path)
-			if not og_path.last_object_node_id.is_empty then
-				make_object (og_path.last_object_node_id)
-			else
-				make_anonymous_object
-			end
-		end
-
 feature -- Access
 
 	target_path: OG_PATH
+		attribute
+			create Result.make_root
+		end
 
 	target_object: detachable OG_OBJECT_NODE
 			-- object at `target_path', not attached if the path is not valid in the
@@ -81,11 +68,8 @@ feature -- Access
 
 	path_map: HASH_TABLE [OG_ITEM, OG_PATH]
 			-- obtain all paths below this point, including this node
-			-- compute in an efficient fashion. Don't do anything if path doesn't point to
-			-- an object in the structure or if it points to an object that is a parent
-			-- of the current object
+			-- compute in an efficient fashion. 
 		do
-			-- get target object
 			if attached target_object as att_targ_obj then
 				Result := att_targ_obj.path_map
 			else
@@ -93,12 +77,28 @@ feature -- Access
 			end
 		end
 
+feature -- Status Report
+
+	has_sibling_target: BOOLEAN
+			-- True if target path is a sibling of path of this proxy object
+			-- If so, paths through this object should use this objects node-id, and
+			-- append the paths of the children of the target;
+			-- otherwise, they should bypass this node, and use the target node and
+			-- its children
+		do
+			Result := path.parent_path.as_string.same_string (target_path.parent_path.as_string)
+		end
+
 feature -- Validation
 
 	is_valid_path (a_path: STRING): BOOLEAN
-			-- path is valid syntactically
+			-- path is valid syntactically and is not in path of current object
 		do
 			Result := (create {OG_PATH}.make_root).valid_path_string (a_path)
+
+			-- can't include following since it causes path routines that 
+			-- reference Current to be invoked during creation of this object
+			--	and not path.as_string.starts_with (a_path)
 		end
 
 feature {OG_OBJECT_NODE} -- Implementation
