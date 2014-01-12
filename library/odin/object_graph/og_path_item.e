@@ -125,11 +125,7 @@ feature -- Modification
 		require
 			an_object_id_valid: an_object_id /= Void
 		do
-	--		if an_object_id.has_substring(Anonymous_node_id) then
-	--			create object_id.make(0)
-	--		else
-				object_id := an_object_id
-	--		end
+			object_id := an_object_id
 		ensure
 			Object_id_set: object_id.is_equal(an_object_id) or else object_id.is_empty
 		end

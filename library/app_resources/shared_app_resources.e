@@ -120,6 +120,12 @@ feature -- Access
 			not_empty: not Result.is_empty
 	    end
 
+	application_file_time_stamp: INTEGER
+			-- data/time of app exe; can be used to decide when to remove certain kinds of app files
+		do
+			Result := file_system.file_time_stamp (application_full_path)
+		end
+
 	application_startup_directory: STRING
 			-- The directory in which the application is installed; else, if the application is in an Eiffel project's W_code
 			-- or F_code directory, the Eiffel project directory. This must be called before any change_dir calls are made
@@ -143,8 +149,6 @@ feature -- Access
 		do
 			create i18n.make (application_startup_directory)
 			Result := i18n.system_locale.info.id.language.as_string_8
-		ensure
-			Result_attached: Result /= Void
 		end
 
 	locale_language_long: STRING
@@ -152,8 +156,6 @@ feature -- Access
 		do
 			-- FIXME: to be implemented
 			Result := "en-uk"
-		ensure
-			Result_attached: Result /= Void
 		end
 
 	xml_rules_file_path: STRING
