@@ -182,11 +182,21 @@ feature -- Modification
 
 	update_last_row_label_col_multi_line (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
 			-- update column details to `last_sub_row'; any detail that is Void is not changed in existing column
+		local
+			h, i: INTEGER
 		do
 			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
 				if attached a_text then
 					gli.set_text (utf8_to_utf32 (a_text))
-					last_row.set_height (gli.text_height + Default_grid_row_expansion)
+
+					-- figure out height of row
+					from i := 1 until i > last_row.count loop
+						if attached {EV_GRID_LABEL_ITEM} last_row.item (i) as col_gli then
+							h := h.max (col_gli.text_height)
+						end
+						i := i + 1
+					end
+					last_row.set_height (h + Default_grid_row_expansion)
 				end
 				if attached a_tooltip then
 					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
