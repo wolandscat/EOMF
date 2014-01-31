@@ -135,6 +135,17 @@ feature -- Comparison
 			Result := s < s_other
 		end
 
+feature -- Modification
+
+	set_code_string (a_code_string: STRING)
+		require
+			Code_string_valid: not a_code_string.is_empty
+		do
+			code_string := a_code_string
+		ensure
+			Code_string_set: code_string = a_code_string
+		end
+
 feature -- Output
 
 	as_string: STRING
