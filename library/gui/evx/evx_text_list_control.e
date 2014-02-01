@@ -89,26 +89,28 @@ feature {NONE} -- Implementation
 
 				if not old_val.same_string (new_val) then
 					ds.replace (new_val)
-					undo_redo_chain.add_link (ev_data_control,
-						-- undo
-						agent ds.put_i_th (old_val, ds_index),
-						agent (a_val: STRING_32; row_idx: INTEGER)
-							local
-								a_row: EV_MULTI_COLUMN_LIST_ROW
-							do
-								a_row := ev_data_control.i_th (row_idx)
-								a_row.put_i_th (a_val, 1)
-							end (utf8_to_utf32 (old_val), ev_data_control.widget_row),
-						-- redo
-						agent ds.put_i_th (new_val, ds_index),
-						agent (a_val: STRING_32; row_idx: INTEGER)
-							local
-								a_row: EV_MULTI_COLUMN_LIST_ROW
-							do
-								a_row := ev_data_control.i_th (row_idx)
-								a_row.put_i_th (a_val, 1)
-							end (utf8_to_utf32 (new_val), ev_data_control.widget_row)
-					)
+					if attached undo_redo_chain as urc then
+						urc.add_link (ev_data_control,
+							-- undo
+							agent ds.put_i_th (old_val, ds_index),
+							agent (a_val: STRING_32; row_idx: INTEGER)
+								local
+									a_row: EV_MULTI_COLUMN_LIST_ROW
+								do
+									a_row := ev_data_control.i_th (row_idx)
+									a_row.put_i_th (a_val, 1)
+								end (utf8_to_utf32 (old_val), ev_data_control.widget_row),
+							-- redo
+							agent ds.put_i_th (new_val, ds_index),
+							agent (a_val: STRING_32; row_idx: INTEGER)
+								local
+									a_row: EV_MULTI_COLUMN_LIST_ROW
+								do
+									a_row := ev_data_control.i_th (row_idx)
+									a_row.put_i_th (a_val, 1)
+								end (utf8_to_utf32 (new_val), ev_data_control.widget_row)
+						)
+					end
 				end
 			end
 		end
@@ -126,14 +128,16 @@ feature {NONE} -- Implementation
 	--		new_row.pointer_button_press_actions.force_extend (agent mlist_handler (ev_data_control, ?, ?, ?, ?, ?, ?, ?, ?))
 
 			data_source_setter_agent.call ([new_val, 0])
-			undo_redo_chain.add_link (ev_data_control, 
-				-- undo
-				agent data_source_remove_agent.call ([new_val]),
-				agent populate,
-				-- redo
-				agent data_source_setter_agent.call ([new_val, 0]),
-				agent populate
-			)
+			if attached undo_redo_chain as urc then
+				urc.add_link (ev_data_control,
+					-- undo
+					agent data_source_remove_agent.call ([new_val]),
+					agent populate,
+					-- redo
+					agent data_source_setter_agent.call ([new_val, 0]),
+					agent populate
+				)
+			end
 		end
 
 	process_remove_existing
@@ -154,12 +158,14 @@ feature {NONE} -- Implementation
 					undo_add_idx := ds_index
 				end
 				data_source_remove_agent.call ([old_val])
-				undo_redo_chain.add_link (ev_data_control, 
-					agent data_source_setter_agent.call ([old_val, undo_add_idx]),
-					agent populate,
-					agent data_source_remove_agent.call ([old_val]),
-					agent populate
-				)
+				if attached undo_redo_chain as urc then
+					urc.add_link (ev_data_control,
+						agent data_source_setter_agent.call ([old_val, undo_add_idx]),
+						agent populate,
+						agent data_source_remove_agent.call ([old_val]),
+						agent populate
+					)
+				end
 				ev_data_control.remove_selected_item
 			end
 		end

@@ -162,7 +162,7 @@ feature {NONE} -- Implementation
 	uniqueness_counter: INTEGER
 		do
 			Result := uniqueness_counter_cell.item
-			uniqueness_counter_cell.put (uniqueness_counter + 1)
+			uniqueness_counter_cell.put (Result + 1)
 		end
 
 	uniqueness_counter_cell: CELL[INTEGER]

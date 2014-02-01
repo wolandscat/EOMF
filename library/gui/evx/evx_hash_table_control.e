@@ -73,27 +73,31 @@ feature {NONE} -- Implementation
 					new_key := utf32_to_utf8 (ev_data_control.i_th (ev_data_control.widget_row).i_th (1))
 					if not new_key.same_string (old_key) then
 						ds.replace_key (new_key, old_key)
-						undo_redo_chain.add_link (ev_data_control,
-							-- undo
-							agent ds.replace_key (old_key, new_key),
-							agent populate,
-							-- redo
-							agent ds.replace_key (new_key, old_key),
-							agent populate
-						)
+						if attached undo_redo_chain as urc then
+							urc.add_link (ev_data_control,
+								-- undo
+								agent ds.replace_key (old_key, new_key),
+								agent populate,
+								-- redo
+								agent ds.replace_key (new_key, old_key),
+								agent populate
+							)
+						end
 					end
 				else -- value modified; it's a normal replace
 					new_val := utf32_to_utf8 (ev_data_control.i_th (ev_data_control.widget_row).i_th (2))
 					if not new_val.same_string (old_val) then
 						ds.force (new_val, old_key)
-						undo_redo_chain.add_link (ev_data_control,
-							-- undo
-							agent ds.force (old_val, old_key),
-							agent populate,
-							-- redo
-							agent ds.force (new_val, old_key),
-							agent populate
-						)
+						if attached undo_redo_chain as urc then
+							urc.add_link (ev_data_control,
+								-- undo
+								agent ds.force (old_val, old_key),
+								agent populate,
+								-- redo
+								agent ds.force (new_val, old_key),
+								agent populate
+							)
+						end
 					end
 				end
 			end
@@ -114,10 +118,12 @@ feature {NONE} -- Implementation
 	--		new_row.pointer_button_press_actions.force_extend (agent mlist_handler (ev_data_control, ?, ?, ?, ?, ?, ?, ?, ?))
 
 			data_source_setter_agent.call ([new_key, new_val])
-			undo_redo_chain.add_link (ev_data_control,
-				agent data_source_remove_agent.call ([new_key]), agent populate, -- undo
-				agent data_source_setter_agent.call ([new_key, new_val]), agent populate -- redo
-			)
+			if attached undo_redo_chain as urc then
+				urc.add_link (ev_data_control,
+					agent data_source_remove_agent.call ([new_key]), agent populate, -- undo
+					agent data_source_setter_agent.call ([new_key, new_val]), agent populate -- redo
+				)
+			end
 		end
 
 	process_remove_existing
@@ -130,10 +136,12 @@ feature {NONE} -- Implementation
 			data_source_remove_agent.call ([old_key])
 			ev_data_control.remove_selected_item
 
-			undo_redo_chain.add_link (ev_data_control,
-				agent data_source_setter_agent.call ([old_key, old_val]), agent populate,  -- undo
-				agent data_source_remove_agent.call ([old_key]), agent populate -- redo
-			)
+			if attached undo_redo_chain as urc then
+				urc.add_link (ev_data_control,
+					agent data_source_setter_agent.call ([old_key, old_val]), agent populate,  -- undo
+					agent data_source_remove_agent.call ([old_key]), agent populate -- redo
+				)
+			end
 		end
 
 end
