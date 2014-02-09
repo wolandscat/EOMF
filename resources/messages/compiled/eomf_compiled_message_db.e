@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (153)
+			create message_table.make (159)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -143,6 +143,12 @@ feature -- Initialisation
 			message_table.put ("Completely collapse the tree", ec_collapse_complete_tooltip)
 			message_table.put ("Expand one level of the tree", ec_expand_one_level_tooltip)
 			message_table.put ("Collapse one level of the tree", ec_collapse_one_level_tooltip)
+			message_table.put ("View", ec_view_controls_text)
+			message_table.put ("+ Line Numbers", ec_add_line_numbers_text)
+			message_table.put ("Add line numbers to text", ec_add_line_numbers_tooltip)
+			message_table.put ("Row Filter", ec_row_filter_frame_text)
+			message_table.put ("Filter which rows are shown in the Path Analysis", ec_row_filter_combo_tooltip)
+			message_table.put ("Column View", ec_column_frame_text)
 			message_table.put ("$1 configuration settings (ODIN format)", ec_config_settings_line1)
 			message_table.put ("Automatically written by application", ec_config_settings_line2)
 			message_table.put ("put_object call to object_converter.object_to_dt with object of type $1 failed", ec_put_object_conversion_failure)

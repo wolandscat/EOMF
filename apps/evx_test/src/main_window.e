@@ -141,6 +141,8 @@ feature {NONE} -- GUI Widgets
 	evx_button: detachable EVX_BUTTON
 	evx_hash_table: detachable EVX_HASH_TABLE_CONTROL
 	evx_text_list: detachable EVX_TEXT_LIST_CONTROL
+	evx_table_control: detachable EVX_TABLE_CONTROL
+	evx_text_editor_control: detachable EVX_TEXT_EDITOR_CONTROL
 
 end
 

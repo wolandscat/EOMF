@@ -39,6 +39,15 @@ templates = <
 		["expand_one_level_tooltip"] = <"Expand one level of the tree">
 		["collapse_one_level_tooltip"] = <"Collapse one level of the tree">
 
+		-- EVX_TEXT_EDITOR_CONTROL
+		["view_controls_text"] = <"View">
+		["add_line_numbers_text"] = <"+ Line Numbers">
+		["add_line_numbers_tooltip"] = <"Add line numbers to text">
+
+		-- EVX_TABLE_CONTROL
+		["row_filter_frame_text"] = <"Row Filter">
+		["row_filter_combo_tooltip"] = <"Filter which rows are shown in the Path Analysis">
+		["column_frame_text"] = <"Column View">
 	>
 >
 
