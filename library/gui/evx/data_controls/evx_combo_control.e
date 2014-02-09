@@ -41,15 +41,24 @@ create
 feature -- Initialisation
 
 	make (a_title: STRING; a_data_source_agent: like data_source_agent;
+			a_select_agent: detachable PROCEDURE [ANY, TUPLE];
 			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
 		do
 			make_data_control (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally)
+			if attached a_select_agent as att_agt then
+				ev_data_control.select_actions.extend (att_agt)
+			end
 			ev_data_control.select_actions.extend (agent propagate_select_action)
 		end
 
 feature -- Access
 
 	ev_data_control: EV_COMBO_BOX
+
+	selected_text: STRING
+		do
+			Result := ev_data_control.text
+		end
 
 	data_source_agent: FUNCTION [ANY, TUPLE, detachable LIST [STRING]]
 
@@ -62,19 +71,21 @@ feature -- Commands
 		end
 
 	populate
-			-- Wipe out content.
+			-- repopulate content
 		do
-			ev_data_control.select_actions.block
-			ev_data_control.wipe_out
-			if attached {LIST [STRING]} data_source_agent.item ([]) as strs then
-				strs.do_all (
-					agent (str:STRING)
-						do
-							ev_data_control.extend (create {EV_LIST_ITEM}.make_with_text (utf8_to_utf32 (str)))
-						end
-				)
+			if ev_data_control.is_empty then
+				ev_data_control.select_actions.block
+				ev_data_control.wipe_out
+				if attached {LIST [STRING]} data_source_agent.item ([]) as strs then
+					strs.do_all (
+						agent (str:STRING)
+							do
+								ev_data_control.extend (create {EV_LIST_ITEM}.make_with_text (utf8_to_utf32 (str)))
+							end
+					)
+				end
+				ev_data_control.select_actions.resume
 			end
-			ev_data_control.select_actions.resume
 		end
 
 feature {NONE} -- Implementation

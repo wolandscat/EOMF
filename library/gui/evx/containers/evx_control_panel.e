@@ -59,6 +59,14 @@ feature -- Access
 
 	ev_root_container: EV_VERTICAL_BOX
 
+	last_added_frame: detachable EVX_FRAME_CONTROL
+			-- most recently added frame via `create_new_frame' call
+		do
+			if not evx_frame_list.is_empty then
+				Result := evx_frame_list.last
+			end
+		end
+
 feature -- Commands
 
 	collapse
@@ -90,6 +98,20 @@ feature -- Modification
 			end
 		end
 
+	create_new_frame (a_title: STRING; can_expand: BOOLEAN)
+			-- extend current container with a new EVX_FRAME_CONTROL
+		local
+			evx_frame: EVX_FRAME_CONTROL
+		do
+			create evx_frame.make (a_title, 0, 0, False)
+
+			ev_main_vbox.extend (evx_frame.ev_root_container)
+			if not can_expand then
+				ev_main_vbox.disable_item_expand (evx_frame.ev_root_container)
+			end
+			evx_frame_list.extend (evx_frame)
+		end
+
 feature {NONE} -- Implementation
 
 	ev_main_vbox: EV_VERTICAL_BOX
@@ -108,7 +130,9 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	evx_frame_list: ARRAYED_LIST [EVX_FRAME_CONTROL]
+		attribute
+			create Result.make (0)
+		end
+
 end
-
-
-

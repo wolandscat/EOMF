@@ -13,16 +13,7 @@ note
 deferred class EVX_DATA_CONTROL
 
 inherit
-	EVX_DEFINITIONS
-		export
-			{NONE} all;
-			{ANY} deep_twin, is_deep_equal, standard_is_equal
-		end
-
-	EVX_UTILITIES
-		export
-			{NONE} all
-		end
+	EVX_CONTROL_SHELL
 
 feature -- Definitions
 
@@ -52,6 +43,11 @@ feature -- Access
 
 feature -- Status Report
 
+	is_displayed: BOOLEAN
+		do
+			Result := ev_data_control.is_displayed
+		end
+
 	is_readonly: BOOLEAN
 			-- True if user interaction of this control is not allowed
 
@@ -76,15 +72,6 @@ feature -- Modification
 		end
 
 feature -- Commands
-
-	clear
-			-- Wipe out content.
-		deferred
-		end
-
-	populate
-		deferred
-		end
 
 	enable_editable
 			-- enable user editing, do nothing if `is_readonly'
@@ -145,5 +132,3 @@ feature {NONE} -- Implementation
 		end
 
 end
-
-

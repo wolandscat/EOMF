@@ -91,14 +91,18 @@ feature {NONE} -- Implementation
 	populate_table (key_list: LIST [STRING])
 		local
 			list_row: EV_MULTI_COLUMN_LIST_ROW
+			row_data: ARRAYED_LIST[STRING_32]
 		do
 			ev_data_control.wipe_out
 
 			-- populate the table rows using the data source as the first column keys
 			across key_list as key_list_csr loop
-				create list_row
-				list_row.append (data_row_agt.item ([key_list_csr.item]))
-				ev_data_control.extend (list_row)
+				row_data := data_row_agt.item ([key_list_csr.item])
+				if not row_data.is_empty then
+					create list_row
+					list_row.append (row_data)
+					ev_data_control.extend (list_row)
+				end
 			end
 
 			-- resize columns based on data or headers if no data
