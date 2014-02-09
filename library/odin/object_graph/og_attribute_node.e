@@ -133,8 +133,7 @@ feature -- Modification
 			new_id: STRING
 		do
 			if children.has(obj_node.node_id) then
-				duplicate_child_id_count := duplicate_child_id_count + 1
-				new_id := obj_node.node_id + "_#" + duplicate_child_id_count.out
+				new_id := obj_node.node_id + (children.count + 1).out
 				obj_node.set_node_id(new_id)
 			end
 			precursor(obj_node)
@@ -146,10 +145,9 @@ feature -- Modification
 		local
 			new_id: STRING
 		do
-			if children.has(obj_node.node_id) then
-				duplicate_child_id_count := duplicate_child_id_count + 1
-				new_id := obj_node.node_id + "_#" + duplicate_child_id_count.out
-				obj_node.set_node_id(new_id)
+			if children.has (obj_node.node_id) then
+				new_id := obj_node.node_id + (children.count + 1).out
+				obj_node.set_node_id (new_id)
 			end
 			precursor(obj_node, before_obj_node)
 		end
@@ -160,9 +158,8 @@ feature -- Modification
 		local
 			new_id: STRING
 		do
-			if children.has(obj_node.node_id) then
-				duplicate_child_id_count := duplicate_child_id_count + 1
-				new_id := obj_node.node_id + "_#" + duplicate_child_id_count.out
+			if children.has (obj_node.node_id) then
+				new_id := obj_node.node_id + (children.count + 1).out
 				obj_node.set_node_id(new_id)
 			end
 			precursor(obj_node, after_obj_node)
@@ -207,9 +204,6 @@ feature {NONE} -- Implementation
 		once
 			create {OG_OBJECT_LEAF} Result.make_anonymous
 		end
-
-	duplicate_child_id_count: INTEGER
-			-- cumulative count of children with 'unknown' ids - used to generate unique ids
 
 	reparent_to_root
 			-- reparent this node to the root node, removing intervening orphaned nodes on the way
