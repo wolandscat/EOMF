@@ -125,7 +125,7 @@ feature -- Access
 
 	items: ARRAYED_LIST[OG_PATH_ITEM]
 
-	new_cursor: ITERATION_CURSOR [OG_PATH_ITEM]
+	new_cursor: INDEXABLE_ITERATION_CURSOR [OG_PATH_ITEM]
 			-- Fresh cursor associated with current structure
 		do
 			Result := items.new_cursor
@@ -155,6 +155,13 @@ feature -- Access
 	count: INTEGER
 		do
 			Result := items.count
+		end
+
+	i_th (i: INTEGER): OG_PATH_ITEM
+		require
+			i > 0 and i <= count
+		do
+			Result := items.i_th (i)
 		end
 
 	hash_code: INTEGER
