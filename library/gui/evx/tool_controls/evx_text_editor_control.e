@@ -67,6 +67,7 @@ feature {NONE}-- Initialization
 				agent :BOOLEAN do Result := show_line_numbers end,
 				agent update_line_numbers)
 			evx_view_frame.extend (evx_line_numbers_cb.ev_data_control, False)
+			gui_controls.extend (evx_line_numbers_cb)
 
 			ev_root_container.set_data (Current)
 		end
@@ -79,6 +80,18 @@ feature -- Access
 
 	source_text: FUNCTION [ANY, TUPLE, detachable STRING]
 			-- agent that provides access to text
+
+feature -- Modification
+
+	add_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING_8; a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
+			-- add an EVX button to the control panel
+		local
+			evx_button: EVX_BUTTON
+		do
+			create evx_button.make (an_active_pixmap, an_inactive_pixmap, a_button_text, a_tooltip_text, a_do_action, a_stop_action)
+			control_panel.last_added_frame.extend (evx_button.ev_button, False)
+			gui_controls.extend (evx_button)
+		end
 
 feature -- Status Report
 
@@ -112,24 +125,6 @@ feature -- Commands
 			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.disable_editable end)
 		end
 
-feature {NONE} -- Implementation
-
-	update_line_numbers (flag: BOOLEAN)
-		do
-			show_line_numbers := flag
-			populate
-		end
-
-	gui_controls: ARRAYED_LIST [EVX_DATA_CONTROL]
-
-	control_panel: EVX_CONTROL_PANEL
-
-	ev_text: EV_RICH_TEXT
-
-	evx_view_frame: EVX_FRAME_CONTROL
-
-	evx_line_numbers_cb: EVX_CHECK_BOX_CONTROL
-
 	clear
 		do
 			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.clear end)
@@ -150,6 +145,24 @@ feature {NONE} -- Implementation
 				ev_text.set_text (utf8_to_utf32 (s))
 			end
 		end
+
+feature {NONE} -- Implementation
+
+	update_line_numbers (flag: BOOLEAN)
+		do
+			show_line_numbers := flag
+			populate
+		end
+
+	gui_controls: ARRAYED_LIST [EVX_CONTROL_SHELL]
+
+	control_panel: EVX_CONTROL_PANEL
+
+	ev_text: EV_RICH_TEXT
+
+	evx_view_frame: EVX_FRAME_CONTROL
+
+	evx_line_numbers_cb: EVX_CHECK_BOX_CONTROL
 
 end
 

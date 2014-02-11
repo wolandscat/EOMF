@@ -10,12 +10,7 @@ note
 class EVX_BUTTON
 
 inherit
-	EVX_DEFINITIONS
-		export
-			{NONE} all
-		end
-
-	EVX_UTILITIES
+	EVX_CONTROL_SHELL
 		export
 			{NONE} all;
 			{ANY} deep_twin, is_deep_equal, standard_is_equal
@@ -62,6 +57,39 @@ feature -- Access
 feature -- Status Report
 
 	is_active: BOOLEAN
+
+	is_displayed: BOOLEAN
+		do
+			Result := ev_button.is_displayed
+		end
+
+feature -- Commands
+
+	clear
+		do
+		end
+
+	populate
+		do
+		end
+
+	enable_editable
+			-- enable user editing, do nothing if `is_readonly'
+		do
+		end
+
+	disable_editable
+			-- disable user editing, do nothing if `is_readonly'
+		do
+		end
+
+	hide
+		do
+		end
+
+	show
+		do
+		end
 
 feature {NONE} -- Implementation
 
