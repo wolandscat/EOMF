@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (159)
+			create message_table.make (161)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -144,6 +144,8 @@ feature -- Initialisation
 			message_table.put ("Expand one level of the tree", ec_expand_one_level_tooltip)
 			message_table.put ("Collapse one level of the tree", ec_collapse_one_level_tooltip)
 			message_table.put ("View", ec_view_controls_text)
+			message_table.put ("Save", ec_save_button_text)
+			message_table.put ("Save editor contents to file", ec_save_button_tooltip)
 			message_table.put ("+ Line Numbers", ec_add_line_numbers_text)
 			message_table.put ("Add line numbers to text", ec_add_line_numbers_tooltip)
 			message_table.put ("Row Filter", ec_row_filter_frame_text)

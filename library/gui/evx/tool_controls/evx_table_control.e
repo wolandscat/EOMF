@@ -33,7 +33,7 @@ create
 
 feature {NONE} -- Initialisation
 
-	make (on_mlist_key_agt: PROCEDURE [ANY, TUPLE [EV_KEY]];
+	make (on_mlist_keypress_agt: PROCEDURE [ANY, TUPLE [EV_KEY]];
 			a_column_titles_agt: FUNCTION [ANY, TUPLE, ARRAY [STRING]];
 			a_key_list_agt: like key_list_agt;
 			a_row_filter_names_agt: FUNCTION [ANY, TUPLE, ARRAYED_LIST [STRING]];
@@ -70,7 +70,7 @@ feature {NONE} -- Initialisation
 
 			-- set events: key press agent for main list, enables things like
 			-- ctrl-C to do copy
-			evx_mlist.ev_data_control.key_press_actions.extend (on_mlist_key_agt)
+			evx_mlist.ev_data_control.key_press_actions.extend (on_mlist_keypress_agt)
 
 			ev_root_container.set_data (Current)
 		end
@@ -212,6 +212,7 @@ feature {NONE} -- Implementation
 		end
 
 	key_list: ARRAYED_LIST [STRING]
+			-- return the contents of the row whose key is
 		do
 			Result := key_list_agt.item ([evx_row_filter_combo.selected_text])
 		end

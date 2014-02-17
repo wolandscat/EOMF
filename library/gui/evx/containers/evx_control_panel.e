@@ -83,10 +83,11 @@ feature -- Commands
 
 feature -- Modification
 
-	add_frame_control (a_frame_ctl: EVX_FRAME_CONTROL; can_expand: BOOLEAN)
+	add_frame_control (evx_frame: EVX_FRAME_CONTROL; can_expand: BOOLEAN)
 			-- extend current container with frame inside `a_frame_ctl'
 		do
-			add_frame (a_frame_ctl.ev_root_container, can_expand)
+			add_frame (evx_frame.ev_root_container, can_expand)
+			evx_frame_list.extend (evx_frame)
 		end
 
 	add_frame (a_frame: EV_FRAME; can_expand: BOOLEAN)

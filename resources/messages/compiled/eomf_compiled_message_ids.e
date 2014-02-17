@@ -129,6 +129,8 @@ feature -- Definitions
 		ec_expand_one_level_tooltip: STRING = "expand_one_level_tooltip"
 		ec_collapse_one_level_tooltip: STRING = "collapse_one_level_tooltip"
 		ec_view_controls_text: STRING = "view_controls_text"
+		ec_save_button_text: STRING = "save_button_text"
+		ec_save_button_tooltip: STRING = "save_button_tooltip"
 		ec_add_line_numbers_text: STRING = "add_line_numbers_text"
 		ec_add_line_numbers_tooltip: STRING = "add_line_numbers_tooltip"
 		ec_row_filter_frame_text: STRING = "row_filter_frame_text"

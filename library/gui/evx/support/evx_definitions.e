@@ -38,6 +38,11 @@ feature -- Definitions
 			create Result.make_with_8_bit_rgb (240, 240, 240)
 		end
 
+	Line_numbers_bg_color: EV_COLOR
+		once
+			create Result.make_with_8_bit_rgb (0xaa, 0xaa, 0xaa)
+		end
+
 	screen_10_pt_regular_font: EV_FONT
 		do
 			create Result

@@ -41,6 +41,8 @@ templates = <
 
 		-- EVX_TEXT_EDITOR_CONTROL
 		["view_controls_text"] = <"View">
+		["save_button_text"] = <"Save">
+		["save_button_tooltip"] = <"Save editor contents to file">
 		["add_line_numbers_text"] = <"+ Line Numbers">
 		["add_line_numbers_tooltip"] = <"Add line numbers to text">
 

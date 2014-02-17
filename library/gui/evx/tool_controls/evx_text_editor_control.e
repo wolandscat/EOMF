@@ -24,13 +24,23 @@ inherit
 			{NONE} all
 		end
 
+	EV_SHARED_APPLICATION
+		export
+			{NONE} all
+		end
+
+	EV_KEY_CONSTANTS
+		export
+			{NONE} all
+		end
+
 	STRING_UTILITIES
 		export
 			{NONE} all
 		end
 
 create
-	make
+	make, make_editable
 
 feature -- Definitions
 
@@ -38,9 +48,18 @@ feature -- Definitions
 
 feature {NONE}-- Initialization
 
-	make (a_source_text: like source_text)
+	make_editable (a_source_text_agt: like source_text_agt; a_save_agt: like save_agt)
 		do
-			source_text := a_source_text
+			make (a_source_text_agt)
+			enable_editable
+			save_agt := a_save_agt
+			add_button (Void, Void, get_text (ec_save_button_text), get_text (ec_save_button_tooltip), agent save_content, Void)
+			ev_text.key_press_actions.extend (agent on_keypress)
+		end
+
+	make (a_source_text_agt: like source_text_agt)
+		do
+			source_text_agt := a_source_text_agt
 
 			create ev_root_container
 			create gui_controls.make (0)
@@ -78,7 +97,7 @@ feature -- Access
 
 	show_line_numbers: BOOLEAN
 
-	source_text: FUNCTION [ANY, TUPLE, detachable STRING]
+	source_text_agt: FUNCTION [ANY, TUPLE, detachable STRING]
 			-- agent that provides access to text
 
 feature -- Modification
@@ -101,6 +120,12 @@ feature -- Status Report
 			Result := ev_root_container.is_displayed
 		end
 
+	is_empty: BOOLEAN
+			-- True if no text in this editor
+		do
+			Result := ev_text.text_length = 0
+		end
+
 feature -- Commands
 
 	hide
@@ -116,18 +141,19 @@ feature -- Commands
 	enable_editable
 			-- enable editing
 		do
-			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.enable_editable end)
+			ev_text.enable_edit
+
 		end
 
 	disable_editable
 			-- disable editing
 		do
-			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.disable_editable end)
+			ev_text.disable_edit
 		end
 
 	clear
 		do
-			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.clear end)
+			gui_controls.do_all (agent (an_item: EVX_CONTROL_SHELL) do an_item.clear end)
 			ev_text.remove_text
 		end
 
@@ -135,14 +161,24 @@ feature -- Commands
 		local
 			s: STRING
 		do
-			gui_controls.do_all (agent (an_item: EVX_DATA_CONTROL) do an_item.populate end)
-			if attached source_text.item ([]) as att_text then
+			gui_controls.do_all (agent (an_item: EVX_CONTROL_SHELL) do an_item.populate end)
+			if attached source_text_agt.item ([]) as att_text then
 				if show_line_numbers then
 					s := add_line_numbers (att_text, Line_num_pad_width, " ")
 				else
 					s := att_text
 				end
 				ev_text.set_text (utf8_to_utf32 (s))
+			end
+		end
+
+feature -- Events
+
+	on_keypress (key: EV_KEY)
+			-- When the user presses ctrl-S on row in path map, call the save agent
+		do
+			if ev_application.ctrl_pressed and attached key and then key.code = key_s then
+				save_content
 			end
 		end
 
@@ -163,6 +199,16 @@ feature {NONE} -- Implementation
 	evx_view_frame: EVX_FRAME_CONTROL
 
 	evx_line_numbers_cb: EVX_CHECK_BOX_CONTROL
+
+	save_agt: detachable PROCEDURE [ANY, TUPLE [STRING]]
+
+	save_content
+			-- save content of text editor using `save_agt'
+		do
+			if attached save_agt as att_agt then
+				att_agt.call ([utf32_to_utf8 (ev_text.text)])
+			end
+		end
 
 end
 

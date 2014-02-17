@@ -1,4 +1,4 @@
---	component:   openEHR dadl Project
+--	component:   EOMF Project
 --	description: Error database for any application
 --				 
 --	keywords:    error database

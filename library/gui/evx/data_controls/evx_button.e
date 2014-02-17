@@ -23,6 +23,9 @@ feature -- Initialisation
 
 	make (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING;
 			a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
+			-- if both `a_do_action' and `a_stop_action' are set, each consecutive press of the button calls these
+			-- actions alternately, one for the 'active' state, one for the 'inactive' state. If only `a_do_action'
+			-- is set, it is called on every button press.
 		do
 			active_pixmap := an_active_pixmap
 			inactive_pixmap := an_inactive_pixmap
@@ -96,9 +99,27 @@ feature {NONE} -- Implementation
 	toggle
 		do
 			if not is_active then
-				set_active
+				do_active
 			else
-				set_inactive
+				do_inactive
+			end
+		end
+
+	do_active
+		do
+			set_active
+			if attached do_action as action then
+				action.call ([])
+			end
+		end
+
+	do_inactive
+		do
+			set_inactive
+			if attached stop_action as action then
+				action.call ([])
+			elseif attached do_action as action then
+				action.call ([])
 			end
 		end
 
@@ -108,9 +129,6 @@ feature {NONE} -- Implementation
 			if attached active_pixmap as pm then
 				ev_button.set_pixmap (pm)
 			end
-			if attached do_action as action then
-				action.call ([])
-			end
 		end
 
 	set_inactive
@@ -118,9 +136,6 @@ feature {NONE} -- Implementation
 			is_active := False
 			if attached inactive_pixmap as pm then
 				ev_button.set_pixmap (pm)
-			end
-			if attached stop_action as action then
-				action.call ([])
 			end
 		end
 

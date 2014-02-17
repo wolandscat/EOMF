@@ -119,11 +119,14 @@ feature -- Status Report
 
 feature -- Modification
 
+	clear_object_id
+			-- set object_id to empty string
+		do
+			object_id := ""
+		end
+
 	set_object_id (an_object_id: STRING)
-			-- make a path segment with an attribute name and an object id -
-			-- corresponds to multiple caridnality attribute case
-		require
-			an_object_id_valid: an_object_id /= Void
+			-- set object_id
 		do
 			object_id := an_object_id
 		ensure
