@@ -296,8 +296,41 @@ feature -- Commands
 		end
 
 	resize_columns_to_content
+			-- resize columns to content
 		do
 			ev_grid.resize_columns_to_content (Default_grid_expansion_factor)
+		end
+
+	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER])
+			-- resize columns and then shrink as needed, avoiding fixed_cols
+		local
+			fixed_cols_width, total_width, var_cols_width, grid_width, i: INTEGER
+			reduction_factor: REAL_64
+		do
+			ev_grid.resize_columns_to_content (Default_grid_expansion_factor)
+
+			grid_width := ev_grid.width
+
+			-- add up widths of cols
+			from i := 1 until i > ev_grid.column_count loop
+				if fixed_cols.has (i) then
+					fixed_cols_width := fixed_cols_width + ev_grid.column (i).width
+				else
+					var_cols_width := var_cols_width + ev_grid.column (i).width
+				end
+				total_width := total_width + ev_grid.column (i).width
+				i := i + 1
+			end
+
+			if fixed_cols_width < grid_width then
+				reduction_factor := (grid_width - fixed_cols_width) / var_cols_width
+				from i := 1 until i > ev_grid.column_count loop
+					if not fixed_cols.has (i) then
+						ev_grid.column (i).set_width ((ev_grid.column (i).width * reduction_factor).floor)
+					end
+					i := i + 1
+				end
+			end
 		end
 
 	set_checkboxes_recursively (a_gcli: EV_GRID_CHECKABLE_LABEL_ITEM)
