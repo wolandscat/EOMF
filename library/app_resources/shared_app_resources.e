@@ -28,12 +28,9 @@ feature -- Definitions
 	Default_user_config_file_directory: STRING
 			-- Default OS-specific place for user config file(s) for all applications ased on adl_workbench code base.
 			-- Follows the model home_path/app_vendor/adl_workbench.
-			-- This default directory can be used as a fallback rather than forcing every related app to have its
-			-- own .cfg file, with essentially the same information (configured directories etc).
-			-- (On Unix/Linux/Macosx(?) systems, we would normally locate this in /etc/adl_workbench)
 		do
 			if attached execution_environment.home_directory_name as hd then
-				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), Default_application_name)
+				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), application_name)
 			else
 				Result := file_system.current_working_directory
 			end
@@ -42,7 +39,7 @@ feature -- Definitions
 	Default_user_config_file_path: STRING
 			-- Full path to resource configuration file.
 		do
-			Result := file_system.pathname (Default_user_config_file_directory, Default_application_name + User_config_file_extension)
+			Result := file_system.pathname (Default_user_config_file_directory, application_name + User_config_file_extension)
 		end
 
 	Default_xml_rules_file_path: STRING
@@ -59,11 +56,7 @@ feature -- Access
 			-- accessor object for application config file
 		once
 			Result := app_cfg_cell.item
-	--		if file_system.file_exists (user_config_file_path) then
-				Result.initialise (user_config_file_path)
-	--		else
-	--			Result.initialise (Default_user_config_file_path)
-	--		end
+			Result.initialise (user_config_file_path)
 			app_cfg_initialise
 		end
 
