@@ -10,8 +10,6 @@ note
 deferred class CONFIG_FILE_ACCESS_I
 
 inherit
-	KL_SHARED_FILE_SYSTEM
-
 	SHARED_APP_RESOURCES
 		export
 			{NONE} all
@@ -19,7 +17,8 @@ inherit
 
 	SHARED_MESSAGE_DB
 		export
-			{NONE} all
+			{NONE} all;
+			{ANY} deep_twin, deep_copy, is_deep_equal, standard_is_equal
 		end
 
 feature -- Definitions

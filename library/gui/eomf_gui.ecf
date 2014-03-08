@@ -17,7 +17,7 @@
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
-		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 
 		<cluster name="eomf_gui" location=".\" recursive="true"/>
