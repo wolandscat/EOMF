@@ -14,7 +14,7 @@
 		<setting name="console_application" value="true"/>
 
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
-		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="ise_argument_parser" location="$ISE_LIBRARY\library\argument_parser\argument_parser-safe.ecf"/>
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>

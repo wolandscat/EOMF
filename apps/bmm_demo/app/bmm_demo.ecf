@@ -12,16 +12,14 @@
 
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="eomf_odin" location="$EOMF\library\odin\odin.ecf"/>
-		<library name="gobo_kernel" location="$GOBO\library\kernel\library.ecf"/>
-		<library name="gobo_lexical" location="$GOBO\library\lexical\library.ecf"/>
-		<library name="gobo_parse" location="$GOBO\library\parse\library.ecf"/>
-		<library name="gobo_lexical_skl" location="$GOBO\library\lexical\library_skl.ecf"/>
-		<library name="gobo_parse_skl" location="$GOBO\library\parse\library_skl.ecf"/>
-		<library name="gobo_utility" location="$GOBO\library\utility\library.ecf"/>
-		<library name="gobo_regexp" location="$GOBO\library\regexp\library.ecf"/>
-		<library name="gobo_structure" location="$GOBO\library\structure\library.ecf"/>
-		<library name="gobo_pattern" location="$GOBO\library\pattern\library.ecf"/>
-		<library name="gobo_string" location="$GOBO\library\string\library.ecf"/>
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
+		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
+		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
+		<library name="gobo_regexp" location="$ISE_LIBRARY\library\gobo\gobo_regexp-safe.ecf"/>
+		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
+		<library name="gobo_pattern" location="$ISE_LIBRARY\library\gobo\gobo_pattern-safe.ecf"/>
+		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
+		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string-safe.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
