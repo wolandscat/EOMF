@@ -83,6 +83,10 @@ feature -- Commands
 								ev_data_control.extend (create {EV_LIST_ITEM}.make_with_text (utf8_to_utf32 (str)))
 							end
 					)
+					-- Select the first one if nothing selected
+					if not across ev_data_control as combo_items_csr some combo_items_csr.item.is_selected end then
+						ev_data_control.first.enable_select
+					end
 				end
 				ev_data_control.select_actions.resume
 			end
