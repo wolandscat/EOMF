@@ -76,6 +76,11 @@ feature -- Status Report
 
 	has_warnings: BOOLEAN
 
+	has_errors_or_warnings: BOOLEAN
+		do
+			Result := has_errors or has_warnings
+		end
+
 	has_info: BOOLEAN
 
 	has_error (a_code: STRING): BOOLEAN

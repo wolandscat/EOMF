@@ -195,6 +195,11 @@ feature -- Commands
 			end
 		end
 
+	resize_columns_proportional
+		do
+			evx_mlist.resize_columns_proportional (create {ARRAYED_LIST[INTEGER]}.make (0))
+		end
+
 feature {NONE} -- Implementation
 
 	gui_controls: ARRAYED_LIST [EVX_DATA_CONTROL]

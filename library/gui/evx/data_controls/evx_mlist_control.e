@@ -103,6 +103,49 @@ feature -- Commands
 			ev_data_control.wipe_out
 		end
 
+	resize_columns_to_content
+			-- resize columns to content
+		local
+			i: INTEGER
+		do
+			from i := 1 until i > ev_data_control.column_count loop
+				ev_data_control.resize_column_to_content (i)
+				i := i + 1
+			end
+		end
+
+	resize_columns_proportional (fixed_cols: LIST [INTEGER])
+			-- resize columns and then shrink as needed, avoiding fixed_cols
+		local
+			fixed_cols_width, total_width, var_cols_width, table_width, i: INTEGER
+			reduction_factor: REAL_64
+		do
+			resize_columns_to_content
+
+			table_width := ev_data_control.width
+
+			-- add up widths of cols
+			from i := 1 until i > ev_data_control.column_count loop
+				if fixed_cols.has (i) then
+					fixed_cols_width := fixed_cols_width + ev_data_control.column_width (i)
+				else
+					var_cols_width := var_cols_width + ev_data_control.column_width (i)
+				end
+				total_width := total_width + ev_data_control.column_width (i)
+				i := i + 1
+			end
+
+			if fixed_cols_width < table_width then
+				reduction_factor := (table_width - fixed_cols_width) / var_cols_width
+				from i := 1 until i > ev_data_control.column_count loop
+					if not fixed_cols.has (i) then
+						ev_data_control.set_column_width ((ev_data_control.column_width (i) * reduction_factor).floor, i)
+					end
+					i := i + 1
+				end
+			end
+		end
+
 feature {NONE} -- Implementation
 
 	do_populate_control_from_source

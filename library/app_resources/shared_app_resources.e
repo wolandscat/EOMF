@@ -173,9 +173,9 @@ feature -- Application Switches
 			-- Level of error reporting required; see BILLBOARD_MESSAGE_TYPES for levels
 			-- all levels >= the one stored will be displayed; Info is the minimum.
 		do
-			Result := app_cfg.integer_value ("/general/error_reporting_level")
+			Result := if app_cfg.has_resource ("/general/error_reporting_level") then app_cfg.integer_value ("/general/error_reporting_level") else Error_type_warning end
 			if not is_valid_error_type (Result) then
-				Result := Error_type_info
+				Result := Error_type_warning
 			end
 		end
 
