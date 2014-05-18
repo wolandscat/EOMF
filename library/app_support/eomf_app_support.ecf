@@ -25,6 +25,7 @@
 		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
+		<library name="iso8601" location="$EIFFEL_HUB\library\iso8601\src\iso8601.ecf"/>
 
 		<cluster name="app_support" location=".\" recursive="true">
 			<file_rule>

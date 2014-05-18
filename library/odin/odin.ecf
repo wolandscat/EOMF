@@ -23,6 +23,7 @@
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="iso8601" location="$EIFFEL_HUB\library\iso8601\src\iso8601.ecf"/>
 
 		<cluster name="odin" location=".\" recursive="true"/>
 	</target>

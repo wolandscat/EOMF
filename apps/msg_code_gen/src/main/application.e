@@ -264,7 +264,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	odin_parser: ODIN_VALIDATOR
+	odin_parser: ODIN_PARSER
 		once
 			create Result.make
 		end

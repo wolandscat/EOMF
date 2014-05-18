@@ -27,9 +27,6 @@ inherit
 			{NONE} all
 		end
 
-	KL_IMPORTED_INTEGER_ROUTINES
-	KL_IMPORTED_STRING_ROUTINES
-	KL_SHARED_PLATFORM
 	KL_SHARED_EXCEPTIONS
 	KL_SHARED_ARGUMENTS
 
@@ -241,7 +238,7 @@ end
 				start_block_received := False
 			end
 			last_token := SYM_INTERVAL_DELIM
-		
+
 else
 	yy_position := yy_position + 1
 --|#line 93 "odin_scanner.l"
@@ -299,7 +296,7 @@ end
 				start_block_received := True
 				block_depth := block_depth + 1
 			end
-		
+
 end
 else
 if yy_act = 26 then
@@ -315,7 +312,7 @@ end
 				last_token := SYM_END_DBLOCK
 				block_depth := block_depth - 1
 			end
-		
+
 else
 	yy_position := yy_position + 2
 --|#line 121 "odin_scanner.l"
@@ -373,7 +370,7 @@ end
 
 					last_token := V_QUALIFIED_TERM_CODE_REF
 					last_string_value := text_substring (2, text_count - 1)
-			
+
 end
 end
 else
@@ -387,7 +384,7 @@ end
 
 					last_token := V_TERMINOLOGY_ID
 					last_string_value := text_substring (2, text_count - 1)
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 147 "odin_scanner.l"
@@ -397,7 +394,7 @@ end
 
 					last_token := ERR_V_QUALIFIED_TERM_CODE_REF
 					last_string_value := text_substring (2, text_count - 1)
-			
+
 end
 else
 if yy_act = 35 then
@@ -409,7 +406,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-		
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 155 "odin_scanner.l"
@@ -419,7 +416,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-		
+
 end
 end
 end
@@ -440,7 +437,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-		
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 163 "odin_scanner.l"
@@ -450,7 +447,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_TIME
 				last_string_value := text
-		
+
 end
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
@@ -461,7 +458,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_TIME
 				last_string_value := text
-		
+
 end
 else
 if yy_act = 40 then
@@ -473,7 +470,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_DATE
 				last_string_value := text
-		
+
 else
 	yy_position := yy_position + 7
 --|#line 172 "odin_scanner.l"
@@ -483,7 +480,7 @@ end
 
 				last_token := V_ISO8601_EXTENDED_DATE
 				last_string_value := text
-		
+
 end
 end
 else
@@ -497,7 +494,7 @@ end
 
 				last_token := V_ISO8601_DURATION
 				last_string_value := text
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 183 "odin_scanner.l"
@@ -507,7 +504,7 @@ end
 
 				last_token := V_ISO8601_DURATION
 				last_string_value := text
-			
+
 end
 else
 if yy_act = 44 then
@@ -519,7 +516,7 @@ end
 
 					last_token := V_TYPE_IDENTIFIER
 					last_string_value := text
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 194 "odin_scanner.l"
@@ -529,7 +526,7 @@ end
 
 					last_token := V_GENERIC_TYPE_IDENTIFIER
 					last_string_value := text
-			
+
 end
 end
 end
@@ -546,7 +543,7 @@ end
 
 					last_token := V_ATTRIBUTE_IDENTIFIER
 					last_string_value := text
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 206 "odin_scanner.l"
@@ -561,7 +558,7 @@ end
 				else
 					last_token := ERR_CADL_MISPLACED
 				end
-			
+
 end
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
@@ -572,7 +569,7 @@ end
 		-- got an open brace
 				in_buffer.append_string (text)
 				cadl_depth := cadl_depth + 1
-			
+
 end
 else
 if yy_act = 49 then
@@ -592,7 +589,7 @@ end
 					in_lineno := in_lineno + in_buffer.occurrences('%N')
 					in_buffer.wipe_out
 				end
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 238 "odin_scanner.l"
@@ -602,7 +599,7 @@ end
 
 					last_token := V_INTEGER
 					last_integer_value := text.to_integer
-			
+
 end
 end
 else
@@ -616,7 +613,7 @@ end
 
 					last_token := V_INTEGER
 					last_integer_value := text.to_integer
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 246 "odin_scanner.l"
@@ -626,7 +623,7 @@ end
 
 						last_token := V_REAL
 						last_real_value := text.to_real
-					
+
 end
 else
 if yy_act = 53 then
@@ -638,7 +635,7 @@ end
 
 						last_token := V_REAL
 						last_real_value := text.to_real
-					
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 254 "odin_scanner.l"
@@ -648,7 +645,7 @@ end
 
 				last_token := V_STRING
 				last_string_value := text_substring (2, text_count - 1)
-			
+
 end
 end
 end
@@ -669,7 +666,7 @@ end
 					in_buffer.append_string (text_substring (2, text_count))
 				end
 				set_start_condition (IN_STR)
-			
+
 else
 	yy_position := yy_position + 2
 --|#line 267 "odin_scanner.l"
@@ -695,7 +692,7 @@ debug ("GELEX")
 end
 
 				in_buffer.append_string (text)
-	
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 275 "odin_scanner.l"
@@ -716,7 +713,7 @@ end
 
 				in_lineno := in_lineno + 1	-- match LF in line
 				in_buffer.append_character ('%N')
-			
+
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
 --|#line 282 "odin_scanner.l"
@@ -735,7 +732,7 @@ end
 				in_buffer.wipe_out
 				last_string_value := str_
 				set_start_condition (INITIAL)
-			
+
 end
 else
 if yy_act = 62 then
@@ -747,7 +744,7 @@ end
 	-- Catch-all rules (no backing up)
 				last_token := ERR_STRING
 				set_start_condition (INITIAL)
-			
+
 else
 	yy_position := yy_position + 3
 --|#line 305 "odin_scanner.l"
@@ -860,7 +857,7 @@ end
 	-- Catch-all rules (no backing up)
 				last_token := ERR_STRING
 				set_start_condition (INITIAL)
-			
+
 			else
 				terminate
 			end

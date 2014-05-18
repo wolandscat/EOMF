@@ -45,8 +45,10 @@
 		<setting name="inlining_size" value="4"/>
 		<setting name="line_generation" value="false"/>
 		<setting name="concurrency" value="thread"/>
+
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="eomf_gui" location="$EOMF\library\gui\eomf_gui.ecf"/>
+
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
 		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
@@ -55,6 +57,7 @@
 		<library name="gobo_pattern" location="$ISE_LIBRARY\library\gobo\gobo_pattern-safe.ecf"/>
 		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
 		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string-safe.ecf"/>
+
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
@@ -63,6 +66,9 @@
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
+
+		<library name="iso8601" location="$EIFFEL_HUB\library\iso8601\src\iso8601.ecf"/>
+
 		<cluster name="app" location="..\src\" recursive="true"/>
 		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
 			<option>
