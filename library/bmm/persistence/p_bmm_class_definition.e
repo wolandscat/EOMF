@@ -22,7 +22,7 @@ feature -- Initialisation
 			ancestors.compare_objects
 		end
 
-feature -- Access
+feature -- Access (persisted)
 
 	uid: INTEGER
 			-- unique id generated for later comparison during merging, in order to detect if two classes are the same

@@ -13,7 +13,7 @@ class P_BMM_CONTAINER_TYPE_REFERENCE
 inherit
 	P_BMM_TYPE_REFERENCE
 
-feature -- Access
+feature -- Access (persisted)
 
 	type: STRING
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
@@ -28,6 +28,8 @@ feature -- Access
 		attribute
 			create Result.make_from_string (unknown_type_name)
 		end
+
+feature -- Access
 
 	bmm_container_type_reference: detachable BMM_CONTAINER_TYPE_REFERENCE
 		note
