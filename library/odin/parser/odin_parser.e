@@ -488,6 +488,7 @@ feature {NONE} -- Semantic actions
 	yy_do_action (yy_act: INTEGER)
 			-- Execute semantic action.
 		local
+			yy_retried: BOOLEAN
 			yyval1: detachable ANY
 			yyval13: DT_COMPLEX_OBJECT
 			yyval14: DT_OBJECT_LEAF
@@ -532,6 +533,7 @@ feature {NONE} -- Semantic actions
 			yyval16: OG_PATH
 			yyval17: OG_PATH_ITEM
 		do
+			if not yy_retried then
 				inspect yy_act
 when 1 then
 --|#line 123 "odin_parser.y"
@@ -4925,6 +4927,12 @@ end
 					end
 					abort
 				end
+			end
+		rescue
+			if yy_parsing_status = yyAborted then
+				yy_retried := True
+				retry
+			end
 		end
 
 	yy_do_error_action (yy_act: INTEGER)

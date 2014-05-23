@@ -10,7 +10,7 @@
 -- 	license:     See end of file
 -- 
 
-schema_revision = <"$LastChangedRevision$">
+schema_revision = <"0.1">
 schema_lifecycle_state = <"stable">
 
 model_publisher = <"openehr">
@@ -652,6 +652,12 @@ class_definitions = <
 			>
 		>
 	>
+
+	-- ["PROPORTION_KIND"] = (BMM_ENUMERATION_DEFINITION_INTEGER) <
+	-- 	name = <"PROPORTION_KIND">
+	-- 	ancestors = </class_definitions["Integer"], ...>
+	-- 	item_names = <"pk_ratio", "pk_unitary", "pk_percent", "pk_fraction", "pk_integer_fraction">
+	-- >
 
 	--
 	--------------------- rm.data_types.quantity.date_time ------------------

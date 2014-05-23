@@ -66,40 +66,40 @@ if yy_act <= 3 then
 if yy_act <= 2 then
 if yy_act = 1 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 57 "odin_scanner.l"
+--|#line 54 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 57")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 54")
 end
 -- Ignore separators
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 58 "odin_scanner.l"
+--|#line 55 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 58")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 55")
 end
 in_lineno := in_lineno + text_count
 end
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 63 "odin_scanner.l"
+--|#line 60 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 63")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 60")
 end
 -- Ignore comments
 end
 else
 if yy_act = 4 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 64 "odin_scanner.l"
+--|#line 61 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 64")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 61")
 end
 in_lineno := in_lineno + 1
 else
 	yy_position := yy_position + 1
---|#line 68 "odin_scanner.l"
+--|#line 65 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 68")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 65")
 end
 last_token := Minus_code
 end
@@ -108,32 +108,32 @@ else
 if yy_act <= 7 then
 if yy_act = 6 then
 	yy_position := yy_position + 1
---|#line 69 "odin_scanner.l"
+--|#line 66 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 69")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 66")
 end
 last_token := Plus_code
 else
 	yy_position := yy_position + 1
---|#line 70 "odin_scanner.l"
+--|#line 67 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 70")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 67")
 end
 last_token := Star_code
 end
 else
 if yy_act = 8 then
 	yy_position := yy_position + 1
---|#line 71 "odin_scanner.l"
+--|#line 68 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 71")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 68")
 end
 last_token := Slash_code
 else
 	yy_position := yy_position + 1
---|#line 72 "odin_scanner.l"
+--|#line 69 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 72")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 69")
 end
 last_token := Caret_code
 end
@@ -145,40 +145,40 @@ if yy_act <= 12 then
 if yy_act <= 11 then
 if yy_act = 10 then
 	yy_position := yy_position + 1
---|#line 73 "odin_scanner.l"
+--|#line 70 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 73")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 70")
 end
 last_token := Dot_code
 else
 	yy_position := yy_position + 1
---|#line 74 "odin_scanner.l"
+--|#line 71 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 74")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 71")
 end
 last_token := Semicolon_code
 end
 else
 	yy_position := yy_position + 1
---|#line 75 "odin_scanner.l"
+--|#line 72 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 75")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 72")
 end
 last_token := Comma_code
 end
 else
 if yy_act = 13 then
 	yy_position := yy_position + 1
---|#line 76 "odin_scanner.l"
+--|#line 73 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 76")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 73")
 end
 last_token := Colon_code
 else
 	yy_position := yy_position + 1
---|#line 77 "odin_scanner.l"
+--|#line 74 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 77")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 74")
 end
 last_token := Exclamation_code
 end
@@ -187,32 +187,32 @@ else
 if yy_act <= 16 then
 if yy_act = 15 then
 	yy_position := yy_position + 1
---|#line 78 "odin_scanner.l"
+--|#line 75 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 78")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 75")
 end
 last_token := Left_parenthesis_code
 else
 	yy_position := yy_position + 1
---|#line 79 "odin_scanner.l"
+--|#line 76 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 79")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 76")
 end
 last_token := Right_parenthesis_code
 end
 else
 if yy_act = 17 then
 	yy_position := yy_position + 1
---|#line 80 "odin_scanner.l"
+--|#line 77 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 80")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 77")
 end
 last_token := Dollar_code
 else
 	yy_position := yy_position + 1
---|#line 81 "odin_scanner.l"
+--|#line 78 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 81")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 78")
 end
 last_token := Question_mark_code
 end
@@ -226,9 +226,9 @@ if yy_act <= 21 then
 if yy_act <= 20 then
 if yy_act = 19 then
 	yy_position := yy_position + 1
---|#line 83 "odin_scanner.l"
+--|#line 80 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 83")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 80")
 end
 
 			if in_interval then
@@ -238,36 +238,36 @@ end
 				start_block_received := False
 			end
 			last_token := SYM_INTERVAL_DELIM
-
+		
 else
 	yy_position := yy_position + 1
---|#line 93 "odin_scanner.l"
+--|#line 90 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 93")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 90")
 end
 last_token := Left_bracket_code
 end
 else
 	yy_position := yy_position + 1
---|#line 94 "odin_scanner.l"
+--|#line 91 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 94")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 91")
 end
 last_token := Right_bracket_code
 end
 else
 if yy_act = 22 then
 	yy_position := yy_position + 1
---|#line 96 "odin_scanner.l"
+--|#line 93 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 96")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 93")
 end
 last_token := SYM_EQ
 else
 	yy_position := yy_position + 2
---|#line 98 "odin_scanner.l"
+--|#line 95 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 98")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 95")
 end
 last_token := SYM_GE
 end
@@ -276,16 +276,16 @@ else
 if yy_act <= 25 then
 if yy_act = 24 then
 	yy_position := yy_position + 2
---|#line 99 "odin_scanner.l"
+--|#line 96 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 99")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 96")
 end
 last_token := SYM_LE
 else
 	yy_position := yy_position + 1
---|#line 101 "odin_scanner.l"
+--|#line 98 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 101")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 98")
 end
 
 			if in_interval then
@@ -296,14 +296,14 @@ end
 				start_block_received := True
 				block_depth := block_depth + 1
 			end
-
+		
 end
 else
 if yy_act = 26 then
 	yy_position := yy_position + 1
---|#line 112 "odin_scanner.l"
+--|#line 109 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 112")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 109")
 end
 
 			if in_interval then
@@ -312,12 +312,12 @@ end
 				last_token := SYM_END_DBLOCK
 				block_depth := block_depth - 1
 			end
-
+		
 else
 	yy_position := yy_position + 2
---|#line 121 "odin_scanner.l"
+--|#line 118 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 121")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 118")
 end
 last_token := SYM_ELLIPSIS
 end
@@ -329,33 +329,33 @@ if yy_act <= 30 then
 if yy_act <= 29 then
 if yy_act = 28 then
 	yy_position := yy_position + 3
---|#line 122 "odin_scanner.l"
+--|#line 119 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 122")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 119")
 end
 last_token := SYM_LIST_CONTINUE
 else
 	yy_position := yy_position + 4
---|#line 126 "odin_scanner.l"
+--|#line 123 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 126")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 123")
 end
 last_token := SYM_TRUE
 end
 else
 	yy_position := yy_position + 5
---|#line 128 "odin_scanner.l"
+--|#line 125 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 128")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 125")
 end
 last_token := SYM_FALSE
 end
 else
 if yy_act = 31 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 131 "odin_scanner.l"
+--|#line 128 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 131")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 128")
 end
 
 	last_token := V_URI
@@ -363,60 +363,60 @@ end
 
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 137 "odin_scanner.l"
+--|#line 134 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 137")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 134")
 end
 
 					last_token := V_QUALIFIED_TERM_CODE_REF
 					last_string_value := text_substring (2, text_count - 1)
-
+			
 end
 end
 else
 if yy_act <= 34 then
 if yy_act = 33 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 142 "odin_scanner.l"
+--|#line 139 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 142")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 139")
 end
 
 					last_token := V_TERMINOLOGY_ID
 					last_string_value := text_substring (2, text_count - 1)
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 147 "odin_scanner.l"
+--|#line 144 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 147")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 144")
 end
 
 					last_token := ERR_V_QUALIFIED_TERM_CODE_REF
 					last_string_value := text_substring (2, text_count - 1)
-
+			
 end
 else
 if yy_act = 35 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 154 "odin_scanner.l"
+--|#line 151 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 154")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 151")
 end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-
+		
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 155 "odin_scanner.l"
+--|#line 152 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 155")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 152")
 end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-
+		
 end
 end
 end
@@ -430,103 +430,103 @@ if yy_act <= 39 then
 if yy_act <= 38 then
 if yy_act = 37 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 156 "odin_scanner.l"
+--|#line 153 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 156")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 153")
 end
 
 				last_token := V_ISO8601_EXTENDED_DATE_TIME
 				last_string_value := text
-
+		
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 163 "odin_scanner.l"
+--|#line 160 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 163")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 160")
 end
 
 				last_token := V_ISO8601_EXTENDED_TIME
 				last_string_value := text
-
+		
 end
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 164 "odin_scanner.l"
+--|#line 161 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 164")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 161")
 end
 
 				last_token := V_ISO8601_EXTENDED_TIME
 				last_string_value := text
-
+		
 end
 else
 if yy_act = 40 then
 	yy_position := yy_position + 10
---|#line 171 "odin_scanner.l"
+--|#line 168 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 171")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 168")
 end
 
 				last_token := V_ISO8601_EXTENDED_DATE
 				last_string_value := text
-
+		
 else
 	yy_position := yy_position + 7
---|#line 172 "odin_scanner.l"
+--|#line 169 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 172")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 169")
 end
 
 				last_token := V_ISO8601_EXTENDED_DATE
 				last_string_value := text
-
+		
 end
 end
 else
 if yy_act <= 43 then
 if yy_act = 42 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 182 "odin_scanner.l"
+--|#line 179 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 182")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 179")
 end
 
 				last_token := V_ISO8601_DURATION
 				last_string_value := text
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 183 "odin_scanner.l"
+--|#line 180 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 183")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 180")
 end
 
 				last_token := V_ISO8601_DURATION
 				last_string_value := text
-
+			
 end
 else
 if yy_act = 44 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 189 "odin_scanner.l"
+--|#line 186 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 189")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 186")
 end
 
 					last_token := V_TYPE_IDENTIFIER
 					last_string_value := text
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 194 "odin_scanner.l"
+--|#line 191 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 194")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 191")
 end
 
 					last_token := V_GENERIC_TYPE_IDENTIFIER
 					last_string_value := text
-
+			
 end
 end
 end
@@ -536,19 +536,19 @@ if yy_act <= 48 then
 if yy_act <= 47 then
 if yy_act = 46 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 199 "odin_scanner.l"
+--|#line 196 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 199")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 196")
 end
 
 					last_token := V_ATTRIBUTE_IDENTIFIER
 					last_string_value := text
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 206 "odin_scanner.l"
+--|#line 203 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 206")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 203")
 end
 				-- beginning of CADL block
 				if block_depth = 1 then
@@ -558,25 +558,25 @@ end
 				else
 					last_token := ERR_CADL_MISPLACED
 				end
-
+			
 end
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 217 "odin_scanner.l"
+--|#line 214 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 217")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 214")
 end
 		-- got an open brace
 				in_buffer.append_string (text)
 				cadl_depth := cadl_depth + 1
-
+			
 end
 else
 if yy_act = 49 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 221 "odin_scanner.l"
+--|#line 218 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 221")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 218")
 end
 		-- got a close brace
 				in_buffer.append_string (text)
@@ -589,63 +589,63 @@ end
 					in_lineno := in_lineno + in_buffer.occurrences('%N')
 					in_buffer.wipe_out
 				end
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 238 "odin_scanner.l"
+--|#line 235 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 238")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 235")
 end
 
 					last_token := V_INTEGER
 					last_integer_value := text.to_integer
-
+			
 end
 end
 else
 if yy_act <= 52 then
 if yy_act = 51 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 239 "odin_scanner.l"
+--|#line 236 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 239")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 236")
 end
 
 					last_token := V_INTEGER
 					last_integer_value := text.to_integer
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 246 "odin_scanner.l"
+--|#line 243 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 246")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 243")
 end
 
 						last_token := V_REAL
 						last_real_value := text.to_real
-
+					
 end
 else
 if yy_act = 53 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 247 "odin_scanner.l"
+--|#line 244 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 247")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 244")
 end
 
 						last_token := V_REAL
 						last_real_value := text.to_real
-
+					
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 254 "odin_scanner.l"
+--|#line 251 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 254")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 251")
 end
 
 				last_token := V_STRING
 				last_string_value := text_substring (2, text_count - 1)
-
+			
 end
 end
 end
@@ -657,47 +657,47 @@ if yy_act <= 57 then
 if yy_act <= 56 then
 if yy_act = 55 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 259 "odin_scanner.l"
+--|#line 256 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 259")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 256")
 end
 				-- beginning of a string
 				if text_count > 1 then
 					in_buffer.append_string (text_substring (2, text_count))
 				end
 				set_start_condition (IN_STR)
-
+			
 else
 	yy_position := yy_position + 2
---|#line 267 "odin_scanner.l"
+--|#line 264 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 267")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 264")
 end
 in_buffer.append_character ('\')
 end
 else
 	yy_position := yy_position + 2
---|#line 269 "odin_scanner.l"
+--|#line 266 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 269")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 266")
 end
 in_buffer.append_character ('"')
 end
 else
 if yy_act = 58 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 271 "odin_scanner.l"
+--|#line 268 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 271")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 268")
 end
 
 				in_buffer.append_string (text)
-
+	
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 275 "odin_scanner.l"
+--|#line 272 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 275")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 272")
 end
 in_buffer.append_string (text)
 end
@@ -706,19 +706,19 @@ else
 if yy_act <= 61 then
 if yy_act = 60 then
 	yy_position := yy_position + 1
---|#line 277 "odin_scanner.l"
+--|#line 274 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 277")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 274")
 end
 
 				in_lineno := in_lineno + 1	-- match LF in line
 				in_buffer.append_character ('%N')
-
+			
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 282 "odin_scanner.l"
+--|#line 279 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 282")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 279")
 end
 						-- match final end of string
 				last_token := V_STRING
@@ -732,24 +732,24 @@ end
 				in_buffer.wipe_out
 				last_string_value := str_
 				set_start_condition (INITIAL)
-
+			
 end
 else
 if yy_act = 62 then
 	yy_position := yy_position + 1
---|#line 295 "odin_scanner.l"
+--|#line 292 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 295")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 292")
 end
 	-- Catch-all rules (no backing up)
 				last_token := ERR_STRING
 				set_start_condition (INITIAL)
-
+			
 else
 	yy_position := yy_position + 3
---|#line 305 "odin_scanner.l"
+--|#line 302 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 305")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 302")
 end
 last_token := V_CHARACTER; last_character_value := text_item (2)
 end
@@ -761,40 +761,40 @@ if yy_act <= 66 then
 if yy_act <= 65 then
 if yy_act = 64 then
 	yy_position := yy_position + 4
---|#line 307 "odin_scanner.l"
+--|#line 304 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 307")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 304")
 end
 last_token := V_CHARACTER; last_character_value := '%N'
 else
 	yy_position := yy_position + 4
---|#line 308 "odin_scanner.l"
+--|#line 305 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 308")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 305")
 end
 last_token := V_CHARACTER; last_character_value := '%R'
 end
 else
 	yy_position := yy_position + 4
---|#line 309 "odin_scanner.l"
+--|#line 306 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 309")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 306")
 end
 last_token := V_CHARACTER; last_character_value := '%T'
 end
 else
 if yy_act = 67 then
 	yy_position := yy_position + 4
---|#line 310 "odin_scanner.l"
+--|#line 307 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 310")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 307")
 end
 last_token := V_CHARACTER; last_character_value := '%''
 else
 	yy_position := yy_position + 4
---|#line 311 "odin_scanner.l"
+--|#line 308 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 311")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 308")
 end
 last_token := V_CHARACTER; last_character_value := '%H'
 end
@@ -803,25 +803,25 @@ else
 if yy_act <= 70 then
 if yy_act = 69 then
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 313 "odin_scanner.l"
+--|#line 310 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 313")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 310")
 end
 last_token := ERR_CHARACTER	-- Catch-all rules (no backing up)
 else
 	yy_position := yy_position + yy_end - yy_start - yy_more_len
---|#line 314 "odin_scanner.l"
+--|#line 311 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 314")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 311")
 end
 last_token := ERR_CHARACTER	-- Catch-all rules (no backing up)
 end
 else
 if yy_act = 71 then
 	yy_position := yy_position + 1
---|#line 318 "odin_scanner.l"
+--|#line 315 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 318")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 315")
 end
 ;
 else
@@ -844,20 +844,20 @@ end
 		do
 			inspect yy_sc
 when 0, 2 then
---|#line 0 "odin_scanner.l"
+--|#line 314 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 0")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 314")
 end
 terminate
 when 1 then
---|#line 0 "odin_scanner.l"
+--|#line 294 "odin_scanner.l"
 debug ("GELEX")
-	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 0")
+	std.error.put_line ("Executing scanner user-code from file 'odin_scanner.l' at line 294")
 end
 	-- Catch-all rules (no backing up)
 				last_token := ERR_STRING
 				set_start_condition (INITIAL)
-
+			
 			else
 				terminate
 			end
