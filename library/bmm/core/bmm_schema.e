@@ -124,6 +124,20 @@ feature -- Access
 			Result := class_definition (type_to_class (a_type_name)).property_definition_at_path (an_og_path)
 		end
 
+	class_definition_at_path (a_type_name, a_property_path: STRING): BMM_CLASS_DEFINITION
+			-- retrieve the class definition for the class that owns the terminal attribute in `a_property_path'
+			-- in flattened class corresponding to `a_type_name'
+		require
+			Type_name_valid: has_class_definition (a_type_name)
+			Property_path_valid: has_property_path (a_type_name, a_property_path)
+		local
+			an_og_path: OG_PATH
+		do
+			create an_og_path.make_pure_from_string (a_property_path)
+			an_og_path.start
+			Result := class_definition (type_to_class (a_type_name)).class_definition_at_path (an_og_path)
+		end
+
 	all_ancestor_classes_of (a_class_name: STRING): ARRAYED_LIST [STRING]
 			-- return all ancestor types of `a_class_name' up to root class (usually 'ANY', 'Object' or something similar)
 			-- does  not include current class. Returns empty list if none.
