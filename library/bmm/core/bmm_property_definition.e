@@ -12,7 +12,7 @@ deferred class BMM_PROPERTY_DEFINITION
 inherit
 	BMM_MODEL_ELEMENT
 
-feature -- Initialisation
+feature {NONE} -- Initialisation
 
 	make (a_name: STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
