@@ -66,6 +66,20 @@ feature -- Access
 			Result.object_comparison
 		end
 
+	enumeration_types: ARRAYED_SET [STRING]
+			-- list of keys in `class_definitions' of items that are enumeartion types, as defined in input schema
+		do
+			create Result.make (0)
+			Result.compare_objects
+			across class_definitions as class_defs_csr loop
+				if attached {BMM_ENUMERATION_DEFINITION} class_defs_csr.item as enum_type then
+					Result.extend (enum_type.name)
+				end
+			end
+		ensure
+			Result.object_comparison
+		end
+
 	any_class_definition: BMM_CLASS_DEFINITION
 			-- retrieve the class definition corresponding to the top `Any' class
 		do
@@ -80,9 +94,21 @@ feature -- Access
 			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
 		require
 			Type_name_valid: has_class_definition (a_type_name)
+		local
+			fake_enum_def: BMM_ENUMERATION_DEFINITION_INTEGER
 		do
 			check attached class_definitions.item (type_to_class (a_type_name)) as class_def then
 				Result := class_def
+			end
+		end
+
+	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION
+			-- retrieve the enumeration definition corresponding to `a_type_name'
+		require
+			Type_name_valid: has_enumeration_definition (a_type_name)
+		do
+			check attached {BMM_ENUMERATION_DEFINITION} class_definitions.item (a_type_name) as enum_def then
+				Result := enum_def
 			end
 		end
 
@@ -142,6 +168,15 @@ feature -- Status Report
 			Type_valid: not a_type_name.is_empty
 		do
 			Result := class_definitions.has (type_to_class (a_type_name))
+		end
+
+	has_enumeration_definition (a_type_name: STRING): BOOLEAN
+			-- True if `a_type_name' has a class definition or is a primitive type in the model. Note that a_type_name
+			-- could be a generic type string; only the root class is considered
+		require
+			Type_valid: not a_type_name.is_empty
+		do
+			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION} class_definitions.item (a_type_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN

@@ -10,7 +10,7 @@ note
 
 deferred class P_BMM_PROPERTY_DEFINITION
 
-feature -- Access (attributes from schema)
+feature -- Access (persisted)
 
 	name: STRING
 			-- name of this attribute
@@ -38,12 +38,6 @@ feature -- Access (attributes from schema)
 			-- True if this property is computed rather than stored in objects of this class
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	bmm_property_definition: detachable BMM_PROPERTY_DEFINITION
-		note
-			option: transient
-		attribute
-		end
-
 	is_im_infrastructure: BOOLEAN
 			-- True if this property is info model 'infrastructure' rather than 'data'
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
@@ -51,6 +45,14 @@ feature -- Access (attributes from schema)
 	is_im_runtime: BOOLEAN
 			-- True if this property is info model 'runtime' settable property
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+
+feature -- Access
+
+	bmm_property_definition: detachable BMM_PROPERTY_DEFINITION
+		note
+			option: transient
+		attribute
+		end
 
 feature -- Factory
 
