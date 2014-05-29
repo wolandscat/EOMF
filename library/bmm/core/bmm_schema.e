@@ -201,37 +201,37 @@ feature -- Status Report
 			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Will always be true for
 			-- non-generic types, but needs to be checked for generic / container types
 		require
-			A_class_name_valid: not a_class_name.is_empty
+			A_class_name_valid: has_class_definition (a_class_name)
 			A_type_name_valid: not a_type_name.is_empty
 		local
 			is_gen_type: BOOLEAN
 			type_strs: ARRAYED_LIST [STRING]
+			class_def: BMM_CLASS_DEFINITION
 		do
 			is_gen_type := is_well_formed_generic_type_name (a_type_name)
-			if attached class_definition (a_class_name) as class_def then
-				if class_def.is_generic then
-					type_strs := type_name_as_flat_list (a_type_name)
-					type_strs.compare_objects
-					type_strs.start
-					if type_strs.item.is_case_insensitive_equal (class_def.name) or class_definitions.item (type_strs.item).has_ancestor (class_def.name)  then
-						from
-							type_strs.forth
-							class_def.generic_parameters.start
-						until
-							-- a) illegal class as generic parameter OR
-							-- b) gen parm class in that position in the defining class is constrained AND THEN NOT has among its ancestors the constrainer class
-							type_strs.off or not has_class_definition (type_strs.item) or
-								(class_def.generic_parameters.item_for_iteration.is_constrained and then not
-								class_definitions.item (type_strs.item).has_ancestor (class_def.generic_parameters.item_for_iteration.conforms_to_type.name))
-						loop
-							type_strs.forth
-							class_def.generic_parameters.forth
-						end
-						Result := type_strs.off
+			class_def := class_definition (a_class_name)
+			if class_def.is_generic then
+				type_strs := type_name_as_flat_list (a_type_name)
+				type_strs.compare_objects
+				type_strs.start
+				if type_strs.item.is_case_insensitive_equal (class_def.name) or class_definitions.item (type_strs.item).has_ancestor (class_def.name)  then
+					from
+						type_strs.forth
+						class_def.generic_parameters.start
+					until
+						-- a) illegal class as generic parameter OR
+						-- b) gen parm class in that position in the defining class is constrained AND THEN NOT has among its ancestors the constrainer class
+						type_strs.off or not has_class_definition (type_strs.item) or
+							(class_def.generic_parameters.item_for_iteration.is_constrained and then not
+							class_definitions.item (type_strs.item).has_ancestor (class_def.generic_parameters.item_for_iteration.conforms_to_type.name))
+					loop
+						type_strs.forth
+						class_def.generic_parameters.forth
 					end
-				elseif not class_def.is_generic and not is_gen_type then
-					Result := a_type_name.is_case_insensitive_equal (class_def.name)
+					Result := type_strs.off
 				end
+			elseif not class_def.is_generic and not is_gen_type then
+				Result := a_type_name.is_case_insensitive_equal (class_def.name)
 			end
 		end
 
@@ -240,9 +240,10 @@ feature -- Status Report
 		require
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property (a_type_name, a_property_name)
-			Property_type_name_valid: has_class_definition (a_property_type_name)
 		do
-			if valid_type_for_class (a_type_name, a_type_name) and valid_type_for_class (a_property_type_name, a_property_type_name) then
+			if has_class_definition (a_property_type_name) and then valid_type_for_class (a_type_name, a_type_name) and 
+				valid_type_for_class (a_property_type_name, a_property_type_name) 
+			then
 				Result := type_name_conforms_to (a_property_type_name, property_definition (a_type_name, a_property_name).type.as_conformance_type_string)
 			end
 		end
