@@ -63,7 +63,6 @@ feature -- Initialization
 			if ready_to_initialise_app then
 				Initialise_app
 				if not has_errors then
-					output_schema_info
 
 					-- now dmonstrate some usage of the schemas
 					rm_schema := rm_schemas_access.schema_for_rm_closure ("openehr-ehr")
@@ -111,9 +110,9 @@ feature -- Initialization
 
 				-- column 1 - check box to indicate loaded; only on top-level schemas
 				if rm_schemas_csr.item.is_top_level then
-					io.put_string ("(top-level)")
+					io.put_string ("SCHEMA* ")
 				else
-					io.put_string ("           ")
+					io.put_string ("SCHEMA  ")
 				end
 				io.put_character ('%T')
 
@@ -136,9 +135,9 @@ feature -- Initialization
 				if rm_schemas_csr.item.passed then
 					io.put_string ("validated")
 				else
-					io.put_string ("failed")
+					io.put_string ("failed: " + rm_schemas_csr.item.error_strings)
 				end
-				io.put_character ('%N')
+				io.put_string ("%N%N")
 
 			end
 		end
@@ -153,8 +152,15 @@ feature -- Initialization
 				set_rm_schema_directory (Default_rm_schema_directory)
 			end
 			if file_system.directory_exists (rm_schema_directory) then
+				io.put_string ("Schemas found in ==================== " + rm_schema_directory + " ====================%N")
 				Rm_schemas_access.initialise_all (rm_schema_directory)
-				if not Rm_schemas_access.found_valid_schemas then
+
+				io.put_string ("---------------------- load results ----------------------%N")
+				output_schema_info
+
+				if Rm_schemas_access.has_errors then
+					add_error (Ec_general_error, <<Rm_schemas_access.error_strings>>)
+				elseif not Rm_schemas_access.found_valid_schemas then
 					add_error (Ec_bmm_schemas_config_not_valid, << rm_schemas_access.schemas_load_list_string, rm_schema_directory >>)
 				end
 			else

@@ -150,7 +150,7 @@ feature -- Status Report
 			Result := attached archetype_data_value_parent_class
 		end
 
-	has_rm_closure_package (a_package_path: attached STRING): BOOLEAN
+	has_rm_closure_package (a_package_path: STRING): BOOLEAN
 			-- `a_package_path' is a qualified package name, like 'org.openehr.ehr', 'org.openehr.demographic'
 		require
 			valid_package_path: not a_package_path.is_empty
@@ -158,7 +158,7 @@ feature -- Status Report
 			Result := archetype_rm_closure_packages.has (a_package_path)
 		end
 
-	has_schema_contributor (a_contributor: attached STRING): BOOLEAN
+	has_schema_contributor (a_contributor: STRING): BOOLEAN
 		require
 			valid_contributor: not a_contributor.is_empty
 		do

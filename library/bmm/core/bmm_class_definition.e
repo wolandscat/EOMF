@@ -268,7 +268,7 @@ feature -- Access
 		end
 
 	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY_DEFINITION
-			-- retrieve the property definition for `a_prop_path' in flattened class corresponding to `a_type_name'
+			-- retrieve the property definition for `a_prop_path' in flattened class
 			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
 			-- recursive evaluation)
 		require
@@ -303,6 +303,44 @@ feature -- Access
 			a_prop_path.go_i_th (a_path_pos)
 		end
 
+	class_definition_at_path (a_prop_path: OG_PATH): BMM_CLASS_DEFINITION
+			-- retrieve the class definition for the class containing the terminal property in `a_prop_path' in flattened class
+			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
+			-- recursive evaluation)
+		require
+			Property_path_valid: has_property_path (a_prop_path)
+		local
+			a_path_pos: INTEGER
+			i: INTEGER
+			found: BOOLEAN
+			bmm_prop: detachable BMM_PROPERTY_DEFINITION
+			bmm_class: detachable BMM_CLASS_DEFINITION
+		do
+			a_path_pos := a_prop_path.items.index
+			if has_property (a_prop_path.item.attr_name) then
+				check attached flat_properties.item (a_prop_path.item.attr_name) as fp then
+					bmm_prop := fp
+					Result := Current
+				end
+				a_prop_path.forth
+				if not a_prop_path.off and then attached bmm_schema.class_definition (bmm_prop.type.root_class) as class_def then
+					Result := class_def.class_definition_at_path (a_prop_path)
+				end
+			else -- look in the descendants
+				from i := 1 until i > immediate_descendants.count or found loop
+					if immediate_descendants.i_th(i).has_property_path (a_prop_path) then
+						bmm_class := immediate_descendants.i_th(i).class_definition_at_path (a_prop_path)
+						found := True
+					end
+					i := i + 1
+				end
+				check attached bmm_class as att_bmm_class then
+					Result := att_bmm_class
+				end
+			end
+			a_prop_path.go_i_th (a_path_pos)
+		end
+
 	property_type (a_class_type_name, a_prop_name: STRING): STRING
 			-- retrieve the property type for `a_prop_name' in type corresponding to `a_class_type_name'
 			-- same as property_definition.type, except if a_type_name is generic, in which case:
@@ -326,7 +364,7 @@ feature -- Access
 					-- to get the index in order of the required parameter
 					across gen_parms as gen_parms_csr loop
 						if gen_parms_csr.item.name.is_equal (gen_prop_type.name) then
-							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was 
+							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was
 							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
 							gen_param_type := gen_parms_csr.item.as_conformance_type_string
 							gen_param_count := i
@@ -334,7 +372,7 @@ feature -- Access
 						i := i + 1
 					end
 
-					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that 
+					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that
 					eff_type_list := type_name_as_flat_list (a_class_type_name)
 					if gen_param_count < eff_type_list.count then
 						Result := eff_type_list.i_th (gen_param_count + 1)
