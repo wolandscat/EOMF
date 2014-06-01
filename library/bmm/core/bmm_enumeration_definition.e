@@ -12,13 +12,16 @@ note
 	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_ENUMERATION_DEFINITION
+class BMM_ENUMERATION_DEFINITION[G->COMPARABLE]
 
 inherit
 	BMM_CLASS_DEFINITION
 		redefine
 			type_category
 		end
+
+create
+	make
 
 feature -- Access
 
@@ -30,7 +33,7 @@ feature -- Access
 			Result.compare_objects
 		end
 
-	item_values:  ARRAYED_LIST [ANY]
+	item_values:  ARRAYED_LIST [G]
 			-- OPTIONAL list of item integer values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
@@ -42,17 +45,18 @@ feature -- Access
 			Result := Type_cat_enumeration
 		end
 
+	underlying_type_name: STRING
+		do
+			Result := ({G}).name
+		end
+
 feature -- Modification
 
 	set_item_names (a_names: like item_names)
 			-- set the list of names of the enumeration. If no values are supplied, the
-		local
-			i: INTEGER
 		do
 			across a_names as names_csr loop
 				item_names.extend (names_csr.item)
-				item_values.extend (i)
-				i := i + 1
 			end
 		end
 

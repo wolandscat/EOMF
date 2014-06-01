@@ -91,6 +91,20 @@ feature -- Initialization
 						io.put_string (supps_csr.item + "%N")
 					end
 					io.new_line
+
+					io.put_string ("---------------- rm_schema.enumeration types --------------%N")
+					io.put_string ("Enumeration types: %N")
+					across rm_schema.enumeration_types as enum_csr loop
+						io.put_string (enum_csr.item)
+						if attached {BMM_ENUMERATION_INTEGER} rm_schema.enumeration_definition (enum_csr.item) as enum_int then
+							io.put_string ("; underlying type = " + enum_int.underlying_type_name + "; values: %N")
+							across enum_int.item_names as names_csr loop
+								io.put_string ("%T" + names_csr.item + " = " + enum_int.item_values.i_th (names_csr.target_index).out + "%N")
+							end
+						end
+						io.put_string ("%N")
+					end
+					io.new_line
 				else
 					io.put_string (error_strings)
 					io.put_string ("Check .cfg gile " + app_cfg.file_path + "%N")

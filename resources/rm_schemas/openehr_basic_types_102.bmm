@@ -559,8 +559,8 @@ class_definitions = <
 				is_mandatory = <True>
 			>
 			["type"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"PROPORTION_KIND">
-				type = <"Integer">
+				name = <"type">
+				type = <"PROPORTION_KIND">
 				is_mandatory = <True>
 			>
 			["precision"] = (P_BMM_SINGLE_PROPERTY) <
@@ -575,7 +575,7 @@ class_definitions = <
 		>
 	>
 
-	["PROPORTION_KIND"] = (P_BMM_ENUMERATION_DEFINITION_INTEGER) <
+	["PROPORTION_KIND"] = (P_BMM_ENUMERATION_INTEGER) <
 		name = <"PROPORTION_KIND">
 		ancestors = <"Integer", ...>
 		item_names = <"pk_ratio", "pk_unitary", "pk_percent", "pk_fraction", "pk_integer_fraction">

@@ -7,22 +7,17 @@ note
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_ENUMERATION_DEFINITION_INTEGER
+class P_BMM_ENUMERATION_INTEGER
 
 inherit
-	P_BMM_ENUMERATION_DEFINITION
+	P_BMM_ENUMERATION_DEFINITION[INTEGER]
 		redefine
-			item_values, bmm_class_definition
+			bmm_class_definition
 		end
-
-feature -- Access (persisted)
-
-	item_values: detachable ARRAYED_LIST [INTEGER]
-			-- OPTIONAL list of item integer values; must be of same length as `item_names'
 
 feature -- Access
 
-	bmm_class_definition: detachable BMM_ENUMERATION_DEFINITION_INTEGER
+	bmm_class_definition: detachable BMM_ENUMERATION_INTEGER
 		note
 			option: transient
 		attribute

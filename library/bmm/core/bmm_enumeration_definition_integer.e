@@ -7,24 +7,16 @@ note
 	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_ENUMERATION_DEFINITION_INTEGER
+class BMM_ENUMERATION_INTEGER
 
 inherit
-	BMM_ENUMERATION_DEFINITION
+	BMM_ENUMERATION_DEFINITION[INTEGER]
 		redefine
-			item_values, set_item_names
+			set_item_names
 		end
 
 create
 	make
-
-feature -- Access
-
-	item_values: ARRAYED_LIST [INTEGER]
-			-- OPTIONAL list of item integer values; must be of same length as `item_names'
-		attribute
-			create Result.make (0)
-		end
 
 feature -- Modification
 

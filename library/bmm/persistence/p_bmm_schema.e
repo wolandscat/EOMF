@@ -143,7 +143,7 @@ feature -- Access
 			Class_valid: has_class_definition (a_class_name)
 		local
 			a_key: STRING
-			an_int_enum: P_BMM_ENUMERATION_DEFINITION_INTEGER
+			an_int_enum: P_BMM_ENUMERATION_INTEGER
 		do
 			a_key := a_class_name.as_upper
 			if primitive_types.has (a_key) then

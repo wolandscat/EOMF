@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_ENUMERATION_DEFINITION
+class P_BMM_ENUMERATION_DEFINITION[G->COMPARABLE]
 
 inherit
 	P_BMM_CLASS_DEFINITION
@@ -25,12 +25,12 @@ feature -- Access (persisted)
 			Result.compare_objects
 		end
 
-	item_values: detachable ARRAYED_LIST [ANY]
-			-- OPTIONAL list of item integer values; must be of same length as `item_names'
+	item_values: detachable ARRAYED_LIST [G]
+			-- OPTIONAL list of item values; must be of same length as `item_names'
 
 feature -- Access
 
-	bmm_class_definition: detachable BMM_ENUMERATION_DEFINITION
+	bmm_class_definition: detachable BMM_ENUMERATION_DEFINITION[G]
 		note
 			option: transient
 		attribute

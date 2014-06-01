@@ -72,7 +72,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across class_definitions as class_defs_csr loop
-				if attached {BMM_ENUMERATION_DEFINITION} class_defs_csr.item as enum_type then
+				if attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_defs_csr.item as enum_type then
 					Result.extend (enum_type.name)
 				end
 			end
@@ -94,20 +94,20 @@ feature -- Access
 			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-		local
-			fake_enum_def: BMM_ENUMERATION_DEFINITION_INTEGER
 		do
 			check attached class_definitions.item (type_to_class (a_type_name)) as class_def then
 				Result := class_def
 			end
 		end
 
-	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION
+	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION[COMPARABLE]
 			-- retrieve the enumeration definition corresponding to `a_type_name'
 		require
 			Type_name_valid: has_enumeration_definition (a_type_name)
+		local
+			fake_enum_def: BMM_ENUMERATION_INTEGER
 		do
-			check attached {BMM_ENUMERATION_DEFINITION} class_definitions.item (a_type_name) as enum_def then
+			check attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
 				Result := enum_def
 			end
 		end
@@ -190,7 +190,7 @@ feature -- Status Report
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION} class_definitions.item (a_type_name)
+			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_definitions.item (a_type_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN
@@ -276,8 +276,8 @@ feature -- Status Report
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property (a_type_name, a_property_name)
 		do
-			if has_class_definition (a_property_type_name) and then valid_type_for_class (a_type_name, a_type_name) and 
-				valid_type_for_class (a_property_type_name, a_property_type_name) 
+			if has_class_definition (a_property_type_name) and then valid_type_for_class (a_type_name, a_type_name) and
+				valid_type_for_class (a_property_type_name, a_property_type_name)
 			then
 				Result := type_name_conforms_to (a_property_type_name, property_definition (a_type_name, a_property_name).type.as_conformance_type_string)
 			end
