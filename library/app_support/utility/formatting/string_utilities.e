@@ -14,6 +14,9 @@ feature -- Definitions
 	Default_quote_characters: STRING = "nrt\%"'"
 			-- characters that mean something special when following a backslash
 
+	Date_time_format_string: STRING = "yyyy-[0]mm-[0]dd [0]hh:[0]mi:[0]ss"
+			-- ISO 8601 standard
+
 feature -- Conversion
 
 	serialise_primitive_value (a_prim_val: ANY): STRING
@@ -23,8 +26,8 @@ feature -- Conversion
 			-- FIXME: duration.out does not exist in Eiffel, and in any case would not be ISO8601-compliant
 			if attached {DATE_TIME_DURATION} a_prim_val as a_dur then
 				Result := (create {ISO8601_DURATION}.make_date_time_duration(a_dur)).as_string
-			elseif attached {DATE_TIME} a_prim_val as a_dt then
-				Result := (create {ISO8601_DATE_TIME}.make_date_time(a_dt)).as_string
+			elseif attached {DATE_TIME} a_prim_val as dt then
+				Result := dt.formatted_out (Date_time_format_string)
 			else
 				Result := a_prim_val.out
 				-- FIXME: REAL.out is broken (still the case in Eiffel 6.6)
