@@ -72,7 +72,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across class_definitions as class_defs_csr loop
-				if attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_defs_csr.item as enum_type then
+				if attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_defs_csr.item as enum_type then
 					Result.extend (enum_type.name)
 				end
 			end
@@ -100,14 +100,15 @@ feature -- Access
 			end
 		end
 
-	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION[COMPARABLE]
+	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION [COMPARABLE]
 			-- retrieve the enumeration definition corresponding to `a_type_name'
 		require
 			Type_name_valid: has_enumeration_definition (a_type_name)
 		local
-			fake_enum_def: BMM_ENUMERATION_INTEGER
+			fake_int_enum_def: BMM_ENUMERATION_INTEGER
+			fake_str_enum_def: BMM_ENUMERATION_STRING
 		do
-			check attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
+			check attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
 				Result := enum_def
 			end
 		end
@@ -190,7 +191,7 @@ feature -- Status Report
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION[COMPARABLE]} class_definitions.item (a_type_name)
+			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_definitions.item (a_type_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN

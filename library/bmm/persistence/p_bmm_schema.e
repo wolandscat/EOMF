@@ -144,6 +144,7 @@ feature -- Access
 		local
 			a_key: STRING
 			an_int_enum: P_BMM_ENUMERATION_INTEGER
+			a_str_enum: P_BMM_ENUMERATION_STRING
 		do
 			a_key := a_class_name.as_upper
 			if primitive_types.has (a_key) then
