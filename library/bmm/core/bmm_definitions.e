@@ -19,7 +19,7 @@ inherit
 
 feature -- Software-dependent definitions
 
-	Bmm_internal_version: STRING = "2.0"
+	Bmm_internal_version: STRING = "2.1"
 			-- current notional version of the BMM_SCHEMA class model used in this software; used for
 			-- comparison with the BMM version recorded in schema files. If no bmm_version attribute is
 			-- found, the `Assumed_bmm_version' is used.
