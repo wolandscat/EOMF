@@ -2,7 +2,6 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Basic Meta-model abstraction of a single-valued property"
 	keywords:    "Basic meta-model"
-
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"

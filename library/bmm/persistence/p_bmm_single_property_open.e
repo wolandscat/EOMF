@@ -2,15 +2,10 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Persistent form of a BMM_SINGLE_PROPERTY_OPEN"
 	keywords:    "Basic meta-model"
-
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
-
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
 
 class P_BMM_SINGLE_PROPERTY_OPEN
 
