@@ -56,7 +56,7 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: attached BMM_CLASS_DEFINITION)
+	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS_DEFINITION)
 		deferred
 		end
 

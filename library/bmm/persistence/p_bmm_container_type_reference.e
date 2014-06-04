@@ -41,8 +41,8 @@ feature -- Factory
 
 	create_bmm_container_type_reference (a_bmm_schema: BMM_SCHEMA)
 		do
-			if attached a_bmm_schema.class_definition (type) as type_class_def and attached a_bmm_schema.class_definition (container_type) as cont_type_class_def then
-				create bmm_container_type_reference.make (type_class_def, cont_type_class_def)
+			if a_bmm_schema.has_class_definition (type) and a_bmm_schema.has_class_definition (container_type) then
+				create bmm_container_type_reference.make (a_bmm_schema.class_definition (type), a_bmm_schema.class_definition (container_type))
 			end
 		end
 

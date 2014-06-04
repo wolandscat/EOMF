@@ -572,12 +572,14 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
 				if not attached a_cont_prop_def.type_def then
 					add_validity_error (a_class_def.source_schema_id, "BMM_CPT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
-				elseif not attached a_cont_prop_def.cardinality then
-					add_validity_warning (a_class_def.source_schema_id, "BMM_CPTNC", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				elseif not has_class_definition (a_cont_prop_def.type_def.type) then
 					add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_cont_prop_def.type_def.type>>)
 				elseif not has_class_definition (a_cont_prop_def.type_def.container_type) then
 					add_validity_error (a_class_def.source_schema_id, "BMM_CPCT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_cont_prop_def.type_def.container_type>>)
+				end
+
+				if not attached a_cont_prop_def.cardinality then
+					add_validity_warning (a_class_def.source_schema_id, "BMM_CPTNC", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 			elseif attached {P_BMM_GENERIC_PROPERTY} a_prop_def as a_gen_prop_def then
