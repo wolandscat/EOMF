@@ -11,9 +11,21 @@ class BMM_ENUMERATION_STRING
 
 inherit
 	BMM_ENUMERATION_DEFINITION [STRING]
+		redefine
+			set_item_names
+		end
 
 create
 	make
+
+feature -- Modification
+
+	set_item_names (a_names: like item_names)
+			-- set the list of names of the enumeration. If no values are supplied, the
+		do
+			precursor (a_names)
+			item_values.append (item_names)
+		end
 
 end
 
