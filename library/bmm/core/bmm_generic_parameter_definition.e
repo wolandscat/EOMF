@@ -1,8 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Definition of a generic parameter in a class definition of a generic type.
-				 ]"
+	description: "Definition of a generic parameter in a class definition of a generic type."
 	keywords:    "model, object"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

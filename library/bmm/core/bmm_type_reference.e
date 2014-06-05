@@ -7,7 +7,6 @@ note
 				 not be bound. See subtypes
 				 ]"
 	keywords:    "model, UML"
-
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"

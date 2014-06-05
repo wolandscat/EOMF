@@ -1,10 +1,10 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Abstract idea of specifying a type either by definition or by reference."
-	keywords:    "model, UML"
+	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
-	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 deferred class BMM_TYPE_SPECIFIER
