@@ -96,7 +96,7 @@ feature -- Initialization
 					io.put_string ("Enumeration types: %N")
 					across rm_schema.enumeration_types as enum_csr loop
 						io.put_string (enum_csr.item)
-						if attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} rm_schema.enumeration_definition (enum_csr.item) as enum_int then
+						if attached {BMM_ENUMERATION [COMPARABLE]} rm_schema.enumeration_definition (enum_csr.item) as enum_int then
 							io.put_string ("; underlying type = " + enum_int.underlying_type_name + "; values: %N")
 							across enum_int.item_names as names_csr loop
 								io.put_string ("%T" + names_csr.item + " = " + enum_int.item_values.i_th (names_csr.target_index).out + "%N")
