@@ -1,0 +1,1016 @@
+format 206
+"persistence" // persistence
+  revision 1
+  modified_by 2 "Thomas"
+  // class settings
+  
+  classdiagramsettings member_max_width 0 end
+  
+  usecasediagramsettings end
+  
+  sequencediagramsettings end
+  
+  collaborationdiagramsettings end
+  
+  objectdiagramsettings end
+  
+  componentdiagramsettings
+   end
+  
+  deploymentdiagramsettings
+   end
+  
+  statediagramsettings
+   end
+  
+  activitydiagramsettings
+   end
+  
+  classview 128130 "classes"
+    
+    classdiagramsettings member_max_width 0 end
+    
+    collaborationdiagramsettings end
+    
+    objectdiagramsettings end
+    
+    sequencediagramsettings end
+    
+    statediagramsettings
+     end
+    
+    
+    activitydiagramsettings
+     end
+    classdiagram 128130 "main"
+      classdiagramsettings member_max_width 0 end
+      size A4-Landscape
+    end
+
+    class 130306 "P_BMM_CLASS"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      attribute 130818 "uid"
+	public explicit_type "int"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 130946 "name"
+	private explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 131074 "ancestors"
+	public explicit_type "string"
+	multiplicity "*"
+	stereotype "list"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 133378 // properties (<directional composition>)
+	relation 132994 *-->
+	  stereotype "map"
+	  a role_name "properties" multiplicity "*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 133378 // properties (<directional composition>)
+	  b parent class_ref 131202 // P_BMM_PROPERTY
+      end
+
+      attribute 131202 "is_abstract"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 131330 "is_override"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 131714 "is_generic"
+	public explicit_return_type "bool"
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 131842 "create_bmm_class_definition"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 131970 "populate_bmm_class_definition"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      classrelation 133634 // <generalisation>
+	relation 133250 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 133634 // <generalisation>
+	  b parent class_ref 131074 // P_BMM_TYPE_SPECIFIER
+      end
+
+      classrelation 136066 // generic_parameter_defs (<directional composition>)
+	relation 135682 *-->
+	  stereotype "map"
+	  a role_name "generic_parameter_defs" multiplicity "*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 136066 // generic_parameter_defs (<directional composition>)
+	  b parent class_ref 131330 // P_BMM_GENERIC_PARAMETER
+      end
+
+      attribute 133250 "source_schema_id"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 130434 "P_BMM_ENUMERATION"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133506 // <generalisation>
+	relation 133122 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 133506 // <generalisation>
+	  b parent class_ref 130306 // P_BMM_CLASS
+      end
+    end
+
+    class 130562 "P_BMM_SCHEMA"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 136194 // <generalisation>
+	relation 135810 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 136194 // <generalisation>
+	  b parent class_ref 132226 // P_BMM_PACKAGE_CONTAINER
+      end
+
+      attribute 133762 "bmm_version"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 136322 // primitive_types (<directional composition>)
+	relation 135938 *-->
+	  stereotype "map"
+	  a role_name "primitive_types" multiplicity "*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 136322 // primitive_types (<directional composition>)
+	  b parent class_ref 130306 // P_BMM_CLASS
+      end
+
+      classrelation 136450 // class_definitions (<directional composition>)
+	relation 136066 *-->
+	  stereotype "map"
+	  a role_name "class_definitions" multiplicity "*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 136450 // class_definitions (<directional composition>)
+	  b parent class_ref 130306 // P_BMM_CLASS
+      end
+
+      attribute 133890 "state"
+	public explicit_type "int"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 134018 "bmm_schema"
+	public type class_ref 130690 // BMM_SCHEMA
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 136578 // canonical_packages (<directional composition>)
+	relation 136194 *-->
+	  stereotype "map"
+	  a role_name "canonical_packages" multiplicity "*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 136578 // canonical_packages (<directional composition>)
+	  b parent class_ref 132098 // P_BMM_PACKAGE
+      end
+
+      operation 132482 "validate_created"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 132610 "load_finalise"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 132738 "merge"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "other" explicit_type "P_BMM_SCHEMA"
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${d0} ${t0} ${p0}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 132866 "validate"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      operation 132994 "create_bmm_schema"
+	public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+    end
+
+    class 131074 "P_BMM_TYPE_SPECIFIER"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    class 131202 "P_BMM_PROPERTY"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      attribute 132354 "name"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 134914 // type_def (<directional composition>)
+	relation 134530 *-->
+	  a role_name "type_def" multiplicity "0..1" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 134914 // type_def (<directional composition>)
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 132482 "is_mandatory"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 132610 "is_computed"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 132738 "bmm_property_definition"
+	public type class_ref 128258 // BMM_PROPERTY
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 132354 "create_bmm_property_definition"
+	abstract cpp_virtual public explicit_return_type ""
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
+
+      attribute 132994 "is_im_infrastructure"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 133122 "is_im_runtime"
+	public explicit_type "bool"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 131330 "P_BMM_GENERIC_PARAMETER"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133762 // <generalisation>
+	relation 133378 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 133762 // <generalisation>
+	  b parent class_ref 131074 // P_BMM_TYPE_SPECIFIER
+      end
+
+      attribute 133378 "name"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 133506 "conforms_to_type"
+	public explicit_type "string"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 133634 "bmm_generic_parameter"
+	public type class_ref 129410 // BMM_GENERIC_PARAMETER
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 131458 "P_BMM_TYPE"
+      abstract visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 133890 // <generalisation>
+	relation 133506 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 133890 // <generalisation>
+	  b parent class_ref 131074 // P_BMM_TYPE_SPECIFIER
+      end
+
+      attribute 131714 "bmm_type"
+	public type class_ref 128002 // BMM_TYPE
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 132226 "create_bmm_type"
+	public explicit_return_type ""
+	nparams 2
+	  param in name "a_schema" type class_ref 130690 // BMM_SCHEMA
+	  param in name "a_class_def" type class_ref 128130 // BMM_CLASS
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${d0} ${t0} ${p0}, ${d1} ${t1} ${p1}${)}${raisesnl}${raises};
+"
+      end
+    end
+
+    class 131586 "P_BMM_CONTAINER_TYPE"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 134274 // <generalisation>
+	relation 133890 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 134274 // <generalisation>
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 131842 "container_type"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 134658 // type_def (<directional composition>)
+	relation 134274 *-->
+	  a role_name "type_def" multiplicity "1" public
+	    idl "  ${comment}${visibility}${type} ${name};
+"
+	    classrelation_ref 134658 // type_def (<directional composition>)
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 134530 "type"
+	public explicit_type "string"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 131714 "P_BMM_SIMPLE_TYPE"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 134018 // <generalisation>
+	relation 133634 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 134018 // <generalisation>
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 132098 "type"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 131842 "P_BMM_SIMPLE_TYPE_OPEN"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 134146 // <generalisation>
+	relation 133762 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 134146 // <generalisation>
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 131970 "type"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 131970 "P_BMM_GENERIC_TYPE"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 134402 // <generalisation>
+	relation 134018 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 134402 // <generalisation>
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 132226 "root_type"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 134786 // generic_parameter_defs (<directional composition>)
+	relation 134402 *-->
+	  stereotype "list"
+	  a role_name "generic_parameter_defs" multiplicity "1..*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 134786 // generic_parameter_defs (<directional composition>)
+	  b parent class_ref 131458 // P_BMM_TYPE
+      end
+
+      attribute 134658 "generic_parameters"
+	public explicit_type "string"
+	multiplicity "*"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 132098 "P_BMM_PACKAGE"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 134530 // <generalisation>
+	relation 134146 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 134530 // <generalisation>
+	  b parent class_ref 132226 // P_BMM_PACKAGE_CONTAINER
+      end
+
+      attribute 131458 "name"
+	public explicit_type "string"
+	multiplicity "1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      attribute 131586 "classes"
+	public explicit_type "string"
+	multiplicity "*"
+	stereotype "set"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      operation 132098 "merge"
+	public explicit_return_type ""
+	nparams 1
+	  param in name "other" type class_ref 132098 // P_BMM_PACKAGE
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${d0} ${t0} ${p0}${)}${raisesnl}${raises};
+"
+      end
+    end
+
+    class 132226 "P_BMM_PACKAGE_CONTAINER"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+    end
+
+    class 132354 "P_BMM_CONTAINER_PROPERTY"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 135426 // <generalisation>
+	relation 135042 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 135426 // <generalisation>
+	  b parent class_ref 131202 // P_BMM_PROPERTY
+      end
+
+      attribute 132866 "cardinality"
+	private explicit_type ""
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${visibility}${type} ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+
+      classrelation 135554 // type_def (<directional composition>)
+	relation 135170 *-->
+	  a role_name "type_def" multiplicity "0..1" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 135554 // type_def (<directional composition>)
+	  b parent class_ref 131586 // P_BMM_CONTAINER_TYPE
+      end
+    end
+
+    class 132482 "P_BMM_SINGLE_PROPERTY"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 135170 // <generalisation>
+	relation 134786 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 135170 // <generalisation>
+	  b parent class_ref 131202 // P_BMM_PROPERTY
+      end
+
+      classrelation 135810 // type_def (<directional composition>)
+	relation 135426 *-->
+	  a role_name "type_def" multiplicity "0..1" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 135810 // type_def (<directional composition>)
+	  b parent class_ref 131714 // P_BMM_SIMPLE_TYPE
+      end
+
+      attribute 134274 "type"
+	public explicit_type "string"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 132610 "P_BMM_SINGLE_PROPERTY_OPEN"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 135298 // <generalisation>
+	relation 134914 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 135298 // <generalisation>
+	  b parent class_ref 131202 // P_BMM_PROPERTY
+      end
+
+      classrelation 135682 // type_def (<directional composition>)
+	relation 135298 *-->
+	  a role_name "type_def" multiplicity "0..1" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 135682 // type_def (<directional composition>)
+	  b parent class_ref 131842 // P_BMM_SIMPLE_TYPE_OPEN
+      end
+
+      attribute 134146 "type"
+	public explicit_type "string"
+	multiplicity "0..1"
+	cpp_decl ""
+	java_decl ""
+	php_decl ""
+	python_decl ""
+	idl_decl "  ${comment}${readonly}${attribute}${stereotype}<${type}> ${name};
+"
+	mysql_decl ""
+	MysqlColumn
+      end
+    end
+
+    class 132738 "P_BMM_GENERIC_PROPERTY"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 135042 // <generalisation>
+	relation 134658 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 135042 // <generalisation>
+	  b parent class_ref 131202 // P_BMM_PROPERTY
+      end
+
+      classrelation 135938 // type_def (<directional composition>)
+	relation 135554 *-->
+	  a role_name "type_def" multiplicity "0..1" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 135938 // type_def (<directional composition>)
+	  b parent class_ref 131970 // P_BMM_GENERIC_TYPE
+      end
+
+    end
+  end
+end

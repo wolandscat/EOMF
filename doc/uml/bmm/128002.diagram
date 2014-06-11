@@ -1,0 +1,325 @@
+format 206
+
+classcanvas 128002 class_ref 128002 // BMM_TYPE
+  classdiagramsettings member_max_width 0 end
+  xyz 942 316 2000
+end
+classcanvas 128130 class_ref 128130 // BMM_CLASS
+  classdiagramsettings member_max_width 0 end
+  xyz 291 534 2000
+end
+classcanvas 128258 class_ref 128258 // BMM_PROPERTY
+  classdiagramsettings member_max_width 0 end
+  xyz 757 734 2000
+end
+classcanvas 128386 class_ref 128386 // BMM_CONTAINER_TYPE
+  classdiagramsettings member_max_width 0 end
+  xyz 867 510 2000
+end
+classcanvas 128514 class_ref 128514 // BMM_GENERIC_TYPE
+  classdiagramsettings member_max_width 0 end
+  xyz 1032 538 2000
+end
+classcanvas 128642 class_ref 128642 // BMM_SIMPLE_TYPE
+  classdiagramsettings member_max_width 0 end
+  xyz 529 523 2000
+end
+classcanvas 128770 class_ref 128770 // BMM_SIMPLE_TYPE_OPEN
+  classdiagramsettings member_max_width 0 end
+  xyz 661 502 2000
+end
+classcanvas 130434 class_ref 128898 // BMM_ENUMERATION
+  classdiagramsettings member_max_width 0 end
+  xyz 307 730 2000
+end
+classcanvas 130562 class_ref 129026 // BMM_ENUMERATION_STRING
+  classdiagramsettings member_max_width 0 end
+  xyz 259 834 2000
+end
+classcanvas 130690 class_ref 129154 // BMM_ENUMERATION_INTEGER
+  classdiagramsettings member_max_width 0 end
+  xyz 432 834 2000
+end
+classcanvas 132226 class_ref 129282 // BMM_PACKAGE
+  classdiagramsettings member_max_width 0 end
+  xyz 18 554 2000
+end
+classcanvas 132994 class_ref 129410 // BMM_GENERIC_PARAMETER
+  classdiagramsettings member_max_width 0 end
+  xyz 553 297 2000
+end
+classcanvas 135298 class_ref 129538 // BMM_TYPE_SPECIFIER
+  classdiagramsettings member_max_width 0 end
+  xyz 615 149 2000
+end
+classcanvas 138370 class_ref 129666 // MULTIPLICITY_INTERVAL
+  classdiagramsettings member_max_width 0 end
+  xyz 1026 801 2000
+end
+classcanvas 139906 class_ref 130178 // BMM_CONTAINER_PROPERTY
+  classdiagramsettings member_max_width 0 end
+  xyz 848 612 2006
+end
+classcanvas 141442 class_ref 130690 // BMM_SCHEMA
+  classdiagramsettings member_max_width 0 end
+  xyz 71 285 2000
+end
+classcanvas 142594 class_ref 130818 // BMM_SCHEMA_CORE
+  classdiagramsettings member_max_width 0 end
+  xyz 246 10 2000
+end
+classcanvas 143106 class_ref 130946 // BMM_PACKAGE_CONTAINER
+  classdiagramsettings member_max_width 0 end
+  xyz 10 170 2000
+end
+relationcanvas 128898 relation_ref 128002 // <generalisation>
+  geometry VHV unfixed
+  from ref 128386 z 2001 to point 932 455
+  line 129410 z 2001 to point 1029 455
+  line 129538 z 2001 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129026 relation_ref 128130 // <generalisation>
+  geometry VHV unfixed
+  from ref 128514 z 2001 to point 1089 455
+  line 129666 z 2001 to point 1029 455
+  line 129794 z 2001 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129154 relation_ref 128258 // <generalisation>
+  geometry VHV
+  from ref 128642 z 2001 to point 584 455
+  line 129922 z 2001 to point 1029 455
+  line 130050 z 2001 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 129282 relation_ref 128386 // <generalisation>
+  geometry VHV unfixed
+  decenter_begin 671
+  from ref 128770 z 2001 to point 758 455
+  line 130178 z 2001 to point 1029 455
+  line 130306 z 2001 to ref 128002
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 130818 relation_ref 128514 // <generalisation>
+  geometry VHV
+  decenter_end 555
+  from ref 130562 z 2001 to point 336 804
+  line 131074 z 2001 to point 369 804
+  line 131202 z 2001 to ref 130434
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 130946 relation_ref 128642 // <generalisation>
+  geometry VHV
+  decenter_end 555
+  from ref 130690 z 2001 to point 513 804
+  line 131330 z 2001 to point 369 804
+  line 131458 z 2001 to ref 130434
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131586 relation_ref 128770 // <generalisation>
+  decenter_end 423
+  from ref 130434 z 2001 to ref 128130
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131714 relation_ref 128898 // <unidirectional association>
+  decenter_begin 654
+  decenter_end 912
+  from ref 128130 z 2001 stereotype "<<map>>" xyz 235.5 634 3000 to point 228 632
+  line 131842 z 2001 to point 227 627
+  line 144386 z 2001 to point 229 636
+  line 131970 z 2001 to point 228 670
+  line 136962 z 2001 to ref 128130
+  role_a_pos 231 653 3000 no_role_b
+  multiplicity_a_pos 276 678 3000 no_multiplicity_b
+end
+relationcanvas 132354 relation_ref 129026 // <unidirectional association>
+  decenter_begin 231
+  decenter_end 266
+  from ref 128130 z 2001 to ref 132226
+  role_a_pos 192 554 3000 no_role_b
+  multiplicity_a_pos 192 579 3000 no_multiplicity_b
+end
+relationcanvas 132866 relation_ref 129154 // <unidirectional association>
+  geometry VH
+  decenter_begin 949
+  decenter_end 289
+  from ref 128130 z 2001 to point 458 765
+  line 139138 z 2001 stereotype "<<map>>" xyz 613.5 768 3000 to ref 128258
+  role_a_pos 697 749 3000 no_role_b
+  multiplicity_a_pos 742 774 3000 no_multiplicity_b
+end
+relationcanvas 133378 relation_ref 129282 // <directional composition>
+  decenter_begin 949
+  decenter_end 78
+  from ref 128130 z 2001 to ref 132994
+  role_a_pos 574 358 3000 no_role_b
+  multiplicity_a_pos 550 358 3000 no_multiplicity_b
+end
+relationcanvas 133762 relation_ref 129410 // <unidirectional association>
+  geometry VHr
+  decenter_end 832
+  from ref 132994 z 2001 to point 437 321
+  line 137346 z 2001 to ref 128130
+  role_a_pos 401 477 3000 no_role_b
+  multiplicity_a_pos 411 515 3000 no_multiplicity_b
+end
+relationcanvas 134530 relation_ref 129666 // <unidirectional association>
+  from ref 132994 z 2001 to point 832 291
+  line 134658 z 2001 to point 836 336
+  line 134786 z 2001 to ref 132994
+  role_a_pos 765 313 3000 no_role_b
+  multiplicity_a_pos 765 338 3000 no_multiplicity_b
+end
+relationcanvas 135426 relation_ref 129794 // <generalisation>
+  geometry VHV unfixed
+  decenter_begin 574
+  decenter_end 425
+  from ref 128130 z 2001 to point 391 268
+  line 135938 z 2001 to point 701 268
+  line 136066 z 2001 to ref 135298
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 135554 relation_ref 129922 // <generalisation>
+  geometry VHV unfixed
+  decenter_end 430
+  from ref 132994 z 2001 to point 652 268
+  line 135682 z 2001 to point 702 268
+  line 135810 z 2001 to ref 135298
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 136194 relation_ref 130050 // <unidirectional association>
+  decenter_begin 741
+  decenter_end 549
+  from ref 128386 z 2001 to ref 128130
+  role_a_pos 479 596 3000 no_role_b
+  multiplicity_a_pos 479 621 3000 no_multiplicity_b
+end
+relationcanvas 136322 relation_ref 130178 // <directional composition>
+  decenter_begin 800
+  decenter_end 184
+  from ref 128386 z 2001 to ref 128002
+  role_a_pos 984 399 3000 no_role_b
+  multiplicity_a_pos 958 399 3000 no_multiplicity_b
+end
+relationcanvas 136834 relation_ref 130306 // <unidirectional association>
+  decenter_begin 741
+  decenter_end 912
+  from ref 128514 z 2001 to ref 128130
+  role_a_pos 479 652 3000 no_role_b
+  multiplicity_a_pos 479 677 3000 no_multiplicity_b
+end
+relationcanvas 137090 relation_ref 130434 // <directional composition>
+  decenter_begin 671
+  decenter_end 944
+  from ref 128514 z 2001 to ref 128002
+  role_a_pos 1062 417 3000 no_role_b
+  multiplicity_a_pos 1084 399 3000 no_multiplicity_b
+end
+relationcanvas 137602 relation_ref 130562 // <generalisation>
+  geometry VHV unfixed
+  decenter_end 425
+  from ref 128002 z 2001 to point 1029 268
+  line 137730 z 2001 to point 701 268
+  line 137858 z 2001 to ref 135298
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 137986 relation_ref 130690 // <unidirectional association>
+  decenter_begin 134
+  decenter_end 605
+  from ref 128770 z 2001 to ref 132994
+  role_a_pos 685 358 3000 no_role_b
+  multiplicity_a_pos 659 358 3000 no_multiplicity_b
+end
+relationcanvas 138114 relation_ref 130818 // <unidirectional association>
+  decenter_end 298
+  from ref 128642 z 2001 to ref 128130
+  role_a_pos 479 557 3000 no_role_b
+  multiplicity_a_pos 479 582 3000 no_multiplicity_b
+end
+relationcanvas 138242 relation_ref 130946 // <directional composition>
+  geometry VH
+  decenter_begin 386
+  decenter_end 830
+  from ref 128258 z 2001 to point 834 377
+  line 139266 z 2001 to ref 128002
+  role_a_pos 910 361 3000 no_role_b
+  multiplicity_a_pos 925 386 3000 no_multiplicity_b
+end
+relationcanvas 140034 relation_ref 131458 // <directional composition>
+  decenter_end 600
+  from ref 139906 z 2007 to ref 128386
+  role_a_pos 958 551 3000 no_role_b
+  multiplicity_a_pos 932 551 3000 no_multiplicity_b
+end
+relationcanvas 140546 relation_ref 131714 // <generalisation>
+  geometry VHV unfixed
+  decenter_end 617
+  from ref 139906 z 2007 to point 952 704
+  line 140674 z 2007 to point 882 704
+  line 140802 z 2007 to ref 128258
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 141570 relation_ref 132098 // <directional composition>
+  geometry VH
+  decenter_begin 558
+  decenter_end 59
+  from ref 141442 z 2001 stereotype "<<map>>" xyz 214.5 491.5 3000 to point 235 540
+  line 142338 z 2001 to ref 128130
+  role_a_pos 199 524 3000 no_role_b
+  multiplicity_a_pos 276 549 3000 no_multiplicity_b
+end
+relationcanvas 142722 relation_ref 132354 // <generalisation>
+  geometry VHV
+  from ref 141442 z 2001 to point 211 260
+  line 142850 z 2001 to point 363 260
+  line 142978 z 2001 to ref 142594
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 143234 relation_ref 132482 // <generalisation>
+  geometry VHV unfixed
+  decenter_begin 477
+  decenter_end 703
+  from ref 141442 z 2001 to point 211 258
+  line 143362 z 2001 to point 157 258
+  line 143490 z 2001 to ref 143106
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 143618 relation_ref 132610 // <generalisation>
+  geometry VHV unfixed
+  decenter_begin 289
+  decenter_end 578
+  from ref 132226 z 2001 to point 63 254
+  line 143746 z 2001 to point 131 254
+  line 143874 z 2001 to ref 143106
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 144002 relation_ref 132738 // <directional composition>
+  decenter_begin 119
+  decenter_end 128
+  from ref 143106 z 2001 stereotype "<<map>>" xyz 15 391.5 3000 to ref 132226
+  role_a_pos 10 513 3000 no_role_b
+  multiplicity_a_pos 25 535 3000 no_multiplicity_b
+end
+relationcanvas 144130 relation_ref 132866 // <unidirectional association>
+  decenter_begin 689
+  decenter_end 442
+  from ref 132226 z 2001 stereotype "<<set>>" xyz 216.5 601 3000 to ref 128130
+  role_a_pos 242 582 3000 no_role_b
+  multiplicity_a_pos 276 607 3000 no_multiplicity_b
+end
+end
