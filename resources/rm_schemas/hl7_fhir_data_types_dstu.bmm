@@ -933,7 +933,10 @@ class_definitions = <
 				name = <"careProvider">
 				type_def = <
 					container_type = <"List">
-					type = <"ResourceReference">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"ResourceReference">
+						generic_parameters = <"Party">
+					>
 				>
 				cardinality = <|>=0|>
 			>
@@ -1167,7 +1170,10 @@ class_definitions = <
 				name = <"member">
 				type_def = <
 					container_type = <"List">
-					type = <"ResourceReference">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"ResourceReference">
+						generic_parameters = <"Resource">
+					>
 				>
 				cardinality = <|>=0|>
 			>
