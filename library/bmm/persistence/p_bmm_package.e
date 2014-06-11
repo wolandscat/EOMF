@@ -1,13 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Abstraction of a package as a tree structure whose nodes can contain "
-	keywords:    "basic meta-model"
+	keywords:    "basic meta-model, BMM, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_PACKAGE_DEFINITION
+class P_BMM_PACKAGE
 
 inherit
 	P_BMM_PACKAGE_CONTAINER
@@ -39,7 +39,7 @@ feature -- Initialisation
 			make (unknown_package_name)
 		end
 
-	make_from_other (other_pkg: P_BMM_PACKAGE_DEFINITION)
+	make_from_other (other_pkg: P_BMM_PACKAGE)
 			-- make this package with `packages' and `classes' references to those parts of `other_pkg'
 			-- but keeping its own name.
 		do
@@ -67,7 +67,7 @@ feature -- Access (attributes from schema)
 
 feature -- Access
 
-	bmm_package_definition: detachable BMM_PACKAGE_DEFINITION
+	bmm_package_definition: detachable BMM_PACKAGE
 		note
 			option: transient
 		attribute
@@ -75,7 +75,7 @@ feature -- Access
 
 feature -- Modification
 
-	do_recursive_classes (action: PROCEDURE [ANY, TUPLE [P_BMM_PACKAGE_DEFINITION, STRING]])
+	do_recursive_classes (action: PROCEDURE [ANY, TUPLE [P_BMM_PACKAGE, STRING]])
 			-- recursively execute `action' procedure, taking package and class name as arguments
 		do
 			across classes as classes_csr loop
@@ -106,7 +106,7 @@ feature -- Factory
 	create_bmm_package_definition
 			-- generate a BMM_PACKAGE_DEFINITION object
 		local
-			new_bmm_package_definition: BMM_PACKAGE_DEFINITION
+			new_bmm_package_definition: BMM_PACKAGE
 		do
 			create new_bmm_package_definition.make (name)
 			bmm_package_definition := new_bmm_package_definition

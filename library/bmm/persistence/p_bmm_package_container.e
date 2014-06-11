@@ -18,7 +18,7 @@ inherit
 
 feature -- Access
 
-	packages: HASH_TABLE [P_BMM_PACKAGE_DEFINITION, STRING]
+	packages: HASH_TABLE [P_BMM_PACKAGE, STRING]
 			-- child packages
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
@@ -27,7 +27,7 @@ feature -- Access
 
 feature -- Status Report
 
-	there_exists_recursive_packages (test: FUNCTION [ANY, TUPLE [P_BMM_PACKAGE_DEFINITION], BOOLEAN]): BOOLEAN
+	there_exists_recursive_packages (test: FUNCTION [ANY, TUPLE [P_BMM_PACKAGE], BOOLEAN]): BOOLEAN
 			-- recursively execute `test' function, taking package as argument
 		do
 			from packages.start until packages.off or Result loop
@@ -56,7 +56,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	do_recursive_packages (action: PROCEDURE [ANY, TUPLE [P_BMM_PACKAGE_DEFINITION]])
+	do_recursive_packages (action: PROCEDURE [ANY, TUPLE [P_BMM_PACKAGE]])
 			-- recursively execute `action' procedure, taking package as argument
 		do
 			across packages as pkgs_csr loop
@@ -65,7 +65,7 @@ feature -- Modification
 			end
 		end
 
-	add_package (a_pkg: P_BMM_PACKAGE_DEFINITION)
+	add_package (a_pkg: P_BMM_PACKAGE)
 		do
 			packages.put (a_pkg, a_pkg.name.as_upper)
 		end

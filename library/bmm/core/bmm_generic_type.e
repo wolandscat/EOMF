@@ -7,17 +7,17 @@ note
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_GENERIC_TYPE_REFERENCE
+class BMM_GENERIC_TYPE
 
 inherit
-	BMM_TYPE_REFERENCE
+	BMM_TYPE
 
 create
 	make
 
 feature -- Initialisation
 
-	make (a_root_type: BMM_CLASS_DEFINITION)
+	make (a_root_type: BMM_CLASS)
 		do
 			root_type := a_root_type
 			create generic_parameters.make (0)
@@ -25,14 +25,14 @@ feature -- Initialisation
 
 feature -- Access
 
-	root_type: BMM_CLASS_DEFINITION
+	root_type: BMM_CLASS
 			-- root type
 
-	generic_parameters: ARRAYED_LIST [BMM_TYPE_SPECIFIER]
+	generic_parameters: ARRAYED_LIST [BMM_TYPE]
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
 
-	semantic_class: BMM_CLASS_DEFINITION
+	semantic_class: BMM_CLASS
 			-- the 'design' type of this property, ignoring containers, multiplicity etc.
 		do
 			Result := root_type
@@ -101,7 +101,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	add_generic_parameter (a_gen_parm: attached BMM_TYPE_SPECIFIER)
+	add_generic_parameter (a_gen_parm: BMM_TYPE)
 		do
 			generic_parameters.extend (a_gen_parm)
 		end

@@ -46,7 +46,7 @@ feature -- Initialisation
 
 feature -- Access
 
-	class_definitions: HASH_TABLE [BMM_CLASS_DEFINITION, STRING]
+	class_definitions: HASH_TABLE [BMM_CLASS, STRING]
 			-- all classes in this schema
 		attribute
 			create Result.make (0)
@@ -72,7 +72,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across class_definitions as class_defs_csr loop
-				if attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_defs_csr.item as enum_type then
+				if attached {BMM_ENUMERATION [COMPARABLE]} class_defs_csr.item as enum_type then
 					Result.extend (enum_type.name)
 				end
 			end
@@ -80,7 +80,7 @@ feature -- Access
 			Result.object_comparison
 		end
 
-	any_class_definition: BMM_CLASS_DEFINITION
+	any_class_definition: BMM_CLASS
 			-- retrieve the class definition corresponding to the top `Any' class
 		do
 			if attached class_definition (any_type) as class_def then
@@ -90,7 +90,7 @@ feature -- Access
 			end
 		end
 
-	class_definition (a_type_name: STRING): BMM_CLASS_DEFINITION
+	class_definition (a_type_name: STRING): BMM_CLASS
 			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
 		require
 			Type_name_valid: has_class_definition (a_type_name)
@@ -100,7 +100,7 @@ feature -- Access
 			end
 		end
 
-	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION_DEFINITION [COMPARABLE]
+	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION [COMPARABLE]
 			-- retrieve the enumeration definition corresponding to `a_type_name'
 		require
 			Type_name_valid: has_enumeration_definition (a_type_name)
@@ -108,12 +108,12 @@ feature -- Access
 			fake_int_enum_def: BMM_ENUMERATION_INTEGER
 			fake_str_enum_def: BMM_ENUMERATION_STRING
 		do
-			check attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
+			check attached {BMM_ENUMERATION [COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
 				Result := enum_def
 			end
 		end
 
-	property_definition (a_type_name, a_prop_name: STRING): BMM_PROPERTY_DEFINITION
+	property_definition (a_type_name, a_prop_name: STRING): BMM_PROPERTY [BMM_TYPE]
 			-- retrieve the property definition for `a_prop_name' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
@@ -138,7 +138,7 @@ feature -- Access
 			end
 		end
 
-	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY_DEFINITION
+	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY [BMM_TYPE]
 			-- retrieve the property definition for `a_property_path' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
@@ -151,7 +151,7 @@ feature -- Access
 			Result := class_definition (type_to_class (a_type_name)).property_definition_at_path (an_og_path)
 		end
 
-	class_definition_at_path (a_type_name, a_property_path: STRING): BMM_CLASS_DEFINITION
+	class_definition_at_path (a_type_name, a_property_path: STRING): BMM_CLASS
 			-- retrieve the class definition for the class that owns the terminal attribute in `a_property_path'
 			-- in flattened class corresponding to `a_type_name'
 		require
@@ -191,7 +191,7 @@ feature -- Status Report
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION_DEFINITION [COMPARABLE]} class_definitions.item (a_type_name)
+			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION [COMPARABLE]} class_definitions.item (a_type_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN
@@ -242,7 +242,7 @@ feature -- Status Report
 		local
 			is_gen_type: BOOLEAN
 			type_strs: ARRAYED_LIST [STRING]
-			class_def: BMM_CLASS_DEFINITION
+			class_def: BMM_CLASS
 		do
 			is_gen_type := is_well_formed_generic_type_name (a_type_name)
 			class_def := class_definition (a_class_name)
@@ -323,7 +323,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	add_class_definition (a_class_def: BMM_CLASS_DEFINITION; a_package_def: BMM_PACKAGE_DEFINITION)
+	add_class_definition (a_class_def: BMM_CLASS; a_package_def: BMM_PACKAGE)
 			-- add `a_class_def' to this schema, in package `a_package_def', which must exist in the schema
 		require
 			Valid_class: not has_class_definition (a_class_def.name)
@@ -337,11 +337,11 @@ feature -- Modification
 			Schema_set_in_class: a_class_def.bmm_schema = Current
 		end
 
-	add_package (a_pkg: BMM_PACKAGE_DEFINITION)
+	add_package (a_pkg: BMM_PACKAGE)
 		do
 			precursor (a_pkg)
 			a_pkg.set_bmm_schema (Current)
-			a_pkg.do_recursive_packages (agent (a_bmm_pkg: BMM_PACKAGE_DEFINITION) do a_bmm_pkg.set_bmm_schema (Current) end)
+			a_pkg.do_recursive_packages (agent (a_bmm_pkg: BMM_PACKAGE) do a_bmm_pkg.set_bmm_schema (Current) end)
 		ensure then
 			Schema_set_in_package: a_pkg.bmm_schema = Current
 		end
@@ -378,7 +378,7 @@ feature -- Statistics
 			package_key := "Package count"
 			package_count := 0
 			do_recursive_packages (
-				agent (a_pkg: BMM_PACKAGE_DEFINITION)
+				agent (a_pkg: BMM_PACKAGE)
 					do
 						package_count :=  package_count + 1
 					end

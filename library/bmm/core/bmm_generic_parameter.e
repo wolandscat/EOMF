@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_GENERIC_PARAMETER_DEFINITION
+class BMM_GENERIC_PARAMETER
 
 inherit
 	BMM_TYPE_SPECIFIER
@@ -20,14 +20,14 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; any_type_def: BMM_CLASS_DEFINITION)
+	make (a_name: STRING; any_type_def: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
 			any_class_definition := any_type_def
 		end
 
-	make_constrained (a_name: STRING; a_conforms_to_type, any_type_def: BMM_CLASS_DEFINITION)
+	make_constrained (a_name: STRING; a_conforms_to_type, any_type_def: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
@@ -40,13 +40,13 @@ feature -- Access (attributes from schema)
 	name: STRING
 			-- name of the parameter, e.g. 'T' etc
 
-	conforms_to_type: detachable BMM_CLASS_DEFINITION
+	conforms_to_type: detachable BMM_CLASS
 			-- optional conformance constraint derived from `conforms_to_type'
 
-	inheritance_precursor: detachable BMM_GENERIC_PARAMETER_DEFINITION
+	inheritance_precursor: detachable BMM_GENERIC_PARAMETER
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
-	semantic_class: BMM_CLASS_DEFINITION
+	semantic_class: BMM_CLASS
 			-- the 'design' class of this type, ignoring containers, multiplicity etc.
 		do
 			if attached flattened_conforms_to_type as fctt then
@@ -58,7 +58,7 @@ feature -- Access (attributes from schema)
 
 feature -- Access
 
-	flattened_conforms_to_type: detachable BMM_CLASS_DEFINITION
+	flattened_conforms_to_type: detachable BMM_CLASS
 			-- get any ultimate type conformance constraint on this generic parameter due to inheritance
 		do
 			if attached conforms_to_type then
@@ -113,7 +113,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	set_inheritance_precursor (a_gen_parm_def: BMM_GENERIC_PARAMETER_DEFINITION)
+	set_inheritance_precursor (a_gen_parm_def: BMM_GENERIC_PARAMETER)
 			-- set `inheritance_precursor'
 		do
 			inheritance_precursor := a_gen_parm_def
@@ -159,7 +159,7 @@ feature -- Output
 
 feature {NONE} -- Implementation
 
-	any_class_definition: BMM_CLASS_DEFINITION
+	any_class_definition: BMM_CLASS
 
 end
 

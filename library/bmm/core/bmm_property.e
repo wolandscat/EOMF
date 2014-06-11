@@ -7,10 +7,13 @@ note
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_PROPERTY_DEFINITION
+class BMM_PROPERTY [G -> BMM_TYPE]
 
 inherit
 	BMM_MODEL_ELEMENT
+
+create
+	make
 
 feature {NONE} -- Initialisation
 
@@ -36,7 +39,7 @@ feature -- Access
 			Result := name
 		end
 
-	type: BMM_TYPE_SPECIFIER
+	type: G
 			-- formal type of this attribute
 
 	existence: MULTIPLICITY_INTERVAL
@@ -82,12 +85,12 @@ feature -- Status Report
 	is_container: BOOLEAN
 			-- True if type is a container type
 		do
-			Result := attached {BMM_CONTAINER_TYPE_REFERENCE} type
+			Result := attached {BMM_CONTAINER_TYPE} type
 		end
 
 feature -- Comparison
 
-	bmm_conforms_to (other: BMM_PROPERTY_DEFINITION): BOOLEAN
+	bmm_conforms_to (other: BMM_PROPERTY [BMM_TYPE]): BOOLEAN
 			-- True if this property conforms to `other' such that it could be used to override it
 		do
 			-- FIXME: to be implemented

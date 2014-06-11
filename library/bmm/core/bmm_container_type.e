@@ -7,10 +7,10 @@ note
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_CONTAINER_TYPE_REFERENCE
+class BMM_CONTAINER_TYPE
 
 inherit
-	BMM_TYPE_REFERENCE
+	BMM_TYPE
 		redefine
 			as_conformance_type_string
 		end
@@ -20,7 +20,7 @@ create
 
 feature -- Initialisation
 
-	make (a_type, a_container_type: BMM_CLASS_DEFINITION)
+	make (a_type: BMM_TYPE; a_container_type: BMM_CLASS)
 		do
 			type := a_type
 			container_type := a_container_type
@@ -28,16 +28,16 @@ feature -- Initialisation
 
 feature -- Access
 
-	type: BMM_CLASS_DEFINITION
+	type: BMM_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
 
-	container_type: BMM_CLASS_DEFINITION
+	container_type: BMM_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE_SPECIFIER
 
-	semantic_class: BMM_CLASS_DEFINITION
+	semantic_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
 		do
-			Result := type
+			Result := type.semantic_class
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
@@ -53,7 +53,7 @@ feature -- Access
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if type.is_abstract or container_type.is_abstract then
+			if type.type_category = Type_cat_abstract_class or container_type.is_abstract then
 				Result := Type_cat_abstract_class
 			elseif has_type_substitutions then
 				Result := Type_cat_concrete_class_supertype
@@ -72,9 +72,6 @@ feature -- Access
 			end
 
 			item_sub_type_list := type.type_substitutions
-			if item_sub_type_list.is_empty then
-				item_sub_type_list.extend (type.name)
-			end
 
 			create Result.make (0)
 			across cont_sub_type_list as cont_sub_types_csr loop
@@ -97,15 +94,14 @@ feature -- Output
 			-- formal name of the type
 		do
 			create Result.make_empty
-			Result.append (container_type.name + Generic_left_delim.out + type.name + Generic_right_delim.out)
+			Result.append (container_type.name + Generic_left_delim.out + type.as_type_string + Generic_right_delim.out)
 		end
 
 	as_conformance_type_string: STRING
 			-- name of the this type in form allowing other type to be conformance tested against it;
 			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
 		do
-			create Result.make_empty
-			Result.append (type.name)
+			Result := type.as_conformance_type_string
 		end
 
 end

@@ -1,13 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Definition of dADL persistent form of an instance of BMM_CLASS_DEFINITION"
+	description: "Definition of dADL persistent form of an instance of BMM_CLASS"
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_CLASS_DEFINITION
+class P_BMM_CLASS
 
 inherit
 	P_BMM_TYPE_SPECIFIER
@@ -35,7 +35,7 @@ feature -- Access (persisted)
 			create Result.make_from_string (unknown_type_name)
 		end
 
-	generic_parameter_defs: detachable HASH_TABLE [P_BMM_GENERIC_PARAMETER_DEFINITION, STRING]
+	generic_parameter_defs: detachable HASH_TABLE [P_BMM_GENERIC_PARAMETER, STRING]
 			-- list of generic parameter definitions
 			-- FIXME: this won't function correctly unless ordering is guaranteed;
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
@@ -48,7 +48,7 @@ feature -- Access (persisted)
 			Result.compare_objects
 		end
 
-	properties: HASH_TABLE [P_BMM_PROPERTY_DEFINITION, STRING]
+	properties: HASH_TABLE [P_BMM_PROPERTY, STRING]
 			-- list of attributes defined in this class FROM SCHEMA
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
@@ -63,7 +63,7 @@ feature -- Access
 			create Result.make_from_string (Unknown_schema_id)
 		end
 
-	bmm_class_definition: detachable BMM_CLASS_DEFINITION
+	bmm_class_definition: detachable BMM_CLASS
 		note
 			option: transient
 		attribute
@@ -113,7 +113,7 @@ feature -- Factory
 		end
 
 	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)
-			-- add remaining model elements from `' to `bmm_class_definition'
+			-- add remaining model elements from Current to `bmm_class_definition'
 		do
 			if attached bmm_class_definition as bmm_class_def then
 				-- populate references to ancestor classes; should be every class except Any
@@ -129,7 +129,7 @@ feature -- Factory
 				if attached generic_parameter_defs then
 					across generic_parameter_defs as gen_parm_defs_csr loop
 						gen_parm_defs_csr.item.create_bmm_generic_parameter_definition (a_bmm_schema)
-						if attached gen_parm_defs_csr.item.bmm_generic_parameter_definition as bm_gen_parm_def then
+						if attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
 							bmm_class_def.add_generic_parameter (bm_gen_parm_def)
 						end
 					end

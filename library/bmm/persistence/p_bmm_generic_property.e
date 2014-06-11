@@ -10,37 +10,28 @@ note
 class P_BMM_GENERIC_PROPERTY
 
 inherit
-	P_BMM_PROPERTY_DEFINITION
-		redefine
-			type_def, bmm_property_definition
-		end
-
 	BMM_DEFINITIONS
 		export
 			{NONE} all
 		end
 
+	P_BMM_PROPERTY
+		redefine
+			bmm_property_definition
+		end
+
+feature -- Access (persisted)
+
+	type_def: detachable P_BMM_GENERIC_TYPE
+			-- type definition of this property, if not a simple String type reference
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+
 feature -- Access
 
-	type_def: detachable P_BMM_GENERIC_TYPE_REFERENCE
-			-- type of the container of this attribute from its containing class
-
-	bmm_property_definition: detachable BMM_GENERIC_PROPERTY
+	bmm_property_definition: detachable BMM_PROPERTY [BMM_GENERIC_TYPE]
 		note
 			option: transient
 		attribute
-		end
-
-feature -- Factory
-
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS_DEFINITION)
-		do
-			if attached type_def as td then
-				td.create_bmm_generic_type_reference (a_bmm_schema)
-				if attached td.bmm_generic_type_reference as gen_type_ref then
-					create bmm_property_definition.make (name, gen_type_ref, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
-				end
-			end
 		end
 
 end

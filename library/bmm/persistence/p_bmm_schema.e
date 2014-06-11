@@ -62,14 +62,14 @@ feature -- Access (attributes from schema)
 			create Result.make (0)
 		end
 
-	primitive_types: HASH_TABLE [P_BMM_CLASS_DEFINITION, STRING]
+	primitive_types: HASH_TABLE [P_BMM_CLASS, STRING]
 			-- types like Integer, Boolean etc
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
 			create Result.make (0)
 		end
 
-	class_definitions: HASH_TABLE [P_BMM_CLASS_DEFINITION, STRING]
+	class_definitions: HASH_TABLE [P_BMM_CLASS, STRING]
 			-- constructed classes
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
@@ -85,7 +85,7 @@ feature -- Access (Attributes from schema load post-processing)
 		attribute
 		end
 
-	canonical_packages: HASH_TABLE [P_BMM_PACKAGE_DEFINITION, STRING]
+	canonical_packages: HASH_TABLE [P_BMM_PACKAGE, STRING]
 			-- package structure in which all top-level qualified package names like xx.yy.zz have been
 			-- expanded out to a hierarchy of BMM_PACKAGE_DEFINITION objects
 		do
@@ -137,14 +137,14 @@ feature -- Access (Attributes from schema load post-processing)
 
 feature -- Access
 
-	class_definition (a_class_name: STRING): detachable P_BMM_CLASS_DEFINITION
+	class_definition (a_class_name: STRING): detachable P_BMM_CLASS
 			-- class definition corresponding to `a_class_name'
 		require
 			Class_valid: has_class_definition (a_class_name)
 		local
 			a_key: STRING
-			an_int_enum: P_BMM_ENUMERATION_INTEGER
-			a_str_enum: P_BMM_ENUMERATION_STRING
+			fake_int_enum: P_BMM_ENUMERATION_INTEGER
+			fake_str_enum: P_BMM_ENUMERATION_STRING
 		do
 			a_key := a_class_name.as_upper
 			if primitive_types.has (a_key) then
@@ -190,29 +190,29 @@ feature -- Status Report
 
 feature -- Comparison
 
-	property_conforms_to (a_class_def: P_BMM_CLASS_DEFINITION; a_child_prop_def, a_parent_prop_def: P_BMM_PROPERTY_DEFINITION): BOOLEAN
-			-- True if this property conforms to `other' such that it could be used to override it; same types are not considered conforming
+	property_conforms_to (a_child_prop, a_parent_prop: P_BMM_PROPERTY): BOOLEAN
+			-- True if `a_child_prop' conforms to `a_parent_prop' such that it could be used to override it; same types are not considered conforming
 		do
 			-- check basics first
-			if attached {P_BMM_SINGLE_PROPERTY} a_parent_prop_def and then a_parent_prop_def.type.same_string (any_type) then
+			if attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop and then a_parent_single_prop.type_def.type.same_string (any_type) then
 				Result := True
-			elseif a_child_prop_def.name.same_string (a_parent_prop_def.name) then -- same names
-				if attached {P_BMM_SINGLE_PROPERTY} a_child_prop_def and attached {P_BMM_SINGLE_PROPERTY} a_parent_prop_def then
-					Result := type_strictly_conforms_to (a_child_prop_def.type, a_parent_prop_def.type)
+			elseif a_child_prop.name.same_string (a_parent_prop.name) then -- same names
+				if attached {P_BMM_SINGLE_PROPERTY} a_child_prop as a_child_single_prop and attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop then
+					Result := type_strictly_conforms_to (a_child_single_prop.type_def.type, a_parent_single_prop.type_def.type)
 
-				elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_parent_prop_def as a_parent_single_prop_def_open then
-					if attached {P_BMM_SINGLE_PROPERTY_OPEN} a_child_prop_def as a_child_single_prop_def_open then
+				elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_parent_prop then
+					if attached {P_BMM_SINGLE_PROPERTY_OPEN} a_child_prop then
 						Result := False
-					elseif attached {P_BMM_SINGLE_PROPERTY} a_child_prop_def as a_child_single_prop_def then
+					elseif attached {P_BMM_SINGLE_PROPERTY} a_child_prop then
 						Result := True
 						-- FIXME: proper type conformance to constraining generic type needs to be checked here
 					end
 
-				elseif attached {P_BMM_CONTAINER_PROPERTY} a_child_prop_def as a_child_cont_prop_def and attached {P_BMM_CONTAINER_PROPERTY} a_parent_prop_def as a_parent_cont_prop_def then
-					Result := type_strictly_conforms_to (a_child_cont_prop_def.type_def.as_type_string, a_parent_cont_prop_def.type_def.as_type_string)
+				elseif attached {P_BMM_CONTAINER_PROPERTY} a_child_prop as a_child_cont_prop and attached {P_BMM_CONTAINER_PROPERTY} a_parent_prop as a_parent_cont_prop then
+					Result := type_strictly_conforms_to (a_child_cont_prop.type_def.as_type_string, a_parent_cont_prop.type_def.as_type_string)
 
-				elseif attached {P_BMM_GENERIC_PROPERTY} a_child_prop_def as a_child_gen_prop_def and attached {P_BMM_GENERIC_PROPERTY} a_parent_prop_def as a_parent_gen_prop_def then
-					Result := type_strictly_conforms_to (a_child_gen_prop_def.type_def.as_type_string, a_parent_gen_prop_def.type_def.as_type_string)
+				elseif attached {P_BMM_GENERIC_PROPERTY} a_child_prop as a_child_gen_prop and attached {P_BMM_GENERIC_PROPERTY} a_parent_prop as a_parent_gen_prop then
+					Result := type_strictly_conforms_to (a_child_gen_prop.type_def.as_type_string, a_parent_gen_prop.type_def.as_type_string)
 				end
 			end
 		end
@@ -281,7 +281,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 
 			-- check no duplicate properties in any class
 			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION)
+				agent (a_class_def: P_BMM_CLASS)
 					local
 						prop_list: ARRAYED_SET [STRING]
 					do
@@ -299,7 +299,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 
 			-- validate package & class structure
 			do_recursive_packages (
-				agent (a_pkg: P_BMM_PACKAGE_DEFINITION)
+				agent (a_pkg: P_BMM_PACKAGE)
 					do
 						-- check for lower-down qualified names
 						if not packages.has_item (a_pkg) and a_pkg.name.has (package_name_delimiter) then
@@ -328,7 +328,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 		require
 			state = State_validated_created
 		local
-			child_pkg: P_BMM_PACKAGE_DEFINITION
+			child_pkg: P_BMM_PACKAGE
 			pkg_csr: like packages
 			child_pkg_key: STRING
 		do
@@ -426,7 +426,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			-- compute ancestors index:
 			-- pass 1: add class direct ancestors
 			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION)
+				agent (a_class_def: P_BMM_CLASS)
 					local
 						anc_list: ARRAYED_SET [STRING]
 					do
@@ -438,7 +438,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			)
 			-- pass 2: add indirect ancestors
 			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION)
+				agent (a_class_def: P_BMM_CLASS)
 					local
 						anc_list_copy: ARRAYED_SET [STRING]
 					do
@@ -480,6 +480,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			-- correct schema
 		local
 			package_classes: HASH_TABLE [STRING, STRING]
+			class_names: ARRAYED_LIST [STRING]
 		do
 			-- check archetype parent class in list of class names
 			if attached archetype_parent_class as apc and then not has_class_definition (apc) then
@@ -493,14 +494,14 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				end
 			end
 
-			-- check that no duplicate classes are found in packages
+			-- check that no duplicate class names are found in packages
 			create package_classes.make (0)
 			across canonical_packages as pkgs_csr loop
 				pkgs_csr.item.do_recursive_classes (
-					agent (a_pkg: P_BMM_PACKAGE_DEFINITION; a_class_name: STRING; pkg_class_list: HASH_TABLE [STRING, STRING])
+					agent (a_pkg: P_BMM_PACKAGE; a_class_name: STRING; pkg_class_list: HASH_TABLE [STRING, STRING])
 						do
 							if pkg_class_list.has (a_class_name.as_lower) and then attached pkg_class_list.item (a_class_name.as_lower) as cl_item then
-								add_error (ec_BMM_CLDUP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
+								add_error (ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
 							else
 								pkg_class_list.put (a_pkg.name, a_class_name.as_lower)
 							end
@@ -509,20 +510,29 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 
 			-- check that every class is in a package
+			create class_names.make (0)
+			class_names.compare_objects
 			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION; pkg_class_list: HASH_TABLE [STRING, STRING])
+				agent (a_class_def: P_BMM_CLASS; pkg_class_list: HASH_TABLE [STRING, STRING]; class_name_list: ARRAYED_LIST [STRING])
+					local
+						cname: STRING
 					do
-						if not pkg_class_list.has (a_class_def.name.as_lower) then
+						cname := a_class_def.name.as_lower
+						if not pkg_class_list.has (cname) then
 							add_error (ec_BMM_PKGID, <<schema_id, a_class_def.name>>)
+						elseif class_name_list.has (cname) then
+							add_error (ec_BMM_CLDUP, <<schema_id, a_class_def.name>>)
+						else
+							class_name_list.extend (cname)
 						end
-					end (?, package_classes)
+					end (?, package_classes, class_names)
 			)
 
 			-- for all classes, validate all properties
-			do_all_classes (agent (a_class_def: P_BMM_CLASS_DEFINITION) do validate_class (a_class_def) end)
+			do_all_classes (agent (a_class_def: P_BMM_CLASS) do validate_class (a_class_def) end)
 		end
 
-	validate_class (a_class_def: P_BMM_CLASS_DEFINITION)
+	validate_class (a_class_def: P_BMM_CLASS)
 		do
 			-- check that all ancestors exist
 			across a_class_def.ancestors as ancs_csr loop
@@ -546,40 +556,49 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 		end
 
-	validate_property (a_class_def: P_BMM_CLASS_DEFINITION; a_prop_def: P_BMM_PROPERTY_DEFINITION)
-		local
-			gen_parm_type_name: STRING
+	validate_property (a_class_def: P_BMM_CLASS; a_prop_def: P_BMM_PROPERTY)
 		do
 			-- first check if any property replicates a property from a parent class
 			across a_class_def.ancestors as ancs_csr loop
 				if attached class_definition (ancs_csr.item) as anc_class and then anc_class.properties.has (a_prop_def.name) and then
 					attached anc_class.properties.item (a_prop_def.name) as anc_prop and then not
-					property_conforms_to (a_class_def, a_prop_def, anc_prop)
+					property_conforms_to (a_prop_def, anc_prop)
 				then
 					add_validity_error (a_class_def.source_schema_id, "BMM_PRNCF", <<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
 				end
 			end
 
 			if attached {P_BMM_SINGLE_PROPERTY} a_prop_def as a_single_prop_def then
-				if a_single_prop_def.type.is_empty or else not has_class_definition (a_single_prop_def.type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_SPT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, a_single_prop_def.type>>)
+				if a_single_prop_def.type_def.type.is_empty or else not has_class_definition (a_single_prop_def.type_def.type) then
+					add_validity_error (a_class_def.source_schema_id, "BMM_SPT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, a_single_prop_def.type_def.type>>)
 				end
 			elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_prop_def as a_single_prop_def_open then
-				if not a_class_def.is_generic or else not a_class_def.generic_parameter_defs.has (a_single_prop_def_open.type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_SPOT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, a_single_prop_def_open.type>>)
+				if not a_class_def.is_generic or else not a_class_def.generic_parameter_defs.has (a_single_prop_def_open.type_def.type) then
+					add_validity_error (a_class_def.source_schema_id, "BMM_SPOT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, a_single_prop_def_open.type_def.type>>)
 				end
 
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
 				if not attached a_cont_prop_def.type_def then
 					add_validity_error (a_class_def.source_schema_id, "BMM_CPT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
-				elseif not has_class_definition (a_cont_prop_def.type_def.type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_cont_prop_def.type_def.type>>)
 				elseif not has_class_definition (a_cont_prop_def.type_def.container_type) then
 					add_validity_error (a_class_def.source_schema_id, "BMM_CPCT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_cont_prop_def.type_def.container_type>>)
+				else
+					-- loop through types inside container type
+					across a_cont_prop_def.type_def.type_ref.flattened_type_list as types_csr loop
+						if not has_class_definition (types_csr.item) then
+							if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
+								if not a_class_def.generic_parameter_defs.has (types_csr.item) then
+									add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+								end
+							else
+								add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
+							end
+						end
+					end
 				end
 
 				if not attached a_cont_prop_def.cardinality then
-					add_validity_warning (a_class_def.source_schema_id, "BMM_CPTNC", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
+					add_validity_info (a_class_def.source_schema_id, "BMM_CPTNC", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 			elseif attached {P_BMM_GENERIC_PROPERTY} a_prop_def as a_gen_prop_def then
@@ -588,18 +607,18 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				elseif not has_class_definition (a_gen_prop_def.type_def.root_type) then
 					add_validity_error (a_class_def.source_schema_id, "BMM_GPRT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_gen_prop_def.type_def.root_type>>)
 				else
-					from a_gen_prop_def.type_def.generic_parameters.start until a_gen_prop_def.type_def.generic_parameters.off loop
-						gen_parm_type_name := a_gen_prop_def.type_def.generic_parameters.item
-						if not has_class_definition (gen_parm_type_name) then
-							if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-								if not a_class_def.generic_parameter_defs.has (gen_parm_type_name) then
-									add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_type_name>>)
+					across a_gen_prop_def.type_def.generic_parameter_refs as gen_parms_csr loop
+						across gen_parms_csr.item.flattened_type_list as gen_parm_types_csr loop
+							if not has_class_definition (gen_parm_types_csr.item) then
+								if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
+									if not a_class_def.generic_parameter_defs.has (gen_parm_types_csr.item) then
+										add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
+									end
+								else
+									add_validity_error (a_class_def.source_schema_id, "BMM_GPGPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
 								end
-							else
-								add_validity_error (a_class_def.source_schema_id, "BMM_GPGPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_type_name>>)
 							end
 						end
-						a_gen_prop_def.type_def.generic_parameters.forth
 					end
 				end
 			end
@@ -657,13 +676,13 @@ feature -- Factory
 			--------- PASS 2 ----------
 			-- populate BMM_CLASS_DEFINITION objects
 			do_all_classes_in_order (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION; a_bmm_schema: BMM_SCHEMA)
+				agent (a_class_def: P_BMM_CLASS; a_bmm_schema: BMM_SCHEMA)
 					do
 						a_class_def.populate_bmm_class_definition (a_bmm_schema)
 					end (?, new_bmm_schema))
 		end
 
-	add_bmm_schema_class_definition (a_pkg: P_BMM_PACKAGE_DEFINITION; a_class_name: STRING)
+	add_bmm_schema_class_definition (a_pkg: P_BMM_PACKAGE; a_class_name: STRING)
 			-- create the BMM_CLASS_DEFINITION object, add it to the BMM_SCHEMA;
 			-- set its source_schema_id; set its primitive_type flag; its BMM_SCHEMA link will also be set
 		do
@@ -726,7 +745,7 @@ feature {DT_OBJECT_CONVERTER} -- Persistence
 
 			-- assign unique ids to all class objects, to enable collision detection during merging
 			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS_DEFINITION)
+				agent (a_class_def: P_BMM_CLASS)
 					do
 						a_class_def.set_uid (uid_counter.item)
 						uid_counter.put (uid_counter.item + 1)
@@ -755,7 +774,7 @@ feature {NONE} -- Implementation
 			create Result.put (1)
 		end
 
-	do_all_classes (action: PROCEDURE [ANY, TUPLE [P_BMM_CLASS_DEFINITION]])
+	do_all_classes (action: PROCEDURE [ANY, TUPLE [P_BMM_CLASS]])
 			-- do some action to all primitive type and class objects
 			-- process in any order
 		do
@@ -767,7 +786,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	do_all_classes_in_order (action: PROCEDURE [ANY, TUPLE [P_BMM_CLASS_DEFINITION]])
+	do_all_classes_in_order (action: PROCEDURE [ANY, TUPLE [P_BMM_CLASS]])
 			-- do some action to all primitive type and class objects
 			-- process in breadth first order of inheritance tree
 		local
@@ -840,6 +859,20 @@ feature {NONE} -- Implementation
 			end
 		end
 
+	add_validity_info (source_schema_id, a_key: STRING; args: ARRAY [STRING])
+			-- append an info message with key `a_key' and `args' array to the `errors' string to the
+			-- error list for schema with `a_schema_id'
+		do
+			if source_schema_id.same_string (schema_id) then
+				add_info (a_key, args)
+			else
+				if not schema_error_table.has (source_schema_id) then
+					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
+				end
+				schema_error_table.item (source_schema_id).add_info (a_key, args, "")
+			end
+		end
+
 	schema_error_table_cache: detachable HASH_TABLE [ERROR_ACCUMULATOR, STRING]
 			-- set of error accumulators for other schemas, keyed by schema id
 		note
@@ -861,7 +894,7 @@ feature {NONE} -- Implementation
 		attribute
 		end
 
-	canonical_packages_cache: detachable HASH_TABLE [P_BMM_PACKAGE_DEFINITION, STRING]
+	canonical_packages_cache: detachable HASH_TABLE [P_BMM_PACKAGE, STRING]
 		note
 			option: transient
 		attribute

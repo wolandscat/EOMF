@@ -10,26 +10,37 @@ note
 class P_BMM_SINGLE_PROPERTY
 
 inherit
-	P_BMM_PROPERTY_DEFINITION
+	P_BMM_PROPERTY
 		redefine
 			bmm_property_definition
 		end
 
+feature -- Access (persisted)
+
+	type: detachable STRING
+			-- type definition of this property, if not a simple String type reference
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+
+	type_ref: detachable P_BMM_SIMPLE_TYPE
+			-- type definition of this property, if not a simple String type reference
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+			-- Can be used in schema instead of `type', but less readable
+
 feature -- Access
 
-	bmm_property_definition: detachable BMM_SINGLE_PROPERTY
+	type_def: detachable P_BMM_SIMPLE_TYPE
+			-- generate `type_ref' from `type' and save
+		do
+			if not attached type_ref and attached type as att_type then
+				create type_ref.make_simple (att_type)
+			end
+			Result := type_ref
+		end
+
+	bmm_property_definition: detachable BMM_PROPERTY [BMM_SIMPLE_TYPE]
 		note
 			option: transient
 		attribute
-		end
-
-feature -- Factory
-
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS_DEFINITION)
-		do
-			if attached a_bmm_schema.class_definition (type) as class_def then
-				create bmm_property_definition.make (name, class_def, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
-			end
 		end
 
 end

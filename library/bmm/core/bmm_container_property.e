@@ -13,9 +13,9 @@ note
 class BMM_CONTAINER_PROPERTY
 
 inherit
-	BMM_PROPERTY_DEFINITION
+	BMM_PROPERTY [BMM_CONTAINER_TYPE]
 		redefine
-			type, make, display_name
+			make, display_name
 		end
 
 create
@@ -39,9 +39,6 @@ feature -- Access
 		end
 
 	cardinality: MULTIPLICITY_INTERVAL
-
-	type: BMM_CONTAINER_TYPE_REFERENCE
-			-- type of the contained type
 
 feature -- Modification
 

@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_GENERIC_PARAMETER_DEFINITION
+class P_BMM_GENERIC_PARAMETER
 
 inherit
 	P_BMM_TYPE_SPECIFIER
@@ -27,7 +27,7 @@ feature -- Access (attributes from schema)
 
 feature -- Access
 
-	bmm_generic_parameter_definition: detachable BMM_GENERIC_PARAMETER_DEFINITION
+	bmm_generic_parameter: detachable BMM_GENERIC_PARAMETER
 		note
 			option: transient
 		attribute
@@ -38,9 +38,9 @@ feature -- Factory
 	create_bmm_generic_parameter_definition (a_bmm_schema: BMM_SCHEMA)
 		do
 			if attached conforms_to_type as conf_type and then attached a_bmm_schema.class_definition (conf_type) as class_def_conf_type then
-				create bmm_generic_parameter_definition.make_constrained (name, class_def_conf_type, a_bmm_schema.any_class_definition)
+				create bmm_generic_parameter.make_constrained (name, class_def_conf_type, a_bmm_schema.any_class_definition)
 			else
-				create bmm_generic_parameter_definition.make (name, a_bmm_schema.any_class_definition)
+				create bmm_generic_parameter.make (name, a_bmm_schema.any_class_definition)
 			end
 		end
 

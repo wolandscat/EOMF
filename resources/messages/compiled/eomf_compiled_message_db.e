@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (161)
+			create message_table.make (162)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -117,7 +117,8 @@ feature -- Initialisation
 			message_table.put ("Schema $1 class definition $2 not declared in any package", ec_BMM_PKGID)
 			message_table.put ("Schema $1 top-level sibling package definitions cannot include a package which is the child of another", ec_BMM_PKGTL)
 			message_table.put ("Schema $1 packages with qualified name found in package $2 (qualified names not allowed except at top-level)", ec_BMM_PKGQN)
-			message_table.put ("Schema $1 has duplicate class name $2 in package $3 and also package $4", ec_BMM_CLDUP)
+			message_table.put ("Schema $1 has duplicate class name $2 in package $3 and also package $4", ec_BMM_CLPKDP)
+			message_table.put ("Schema $1 has duplicate class name $2 in class definitions", ec_BMM_CLDUP)
 			message_table.put ("Schema $1 archetype_closure_package $2 does not exist", ec_BMM_MDLPK)
 			message_table.put ("Schema $1 class $2 duplicate property within class $3", ec_BMM_PRDUP)
 			message_table.put ("Schema $1 class $2 property $3 does not conform to same property in ancestor $4 (duplicate?)", ec_BMM_PRNCF)

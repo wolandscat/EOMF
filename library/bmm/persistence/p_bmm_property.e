@@ -1,14 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Persistent form of BMM_PROPERTY_DEFINITION objects"
+	description: "Persistent form of BMM_PROPERTY objects"
 	keywords:    "Basic meta-model"
-
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class P_BMM_PROPERTY_DEFINITION
+deferred class P_BMM_PROPERTY
 
 feature -- Access (persisted)
 
@@ -19,16 +18,11 @@ feature -- Access (persisted)
             create Result.make_empty
         end
 
-	type: STRING
-			-- type name of this property
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-        attribute
-            create Result.make_empty
-        end
-
-	type_def: detachable P_BMM_TYPE_SPECIFIER
+	type_def: detachable P_BMM_TYPE
 			-- type definition of this property, if not a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+		deferred
+		end
 
 	is_mandatory: BOOLEAN
 			-- True if this property is mandatory in its class
@@ -48,7 +42,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	bmm_property_definition: detachable BMM_PROPERTY_DEFINITION
+	bmm_property_definition: detachable BMM_PROPERTY [BMM_TYPE]
 		note
 			option: transient
 		attribute
@@ -56,8 +50,14 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS_DEFINITION)
-		deferred
+	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+		do
+			if attached type_def as td then
+				td.create_bmm_type (a_bmm_schema, a_class_def)
+				if attached td.bmm_type as bt then
+					create bmm_property_definition.make (name, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
+				end
+			end
 		end
 
 end

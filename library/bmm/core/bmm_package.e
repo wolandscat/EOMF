@@ -1,13 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Abstraction of a package as a tree structure whose nodes can contain "
-	keywords:    "model, UML"
+	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2010- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_PACKAGE_DEFINITION
+class BMM_PACKAGE
 
 inherit
 	BMM_PACKAGE_CONTAINER
@@ -31,7 +31,7 @@ feature -- Access
 			-- name of the package FROM SCHEMA; this name may be qualified if it is a top-level
 			-- package within the schema, or unqualified.
 
-	classes: ARRAYED_SET [BMM_CLASS_DEFINITION]
+	classes: ARRAYED_SET [BMM_CLASS]
 		attribute
 			create Result.make (0)
 		end
@@ -50,7 +50,7 @@ feature -- Access
 	path: STRING
 			-- full path of this package from root
 		local
-			csr: detachable BMM_PACKAGE_DEFINITION
+			csr: detachable BMM_PACKAGE
 		do
 			create Result.make(0)
 			from csr := Current until csr = Void loop
@@ -62,21 +62,21 @@ feature -- Access
 			end
 		end
 
-	parent: detachable BMM_PACKAGE_DEFINITION
+	parent: detachable BMM_PACKAGE
 			-- parent package
 
-	root_classes: ARRAYED_SET [BMM_CLASS_DEFINITION]
+	root_classes: ARRAYED_SET [BMM_CLASS]
 			-- obtain the set of top-level classes in this package, either from this package itself
 			-- or by recursing into the structure until classes are obtained from child packages.
 			-- Recurse into each child only far enough to find the first level of classes.
 		do
 			create Result.make(0)
 			do_until_surface_recursive_packages (
-				agent (bmm_pkg: BMM_PACKAGE_DEFINITION): BOOLEAN
+				agent (bmm_pkg: BMM_PACKAGE): BOOLEAN
 					do
 						Result := bmm_pkg.has_classes
 					end,
-				agent (bmm_pkg: BMM_PACKAGE_DEFINITION; class_list: ARRAYED_SET [BMM_CLASS_DEFINITION])
+				agent (bmm_pkg: BMM_PACKAGE; class_list: ARRAYED_SET [BMM_CLASS])
 					do
 						class_list.merge (bmm_pkg.classes)
 					end (?, Result)
@@ -93,7 +93,7 @@ feature -- Status Report
 
 feature {BMM_PACKAGE_CONTAINER} -- Modification
 
-	add_class (a_class: BMM_CLASS_DEFINITION)
+	add_class (a_class: BMM_CLASS)
 			-- add `a_class' to this package
 		require
 			New_class: not classes.has (a_class)
@@ -105,7 +105,7 @@ feature {BMM_PACKAGE_CONTAINER} -- Modification
 			Parent_set: a_class.package = Current
 		end
 
-	set_parent (a_pkg: BMM_PACKAGE_DEFINITION)
+	set_parent (a_pkg: BMM_PACKAGE)
 		do
 			parent := a_pkg
 		ensure
@@ -119,7 +119,7 @@ feature {BMM_PACKAGE_CONTAINER} -- Modification
 
 feature -- Iteration
 
-	do_until_surface_recursive_packages (test: FUNCTION [ANY, TUPLE [BMM_PACKAGE_DEFINITION], BOOLEAN]; action: PROCEDURE [ANY, TUPLE [BMM_PACKAGE_DEFINITION]])
+	do_until_surface_recursive_packages (test: FUNCTION [ANY, TUPLE [BMM_PACKAGE], BOOLEAN]; action: PROCEDURE [ANY, TUPLE [BMM_PACKAGE]])
 			-- recursively execute `action' procedure on the current package and children, up to first layer in tree where `test' becomes true, then stop
 		do
 			if test.item ([Current]) then

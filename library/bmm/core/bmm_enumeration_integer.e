@@ -10,7 +10,7 @@ note
 class BMM_ENUMERATION_INTEGER
 
 inherit
-	BMM_ENUMERATION_DEFINITION[INTEGER]
+	BMM_ENUMERATION[INTEGER]
 		redefine
 			set_item_names
 		end

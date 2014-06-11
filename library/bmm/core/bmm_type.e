@@ -12,7 +12,7 @@ note
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_TYPE_REFERENCE
+deferred class BMM_TYPE
 
 inherit
 	BMM_TYPE_SPECIFIER

@@ -25,7 +25,7 @@ feature -- Access
 			Result := flattened_type_list.first
 		end
 
-	semantic_class: BMM_CLASS_DEFINITION
+	semantic_class: BMM_CLASS
 			-- main design class for this type, from which properties etc can be extracted
 		deferred
 		end

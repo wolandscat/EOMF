@@ -2,7 +2,6 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Ancestor type of all BMM model element types"
 	keywords:    "model, UML"
-
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2012- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"

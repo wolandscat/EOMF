@@ -720,8 +720,8 @@ class_definitions = <
 			["item"] = (P_BMM_CONTAINER_PROPERTY) <
 				name = <"item">
 				type_def = <
-					type = <"Bag">
-					container_type = <"T">
+					type = <"T">
+					container_type = <"Bag">
 				>
 			>
 		>

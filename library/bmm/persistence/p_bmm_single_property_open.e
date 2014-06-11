@@ -10,26 +10,42 @@ note
 class P_BMM_SINGLE_PROPERTY_OPEN
 
 inherit
-	P_BMM_PROPERTY_DEFINITION
+	P_BMM_PROPERTY
 		redefine
 			bmm_property_definition
 		end
 
+feature -- Access (persisted)
+
+	type: detachable STRING
+			-- type definition of this property, if a simple String type reference
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+			-- Really we should use `type_def' to be regular in the schema, but that makes the
+			-- schema more wordy and less clear. So we use this persisted String value, and
+			-- compute the `type_def' on the fly.
+
+	type_ref: detachable P_BMM_SIMPLE_TYPE_OPEN
+			-- type definition of this property, if not a simple String type reference
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+			-- Can be used in schema instead of `type', but less readable
+
 feature -- Access
 
-	bmm_property_definition: detachable BMM_SINGLE_PROPERTY_OPEN
+	type_def: detachable P_BMM_SIMPLE_TYPE_OPEN
+			-- generate `type_ref' from `type' and save
+		do
+			if not attached type_ref and attached type as att_type then
+				create type_ref.make_simple (att_type)
+			end
+			Result := type_ref
+		end
+
+feature -- Access
+
+	bmm_property_definition: detachable BMM_PROPERTY [BMM_SIMPLE_TYPE_OPEN]
 		note
 			option: transient
 		attribute
-		end
-
-feature -- Factory
-
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS_DEFINITION)
-		do
-			if attached a_class_def.generic_parameters.item (type) as ts then
-				create bmm_property_definition.make (name, ts, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
-			end
 		end
 
 end

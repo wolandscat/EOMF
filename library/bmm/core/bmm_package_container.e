@@ -1,8 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Abstraction of a model component that contains packages and classes"
-	keywords:    "model, UML"
-
+	keywords:    "basic meta-model, BMM, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -19,13 +18,13 @@ inherit
 
 feature -- Access
 
-	packages: HASH_TABLE [BMM_PACKAGE_DEFINITION, STRING]
+	packages: HASH_TABLE [BMM_PACKAGE, STRING]
 			-- child packages; keys all in upper case for guaranteed matching
 		attribute
 			create Result.make (0)
 		end
 
-	package_at_path (a_path: STRING): detachable BMM_PACKAGE_DEFINITION
+	package_at_path (a_path: STRING): detachable BMM_PACKAGE
 			-- package at the path `a_path'
 		require
 			has_package_path (a_path)
@@ -62,7 +61,7 @@ feature -- Status Report
 			Result := pkg_names.off
 		end
 
-	there_exists_recursive_packages (test: FUNCTION [ANY, TUPLE [BMM_PACKAGE_DEFINITION], BOOLEAN]): BOOLEAN
+	there_exists_recursive_packages (test: FUNCTION [ANY, TUPLE [BMM_PACKAGE], BOOLEAN]): BOOLEAN
 			-- recursively execute `test' function, taking package as argument
 		do
 			from packages.start until packages.off or Result loop
@@ -74,19 +73,19 @@ feature -- Status Report
 			end
 		end
 
-	recursive_has_package (a_pkg: BMM_PACKAGE_DEFINITION): BOOLEAN
+	recursive_has_package (a_pkg: BMM_PACKAGE): BOOLEAN
 		do
-			Result := there_exists_recursive_packages (agent (schema_pkg, test_pkg: BMM_PACKAGE_DEFINITION): BOOLEAN do Result := schema_pkg = test_pkg end (?, a_pkg))
+			Result := there_exists_recursive_packages (agent (schema_pkg, test_pkg: BMM_PACKAGE): BOOLEAN do Result := schema_pkg = test_pkg end (?, a_pkg))
 		end
 
 feature -- Modification
 
-	add_package (a_pkg: BMM_PACKAGE_DEFINITION)
+	add_package (a_pkg: BMM_PACKAGE)
 		require
 			Valid_package: not packages.has_item (a_pkg) and not packages.has (a_pkg.name.as_upper)
 		do
 			packages.put (a_pkg, a_pkg.name.as_upper)
-			if attached {BMM_PACKAGE_DEFINITION} Current as parent_pkg then
+			if attached {BMM_PACKAGE} Current as parent_pkg then
 				a_pkg.set_parent (parent_pkg)
 			end
 		ensure
@@ -95,7 +94,7 @@ feature -- Modification
 
 feature -- Iteration
 
-	do_recursive_packages (action: PROCEDURE [ANY, TUPLE [BMM_PACKAGE_DEFINITION]])
+	do_recursive_packages (action: PROCEDURE [ANY, TUPLE [BMM_PACKAGE]])
 			-- recursively execute `action' procedure, taking package as argument
 		do
 			from packages.start until packages.off loop

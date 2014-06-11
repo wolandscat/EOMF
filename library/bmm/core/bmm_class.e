@@ -10,7 +10,7 @@ note
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_CLASS_DEFINITION
+class BMM_CLASS
 
 inherit
 	BMM_TYPE_SPECIFIER
@@ -48,30 +48,30 @@ feature -- Access
 	name: STRING
 			-- name of the class FROM SCHEMA
 
-	semantic_class: BMM_CLASS_DEFINITION
+	semantic_class: BMM_CLASS
 			-- the 'design' class of this type, ignoring containers, multiplicity etc.
 		do
 			Result := Current
 		end
 
-	generic_parameters: detachable HASH_TABLE [BMM_GENERIC_PARAMETER_DEFINITION, STRING]
+	generic_parameters: detachable HASH_TABLE [BMM_GENERIC_PARAMETER, STRING]
 			-- list of generic parameter definitions, keyed by name of generic parameter;
 			-- these are defined either directly on this class or by the addition of an
 			-- ancestor class which is generic
 
-	ancestors: HASH_TABLE [BMM_CLASS_DEFINITION, STRING]
+	ancestors: HASH_TABLE [BMM_CLASS, STRING]
 			-- list of immediate inheritance parents
 		attribute
 			create Result.make (0)
 		end
 
-	properties: HASH_TABLE [BMM_PROPERTY_DEFINITION, STRING]
+	properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 			-- list of attributes defined in this class
 		attribute
 			create Result.make (0)
 		end
 
-	package: detachable BMM_PACKAGE_DEFINITION
+	package: detachable BMM_PACKAGE
 			-- package this class belongs to
 
 	source_schema_id: STRING
@@ -96,7 +96,7 @@ feature -- Access
 			end
 		end
 
-	immediate_descendants: ARRAYED_LIST [BMM_CLASS_DEFINITION]
+	immediate_descendants: ARRAYED_LIST [BMM_CLASS]
 			-- list of immediate inheritance descendants
 		attribute
 			create Result.make (0)
@@ -232,7 +232,7 @@ feature -- Access
 			end
 		end
 
-	flat_properties: HASH_TABLE [BMM_PROPERTY_DEFINITION, STRING]
+	flat_properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 			-- list of all properties due to current and ancestor classes, keyed by property name
 		do
 			if attached flat_properties_cache as fpc then
@@ -267,7 +267,7 @@ feature -- Access
 			end
 		end
 
-	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY_DEFINITION
+	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY [BMM_TYPE]
 			-- retrieve the property definition for `a_prop_path' in flattened class
 			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
 			-- recursive evaluation)
@@ -277,7 +277,7 @@ feature -- Access
 			a_path_pos: INTEGER
 			i: INTEGER
 			found: BOOLEAN
-			bmm_prop: detachable BMM_PROPERTY_DEFINITION
+			bmm_prop: detachable BMM_PROPERTY [BMM_TYPE]
 		do
 			a_path_pos := a_prop_path.items.index
 			if has_property (a_prop_path.item.attr_name) then
@@ -303,7 +303,7 @@ feature -- Access
 			a_prop_path.go_i_th (a_path_pos)
 		end
 
-	class_definition_at_path (a_prop_path: OG_PATH): BMM_CLASS_DEFINITION
+	class_definition_at_path (a_prop_path: OG_PATH): BMM_CLASS
 			-- retrieve the class definition for the class containing the terminal property in `a_prop_path' in flattened class
 			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
 			-- recursive evaluation)
@@ -313,8 +313,8 @@ feature -- Access
 			a_path_pos: INTEGER
 			i: INTEGER
 			found: BOOLEAN
-			bmm_prop: detachable BMM_PROPERTY_DEFINITION
-			bmm_class: detachable BMM_CLASS_DEFINITION
+			bmm_prop: detachable BMM_PROPERTY [BMM_TYPE]
+			bmm_class: detachable BMM_CLASS
 		do
 			a_path_pos := a_prop_path.items.index
 			if has_property (a_prop_path.item.attr_name) then
@@ -358,7 +358,7 @@ feature -- Access
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
 				prop_type := prop_def.type
-				if attached {BMM_GENERIC_PARAMETER_DEFINITION} prop_type as gen_prop_type and attached generic_parameters as gen_parms then
+				if attached {BMM_GENERIC_PARAMETER} prop_type as gen_prop_type and attached generic_parameters as gen_parms then
 					i := 1
 					-- we traverse the generic parameters Hash instead of just keying into it so as
 					-- to get the index in order of the required parameter
@@ -488,7 +488,7 @@ feature -- Status Report
 			a_path.go_i_th (a_path_pos)
 		end
 
-	valid_candidate_property (a_prop_def: BMM_PROPERTY_DEFINITION): BOOLEAN
+	valid_candidate_property (a_prop_def: BMM_PROPERTY [BMM_TYPE]): BOOLEAN
 			-- True if `a_prop_def' is a valid candidate for adding as a new property:
 			-- either it does not exist in the current flat properties (i.e. inherited properties)
 			-- or if it does, it is conformant to the inherited property
@@ -502,14 +502,14 @@ feature -- Status Report
 
 feature -- Traversal
 
-	do_supplier_closure (flat_flag: BOOLEAN; continue_action: FUNCTION [ANY, TUPLE [BMM_PROPERTY_DEFINITION], BOOLEAN];
-				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY_DEFINITION, INTEGER]];
-				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY_DEFINITION]])
+	do_supplier_closure (flat_flag: BOOLEAN; continue_action: FUNCTION [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]], BOOLEAN];
+				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE], INTEGER]];
+				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]]])
 			-- On all nodes in supplier closure of this class, execute `enter_action', then recurse into its subnodes, then execute `exit_action'.
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
-			props: HASH_TABLE [BMM_PROPERTY_DEFINITION, STRING]
+			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 		do
 			supplier_closure_stack.wipe_out
 			supplier_closure_stack.extend (name)
@@ -565,7 +565,7 @@ feature -- Modification
 			bmm_schema := a_bmm_schema
 		end
 
-	set_package (a_package: BMM_PACKAGE_DEFINITION)
+	set_package (a_package: BMM_PACKAGE)
 			-- put this class into the package
 		do
 			package := a_package
@@ -584,7 +584,7 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
-	add_ancestor (an_anc_class: BMM_CLASS_DEFINITION)
+	add_ancestor (an_anc_class: BMM_CLASS)
 			-- add an ancestor class
 		require
 			New_ancestor: not ancestors.has_item (an_anc_class)
@@ -598,7 +598,7 @@ feature -- Modification
 			Ancestor_descendant_added: an_anc_class.immediate_descendants.has (Current)
 		end
 
-	add_generic_parameter (a_gen_parm_def: BMM_GENERIC_PARAMETER_DEFINITION)
+	add_generic_parameter (a_gen_parm_def: BMM_GENERIC_PARAMETER)
 			-- add a generic parameter, and link it to the corresponding definition
 			-- in any generic ancestor
 		require
@@ -636,7 +636,7 @@ feature -- Modification
 			is_override := True
 		end
 
-	add_property (a_prop_def: BMM_PROPERTY_DEFINITION)
+	add_property (a_prop_def: BMM_PROPERTY [BMM_TYPE])
 		require
 			Valid_property: valid_candidate_property (a_prop_def)
 		do
@@ -648,9 +648,9 @@ feature -- Modification
 			reset_flat_properties_cache
 		end
 
-feature {BMM_CLASS_DEFINITION} -- Implementation
+feature {BMM_CLASS} -- Implementation
 
-	add_immediate_descendant (a_class: BMM_CLASS_DEFINITION)
+	add_immediate_descendant (a_class: BMM_CLASS)
 			-- add a class def to the descendants list
 		do
 			immediate_descendants.extend (a_class)
@@ -661,7 +661,7 @@ feature {BMM_CLASS_DEFINITION} -- Implementation
 			suppliers_non_primitive_cache := Void
 		end
 
-	flat_properties_cache: detachable HASH_TABLE [BMM_PROPERTY_DEFINITION, STRING]
+	flat_properties_cache: detachable HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 			-- reference list of all attributes due to inheritance flattening of this type
 
 	suppliers_cache: detachable ARRAYED_SET [STRING]
@@ -684,7 +684,7 @@ feature {BMM_CLASS_DEFINITION} -- Implementation
 		do
 			flat_properties_cache := Void
 			immediate_descendants.do_all (
-				agent (a_desc: BMM_CLASS_DEFINITION)
+				agent (a_desc: BMM_CLASS)
 					do
 						a_desc.reset_flat_properties_cache
 					end
@@ -693,16 +693,16 @@ feature {BMM_CLASS_DEFINITION} -- Implementation
 
 feature {NONE} -- Implementation
 
-	do_property_supplier_closure (a_prop: BMM_PROPERTY_DEFINITION; flat_flag: BOOLEAN;
-				continue_action: FUNCTION [ANY, TUPLE [BMM_PROPERTY_DEFINITION], BOOLEAN];
-				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY_DEFINITION, INTEGER]];
-				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY_DEFINITION]];
+	do_property_supplier_closure (a_prop: BMM_PROPERTY [BMM_TYPE]; flat_flag: BOOLEAN;
+				continue_action: FUNCTION [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]], BOOLEAN];
+				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE], INTEGER]];
+				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]]];
 				depth: INTEGER)
 			-- On all nodes in supplier closure of `a_prop', execute `enter_action', then recurse into its subnodes, then execute `exit_action'.
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
-			props: HASH_TABLE [BMM_PROPERTY_DEFINITION, STRING]
+			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 		do
 			if not supplier_closure_stack.has (a_prop.type.root_class) then
 				supplier_closure_stack.extend (a_prop.type.root_class)
