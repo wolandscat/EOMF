@@ -12,7 +12,7 @@ class BMM_CONTAINER_TYPE
 inherit
 	BMM_TYPE
 		redefine
-			as_conformance_type_string
+			as_rt_type_string
 		end
 
 create
@@ -97,11 +97,11 @@ feature -- Output
 			Result.append (container_type.name + Generic_left_delim.out + type.as_type_string + Generic_right_delim.out)
 		end
 
-	as_conformance_type_string: STRING
+	as_rt_type_string: STRING
 			-- name of the this type in form allowing other type to be conformance tested against it;
 			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
 		do
-			Result := type.as_conformance_type_string
+			Result := type.as_rt_type_string
 		end
 
 end

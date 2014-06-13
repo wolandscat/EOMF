@@ -116,7 +116,7 @@ feature -- Output
 			Result.append_character (Generic_left_delim)
 			across generic_parameters as gen_parms_csr loop
 				Result.append (gen_parms_csr.item.as_type_string)
-				if gen_parms_csr.cursor_index < generic_parameters.count then
+				if not gen_parms_csr.is_last then
 					Result.append_character (generic_separator)
 				end
 			end

@@ -58,9 +58,11 @@ feature -- Output
 			Result := as_type_string
 		end
 
-	as_conformance_type_string: STRING
-			-- name of the this type in form allowing other type to be conformance tested against it;
-			-- if constrained, then return the constrainer type, else just return Any
+	as_rt_type_string: STRING
+			-- name of the this type in form allowing other type to be RT-conformance tested against it;
+			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
+			-- i.e. regardless of whether there is single or multiple containment
 		do
 			Result := as_type_string
 		end

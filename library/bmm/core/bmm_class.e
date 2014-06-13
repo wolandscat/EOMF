@@ -341,39 +341,39 @@ feature -- Access
 			a_prop_path.go_i_th (a_path_pos)
 		end
 
-	property_type (a_class_type_name, a_prop_name: STRING): STRING
-			-- retrieve the property type for `a_prop_name' in type corresponding to `a_class_type_name'
+	property_type (a_type_name, a_prop_name: STRING): STRING
+			-- retrieve the property type for `a_prop_name' in type corresponding to `a_type_name'
 			-- same as property_definition.type, except if a_type_name is generic, in which case:
-			-- `a_class_type_name' will be an actual type name, e.g. "INTERVAL<TIME>", whereas
+			-- `a_type_name' will be an actual type name, e.g. "INTERVAL<TIME>", whereas
 			-- Current's type is either "INTERVAL<T>" or (say) "INTERVAL<T:TEMPORAL>" (assuming
 			-- TIME inherits from TEMPORAL in the BMM type system
 		require
-			Type_name_valid: is_well_formed_type_name (a_class_type_name)
+			Type_name_valid: is_well_formed_type_name (a_type_name)
 			Property_valid: has_property (a_prop_name)
 		local
-			prop_type: BMM_TYPE_SPECIFIER
+			prop_type: BMM_TYPE
 			i, gen_param_count: INTEGER
 			eff_type_list: LIST [STRING]
 			gen_param_type: detachable STRING
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
 				prop_type := prop_def.type
-				if attached {BMM_GENERIC_PARAMETER} prop_type as gen_prop_type and attached generic_parameters as gen_parms then
+				if attached {BMM_SIMPLE_TYPE_OPEN} prop_type as simple_type_open and attached generic_parameters as gen_parms then
 					i := 1
 					-- we traverse the generic parameters Hash instead of just keying into it so as
 					-- to get the index in order of the required parameter
 					across gen_parms as gen_parms_csr loop
-						if gen_parms_csr.item.name.is_equal (gen_prop_type.name) then
+						if gen_parms_csr.item.name.is_equal (simple_type_open.type.name) then
 							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was
 							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
-							gen_param_type := gen_parms_csr.item.as_conformance_type_string
+							gen_param_type := gen_parms_csr.item.as_rt_type_string
 							gen_param_count := i
 						end
 						i := i + 1
 					end
 
 					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that
-					eff_type_list := type_name_as_flat_list (a_class_type_name)
+					eff_type_list := type_name_as_flat_list (a_type_name)
 					if gen_param_count < eff_type_list.count then
 						Result := eff_type_list.i_th (gen_param_count + 1)
 					else
@@ -389,7 +389,24 @@ feature -- Access
 			end
 		end
 
+	generic_parameter_conformance_types: ARRAYED_LIST [STRING]
+			-- for a generic class, list of types to which generic parameter types of an actual generic type
+			-- would have to conform. E.g. if this class is Interval <T: Comparable> then the Result will
+			-- be a list containing the single member type 'Comparable'. For unconstrained 'T', the type will be 'Any'.
+		require
+			is_generic
+		do
+			create Result.make (0)
+			Result.compare_objects
+			if attached generic_parameters as att_gen_parms then
+				across att_gen_parms as gen_parms_csr loop
+					Result.extend (gen_parms_csr.item.semantic_class.name)
+				end
+			end
+		end
+
 	type_substitutions: ARRAYED_SET [STRING]
+			-- list of all classes that could be substituted for this class, taken as a type
 		do
 			Result := all_descendants
 		end

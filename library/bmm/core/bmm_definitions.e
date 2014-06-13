@@ -316,6 +316,45 @@ feature -- Conversion
 			Upper_case: Result ~ Result.as_upper
 		end
 
+	generic_parameter_types (a_type_name: STRING): ARRAYED_LIST [STRING]
+			-- for a generic type name, extract the parameter type name(s) (which could themselves be generic)
+			-- and put them into a list.
+			-- Example: for "Hash <List <String>, Integer>", return a list with contents:
+			--	"List <String>", "Integer"
+		require
+			is_well_formed_generic_type_name (a_type_name)
+		local
+			arg_types: STRING
+			i, start_pos, gen_level: INTEGER
+		do
+			create Result.make (0)
+			create arg_types.make_from_string (a_type_name)
+			arg_types.prune_all (' ')
+
+			-- remove the root class and one level of generic delimiters
+			arg_types := a_type_name.substring (a_type_name.index_of (Generic_left_delim, 1) + 1, a_type_name.count - 1)
+			start_pos := 1
+			from i := 1 until i > arg_types.count loop
+				if arg_types.item (i) = generic_left_delim then
+					gen_level := gen_level + 1
+				elseif arg_types.item (i) = generic_right_delim then
+					gen_level := gen_level - 1
+				end
+
+				-- if we hit a comma and we are at the outermost generic level, save the string before the comma as a
+				-- generic parameter type
+				if gen_level = 0 then
+					if arg_types.item (i) = Generic_separator then
+						Result.extend (arg_types.substring (start_pos, i - 1))
+						start_pos := i + 1
+					elseif i = arg_types.count then
+						Result.extend (arg_types.substring (start_pos, i))
+					end
+				end
+				i := i + 1
+			end
+		end
+
 feature {NONE} -- Implementation
 
 	well_formed_type_name_regex: RX_PCRE_REGULAR_EXPRESSION

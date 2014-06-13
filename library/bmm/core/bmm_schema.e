@@ -129,13 +129,9 @@ feature -- Access
 			-- same as property_definition.type, except if a_type_name is generic
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-			Property_valid: has_property(a_type_name, a_prop_name)
+			Property_valid: has_property (a_type_name, a_prop_name)
 		do
-			if attached class_definition (type_to_class (a_type_name)) as class_def then
-				Result := class_def.property_type (a_type_name, a_prop_name)
-			else
-				Result := unknown_type_name
-			end
+			Result := class_definition (type_to_class (a_type_name)).property_type (a_type_name, a_prop_name)
 		end
 
 	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY [BMM_TYPE]
@@ -214,10 +210,10 @@ feature -- Status Report
 			-- True if `a_class' is a descendant in the model of `a_parent_class'
 			-- Use `type_conforms_to' for full type names
 		require
-			Sub_class_valid: not a_class.is_empty
+			Sub_class_valid: has_class_definition (a_class)
 			Parent_class_valid: has_class_definition (a_parent_class)
 		do
-			Result := class_definition (a_class).all_ancestors.has (a_parent_class)
+			Result := class_definition (a_class).all_ancestors.has (a_parent_class.as_upper)
 		end
 
 	has_property_path (an_obj_type, a_property_path: STRING): BOOLEAN
@@ -233,55 +229,46 @@ feature -- Status Report
 			end
 		end
 
-	valid_type_for_class (a_class_name, a_type_name: STRING): BOOLEAN
-			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Will always be true for
-			-- non-generic types, but needs to be checked for generic / container types
+	conformant_type_for_class (a_type_name, a_class_name: STRING): BOOLEAN
+			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Fails if:
+			-- a) first class name in `a_type_name' is not the same as or a descendant of `a_class_name'
+			-- b) any subsequent type name mentioned in `a_type_name' is invalid
+			-- c) any subsequent type name mentioned in `a_type_name' is illegal as generic parameter of `a_class_name', if the latter is generic
+			-- Will always be true for non-generic / non-container types
 		require
 			A_class_name_valid: has_class_definition (a_class_name)
 			A_type_name_valid: not a_type_name.is_empty
 		local
-			is_gen_type: BOOLEAN
-			type_strs: ARRAYED_LIST [STRING]
+			gen_type_strs: ARRAYED_LIST [STRING]
 			class_def: BMM_CLASS
 		do
-			is_gen_type := is_well_formed_generic_type_name (a_type_name)
-			class_def := class_definition (a_class_name)
-			if class_def.is_generic then
-				type_strs := type_name_as_flat_list (a_type_name)
-				type_strs.compare_objects
-				type_strs.start
-				if type_strs.item.is_case_insensitive_equal (class_def.name) or class_definitions.item (type_strs.item).has_ancestor (class_def.name)  then
-					from
-						type_strs.forth
-						class_def.generic_parameters.start
-					until
-						-- a) illegal class as generic parameter OR
-						-- b) gen parm class in that position in the defining class is constrained AND THEN NOT has among its ancestors the constrainer class
-						type_strs.off or not has_class_definition (type_strs.item) or
-							(class_def.generic_parameters.item_for_iteration.is_constrained and then not
-							class_definitions.item (type_strs.item).has_ancestor (class_def.generic_parameters.item_for_iteration.conforms_to_type.name))
-					loop
-						type_strs.forth
-						class_def.generic_parameters.forth
+			if not is_well_formed_generic_type_name (a_type_name) then
+				Result := a_type_name.is_case_insensitive_equal (a_class_name) or else is_descendant_of (a_type_name, a_class_name)
+			else
+				class_def := class_definition (a_class_name)
+				-- if `a_type_name' is also in generic form, then the generic parameters have to be
+				-- equal in number and all conformant
+				if class_def.is_generic then
+					gen_type_strs := generic_parameter_types (a_type_name)
+					if attached class_def.generic_parameters as att_gen_parms and then att_gen_parms.count = gen_type_strs.count then
+						Result := across class_def.generic_parameter_conformance_types as gen_conf_types_csr all
+							conformant_type_for_class (gen_type_strs.i_th (gen_conf_types_csr.target_index), gen_conf_types_csr.item)
+						end
 					end
-					Result := type_strs.off
 				end
-			elseif not class_def.is_generic and not is_gen_type then
-				Result := a_type_name.is_case_insensitive_equal (class_def.name)
 			end
 		end
 
-	valid_property_type (a_type_name, a_property_name, a_property_type_name: STRING): BOOLEAN
-			-- True if `a_property_type_name' is a valid dynamic type for `a_property' in class `a_type_name'
+	rt_conformant_property_type (a_class_name, a_property_name, a_property_dyn_type: STRING): BOOLEAN
+			-- True if `a_property_dyn_type' is a valid 'RT' dynamic type for `a_property' in class `a_class_name'
+			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
+			-- i.e. regardless of whether there is single or multiple containment
 		require
-			Type_name_valid: has_class_definition (a_type_name)
-			Property_valid: has_property (a_type_name, a_property_name)
+			Property_valid: has_class_definition (a_class_name) and has_property (a_class_name, a_property_name)
 		do
-			if has_class_definition (a_property_type_name) and then valid_type_for_class (a_type_name, a_type_name) and
-				valid_type_for_class (a_property_type_name, a_property_type_name)
-			then
-				Result := type_name_conforms_to (a_property_type_name, property_definition (a_type_name, a_property_name).type.as_conformance_type_string)
-			end
+			Result := has_class_definition (a_property_dyn_type) and then
+				conformant_type_for_class (a_property_dyn_type, property_definition (a_class_name, a_property_name).type.as_rt_type_string)
 		end
 
 	type_name_conforms_to (type_1, type_2: STRING): BOOLEAN
@@ -311,7 +298,7 @@ feature -- Status Report
 			-- conforms to `archetype_data_value_parent_class'
 		do
 			if attached archetype_data_value_parent_class as advp_class  then
-				Result := type_name_conforms_to (a_type, advp_class)
+				Result := conformant_type_for_class (advp_class, a_type)
 			end
 		end
 
