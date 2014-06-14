@@ -15,7 +15,7 @@ note
 deferred class BMM_TYPE
 
 inherit
-	BMM_TYPE_SPECIFIER
+	BMM_CLASSIFIER
 
 end
 

@@ -27,10 +27,10 @@ feature -- Access
 	type: BMM_GENERIC_PARAMETER
 			-- the target type
 
-	semantic_class: BMM_CLASS
+	base_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
 		do
-			Result := type.semantic_class
+			Result := type.base_class
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]

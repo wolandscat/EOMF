@@ -13,7 +13,7 @@ note
 class BMM_CLASS
 
 inherit
-	BMM_TYPE_SPECIFIER
+	BMM_CLASSIFIER
 		export
 			{ANY} is_well_formed_type_name
 		end
@@ -48,7 +48,7 @@ feature -- Access
 	name: STRING
 			-- name of the class FROM SCHEMA
 
-	semantic_class: BMM_CLASS
+	base_class: BMM_CLASS
 			-- the 'design' class of this type, ignoring containers, multiplicity etc.
 		do
 			Result := Current
@@ -285,7 +285,7 @@ feature -- Access
 					Result := fp
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_schema.class_definition (Result.type.root_class) as class_def then
+				if not a_prop_path.off and then attached bmm_schema.class_definition (Result.type.base_class.name) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -323,7 +323,7 @@ feature -- Access
 					Result := Current
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_schema.class_definition (bmm_prop.type.root_class) as class_def then
+				if not a_prop_path.off and then attached bmm_schema.class_definition (bmm_prop.type.base_class.name) as class_def then
 					Result := class_def.class_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -345,8 +345,7 @@ feature -- Access
 			-- retrieve the property type for `a_prop_name' in type corresponding to `a_type_name'
 			-- same as property_definition.type, except if a_type_name is generic, in which case:
 			-- `a_type_name' will be an actual type name, e.g. "INTERVAL<TIME>", whereas
-			-- Current's type is either "INTERVAL<T>" or (say) "INTERVAL<T:TEMPORAL>" (assuming
-			-- TIME inherits from TEMPORAL in the BMM type system
+			-- Current's type is "INTERVAL<T>"
 		require
 			Type_name_valid: is_well_formed_type_name (a_type_name)
 			Property_valid: has_property (a_prop_name)
@@ -373,9 +372,9 @@ feature -- Access
 					end
 
 					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that
-					eff_type_list := type_name_as_flat_list (a_type_name)
+					eff_type_list := generic_parameter_types (a_type_name)
 					if gen_param_count < eff_type_list.count then
-						Result := eff_type_list.i_th (gen_param_count + 1)
+						Result := eff_type_list.i_th (gen_param_count)
 					else
 						check attached gen_param_type as gpt then
 							Result := gen_param_type
@@ -400,7 +399,7 @@ feature -- Access
 			Result.compare_objects
 			if attached generic_parameters as att_gen_parms then
 				across att_gen_parms as gen_parms_csr loop
-					Result.extend (gen_parms_csr.item.semantic_class.name)
+					Result.extend (gen_parms_csr.item.base_class.name)
 				end
 			end
 		end
@@ -488,7 +487,7 @@ feature -- Status Report
 		do
 			a_path_pos := a_path.items.index
 			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				if attached bmm_schema.class_definition (flat_prop.type.root_class) as class_def then
+				if attached bmm_schema.class_definition (flat_prop.type.base_class.name) as class_def then
 					a_path.forth
 					if not a_path.off then
 						Result := class_def.has_property_path (a_path)
@@ -721,18 +720,18 @@ feature {NONE} -- Implementation
 		local
 			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
 		do
-			if not supplier_closure_stack.has (a_prop.type.root_class) then
-				supplier_closure_stack.extend (a_prop.type.root_class)
+			if not supplier_closure_stack.has (a_prop.type.base_class.name) then
+				supplier_closure_stack.extend (a_prop.type.base_class.name)
 
 				enter_action.call ([a_prop, depth])
 
-		--		if not supplier_closure_class_record.has (a_prop.type.root_class) then
-		--			supplier_closure_class_record.extend (a_prop.type.root_class)
+		--		if not supplier_closure_class_record.has (a_prop.type.base_class.name) then
+		--			supplier_closure_class_record.extend (a_prop.type.base_class.name)
 					if continue_action.item ([a_prop, depth]) then
 						if flat_flag then
-							props := bmm_schema.class_definition (a_prop.type.root_class).flat_properties
+							props := bmm_schema.class_definition (a_prop.type.base_class.name).flat_properties
 						else
-							props := bmm_schema.class_definition (a_prop.type.root_class).properties
+							props := bmm_schema.class_definition (a_prop.type.base_class.name).properties
 						end
 
 						across props as props_csr loop

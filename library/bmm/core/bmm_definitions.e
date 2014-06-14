@@ -4,7 +4,7 @@ note
 	keywords:    "basic meta-model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_DEFINITIONS
@@ -166,7 +166,7 @@ feature -- Comparison
 			-- compatible with that found in the schema?
 			-- Returns True if the two versions have the same major version number
 		require
-			Well_formed_version: schema_bmm_ver.occurrences ('.') = 1
+			Well_formed_version: schema_bmm_ver.occurrences ('.') >= 1
 		do
 			Result := schema_bmm_ver.substring (1, schema_bmm_ver.index_of ('.', 1)-1).is_equal (Bmm_internal_version.substring (1, Bmm_internal_version.index_of ('.', 1)-1))
 		end
@@ -277,36 +277,16 @@ feature -- Conversion
 			Result.object_comparison
 		end
 
-	type_name_root_type (a_type_name: STRING): STRING
-			-- return the root type of `a_type_name', which is itself for non-generic types, or else
-			-- the first type for generic types
-		require
-			Valid_type_name: is_well_formed_type_name (a_type_name)
-		local
-			delim_pos, i: INTEGER
-		do
-			delim_pos := a_type_name.index_of (generic_left_delim, 1)
-			if delim_pos = 0 then
-				Result := a_type_name
-			else
-				create Result.make(0)
-				from i := 1 until a_type_name[i] = generic_left_delim or a_type_name[i] = ' ' loop
-					Result.append_character (a_type_name[i])
-					i := i + 1
-				end
-			end
-		end
-
-	type_to_class (a_type_name: STRING): STRING
+	type_name_to_class_key (a_type_name: STRING): STRING
 			-- convert a type name which might have a generic part to a simple class name
 		require
 			Type_valid: not a_type_name.is_empty
 		local
-			gen_pos: INTEGER
+			delim_pos: INTEGER
 		do
-			gen_pos := a_type_name.substring_index (generic_left_delim.out, 1)
-			if gen_pos > 0 then
-				Result := a_type_name.substring (1, gen_pos-1)
+			delim_pos := a_type_name.substring_index (generic_left_delim.out, 1)
+			if delim_pos > 0 then
+				Result := a_type_name.substring (1, delim_pos-1)
 				Result.right_adjust
 				Result.to_upper
 			else

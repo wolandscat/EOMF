@@ -95,7 +95,7 @@ feature -- Access
 		require
 			Type_name_valid: has_class_definition (a_type_name)
 		do
-			check attached class_definitions.item (type_to_class (a_type_name)) as class_def then
+			check attached class_definitions.item (type_name_to_class_key (a_type_name)) as class_def then
 				Result := class_def
 			end
 		end
@@ -119,7 +119,7 @@ feature -- Access
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property (a_type_name, a_prop_name)
 		do
-			check attached class_definition (type_to_class (a_type_name)).flat_properties.item (a_prop_name) as prop_def then
+			check attached class_definition (type_name_to_class_key (a_type_name)).flat_properties.item (a_prop_name) as prop_def then
 				Result := prop_def
 			end
 		end
@@ -131,7 +131,7 @@ feature -- Access
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property (a_type_name, a_prop_name)
 		do
-			Result := class_definition (type_to_class (a_type_name)).property_type (a_type_name, a_prop_name)
+			Result := class_definition (type_name_to_class_key (a_type_name)).property_type (a_type_name, a_prop_name)
 		end
 
 	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY [BMM_TYPE]
@@ -144,7 +144,7 @@ feature -- Access
 		do
 			create an_og_path.make_pure_from_string (a_property_path)
 			an_og_path.start
-			Result := class_definition (type_to_class (a_type_name)).property_definition_at_path (an_og_path)
+			Result := class_definition (type_name_to_class_key (a_type_name)).property_definition_at_path (an_og_path)
 		end
 
 	class_definition_at_path (a_type_name, a_property_path: STRING): BMM_CLASS
@@ -158,7 +158,7 @@ feature -- Access
 		do
 			create an_og_path.make_pure_from_string (a_property_path)
 			an_og_path.start
-			Result := class_definition (type_to_class (a_type_name)).class_definition_at_path (an_og_path)
+			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
 		end
 
 	all_ancestor_classes_of (a_class_name: STRING): ARRAYED_LIST [STRING]
@@ -172,13 +172,20 @@ feature -- Access
 
 feature -- Status Report
 
+	is_valid_type_name (a_type_name: STRING): BOOLEAN
+			-- is `a_type_name' valid in the current model?
+		do
+			-- FIXME: to be implemented
+			Result := True
+		end
+
 	has_class_definition (a_type_name: STRING): BOOLEAN
 			-- True if `a_type_name' has a class definition or is a primitive type in the model. Note that a_type_name
 			-- could be a generic type string; only the root class is considered
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := class_definitions.has (type_to_class (a_type_name))
+			Result := class_definitions.has (type_name_to_class_key (a_type_name))
 		end
 
 	has_enumeration_definition (a_type_name: STRING): BOOLEAN
@@ -229,6 +236,8 @@ feature -- Status Report
 			end
 		end
 
+feature -- Conformance
+
 	conformant_type_for_class (a_type_name, a_class_name: STRING): BOOLEAN
 			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Fails if:
 			-- a) first class name in `a_type_name' is not the same as or a descendant of `a_class_name'
@@ -259,16 +268,16 @@ feature -- Status Report
 			end
 		end
 
-	rt_conformant_property_type (a_class_name, a_property_name, a_property_dyn_type: STRING): BOOLEAN
-			-- True if `a_property_dyn_type' is a valid 'RT' dynamic type for `a_property' in class `a_class_name'
+	rt_conformant_property_type (a_bmm_class_name, a_bmm_property_name, a_property_dyn_type: STRING): BOOLEAN
+			-- True if `a_property_dyn_type' is a valid 'RT' dynamic type for `a_property' in BMM class `a_bmm_class_name'
 			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
 			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
 			-- i.e. regardless of whether there is single or multiple containment
 		require
-			Property_valid: has_class_definition (a_class_name) and has_property (a_class_name, a_property_name)
+			Property_valid: has_class_definition (a_bmm_class_name) and has_property (a_bmm_class_name, a_bmm_property_name)
 		do
 			Result := has_class_definition (a_property_dyn_type) and then
-				conformant_type_for_class (a_property_dyn_type, property_definition (a_class_name, a_property_name).type.as_rt_type_string)
+				conformant_type_for_class (a_property_dyn_type, property_definition (a_bmm_class_name, a_bmm_property_name).type.as_rt_type_string)
 		end
 
 	type_name_conforms_to (type_1, type_2: STRING): BOOLEAN
@@ -293,19 +302,52 @@ feature -- Status Report
 			end
 		end
 
+	type_conforms_to (this_type, other_type: STRING): BOOLEAN
+			-- True if `this_type' conforms to 'other_type'
+		do
+			Result := type_name_conforms_to (this_type, other_type) or is_descendant_of (this_type, other_type)
+		end
+
 	is_archetype_data_value_type (a_type: STRING): BOOLEAN
 			-- True if `has_archetype_data_value_parent_class' and then root type of `a_type'
 			-- conforms to `archetype_data_value_parent_class'
 		do
 			if attached archetype_data_value_parent_class as advp_class  then
-				Result := conformant_type_for_class (advp_class, a_type)
+				Result := conformant_type_for_class (a_type, advp_class)
 			end
 		end
 
-	type_conforms_to (this_type, other_type: STRING): BOOLEAN
-			-- True if `this_type' conforms to 'other_type'
+feature -- Factory
+
+	create_bmm_type_from_name (a_type_name: STRING): BMM_TYPE
+			-- create a new BMM_TYPE from a valid type name
+			-- Currently only knows how to create BMM_SIMPLE_TYPE and BMM_GENERIC_TYPE
+		require
+			is_valid_type_name (a_type_name)
+		local
+			bmm_gen_type, inner_bmm_gen_type: BMM_GENERIC_TYPE
 		do
-			Result := type_name_conforms_to (this_type, other_type) or is_descendant_of (this_type, other_type)
+			if is_well_formed_generic_type_name (a_type_name) then
+				create bmm_gen_type.make (class_definition (a_type_name))
+				Result := bmm_gen_type
+				across generic_parameter_types (a_type_name) as gen_types_csr loop
+					if is_well_formed_generic_type_name (gen_types_csr.item) then
+						create inner_bmm_gen_type.make (class_definition (gen_types_csr.item))
+						bmm_gen_type.add_generic_parameter (inner_bmm_gen_type)
+						across generic_parameter_types (gen_types_csr.item) as inner_gen_types_csr loop
+							if is_well_formed_generic_type_name (inner_gen_types_csr.item) then
+								-- should not get 3 levels of generics
+							else
+								inner_bmm_gen_type.add_generic_parameter (create {BMM_SIMPLE_TYPE}.make (class_definition (inner_gen_types_csr.item)))
+							end
+						end
+					else
+						bmm_gen_type.add_generic_parameter (create {BMM_SIMPLE_TYPE}.make (class_definition (gen_types_csr.item)))
+					end
+				end
+			else
+				create {BMM_SIMPLE_TYPE} Result.make (class_definition (a_type_name))
+			end
 		end
 
 feature -- Modification

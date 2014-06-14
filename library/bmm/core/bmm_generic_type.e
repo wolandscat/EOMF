@@ -17,26 +17,20 @@ create
 
 feature -- Initialisation
 
-	make (a_root_type: BMM_CLASS)
+	make (a_base_class: BMM_CLASS)
 		do
-			root_type := a_root_type
+			base_class := a_base_class
 			create generic_parameters.make (0)
 		end
 
 feature -- Access
 
-	root_type: BMM_CLASS
-			-- root type
-
 	generic_parameters: ARRAYED_LIST [BMM_TYPE]
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
 
-	semantic_class: BMM_CLASS
-			-- the 'design' type of this property, ignoring containers, multiplicity etc.
-		do
-			Result := root_type
-		end
+	base_class: BMM_CLASS
+			-- the base class of this type
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
@@ -44,7 +38,7 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			Result.extend (root_type.name)
+			Result.extend (base_class.name)
 			across generic_parameters as gen_parm_csr loop
 				Result.append (gen_parm_csr.item.flattened_type_list)
 			end
@@ -60,7 +54,7 @@ feature -- Access
 					has_abstract_gen_parms := True
 				end
 			end
-			if root_type.is_abstract and has_abstract_gen_parms then
+			if base_class.is_abstract and has_abstract_gen_parms then
 				Result := Type_cat_abstract_class
 			elseif has_type_substitutions then
 				Result := Type_cat_concrete_class_supertype
@@ -72,21 +66,21 @@ feature -- Access
 	type_substitutions: ARRAYED_SET [STRING]
 			-- FIXME: just generate permutations of one generic parameter for now
 		local
-			root_sub_type_list, gen_param_sub_type_list: ARRAYED_SET [STRING]
+			base_class_sub_types, gen_param_sub_types: ARRAYED_SET [STRING]
 		do
-			root_sub_type_list := root_type.type_substitutions
-			if root_sub_type_list.is_empty then
-				root_sub_type_list.extend (root_type.name)
+			base_class_sub_types := base_class.type_substitutions
+			if base_class_sub_types.is_empty then
+				base_class_sub_types.extend (base_class.name)
 			end
 
-			gen_param_sub_type_list := generic_parameters.first.type_substitutions
-			if gen_param_sub_type_list.is_empty then
-				gen_param_sub_type_list.extend (generic_parameters.first.as_type_string)
+			gen_param_sub_types := generic_parameters.first.type_substitutions
+			if gen_param_sub_types.is_empty then
+				gen_param_sub_types.extend (generic_parameters.first.as_type_string)
 			end
 
 			create Result.make (0)
-			across root_sub_type_list as sub_type_csr loop
-				across gen_param_sub_type_list as gen_parm_csr loop
+			across base_class_sub_types as sub_type_csr loop
+				across gen_param_sub_types as gen_parm_csr loop
 					Result.extend (sub_type_csr.item + generic_left_delim.out + gen_parm_csr.item + generic_right_delim.out)
 				end
 			end
@@ -96,7 +90,7 @@ feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := root_type.has_type_substitutions or else across generic_parameters as gen_parms_csr some gen_parms_csr.item.has_type_substitutions end
+			Result := base_class.has_type_substitutions or else across generic_parameters as gen_parms_csr some gen_parms_csr.item.has_type_substitutions end
 		end
 
 feature -- Modification
@@ -112,7 +106,7 @@ feature -- Output
 			-- full name of the type including generic parameters
 		do
 			create Result.make_empty
-			Result.append (root_type.name)
+			Result.append (base_class.name)
 			Result.append_character (Generic_left_delim)
 			across generic_parameters as gen_parms_csr loop
 				Result.append (gen_parms_csr.item.as_type_string)

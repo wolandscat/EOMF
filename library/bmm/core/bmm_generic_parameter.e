@@ -10,7 +10,7 @@ note
 class BMM_GENERIC_PARAMETER
 
 inherit
-	BMM_TYPE_SPECIFIER
+	BMM_CLASSIFIER
 		redefine
 			as_display_type_string, as_rt_type_string
 		end
@@ -20,19 +20,19 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; any_type_def: BMM_CLASS)
+	make (a_name: STRING; any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			any_class_definition := any_type_def
+			any_class_definition := any_class
 		end
 
-	make_constrained (a_name: STRING; a_conforms_to_type, any_type_def: BMM_CLASS)
+	make_constrained (a_name: STRING; a_conforms_to_type, any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
 			conforms_to_type := a_conforms_to_type
-			any_class_definition := any_type_def
+			any_class_definition := any_class
 		end
 
 feature -- Access (attributes from schema)
@@ -46,7 +46,7 @@ feature -- Access (attributes from schema)
 	inheritance_precursor: detachable BMM_GENERIC_PARAMETER
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
-	semantic_class: BMM_CLASS
+	base_class: BMM_CLASS
 			-- the 'design' class of this type, ignoring containers, multiplicity etc.
 		do
 			if attached flattened_conforms_to_type as fctt then
@@ -122,15 +122,10 @@ feature -- Modification
 feature -- Output
 
 	as_type_string: STRING
-			-- name of the type; if constrained, in the form "T: CONSTRAINER_TYPE"
+			-- name of the type; if constrained, in the form "T"
 		do
 			create Result.make_empty
 			Result.append (name)
-			if is_constrained then
-				Result.append_character (Generic_constraint_delimiter)
-				Result.append_character (' ')
-				Result.append (flattened_conforms_to_type.as_type_string)
-			end
 		end
 
 	as_display_type_string: STRING

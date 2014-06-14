@@ -22,22 +22,22 @@ feature -- Initialisation
 
 	make (a_type: BMM_TYPE; a_container_type: BMM_CLASS)
 		do
-			type := a_type
+			base_type := a_type
 			container_type := a_container_type
 		end
 
 feature -- Access
 
-	type: BMM_TYPE
+	base_type: BMM_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
 
 	container_type: BMM_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE_SPECIFIER
 
-	semantic_class: BMM_CLASS
+	base_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
 		do
-			Result := type.semantic_class
+			Result := base_type.base_class
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
@@ -47,13 +47,13 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.append (type.flattened_type_list)
+			Result.append (base_type.flattened_type_list)
 		end
 
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if type.type_category = Type_cat_abstract_class or container_type.is_abstract then
+			if base_type.type_category = Type_cat_abstract_class or container_type.is_abstract then
 				Result := Type_cat_abstract_class
 			elseif has_type_substitutions then
 				Result := Type_cat_concrete_class_supertype
@@ -71,7 +71,7 @@ feature -- Access
 				cont_sub_type_list.extend (container_type.name)
 			end
 
-			item_sub_type_list := type.type_substitutions
+			item_sub_type_list := base_type.type_substitutions
 
 			create Result.make (0)
 			across cont_sub_type_list as cont_sub_types_csr loop
@@ -85,7 +85,7 @@ feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := container_type.has_type_substitutions or type.has_type_substitutions
+			Result := container_type.has_type_substitutions or base_type.has_type_substitutions
 		end
 
 feature -- Output
@@ -94,14 +94,14 @@ feature -- Output
 			-- formal name of the type
 		do
 			create Result.make_empty
-			Result.append (container_type.name + Generic_left_delim.out + type.as_type_string + Generic_right_delim.out)
+			Result.append (container_type.name + Generic_left_delim.out + base_type.as_type_string + Generic_right_delim.out)
 		end
 
 	as_rt_type_string: STRING
 			-- name of the this type in form allowing other type to be conformance tested against it;
 			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
 		do
-			Result := type.as_rt_type_string
+			Result := base_type.as_rt_type_string
 		end
 
 end

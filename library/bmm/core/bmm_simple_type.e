@@ -17,21 +17,15 @@ create
 
 feature -- Initialisation
 
-	make (a_type: BMM_CLASS)
+	make (a_class: BMM_CLASS)
 		do
-			type := a_type
+			base_class := a_class
 		end
 
 feature -- Access
 
-	type: BMM_CLASS
+	base_class: BMM_CLASS
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
-
-	semantic_class: BMM_CLASS
-			-- the 'design' type of this type, ignoring containers, multiplicity etc.
-		do
-			Result := type
-		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
@@ -40,13 +34,13 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.append (type.flattened_type_list)
+			Result.append (base_class.flattened_type_list)
 		end
 
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if type.is_abstract then
+			if base_class.is_abstract then
 				Result := Type_cat_abstract_class
 			elseif has_type_substitutions then
 				Result := Type_cat_concrete_class_supertype
@@ -57,14 +51,14 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := type.type_substitutions
+			Result := base_class.type_substitutions
 		end
 
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := type.has_type_substitutions
+			Result := base_class.has_type_substitutions
 		end
 
 feature -- Output
@@ -72,7 +66,7 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			Result := type.as_type_string
+			Result := base_class.as_type_string
 		end
 
 end

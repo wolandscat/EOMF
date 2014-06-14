@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_TYPE_SPECIFIER
+deferred class BMM_CLASSIFIER
 
 inherit
 	BMM_MODEL_ELEMENT
@@ -19,13 +19,7 @@ feature -- Access
 		deferred
 		end
 
-	root_class: STRING
-			-- root class of type
-		do
-			Result := flattened_type_list.first
-		end
-
-	semantic_class: BMM_CLASS
+	base_class: BMM_CLASS
 			-- main design class for this type, from which properties etc can be extracted
 		deferred
 		end
@@ -48,12 +42,13 @@ feature -- Status Report
 feature -- Output
 
 	as_type_string: STRING
-			-- formal string form of the type
+			-- formal string form of the type as per UML
 		deferred
 		end
 
 	as_display_type_string: STRING
-			-- name of the type; if constrained, in the form "T: CONSTRAINER_TYPE"
+			-- same as `as_type_string' except if a constrained generic,
+			-- in the form "T: CONSTRAINER_TYPE"
 		do
 			Result := as_type_string
 		end
