@@ -161,6 +161,12 @@ feature -- Comparison
 			Result := is_well_formed_type_name (a_type_name) and a_type_name.has (generic_left_delim)
 		end
 
+	is_generic_type_name (a_type_name: STRING): BOOLEAN
+			-- True if the type name includes a generic parameters part
+		do
+			Result := a_type_name.has (generic_left_delim)
+		end
+
 	bmm_version_compatible (schema_bmm_ver: STRING): BOOLEAN
 			-- is the software version of the BMM (defined by the constant `Bmm_version', above)
 			-- compatible with that found in the schema?
