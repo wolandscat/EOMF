@@ -197,7 +197,7 @@ feature -- Comparison
 				((not upper_unbounded and attached upper as u) implies ((upper_included and v <= u or else v < u)))
 		end
 
-	intersects (other: like Current): BOOLEAN
+	intersects (other: INTERVAL [G]): BOOLEAN
 			-- True if there is any overlap between intervals represented by Current and other
 		do
 			Result := unbounded or other.unbounded or
@@ -209,7 +209,7 @@ feature -- Comparison
 					 (attached other.upper as other_u and then attached lower as l and then l <= other_u))
 		end
 
-	contains (other: like Current): BOOLEAN
+	contains (other: INTERVAL [G]): BOOLEAN
 			-- Does current interval properly contain `other'? True if at least one limit of other
 			-- is stricly inside the limits of this interval
 		do

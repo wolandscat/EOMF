@@ -74,12 +74,12 @@ feature -- Comparison
 		deferred
 		end
 
-	intersects (other: like Current): BOOLEAN
+	intersects (other: INTERVAL [G]): BOOLEAN
 			-- True if there is any overlap between intervals represented by Current and other
 		deferred
 		end
 
-	contains (other: like Current): BOOLEAN
+	contains (other: INTERVAL [G]): BOOLEAN
 			-- Does current interval properly contain `other'? True if at least one limit of other
 			-- is stricly inside the limits of this interval
 		deferred
@@ -91,7 +91,8 @@ feature -- Comparison
 			-- True if current object's interval is semantically same as `other'
 			-- even if the concrete types are different
 		do
-			Result := lower ~ other.lower and
+			Result := 
+				lower ~ other.lower and
 				upper ~ other.upper and
 				upper_included = other.upper_included and
 				upper_unbounded = other.upper_unbounded and

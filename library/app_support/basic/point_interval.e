@@ -102,7 +102,7 @@ feature -- Comparison
 			Result := lower = v
 		end
 
-	intersects (other: like Current): BOOLEAN
+	intersects (other: INTERVAL [G]): BOOLEAN
 			-- True if there is any overlap between intervals represented by Current and other
 		do
 			Result := other.has (lower)
@@ -122,6 +122,4 @@ feature -- Output
 		end
 
 end
-
-
 
