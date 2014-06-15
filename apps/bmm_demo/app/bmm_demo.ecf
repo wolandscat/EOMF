@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-10-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-10-0 http://www.eiffel.com/developers/xml/configuration-1-10-0.xsd" name="bmm_demo" uuid="3198B3D8-81AB-44FF-8725-8FBD27BA4B6B">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-13-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-13-0 http://www.eiffel.com/developers/xml/configuration-1-13-0.xsd" name="bmm_demo" uuid="3198B3D8-81AB-44FF-8725-8FBD27BA4B6B">
 	<target name="bmm_demo">
 		<root class="APPLICATION" feature="make"/>
 		<file_rule>
 			<exclude>/\.git$</exclude>
 			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard"/>
+		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
+		</option>
 		<setting name="console_application" value="true"/>
 		<setting name="dead_code_removal" value="true"/>
-
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="eomf_odin" location="$EOMF\library\odin\odin.ecf"/>
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
 		<library name="gobo_parse" location="$ISE_LIBRARY\library\gobo\gobo_parse-safe.ecf"/>
-		<library name="gobo_regexp" location="$ISE_LIBRARY\library\gobo\gobo_regexp-safe.ecf"/>
-		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
 		<library name="gobo_pattern" location="$ISE_LIBRARY\library\gobo\gobo_pattern-safe.ecf"/>
-		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
+		<library name="gobo_regexp" location="$ISE_LIBRARY\library\gobo\gobo_regexp-safe.ecf"/>
 		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string-safe.ecf"/>
-		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
+		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
+		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
 		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
-
+		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
 		<cluster name="app" location="..\src\" recursive="true">
 			<option>
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
-
+		<tests name="autotest" location="C:\project\wolandscat\EOMF\apps\bmm_demo\autotest"/>
 		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
 			<option void_safety="initialization">
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
-
 		<cluster name="eomf_bmm" location="$EOMF\library\bmm\" recursive="true">
 			<option void_safety="initialization">
 				<assertions precondition="true"/>
