@@ -12,7 +12,7 @@ class BMM_GENERIC_PARAMETER
 inherit
 	BMM_CLASSIFIER
 		redefine
-			as_display_type_string, as_rt_type_string
+			as_display_type_string, as_conformance_type_string
 		end
 
 create
@@ -140,7 +140,7 @@ feature -- Output
 			end
 		end
 
-	as_rt_type_string: STRING
+	as_conformance_type_string: STRING
 			-- name of the this type in form allowing other type to be conformance tested against it;
 			-- if constrained, then return the constrainer type, else just return Any
 		do

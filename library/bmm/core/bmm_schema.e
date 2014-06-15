@@ -124,14 +124,14 @@ feature -- Access
 			end
 		end
 
-	property_type (a_type_name, a_prop_name: STRING): STRING
-			-- retrieve the property type for `a_prop_name' in flattened class corresponding to `a_type_name'
+	effective_property_type (a_type_name, a_prop_name: STRING): STRING
+			-- determine the effective property type for `a_prop_name' in flattened class corresponding to `a_type_name'
 			-- same as property_definition.type, except if a_type_name is generic
 		require
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property (a_type_name, a_prop_name)
 		do
-			Result := class_definition (type_name_to_class_key (a_type_name)).property_type (a_type_name, a_prop_name)
+			Result := class_definition (type_name_to_class_key (a_type_name)).effective_property_type (a_type_name, a_prop_name)
 		end
 
 	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY [BMM_TYPE]
@@ -238,7 +238,7 @@ feature -- Status Report
 
 feature -- Conformance
 
-	conformant_type_for_class (a_type_name, a_class_name: STRING): BOOLEAN
+	ms_conformant_type_for_class (a_type_name, a_class_name: STRING): BOOLEAN
 			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Fails if:
 			-- a) first class name in `a_type_name' is not the same as or a descendant of `a_class_name'
 			-- b) any subsequent type name mentioned in `a_type_name' is invalid
@@ -261,51 +261,97 @@ feature -- Conformance
 					gen_type_strs := generic_parameter_types (a_type_name)
 					if attached class_def.generic_parameters as att_gen_parms and then att_gen_parms.count = gen_type_strs.count then
 						Result := across class_def.generic_parameter_conformance_types as gen_conf_types_csr all
-							conformant_type_for_class (gen_type_strs.i_th (gen_conf_types_csr.target_index), gen_conf_types_csr.item)
+							ms_conformant_type_for_class (gen_type_strs.i_th (gen_conf_types_csr.target_index), gen_conf_types_csr.item)
 						end
 					end
 				end
 			end
 		end
 
-	rt_conformant_property_type (a_bmm_class_name, a_bmm_property_name, a_property_dyn_type: STRING): BOOLEAN
-			-- True if `a_property_dyn_type' is a valid 'RT' dynamic type for `a_property' in BMM class `a_bmm_class_name'
-			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+	ms_conformant_property_type (a_bmm_class_name, a_bmm_property_name, a_ms_property_type: STRING): BOOLEAN
+			-- True if `a_ms_property_type' is a valid 'MS' dynamic type for `a_property' in BMM class `a_bmm_class_name'
+			-- 'MS' conformance means 'model-semantic' conformance, which abstracts away container types like
 			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
 			-- i.e. regardless of whether there is single or multiple containment
 		require
 			Property_valid: has_class_definition (a_bmm_class_name) and has_property (a_bmm_class_name, a_bmm_property_name)
-		do
-			Result := has_class_definition (a_property_dyn_type) and then
-				conformant_type_for_class (a_property_dyn_type, property_definition (a_bmm_class_name, a_bmm_property_name).type.as_rt_type_string)
-		end
-
-	type_name_conforms_to (type_1, type_2: STRING): BOOLEAN
-			-- check conformance of type 1 to type 2; the types may be generic
 		local
-			tlist1, tlist2: ARRAYED_LIST[STRING]
+			prop_conf_type: STRING
 		do
-			tlist1 := type_name_as_flat_list (type_1)
-			tlist2 := type_name_as_flat_list (type_2)
-			Result := True
-			from
-				tlist1.start
-				tlist2.start
-			until
-				tlist1.off or tlist2.off or not Result or not has_class_definition (tlist1.item) or not has_class_definition (tlist2.item)
-			loop
-				Result := Result and
-					(tlist1.item.is_case_insensitive_equal (tlist2.item) or else
-					class_definition (tlist1.item).has_ancestor (tlist2.item))
-				tlist1.forth
-				tlist2.forth
+			if has_class_definition (a_ms_property_type) then
+				prop_conf_type := property_definition (a_bmm_class_name, a_bmm_property_name).type.as_conformance_type_string
+
+				-- adjust for case where candidate type is not generic, but bmm_property type is - just test on non-generic version
+				if is_generic_type_name (prop_conf_type) and not is_generic_type_name (a_ms_property_type) then
+					prop_conf_type := type_name_to_class_key (prop_conf_type)
+				end
+				Result := type_conforms_to (a_ms_property_type, prop_conf_type)
 			end
 		end
 
-	type_conforms_to (this_type, other_type: STRING): BOOLEAN
-			-- True if `this_type' conforms to 'other_type'
+	type_conforms_to (a_desc_type, an_anc_type: STRING): BOOLEAN
+			-- check conformance of `a_desc_type' to `an_anc_type'; the types may be generic, and may contain open
+			-- generic parameters like 'T' etc. These are replaced with their apporpriate constrainer types, or Any
+			-- during the conformance testing process.
+			-- Conformance is found if:
+			--	* [base class test] types are non-generic, and either type names are identical, or else `a_desc_type' has `an_anc_type' in its ancestors
+			--	* both types are generic and pass base class test; number of generic params matches, and each generic parameter type, after 'open parameter'
+			--	  substitution, recursively passes `type_name_conforms_to' test
+			--	* descendant type is generic and ancestor type is not, and they pass base classes test
+		local
+			desc_type_gen_params, anc_type_gen_params: ARRAYED_LIST[STRING]
+			desc_base_class, anc_base_class, desc_type_gen_type, anc_type_gen_type: STRING
 		do
-			Result := type_name_conforms_to (this_type, other_type) or is_descendant_of (this_type, other_type)
+			desc_base_class := type_name_to_class_key (a_desc_type)
+			anc_base_class := type_name_to_class_key (an_anc_type)
+			if desc_base_class.is_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor (anc_base_class)  then
+				if is_generic_type_name (a_desc_type) then
+
+					-- in the case of both being generic, we need to compare generics
+					-- to start with, the number of generics must match
+					if is_generic_type_name (an_anc_type) then
+						desc_type_gen_params := generic_parameter_types (a_desc_type)
+						anc_type_gen_params := generic_parameter_types (an_anc_type)
+						if desc_type_gen_params.count = anc_type_gen_params.count then
+							from
+								desc_type_gen_params.start
+								anc_type_gen_params.start
+								Result := True
+							until
+								desc_type_gen_params.off or not Result
+							loop
+								-- first we convert any open generic parameters to their conformance types
+								-- We assume type names of 1 letter are open parameters
+								if desc_type_gen_params.item.count = 1 then
+									desc_type_gen_type := class_definition (desc_base_class).generic_parameter_conformance_type (desc_type_gen_params.item)
+								else
+									desc_type_gen_type := desc_type_gen_params.item
+								end
+								if anc_type_gen_params.item.count = 1 then
+									anc_type_gen_type := class_definition (anc_base_class).generic_parameter_conformance_type (anc_type_gen_params.item)
+								else
+									anc_type_gen_type := anc_type_gen_params.item
+								end
+
+								-- now do the test
+								Result := type_conforms_to (desc_type_gen_type, anc_type_gen_type)
+
+								desc_type_gen_params.forth
+								anc_type_gen_params.forth
+							end
+						end
+
+					-- Conforms - case where anc type is not provided in generic form, but desc is
+					-- e.g. Interval<Integer> conforms to Interval
+					else
+						Result := True
+					end
+
+				-- in the following case, the descendant type is not generic, so the ancestor type cannot be either, for conformance
+				else
+					Result := not is_generic_type_name (an_anc_type)
+				end
+			end
 		end
 
 	is_archetype_data_value_type (a_type: STRING): BOOLEAN
@@ -313,7 +359,7 @@ feature -- Conformance
 			-- conforms to `archetype_data_value_parent_class'
 		do
 			if attached archetype_data_value_parent_class as advp_class  then
-				Result := conformant_type_for_class (a_type, advp_class)
+				Result := ms_conformant_type_for_class (a_type, advp_class)
 			end
 		end
 
@@ -321,7 +367,7 @@ feature -- Factory
 
 	create_bmm_type_from_name (a_type_name: STRING): BMM_TYPE
 			-- create a new BMM_TYPE from a valid type name
-			-- Currently only knows how to create BMM_SIMPLE_TYPE and BMM_GENERIC_TYPE
+			-- FIXME: currently only knows how to create BMM_SIMPLE_TYPE and BMM_GENERIC_TYPE
 		require
 			is_valid_type_name (a_type_name)
 		local

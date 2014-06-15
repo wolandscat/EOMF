@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Type reference that specifies containers with one generic parameter."
-	keywords:    "model, UML"
+	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale"
 	support:     "Ocean Informatics <support@OceanInformatics.com>"
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
@@ -12,7 +12,7 @@ class BMM_CONTAINER_TYPE
 inherit
 	BMM_TYPE
 		redefine
-			as_rt_type_string
+			as_conformance_type_string
 		end
 
 create
@@ -29,10 +29,10 @@ feature -- Initialisation
 feature -- Access
 
 	base_type: BMM_TYPE
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
+			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 	container_type: BMM_CLASS
-			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE_SPECIFIER
+			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 
 	base_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
@@ -97,11 +97,11 @@ feature -- Output
 			Result.append (container_type.name + Generic_left_delim.out + base_type.as_type_string + Generic_right_delim.out)
 		end
 
-	as_rt_type_string: STRING
+	as_conformance_type_string: STRING
 			-- name of the this type in form allowing other type to be conformance tested against it;
 			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
 		do
-			Result := base_type.as_rt_type_string
+			Result := base_type.as_conformance_type_string
 		end
 
 end

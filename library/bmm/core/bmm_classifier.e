@@ -53,7 +53,7 @@ feature -- Output
 			Result := as_type_string
 		end
 
-	as_rt_type_string: STRING
+	as_conformance_type_string: STRING
 			-- name of the this type in form allowing other type to be RT-conformance tested against it;
 			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
 			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,

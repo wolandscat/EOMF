@@ -11,6 +11,9 @@ class BMM_SIMPLE_TYPE_OPEN
 
 inherit
 	BMM_TYPE
+		redefine
+			as_conformance_type_string
+		end
 
 create
 	make
@@ -19,18 +22,18 @@ feature -- Initialisation
 
 	make (a_type: BMM_GENERIC_PARAMETER)
 		do
-			type := a_type
+			generic_constraint := a_type
 		end
 
 feature -- Access
 
-	type: BMM_GENERIC_PARAMETER
+	generic_constraint: BMM_GENERIC_PARAMETER
 			-- the target type
 
 	base_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
 		do
-			Result := type.base_class
+			Result := generic_constraint.base_class
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
@@ -38,25 +41,25 @@ feature -- Access
 			-- note that for this type, we throw away the container_type because we are tring to match
 			-- the type of an object as being a valid member of the container, e.g. ELEMENT in List<ELEMENT>
 		do
-			Result := type.flattened_type_list
+			Result := generic_constraint.flattened_type_list
 		end
 
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := type.type_category
+			Result := generic_constraint.type_category
 		end
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := type.type_substitutions
+			Result := generic_constraint.type_substitutions
 		end
 
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := type.has_type_substitutions
+			Result := generic_constraint.has_type_substitutions
 		end
 
 feature -- Output
@@ -64,7 +67,16 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			Result := type.as_type_string
+			Result := generic_constraint.as_type_string
+		end
+
+	as_conformance_type_string: STRING
+			-- name of the this type in form allowing other type to be RT-conformance tested against it;
+			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
+			-- i.e. regardless of whether there is single or multiple containment
+		do
+			Result := generic_constraint.as_conformance_type_string
 		end
 
 end
