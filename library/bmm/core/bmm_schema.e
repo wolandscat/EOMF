@@ -271,15 +271,18 @@ feature -- Conformance
 		local
 			desc_type_gen_params, anc_type_gen_params: ARRAYED_LIST[STRING]
 			desc_base_class, anc_base_class, desc_type_gen_type, anc_type_gen_type: STRING
+			desc_bmm_gen_class, anc_bmm_gen_class: BMM_GENERIC_CLASS
 		do
 			desc_base_class := type_name_to_class_key (a_desc_type)
 			anc_base_class := type_name_to_class_key (an_anc_type)
 			if desc_base_class.is_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor (anc_base_class)  then
-				if is_generic_type_name (a_desc_type) then
+				if is_generic_type_name (a_desc_type) and attached {BMM_GENERIC_CLASS} class_definition (desc_base_class) as att_desc_bgc then
+					desc_bmm_gen_class := att_desc_bgc
 
 					-- in the case of both being generic, we need to compare generics
 					-- to start with, the number of generics must match
-					if is_generic_type_name (an_anc_type) then
+					if is_generic_type_name (an_anc_type) and attached {BMM_GENERIC_CLASS} class_definition (anc_base_class) as att_anc_bgc then
+						anc_bmm_gen_class := att_anc_bgc
 						desc_type_gen_params := generic_parameter_types (a_desc_type)
 						anc_type_gen_params := generic_parameter_types (an_anc_type)
 						if desc_type_gen_params.count = anc_type_gen_params.count then
@@ -293,12 +296,12 @@ feature -- Conformance
 								-- first we convert any open generic parameters to their conformance types
 								-- We assume type names of 1 letter are open parameters
 								if desc_type_gen_params.item.count = 1 then
-									desc_type_gen_type := class_definition (desc_base_class).generic_parameter_conformance_type (desc_type_gen_params.item)
+									desc_type_gen_type := desc_bmm_gen_class.generic_parameter_conformance_type (desc_type_gen_params.item)
 								else
 									desc_type_gen_type := desc_type_gen_params.item
 								end
 								if anc_type_gen_params.item.count = 1 then
-									anc_type_gen_type := class_definition (anc_base_class).generic_parameter_conformance_type (anc_type_gen_params.item)
+									anc_type_gen_type := anc_bmm_gen_class.generic_parameter_conformance_type (anc_type_gen_params.item)
 								else
 									anc_type_gen_type := anc_type_gen_params.item
 								end
@@ -343,12 +346,12 @@ feature -- Factory
 		local
 			bmm_gen_type, inner_bmm_gen_type: BMM_GENERIC_TYPE
 		do
-			if is_well_formed_generic_type_name (a_type_name) then
-				create bmm_gen_type.make (class_definition (a_type_name))
+			if is_well_formed_generic_type_name (a_type_name) and attached {BMM_GENERIC_CLASS} class_definition (a_type_name) as bmm_gen_class then
+				create bmm_gen_type.make (bmm_gen_class)
 				Result := bmm_gen_type
 				across generic_parameter_types (a_type_name) as gen_types_csr loop
-					if is_well_formed_generic_type_name (gen_types_csr.item) then
-						create inner_bmm_gen_type.make (class_definition (gen_types_csr.item))
+					if is_well_formed_generic_type_name (gen_types_csr.item) and attached {BMM_GENERIC_CLASS} class_definition (gen_types_csr.item) as inner_bmm_gen_class then
+						create inner_bmm_gen_type.make (inner_bmm_gen_class)
 						bmm_gen_type.add_generic_parameter (inner_bmm_gen_type)
 						across generic_parameter_types (gen_types_csr.item) as inner_gen_types_csr loop
 							if is_well_formed_generic_type_name (inner_gen_types_csr.item) then
@@ -458,7 +461,7 @@ feature -- Statistics
 				if class_defs_csr.item.is_abstract then
 					statistics_table.force (statistics_table.item (abstract_key) + 1, abstract_key)
 				end
-				if class_defs_csr.item.is_generic then
+				if attached {BMM_GENERIC_CLASS} class_defs_csr.item as bmm_gen_class then
 					statistics_table.force (statistics_table.item (generic_key) + 1, generic_key)
 				end
 				if attached archetype_parent_class as ap_class and attached arch_parent_key as ap_key then

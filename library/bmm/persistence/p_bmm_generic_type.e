@@ -66,8 +66,11 @@ feature -- Factory
 			new_bmm_type: BMM_GENERIC_TYPE
 		do
 			-- handle simple generic param types if found in schema
-			if a_bmm_schema.has_class_definition (root_type) and attached generic_parameter_refs as att_gen_parm_refs then
-				create new_bmm_type.make (a_bmm_schema.class_definition (root_type))
+			if a_bmm_schema.has_class_definition (root_type) and
+				attached {BMM_GENERIC_CLASS} a_bmm_schema.class_definition (root_type) as bmm_gen_class and
+				attached generic_parameter_refs as att_gen_parm_refs
+			then
+				create new_bmm_type.make (bmm_gen_class)
 				bmm_type := new_bmm_type
 				across att_gen_parm_refs as gen_parms_csr loop
 					gen_parms_csr.item.create_bmm_type (a_bmm_schema, a_class_def)

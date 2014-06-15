@@ -12,7 +12,7 @@ class P_BMM_ENUMERATION[G->COMPARABLE]
 inherit
 	P_BMM_CLASS
 		redefine
-			bmm_class_definition, populate_bmm_class_definition
+			bmm_class_definition, create_bmm_class_definition, populate_bmm_class_definition
 		end
 
 feature -- Access (persisted)
@@ -37,6 +37,13 @@ feature -- Access
 		end
 
 feature -- Factory
+
+	create_bmm_class_definition
+			-- add remaining model elements from `' to `bmm_class_definition'
+		do
+			create bmm_class_definition.make (name, is_abstract)
+			bmm_class_definition.set_source_schema_id (source_schema_id)
+		end
 
 	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)
 			-- add remaining model elements to `bmm_enumeration_definition'

@@ -17,7 +17,7 @@ create
 
 feature -- Initialisation
 
-	make (a_base_class: BMM_CLASS)
+	make (a_base_class: BMM_GENERIC_CLASS)
 		do
 			base_class := a_base_class
 			create generic_parameters.make (0)
@@ -29,7 +29,7 @@ feature -- Access
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
 
-	base_class: BMM_CLASS
+	base_class: BMM_GENERIC_CLASS
 			-- the base class of this type
 
 	flattened_type_list: ARRAYED_LIST [STRING]
