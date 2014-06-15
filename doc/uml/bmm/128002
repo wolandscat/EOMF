@@ -1,6 +1,6 @@
 format 206
 "core" // core
-  revision 1
+  revision 2
   modified_by 2 "Thomas"
   // class settings
   
@@ -199,15 +199,6 @@ ${members}};
 	MysqlColumn
       end
 
-      classrelation 129282 // generic_parameters (<directional composition>)
-	relation 129282 *-->
-	  a role_name "generic_parameters" multiplicity "*" public
-	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
-"
-	    classrelation_ref 129282 // generic_parameters (<directional composition>)
-	  b parent class_ref 129410 // BMM_GENERIC_PARAMETER
-      end
-
       classrelation 129794 // <generalisation>
 	relation 129794 ---|>
 	  a public
@@ -373,21 +364,21 @@ ${members}};
 	  b parent class_ref 128002 // BMM_TYPE
       end
 
-      classrelation 130050 // container_type (<unidirectional association>)
+      classrelation 130050 // container_class (<unidirectional association>)
 	relation 130050 --->
-	  a role_name "container_type" multiplicity "1" public
+	  a role_name "container_class" multiplicity "1" public
 	    idl "  ${comment}${visibility}${type} ${name};
 "
-	    classrelation_ref 130050 // container_type (<unidirectional association>)
+	    classrelation_ref 130050 // container_class (<unidirectional association>)
 	  b parent class_ref 128130 // BMM_CLASS
       end
 
-      classrelation 130178 // type (<directional composition>)
+      classrelation 130178 // base_type (<directional composition>)
 	relation 130178 *-->
-	  a role_name "type" multiplicity "1" public
+	  a role_name "base_type" multiplicity "1" public
 	    idl "  ${comment}${visibility}${type} ${name};
 "
-	    classrelation_ref 130178 // type (<directional composition>)
+	    classrelation_ref 130178 // base_type (<directional composition>)
 	  b parent class_ref 128002 // BMM_TYPE
       end
     end
@@ -412,15 +403,6 @@ ${members}};
 	  b parent class_ref 128002 // BMM_TYPE
       end
 
-      classrelation 130306 // root_type (<unidirectional association>)
-	relation 130306 --->
-	  a role_name "root_type" multiplicity "1" public
-	    idl "  ${comment}${visibility}${type} ${name};
-"
-	    classrelation_ref 130306 // root_type (<unidirectional association>)
-	  b parent class_ref 128130 // BMM_CLASS
-      end
-
       classrelation 130434 // generic_parameters (<directional composition>)
 	relation 130434 *-->
 	  a role_name "generic_parameters" multiplicity "1..*" public
@@ -428,6 +410,15 @@ ${members}};
 "
 	    classrelation_ref 130434 // generic_parameters (<directional composition>)
 	  b parent class_ref 128002 // BMM_TYPE
+      end
+
+      classrelation 143362 // base_class (<unidirectional association>)
+	relation 142978 --->
+	  a role_name "base_class" multiplicity "1" public
+	    idl "  ${comment}${visibility}${type} ${name};
+"
+	    classrelation_ref 143362 // base_class (<unidirectional association>)
+	  b parent class_ref 139266 // BMM_GENERIC_CLASS
       end
     end
 
@@ -451,12 +442,12 @@ ${members}};
 	  b parent class_ref 128002 // BMM_TYPE
       end
 
-      classrelation 130818 // type (<unidirectional association>)
+      classrelation 130818 // base_class (<unidirectional association>)
 	relation 130818 --->
-	  a role_name "type" multiplicity "1" public
+	  a role_name "base_class" multiplicity "1" public
 	    idl "  ${comment}${visibility}${type} ${name};
 "
-	    classrelation_ref 130818 // type (<unidirectional association>)
+	    classrelation_ref 130818 // base_class (<unidirectional association>)
 	  b parent class_ref 128130 // BMM_CLASS
       end
     end
@@ -795,12 +786,12 @@ ${members}};
       explicit_switch_type ""
       mysql_decl ""
       
-      classrelation 131458 // type (<directional composition>)
-	relation 131458 *-->
+      classrelation 131458 // type (<unidirectional association>)
+	relation 131458 --->
 	  a role_name "type" multiplicity "1" public
 	    idl "  ${comment}${visibility}${type} ${name};
 "
-	    classrelation_ref 131458 // type (<directional composition>)
+	    classrelation_ref 131458 // type (<unidirectional association>)
 	  b parent class_ref 128386 // BMM_CONTAINER_TYPE
       end
 
@@ -934,8 +925,8 @@ ${members}};
 	  b parent class_ref 130818 // BMM_SCHEMA_CORE
       end
 
-      operation 130818 "property_type"
-	public explicit_return_type "string"
+      operation 130818 "ms_conformant_property_type"
+	public explicit_return_type "bool"
 	multiplicity "1"
 	nparams 0
 	
@@ -979,6 +970,19 @@ ${members}};
 	    idl "${type}"
 	    classrelation_ref 132738 // <generalisation>
 	  b parent class_ref 130946 // BMM_PACKAGE_CONTAINER
+      end
+
+      operation 139522 "type_conforms_to"
+	public explicit_return_type "bool"
+	nparams 2
+	  param in name "a_desc_type" explicit_type ""
+	  param in name "an_anc_type" explicit_type ""
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${d0} ${t0} ${p0}, ${d1} ${t1} ${p1}${)}${raisesnl}${raises};
+"
       end
     end
 
@@ -1209,6 +1213,37 @@ ${members}};
 	
 	idl_decl "  ${comment}${oneway}${type} ${name}${(}${d0} ${t0} ${p0}${)}${raisesnl}${raises};
 "
+      end
+    end
+
+    class 139266 "BMM_GENERIC_CLASS"
+      visibility package 
+      cpp_decl ""
+      java_decl ""
+      php_decl ""
+      python_2_2 python_decl ""
+      idl_decl "${comment}${abstract}${custom}valuetype ${name}${inherit} {
+${members}};
+"
+      explicit_switch_type ""
+      mysql_decl ""
+      
+      classrelation 143106 // <generalisation>
+	relation 142722 ---|>
+	  a public
+	    idl "${type}"
+	    classrelation_ref 143106 // <generalisation>
+	  b parent class_ref 128130 // BMM_CLASS
+      end
+
+      classrelation 143234 // generic_parameters (<directional composition>)
+	relation 142850 *-->
+	  stereotype "map"
+	  a role_name "generic_parameters" multiplicity "1..*" public
+	    idl "  ${comment}${visibility}${stereotype}<${type}> ${name};
+"
+	    classrelation_ref 143234 // generic_parameters (<directional composition>)
+	  b parent class_ref 129410 // BMM_GENERIC_PARAMETER
       end
     end
   end

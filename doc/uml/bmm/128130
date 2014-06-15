@@ -1,6 +1,6 @@
 format 206
 "persistence" // persistence
-  revision 1
+  revision 2
   modified_by 2 "Thomas"
   // class settings
   
@@ -1010,7 +1010,6 @@ ${members}};
 	    classrelation_ref 135938 // type_def (<directional composition>)
 	  b parent class_ref 131970 // P_BMM_GENERIC_TYPE
       end
-
     end
   end
 end

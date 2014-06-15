@@ -71,7 +71,7 @@ end
 relationcanvas 128642 relation_ref 132994 // <directional composition>
   decenter_begin 808
   decenter_end 207
-  from ref 128002 z 2001 stereotype "<<map>>" xyz 252.5 603 3000 to ref 128514
+  from ref 128002 z 2001 stereotype "<<map>>" xyz 252 603 3000 to ref 128514
   role_a_pos 239 580 3000 no_role_b
   multiplicity_a_pos 284 605 3000 no_multiplicity_b
 end
@@ -85,7 +85,7 @@ relationcanvas 128770 relation_ref 133122 // <generalisation>
 end
 relationcanvas 129154 relation_ref 133250 // <generalisation>
   geometry VHV unfixed
-  decenter_begin 945
+  decenter_begin 944
   from ref 128002 z 2001 to point 221 313
   line 129282 z 2001 to point 715 313
   line 129410 z 2001 to ref 128386
@@ -161,16 +161,16 @@ relationcanvas 133890 relation_ref 134402 // <directional composition>
   decenter_end 836
   from ref 132610 z 2001 stereotype "<<list>>" xyz 591 502 3000 to point 607 460
   line 134018 z 2001 to ref 130050
-  role_a_pos 606 466 3000 no_role_b
-  multiplicity_a_pos 732 466 3000 no_multiplicity_b
+  role_a_pos 623 444 3000 no_role_b
+  multiplicity_a_pos 726 469 3000 no_multiplicity_b
 end
 relationcanvas 134146 relation_ref 134530 // <directional composition>
   geometry VH
   decenter_end 254
   from ref 128514 z 2001 to point 418 428
   line 134274 z 2001 to ref 130050
-  role_a_pos 671 414 3000 no_role_b
-  multiplicity_a_pos 726 414 3000 no_multiplicity_b
+  role_a_pos 699 412 3000 no_role_b
+  multiplicity_a_pos 724 437 3000 no_multiplicity_b
 end
 relationcanvas 134914 relation_ref 134658 // <generalisation>
   geometry VHV
@@ -207,7 +207,7 @@ relationcanvas 136066 relation_ref 135042 // <generalisation>
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 136450 relation_ref 135170 // <directional composition>
-  decenter_begin 575
+  decenter_begin 574
   decenter_end 414
   from ref 134402 z 2001 to ref 130562
   role_a_pos 1104 609 3000 no_role_b
@@ -222,7 +222,7 @@ relationcanvas 136578 relation_ref 135298 // <directional composition>
 end
 relationcanvas 136706 relation_ref 135426 // <directional composition>
   decenter_begin 896
-  decenter_end 203
+  decenter_end 202
   from ref 134530 z 2001 to ref 130690
   role_a_pos 765 591 3000 no_role_b
   multiplicity_a_pos 727 591 3000 no_multiplicity_b
@@ -238,10 +238,10 @@ relationcanvas 137090 relation_ref 135682 // <directional composition>
   geometry HVH unfixed
   decenter_begin 280
   from ref 128002 z 2001 to point 279 510
-  line 137346 z 2001 stereotype "<<map>>" xyz 256 451.5 3000 to point 279 368
+  line 137346 z 2001 stereotype "<<map>>" xyz 256 451 3000 to point 279 368
   line 137474 z 2001 to ref 129538
-  role_a_pos 225 355 3000 no_role_b
-  multiplicity_a_pos 340 380 3000 no_multiplicity_b
+  role_a_pos 225 352 3000 no_role_b
+  multiplicity_a_pos 340 377 3000 no_multiplicity_b
 end
 relationcanvas 137602 relation_ref 135810 // <generalisation>
   geometry VHV
@@ -254,15 +254,15 @@ end
 relationcanvas 137986 relation_ref 135938 // <directional composition>
   decenter_begin 861
   decenter_end 712
-  from ref 128258 z 2001 stereotype "<<map>>" xyz 163 394.5 3000 to ref 128002
-  role_a_pos 146 436 3000 no_role_b
+  from ref 128258 z 2001 stereotype "<<map>>" xyz 163 394 3000 to ref 128002
+  role_a_pos 194 447 3000 no_role_b
   multiplicity_a_pos 170 447 3000 no_multiplicity_b
 end
 relationcanvas 138114 relation_ref 136066 // <directional composition>
   decenter_begin 303
   decenter_end 119
-  from ref 128258 z 2001 stereotype "<<map>>" xyz 63 394.5 3000 to ref 128002
-  role_a_pos 36 432 3000 no_role_b
+  from ref 128258 z 2001 stereotype "<<map>>" xyz 63 394 3000 to ref 128002
+  role_a_pos 95 447 3000 no_role_b
   multiplicity_a_pos 71 447 3000 no_multiplicity_b
 end
 relationcanvas 138242 relation_ref 136194 // <directional composition>

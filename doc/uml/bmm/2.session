@@ -9,8 +9,7 @@ end
 show_stereotypes
 selected classdiagram_ref 128130 // main
 open
-  
-package_ref 128002 // core
+  class_ref 130690 // BMM_SCHEMA
   class_ref 130306 // P_BMM_CLASS
   class_ref 130562 // P_BMM_SCHEMA
   class_ref 131202 // P_BMM_PROPERTY
