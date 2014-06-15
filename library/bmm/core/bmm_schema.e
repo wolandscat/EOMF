@@ -238,36 +238,6 @@ feature -- Status Report
 
 feature -- Conformance
 
-	ms_conformant_type_for_class (a_type_name, a_class_name: STRING): BOOLEAN
-			-- True if `a_type_name' is a valid type for the class definition of `a_class_name'. Fails if:
-			-- a) first class name in `a_type_name' is not the same as or a descendant of `a_class_name'
-			-- b) any subsequent type name mentioned in `a_type_name' is invalid
-			-- c) any subsequent type name mentioned in `a_type_name' is illegal as generic parameter of `a_class_name', if the latter is generic
-			-- Will always be true for non-generic / non-container types
-		require
-			A_class_name_valid: has_class_definition (a_class_name)
-			A_type_name_valid: not a_type_name.is_empty
-		local
-			gen_type_strs: ARRAYED_LIST [STRING]
-			class_def: BMM_CLASS
-		do
-			if not is_well_formed_generic_type_name (a_type_name) then
-				Result := a_type_name.is_case_insensitive_equal (a_class_name) or else is_descendant_of (a_type_name, a_class_name)
-			else
-				class_def := class_definition (a_class_name)
-				-- if `a_type_name' is also in generic form, then the generic parameters have to be
-				-- equal in number and all conformant
-				if class_def.is_generic then
-					gen_type_strs := generic_parameter_types (a_type_name)
-					if attached class_def.generic_parameters as att_gen_parms and then att_gen_parms.count = gen_type_strs.count then
-						Result := across class_def.generic_parameter_conformance_types as gen_conf_types_csr all
-							ms_conformant_type_for_class (gen_type_strs.i_th (gen_conf_types_csr.target_index), gen_conf_types_csr.item)
-						end
-					end
-				end
-			end
-		end
-
 	ms_conformant_property_type (a_bmm_class_name, a_bmm_property_name, a_ms_property_type: STRING): BOOLEAN
 			-- True if `a_ms_property_type' is a valid 'MS' dynamic type for `a_property' in BMM class `a_bmm_class_name'
 			-- 'MS' conformance means 'model-semantic' conformance, which abstracts away container types like
@@ -359,7 +329,7 @@ feature -- Conformance
 			-- conforms to `archetype_data_value_parent_class'
 		do
 			if attached archetype_data_value_parent_class as advp_class  then
-				Result := ms_conformant_type_for_class (a_type, advp_class)
+				Result := type_conforms_to (a_type, advp_class)
 			end
 		end
 
