@@ -238,18 +238,18 @@ feature -- Status Report
 
 feature -- Conformance
 
-	ms_conformant_property_type (a_bmm_class_name, a_bmm_property_name, a_ms_property_type: STRING): BOOLEAN
-			-- True if `a_ms_property_type' is a valid 'MS' dynamic type for `a_property' in BMM class `a_bmm_class_name'
+	ms_conformant_property_type (a_bmm_type_name, a_bmm_property_name, a_ms_property_type: STRING): BOOLEAN
+			-- True if `a_ms_property_type' is a valid 'MS' dynamic type for `a_property' in BMM type `a_bmm_type_name'
 			-- 'MS' conformance means 'model-semantic' conformance, which abstracts away container types like
 			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
 			-- i.e. regardless of whether there is single or multiple containment
 		require
-			Property_valid: has_class_definition (a_bmm_class_name) and has_property (a_bmm_class_name, a_bmm_property_name)
+			Property_valid: has_class_definition (a_bmm_type_name) and has_property (a_bmm_type_name, a_bmm_property_name)
 		local
 			prop_conf_type: STRING
 		do
 			if has_class_definition (a_ms_property_type) then
-				prop_conf_type := property_definition (a_bmm_class_name, a_bmm_property_name).type.as_conformance_type_string
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).type.as_conformance_type_string
 
 				-- adjust for case where candidate type is not generic, but bmm_property type is - just test on non-generic version
 				if is_generic_type_name (prop_conf_type) and not is_generic_type_name (a_ms_property_type) then
