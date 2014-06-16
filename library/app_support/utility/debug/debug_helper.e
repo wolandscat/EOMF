@@ -28,6 +28,11 @@ feature -- Access
 
 	indent_count: INTEGER
 
+	indent: STRING
+		do
+			Result := indent_str_src.substring (1, indent_count)
+		end
+
 end
 
 

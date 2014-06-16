@@ -14,13 +14,13 @@ inherit
 
 feature -- Access
 
-	flattened_type_list: ARRAYED_LIST [STRING]
-			-- completely flattened list of type names, flattening out all generic parameters
+	base_class: BMM_CLASS
+			-- main design class for this type, from which properties etc can be extracted
 		deferred
 		end
 
-	base_class: BMM_CLASS
-			-- main design class for this type, from which properties etc can be extracted
+	flattened_type_list: ARRAYED_LIST [STRING]
+			-- completely flattened list of type names, flattening out all generic parameters
 		deferred
 		end
 
