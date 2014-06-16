@@ -50,6 +50,15 @@ feature -- Access
 			Result := ({G}).name
 		end
 
+	name_map: HASH_TABLE [STRING, STRING]
+			-- map of item_values (string form) to item_names
+		do
+			create Result.make (0)
+			across item_names as names_csr loop
+				Result.put (names_csr.item, item_values.i_th (names_csr.cursor_index).out)
+			end
+		end
+
 feature -- Modification
 
 	set_item_names (a_names: like item_names)
@@ -66,6 +75,7 @@ feature -- Modification
 			a_values.count = item_names.count
 		do
 			item_values := a_values
+			item_values.compare_objects
 		end
 
 end

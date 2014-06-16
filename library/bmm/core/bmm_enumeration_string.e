@@ -12,11 +12,19 @@ class BMM_ENUMERATION_STRING
 inherit
 	BMM_ENUMERATION [STRING]
 		redefine
-			set_item_names
+			set_item_names, underlying_type_name
 		end
 
 create
 	make
+
+feature -- Access
+
+	underlying_type_name: STRING
+			-- redefined to remove _8, _16, _32 from Eiffel internal types
+		do
+			Result := "STRING"
+		end
 
 feature -- Modification
 
