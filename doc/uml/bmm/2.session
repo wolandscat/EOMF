@@ -1,28 +1,18 @@
 window_sizes 1680 1028 348 1327 928 54
 
 diagrams
-  classdiagram_ref 128002 // main
+  active  classdiagram_ref 128002 // main
     1327 928 100 3 0 0
-  active  classdiagram_ref 128130 // main
-    1327 928 100 18 0 0
+  classdiagram_ref 128130 // main
+    760 891 100 18 0 0
+  classdiagram_ref 134658 // main
+    114 86 100 18 0 0
 end
 show_stereotypes
-selected classdiagram_ref 128130 // main
+selected operation_ref 146562 // as_display_type_string
 open
-  class_ref 130690 // BMM_SCHEMA
-  class_ref 130306 // P_BMM_CLASS
-  class_ref 130562 // P_BMM_SCHEMA
-  class_ref 131202 // P_BMM_PROPERTY
-  class_ref 131330 // P_BMM_GENERIC_PARAMETER
-  class_ref 131458 // P_BMM_TYPE
-  class_ref 131586 // P_BMM_CONTAINER_TYPE
-  class_ref 131714 // P_BMM_SIMPLE_TYPE
-  class_ref 131842 // P_BMM_SIMPLE_TYPE_OPEN
-  class_ref 131970 // P_BMM_GENERIC_TYPE
-  class_ref 132098 // P_BMM_PACKAGE
-  class_ref 132354 // P_BMM_CONTAINER_PROPERTY
-  class_ref 132482 // P_BMM_SINGLE_PROPERTY
-  class_ref 132610 // P_BMM_SINGLE_PROPERTY_OPEN
-  class_ref 132738 // P_BMM_GENERIC_PROPERTY
+  class_ref 128002 // BMM_TYPE
+  class_ref 129538 // BMM_CLASSIFIER
+  class_ref 145794 // Interval
 end
 end

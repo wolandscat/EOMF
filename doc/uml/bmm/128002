@@ -1,6 +1,6 @@
 format 206
 "core" // core
-  revision 2
+  revision 3
   modified_by 2 "Thomas"
   // class settings
   
@@ -59,8 +59,8 @@ ${members}};
       explicit_switch_type ""
       mysql_decl ""
       
-      operation 128642 "semantic_class"
-	public return_type class_ref 128130 // BMM_CLASS
+      operation 128642 "base_class"
+	abstract cpp_virtual public return_type class_ref 128130 // BMM_CLASS
 	multiplicity "1"
 	nparams 0
 	
@@ -71,9 +71,9 @@ ${members}};
 "
       end
 
-      operation 128770 "flattened_type_list"
-	public explicit_return_type "string"
-	multiplicity "*"
+      operation 128770 "has_type_substitutions"
+	abstract cpp_virtual public explicit_return_type "bool"
+	multiplicity "1"
 	nparams 0
 	
 	
@@ -85,7 +85,7 @@ ${members}};
 
       operation 129026 "type_substitutions"
 	stereotype "set"
-	public explicit_return_type "string"
+	abstract cpp_virtual public explicit_return_type "string"
 	multiplicity "1..*"
 	nparams 0
 	
@@ -101,7 +101,18 @@ ${members}};
 	  a public
 	    idl "${type}"
 	    classrelation_ref 130562 // <generalisation>
-	  b parent class_ref 129538 // BMM_TYPE_SPECIFIER
+	  b parent class_ref 129538 // BMM_CLASSIFIER
+      end
+
+      operation 146562 "as_display_type_string"
+	public explicit_return_type "string"
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
       end
     end
 
@@ -204,7 +215,7 @@ ${members}};
 	  a public
 	    idl "${type}"
 	    classrelation_ref 129794 // <generalisation>
-	  b parent class_ref 129538 // BMM_TYPE_SPECIFIER
+	  b parent class_ref 129538 // BMM_CLASSIFIER
       end
 
       operation 128130 "all_descendants"
@@ -680,7 +691,7 @@ ${members}};
 	  a public
 	    idl "${type}"
 	    classrelation_ref 129922 // <generalisation>
-	  b parent class_ref 129538 // BMM_TYPE_SPECIFIER
+	  b parent class_ref 129538 // BMM_CLASSIFIER
       end
 
       operation 129154 "flattened_conforms_to_type"
@@ -696,7 +707,7 @@ ${members}};
       end
     end
 
-    class 129538 "BMM_TYPE_SPECIFIER"
+    class 129538 "BMM_CLASSIFIER"
       abstract visibility package 
       cpp_decl ""
       java_decl ""
@@ -709,19 +720,7 @@ ${members}};
       mysql_decl ""
       
       operation 128898 "type_category"
-	public explicit_return_type "string"
-	multiplicity "1"
-	nparams 0
-	
-	
-	
-	
-	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
-"
-      end
-
-      operation 129282 "as_display_type_string"
-	public explicit_return_type "string"
+	abstract cpp_virtual public explicit_return_type "string"
 	multiplicity "1"
 	nparams 0
 	
@@ -745,7 +744,7 @@ ${members}};
       end
 
       operation 129666 "as_type_string"
-	public explicit_return_type "string"
+	abstract cpp_virtual public explicit_return_type "string"
 	multiplicity "1"
 	nparams 0
 	
