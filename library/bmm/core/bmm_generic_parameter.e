@@ -12,7 +12,7 @@ class BMM_GENERIC_PARAMETER
 inherit
 	BMM_CLASSIFIER
 		redefine
-			as_display_type_string, as_conformance_type_string
+			as_conformance_type_string
 		end
 
 create
@@ -68,6 +68,15 @@ feature -- Access
 			end
 		end
 
+	effective_conforms_to_type: BMM_CLASS
+		do
+			if attached flattened_conforms_to_type as att_fct then
+				Result := att_fct
+			else
+				Result := any_class_definition
+			end
+		end
+
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
 			-- note that for this type, we output "ANY" if there is no constraint
@@ -91,19 +100,7 @@ feature -- Access
 			end
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
-		do
-			if attached flattened_conforms_to_type then
-				Result := flattened_conforms_to_type.type_substitutions
-			else
-				Result := any_class_definition.type_substitutions
-			end
-		end
-
 feature -- Status Report
-
-	has_type_substitutions: BOOLEAN = True
-			-- True if there are types subsitutable for this one according to the model
 
 	is_constrained: BOOLEAN
 			-- True if this generic parameter has a type constraint
@@ -126,18 +123,6 @@ feature -- Output
 		do
 			create Result.make_empty
 			Result.append (name)
-		end
-
-	as_display_type_string: STRING
-			-- name of the type; if constrained, in the form "T: CONSTRAINER_TYPE"
-		do
-			create Result.make_empty
-			Result.append (name)
-			if is_constrained then
-				Result.append_character (Generic_constraint_delimiter)
-				Result.append_character (' ')
-				Result.append (flattened_conforms_to_type.as_type_string)
-			end
 		end
 
 	as_conformance_type_string: STRING

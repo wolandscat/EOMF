@@ -52,14 +52,14 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := generic_constraint.type_substitutions
+			Result := generic_constraint.effective_conforms_to_type.all_descendants
 		end
 
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := generic_constraint.has_type_substitutions
+			Result := generic_constraint.effective_conforms_to_type.has_descendants
 		end
 
 feature -- Output

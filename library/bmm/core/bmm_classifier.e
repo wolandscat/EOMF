@@ -29,28 +29,11 @@ feature -- Access
 		deferred
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
-		deferred
-		end
-
-feature -- Status Report
-
-	has_type_substitutions: BOOLEAN
-		deferred
-		end
-
 feature -- Output
 
 	as_type_string: STRING
 			-- formal string form of the type as per UML
 		deferred
-		end
-
-	as_display_type_string: STRING
-			-- same as `as_type_string' except if a constrained generic,
-			-- in the form "T: CONSTRAINER_TYPE"
-		do
-			Result := as_type_string
 		end
 
 	as_conformance_type_string: STRING

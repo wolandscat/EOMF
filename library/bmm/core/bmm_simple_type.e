@@ -51,14 +51,14 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := base_class.type_substitutions
+			Result := base_class.all_descendants
 		end
 
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := base_class.has_type_substitutions
+			Result := base_class.has_descendants
 		end
 
 feature -- Output

@@ -66,7 +66,7 @@ feature -- Access
 		local
 			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
 		do
-			cont_sub_type_list := container_type.type_substitutions
+			cont_sub_type_list := container_type.all_descendants
 			if cont_sub_type_list.is_empty then
 				cont_sub_type_list.extend (container_type.name)
 			end
@@ -85,7 +85,7 @@ feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := container_type.has_type_substitutions or base_type.has_type_substitutions
+			Result := container_type.has_descendants or base_type.has_type_substitutions
 		end
 
 feature -- Output

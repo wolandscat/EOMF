@@ -106,7 +106,7 @@ feature -- Access
 				Result.compare_objects
 				across immediate_descendants as imm_descs_csr loop
 					Result.extend (imm_descs_csr.item.name)
-					Result.merge (imm_descs_csr.item.type_substitutions)
+					Result.merge (imm_descs_csr.item.all_descendants)
 				end
 				all_descendants_cache := Result
 			end
@@ -119,7 +119,7 @@ feature -- Access
 				Result := Type_cat_primitive_class
 			elseif is_abstract then
 				Result := Type_cat_abstract_class
-			elseif has_type_substitutions then
+			elseif is_abstract or else has_descendants then
 				Result := Type_cat_concrete_class_supertype
 			else
 				Result := Type_cat_concrete_class
@@ -335,12 +335,6 @@ feature -- Access
 			end
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
-			-- list of all classes that could be substituted for this class, taken as a type
-		do
-			Result := all_descendants
-		end
-
 	global_artefact_identifier: STRING
 			-- tool-wide unique id for this artefact
 		do
@@ -365,9 +359,9 @@ feature -- Status Report
 	is_override: BOOLEAN
 			-- True if this definition overrides a class of the same name in an included schema
 
-	has_type_substitutions: BOOLEAN
+	has_descendants: BOOLEAN
 		do
-			Result := is_abstract or else not immediate_descendants.is_empty
+			Result := immediate_descendants.is_empty
 		end
 
 	has_property (a_prop_name: STRING): BOOLEAN
