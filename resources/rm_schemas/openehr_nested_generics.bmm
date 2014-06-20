@@ -1,0 +1,270 @@
+-- 
+-- 	component:   openEHR Archetype Project
+-- 	description: openEHR Reference Model formal expression. This file is a DADL serialisation of
+--               the BMM object meta-model classes found at 
+--               http://www.openehr.org/svn/ref_impl_eiffel/BRANCHES/specialisation/libraries/common_libs/src/basic_meta_model
+-- 	keywords:    reference model, meta-model, archetypes
+-- 	author:      Thomas Beale
+-- 	support:     Ocean Informatics <support@OceanInformatics.com>
+-- 	copyright:   Copyright (c) 2009- openEHR Foundation
+-- 	license:     Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
+-- 
+
+------------------------------------------------------
+-- BMM version on which these schemas are based.
+-- Current BMM version can be found as value of 'Bmm_internal_version' in 
+--     https://github.com/openEHR/adl-tools/blob/master/libraries/common_libs/src/basic_meta_model/bmm_definitions.e
+--
+------------------------------------------------------
+bmm_version = <"2.1">
+
+------------------------------------------------------
+-- schema identification
+-- (schema_id computed as <rm_publisher>_<schema_name>_<rm_release>)
+------------------------------------------------------
+rm_publisher = <"openehr">
+schema_name = <"nested_generics">
+rm_release = <"1.0.2">
+
+------------------------------------------------------
+-- schema documentation
+------------------------------------------------------
+schema_revision = <"1.0.0">
+schema_lifecycle_state = <"stable">
+schema_description = <"nested generic types test schema"> 
+
+------------------------------------------------------
+-- inclusions
+------------------------------------------------------
+includes = <
+	["1"] = <
+		id = <"openehr_primitive_types_1.0.2">
+	>
+>
+
+------------------------------------------------------
+-- archetyping
+------------------------------------------------------
+archetype_data_value_parent_class = <"DATA_VALUE">
+
+------------------------------------------------------
+-- packages
+------------------------------------------------------
+
+packages = <
+	["org.openehr.rm.data_types"] = <
+		name = <"org.openehr.rm.data_types">
+		packages = <
+			["basic"] = <
+				name = <"basic">
+				classes = <"DATA_VALUE">
+			>
+			["text"] = <
+				name = <"text">
+				classes = <"CODE_PHRASE">
+			>
+			["quantity"] = <
+				name = <"quantity">
+				classes = <"DV_INTERVAL", "REFERENCE_RANGE", "DV_ORDERED", "DV_QUANTIFIED", "MAGNITUDE_STATUS", "DV_QUANTITY", "DV_AMOUNT", "DV_ABSOLUTE_QUANTITY", "RANGE_OF_INTERVAL_OF_QUANTITY">
+			>
+		>
+	>
+>
+
+------------------------------------------------------
+-- classes
+------------------------------------------------------
+
+class_definitions = <
+
+	------------------------------------------------------------
+	--------------------- rm.data_types ------------------------
+	------------------------------------------------------------
+
+	--
+	--------------------- rm.data_types.basic ------------------
+	--
+
+	["DATA_VALUE"] = <
+		name = <"DATA_VALUE">
+		ancestors = <"Any", ...>
+		is_abstract = <True>
+	>
+
+	--
+	--------------------- rm.data_types.text ------------------
+	--
+
+	["CODE_PHRASE"] = <
+		name = <"CODE_PHRASE">
+		properties = <
+			["terminology_id"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"terminology_id">
+				type = <"String">
+				is_mandatory = <True>
+			>
+			["code_string"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"code_string">
+				type = <"String">
+			>
+		>
+	>
+
+	--
+	--------------------- rm.data_types.quantity ------------------
+	--
+
+	["DV_INTERVAL"] = <
+		name = <"DV_INTERVAL">
+		ancestors = <"Interval", "DATA_VALUE">
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+				conforms_to_type = <"DV_ORDERED">
+			>
+		>
+	>
+
+	["REFERENCE_RANGE"] = <
+		name = <"REFERENCE_RANGE">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+				conforms_to_type = <"DV_ORDERED">
+			>
+		>
+		properties = <
+			["range"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"range">
+				type = <"DV_INTERVAL">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+	["DV_ORDERED"] = <
+		name = <"DV_ORDERED">
+		is_abstract = <True>
+		ancestors = <"Ordered", "DATA_VALUE">
+		properties = <
+			["normal_status"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"normal_status">
+				type = <"CODE_PHRASE">
+			>
+			["normal_range"] = (P_BMM_GENERIC_PROPERTY) <
+				name = <"normal_range">
+				type_def = <
+					root_type = <"DV_INTERVAL">
+					generic_parameters = <"DV_ORDERED">
+				>
+			>
+			["other_reference_ranges"] = (P_BMM_GENERIC_PROPERTY) <
+				name = <"other_reference_ranges">
+				type_def = <
+					root_type = <"REFERENCE_RANGE">
+					generic_parameters = <"DV_ORDERED">
+				>
+			>
+		>
+	>
+
+	["DV_QUANTIFIED"] = <
+		name = <"DV_QUANTIFIED">
+		is_abstract = <True>
+		ancestors = <"DV_ORDERED", ...>
+		properties = <
+			["magnitude_status"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"magnitude_status">
+				type = <"MAGNITUDE_STATUS">
+				is_mandatory = <True>
+				is_im_runtime = <True>
+			>
+		>
+	>
+
+	["MAGNITUDE_STATUS"] = (P_BMM_ENUMERATION_STRING) <
+		name = <"MAGNITUDE_STATUS">
+		ancestors = <"String", ...>
+		item_names = <"le", "ge", "eq", "approx_eq">
+		item_values = <"<=", ">=", "=", "~">
+	>
+
+	["DV_AMOUNT"] = <
+		name = <"DV_AMOUNT">
+		is_abstract = <True>
+		ancestors = <"DV_QUANTIFIED", ...>
+		properties = <
+			["accuracy"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"accuracy">
+				type = <"Real">
+				is_im_runtime = <True>
+			>
+			["accuracy_is_percent"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"accuracy_is_percent">
+				type = <"Boolean">
+				is_im_runtime = <True>
+			>
+		>
+	>
+
+	["DV_ABSOLUTE_QUANTITY"] = <
+		name = <"DV_ABSOLUTE_QUANTITY">
+		is_abstract = <True>
+		ancestors = <"DV_QUANTIFIED", ...>
+		properties = <
+			["accuracy"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"accuracy">
+				type = <"DV_AMOUNT">
+				is_im_runtime = <True>
+			>
+		>
+	>
+
+	["DV_QUANTITY"] = <
+		name = <"DV_QUANTITY">
+		ancestors = <"DV_AMOUNT", ...>
+		properties = <
+			["magnitude"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"magnitude">
+				type = <"Double">
+				is_mandatory = <True>
+			>
+			["property"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"property">
+				type = <"CODE_PHRASE">
+				is_mandatory = <True>
+			>
+			["units"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"units">
+				type = <"String">
+				is_mandatory = <True>
+			>
+			["precision"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"precision">
+				type = <"Integer">
+			>
+		>
+	>
+
+	["RANGE_OF_INTERVAL_OF_QUANTITY"] = <
+		name = <"RANGE_OF_INTERVAL_OF_QUANTITY">
+		ancestors = <"Any", ...>
+		properties = <
+			["range"] = (P_BMM_GENERIC_PROPERTY) <
+				name = <"range">
+				type_def = <
+					root_type = <"REFERENCE_RANGE">
+					generic_parameter_defs = <
+						["T"] = (P_BMM_GENERIC_TYPE) <
+							root_type = <"DV_INTERVAL">
+							generic_parameters = <"DV_QUANTITY">
+						>
+					>
+				>
+			>
+		>
+	>
+
+>
+
