@@ -1,6 +1,6 @@
 format 206
 "persistence" // persistence
-  revision 3
+  revision 4
   modified_by 2 "Thomas"
   // class settings
   
@@ -632,7 +632,7 @@ ${members}};
       end
 
       operation 132226 "create_bmm_type"
-	public explicit_return_type ""
+	abstract cpp_virtual public explicit_return_type ""
 	nparams 2
 	  param in name "a_schema" type class_ref 130690 // BMM_SCHEMA
 	  param in name "a_class_def" type class_ref 128130 // BMM_CLASS
@@ -698,6 +698,18 @@ ${members}};
 "
 	mysql_decl ""
 	MysqlColumn
+      end
+
+      operation 153218 "type_ref"
+	public return_type class_ref 131458 // P_BMM_TYPE
+	multiplicity "1"
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
       end
     end
 
@@ -831,6 +843,18 @@ ${members}};
 	mysql_decl ""
 	MysqlColumn
       end
+
+      operation 153090 "generic_parameter_refs"
+	public explicit_return_type ""
+	multiplicity "*"
+	nparams 0
+	
+	
+	
+	
+	idl_decl "  ${comment}${oneway}${type} ${name}${(}${)}${raisesnl}${raises};
+"
+      end
     end
 
     class 132098 "P_BMM_PACKAGE"
@@ -928,7 +952,7 @@ ${members}};
       end
 
       attribute 132866 "cardinality"
-	public type class_ref 145794 // Interval
+	public explicit_type ""
 	multiplicity "0..1"
 	cpp_decl ""
 	java_decl ""

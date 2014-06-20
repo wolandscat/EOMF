@@ -77,9 +77,9 @@ classcanvas 139522 class_ref 146050 // P_BMM_ENUMERATION_STRING
   xyz 205 709 2000
 end
 relationcanvas 128642 relation_ref 132994 // <directional composition>
-  decenter_begin 801
+  decenter_begin 800
   decenter_end 207
-  from ref 128002 z 2001 stereotype "<<map>>" xyz 237 531.5 3000 to ref 128514
+  from ref 128002 z 2001 stereotype "<<map>>" xyz 237 531 3000 to ref 128514
   role_a_pos 224 509 3000 no_role_b
   multiplicity_a_pos 269 534 3000 no_multiplicity_b
 end
@@ -110,7 +110,7 @@ relationcanvas 129666 relation_ref 133378 // <generalisation>
 end
 relationcanvas 130178 relation_ref 133506 // <generalisation>
   geometry VHV unfixed
-  from ref 130050 z 2001 to point 931 231
+  from ref 130050 z 2001 to point 937 231
   line 130306 z 2001 to point 686 231
   line 130434 z 2001 to ref 128386
   no_role_a no_role_b
@@ -118,18 +118,18 @@ relationcanvas 130178 relation_ref 133506 // <generalisation>
 end
 relationcanvas 131458 relation_ref 133762 // <generalisation>
   geometry VHV
-  decenter_end 419
+  decenter_end 418
   from ref 130818 z 2001 to point 926 453
-  line 131586 z 2001 to point 900 453
+  line 131586 z 2001 to point 905 453
   line 131714 z 2001 to ref 130050
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 131842 relation_ref 133890 // <generalisation>
   geometry VHV
-  decenter_end 419
-  from ref 130562 z 2001 to point 1088 453
-  line 131970 z 2001 to point 900 453
+  decenter_end 418
+  from ref 130562 z 2001 to point 1089 453
+  line 131970 z 2001 to point 905 453
   line 132098 z 2001 to ref 130050
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
@@ -138,16 +138,16 @@ relationcanvas 132226 relation_ref 133634 // <generalisation>
   geometry VHV unfixed
   decenter_end 421
   from ref 130690 z 2001 to point 773 453
-  line 132354 z 2001 to point 901 453
+  line 132354 z 2001 to point 906 453
   line 132482 z 2001 to ref 130050
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 132738 relation_ref 134018 // <generalisation>
   geometry VHV unfixed
-  decenter_end 419
+  decenter_end 418
   from ref 132610 z 2001 to point 622 453
-  line 132866 z 2001 to point 900 453
+  line 132866 z 2001 to point 905 453
   line 132994 z 2001 to ref 130050
   no_role_a no_role_b
   no_multiplicity_a no_multiplicity_b
@@ -161,17 +161,17 @@ relationcanvas 133378 relation_ref 134146 // <generalisation>
   no_multiplicity_a no_multiplicity_b
 end
 relationcanvas 133762 relation_ref 134274 // <directional composition>
-  decenter_begin 693
-  decenter_end 968
+  decenter_begin 629
+  decenter_end 916
   from ref 130562 z 2001 to ref 130050
-  role_a_pos 1129 418 3000 no_role_b
-  multiplicity_a_pos 1103 418 3000 no_multiplicity_b
+  role_a_pos 1119 418 3000 no_role_b
+  multiplicity_a_pos 1093 418 3000 no_multiplicity_b
 end
 relationcanvas 133890 relation_ref 134402 // <directional composition>
   geometry VH
   decenter_begin 293
   decenter_end 836
-  from ref 132610 z 2001 stereotype "<<list>>" xyz 575 451.5 3000 to point 591 400
+  from ref 132610 z 2001 stereotype "<<list>>" xyz 575 451 3000 to point 591 400
   line 134018 z 2001 to ref 130050
   role_a_pos 607 384 3000 no_role_b
   multiplicity_a_pos 710 409 3000 no_multiplicity_b
@@ -214,15 +214,15 @@ relationcanvas 136450 relation_ref 135170 // <directional composition>
   decenter_begin 574
   decenter_end 509
   from ref 134402 z 2001 to ref 130562
-  role_a_pos 1102 567 3000 no_role_b
-  multiplicity_a_pos 1064 567 3000 no_multiplicity_b
+  role_a_pos 1103 577 3000 no_role_b
+  multiplicity_a_pos 1065 577 3000 no_multiplicity_b
 end
 relationcanvas 136834 relation_ref 135554 // <directional composition>
   decenter_begin 925
-  decenter_end 160
+  decenter_end 159
   from ref 134786 z 2001 to ref 132610
-  role_a_pos 582 567 3000 no_role_b
-  multiplicity_a_pos 544 567 3000 no_multiplicity_b
+  role_a_pos 582 577 3000 no_role_b
+  multiplicity_a_pos 544 577 3000 no_multiplicity_b
 end
 relationcanvas 137090 relation_ref 135682 // <directional composition>
   geometry HVH unfixed
