@@ -38,7 +38,7 @@ feature -- Access
 
 	icon_directory: STRING
 
-	icon_pixmaps: HASH_TABLE [EV_PIXEL_BUFFER, STRING]
+	icon_pixmaps: HASH_TABLE [TUPLE [pixmap: EV_PIXEL_BUFFER; path: STRING], STRING]
 			-- Table of pixmap file paths keyed by relative path, e.g.
 			-- tool/save
 			-- tool/edit
@@ -50,13 +50,14 @@ feature -- Status Report
 
 feature {NONE} -- Implementation
 
-	recursive_load_pixmaps (pixmap_table: HASH_TABLE [EV_PIXEL_BUFFER, STRING]; rel_path: STRING)
+	recursive_load_pixmaps (pixmap_table: like icon_pixmaps; rel_path: STRING)
 			-- load .png and .ico pixmaps into `pixmaps', keyed by relative path under icons root directory
 		local
 			pixmap: EV_PIXEL_BUFFER
 			abs_path, full_path, new_rel_path, key: STRING
 			dir: DIRECTORY
 			dir_items: ARRAYED_LIST [STRING_32]
+			pixmap_tuple: TUPLE [pixmap: EV_PIXEL_BUFFER; path: STRING]
 		do
 			abs_path := file_system.pathname (icon_directory, rel_path)
 			create dir.make (abs_path)
@@ -80,7 +81,11 @@ feature {NONE} -- Implementation
 						key.remove_tail (key.count - key.last_index_of ('.', key.count) + 1)
 						key.to_lower
 						key.replace_substring_all ("\", "/")
-						pixmap_table.put (pixmap, key)
+
+						create pixmap_tuple
+						pixmap_tuple.pixmap := pixmap
+						pixmap_tuple.path := full_path
+						pixmap_table.put (pixmap_tuple, key)
 						if verbose_mode then
 							io.put_string ("loaded " + key + "%N")
 						end

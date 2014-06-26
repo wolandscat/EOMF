@@ -95,12 +95,14 @@ feature -- Commands
 				icon_class_name := icon_class_name_from_key (pixmaps_csr.key)
 				icon_class_file_path := file_system.pathname (options_processor.output_file_dir, class_file_name (icon_class_name))
 
-				if file_system.file_exists (icon_class_file_path) and not options_processor.force_generation then
+				if file_system.file_exists (icon_class_file_path) and  file_system.file_time_stamp (icon_class_file_path) >
+					file_system.file_time_stamp (pixmaps_csr.item.path) and not options_processor.force_generation
+				then
 					if options_processor.is_verbose then
 						std_out.put_string (get_msg (ec_skip_class_text, <<icon_class_name>>))
 					end
 				else
-					icon_class_generator.setup (pixmaps_csr.item, pixmaps_csr.key)
+					icon_class_generator.setup (pixmaps_csr.item.pixmap, pixmaps_csr.key)
 					icon_class_generator.generate_as_class (icon_class_name)
 
 					create fd.make_open_write (icon_class_file_path)
