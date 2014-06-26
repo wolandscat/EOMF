@@ -26,8 +26,6 @@ feature -- Software-dependent definitions
 
 feature -- Definitions
 
-	Ontological_path_separator: STRING = "/"
-
 	Qualified_name_delimiter: CHARACTER = '-'
 			-- delimiter between class_name and qualifiying closure name, e.g. EHR-ENTRY
 
