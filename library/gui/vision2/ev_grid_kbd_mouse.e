@@ -281,19 +281,6 @@ feature -- Commands
 			top_level_rows.do_all (agent tree_do_all_nodes (?, a_node_action))
 		end
 
-	tree_do_all_nodes (a_grid_row: EV_GRID_ROW; a_node_action: PROCEDURE [ANY, TUPLE [EV_GRID_ROW]])
-		require
-			is_tree_enabled
-		local
-			i: INTEGER
-		do
-			from i := 1 until i > a_grid_row.subrow_count loop
-				tree_do_all_nodes (a_grid_row.subrow (i), a_node_action)
-				i := i + 1
-			end
-			a_node_action.call ([a_grid_row])
-		end
-
 	collapse_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		require
 			is_tree_enabled
@@ -467,6 +454,19 @@ feature {NONE} -- Implementation
 					ev_grid_row_list.extend (an_ev_grid_row)
 				end
 			end
+		end
+
+	tree_do_all_nodes (a_grid_row: EV_GRID_ROW; a_node_action: PROCEDURE [ANY, TUPLE [EV_GRID_ROW]])
+		require
+			is_tree_enabled
+		local
+			i: INTEGER
+		do
+			from i := 1 until i > a_grid_row.subrow_count loop
+				tree_do_all_nodes (a_grid_row.subrow (i), a_node_action)
+				i := i + 1
+			end
+			a_node_action.call ([a_grid_row])
 		end
 
 	user_key_map: HASH_TABLE [PROCEDURE [ANY, TUPLE], INTEGER]
