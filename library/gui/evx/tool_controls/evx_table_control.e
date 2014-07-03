@@ -59,7 +59,7 @@ feature {NONE} -- Initialisation
 			evx_control_panel.create_new_frame (get_text (ec_row_filter_frame_text), False)
 
 			-- -------- Row view combo --------
-			create evx_row_filter_combo.make ("", a_row_filter_names_agt, agent set_row_filter, 0, 80, False)
+			create evx_row_filter_combo.make ("", Void, a_row_filter_names_agt, agent set_row_filter, 0, 80, False)
 			if attached evx_control_panel.last_added_frame as evx_frame then
 				evx_frame.extend (evx_row_filter_combo.ev_root_container, False)
 				gui_controls.extend (evx_row_filter_combo)

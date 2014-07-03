@@ -40,11 +40,14 @@ create
 
 feature -- Initialisation
 
-	make (a_title: STRING; a_data_source_agent: like data_source_agent;
+	make (a_title: STRING; a_tooltip: detachable STRING; a_data_source_agent: like data_source_agent;
 			a_select_agent: detachable PROCEDURE [ANY, TUPLE];
 			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
 		do
 			make_data_control (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally)
+			if attached a_tooltip then
+				ev_data_control.set_tooltip (a_tooltip)
+			end
 			if attached a_select_agent as att_agt then
 				ev_data_control.select_actions.extend (att_agt)
 			end
