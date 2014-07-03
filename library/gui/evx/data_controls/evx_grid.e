@@ -118,25 +118,15 @@ feature -- Modification
 		end
 
 	set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
-			-- add column details to `last_row'
-		local
-			gli: EV_GRID_LABEL_ITEM
+			-- add cell to `last_row'
 		do
-			if attached a_text then
-				create gli.make_with_text (utf8_to_utf32 (a_text))
-			else
-				create gli.default_create
-			end
-			if attached a_fg_colour then
-				gli.set_foreground_color (a_fg_colour)
-			end
-			if attached a_pixmap then
-				gli.set_pixmap (a_pixmap)
-			end
-			if attached a_tooltip then
-				gli.set_tooltip (utf8_to_utf32 (a_tooltip))
-			end
-			last_row.set_item (a_col, gli)
+			do_set_last_row_label_col (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap, Void)
+		end
+
+	set_last_row_label_col_editable (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP; an_edit_action: PROCEDURE [ANY, TUPLE])
+			-- add editable cell and post-edit agent to `last_row'
+		do
+			do_set_last_row_label_col (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap, an_edit_action)
 		end
 
 	add_last_row_pointer_button_press_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
@@ -345,6 +335,42 @@ feature -- Commands
 				end
 				i := i - 1
 			end
+		end
+
+feature {NONE} -- Implementation
+
+	do_set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP; an_edit_action: detachable PROCEDURE [ANY, TUPLE])
+			-- add column details to `last_row'
+		local
+			gli: EV_GRID_LABEL_ITEM
+		do
+			if attached a_text then
+				if attached an_edit_action as att_action then
+					create {EV_GRID_EDITABLE_ITEM} gli.make_with_text (utf8_to_utf32 (a_text))
+					gli.pointer_double_press_actions.force_extend (agent gli.activate)
+					gli.deactivate_actions.force_extend (att_action)
+				else
+					create gli.make_with_text (utf8_to_utf32 (a_text))
+				end
+			else
+				if attached an_edit_action as att_action then
+					create {EV_GRID_EDITABLE_ITEM} gli.default_create
+					gli.pointer_double_press_actions.force_extend (agent gli.activate)
+					gli.deactivate_actions.force_extend (att_action)
+				else
+					create gli.default_create
+				end
+			end
+			if attached a_fg_colour then
+				gli.set_foreground_color (a_fg_colour)
+			end
+			if attached a_pixmap then
+				gli.set_pixmap (a_pixmap)
+			end
+			if attached a_tooltip then
+				gli.set_tooltip (utf8_to_utf32 (a_tooltip))
+			end
+			last_row.set_item (a_col, gli)
 		end
 
 end
