@@ -167,6 +167,7 @@ feature {NONE} -- Implementation
 			Result := "ICON_" + a_key
 			Result.replace_substring_all ("/", "_")
 			Result.replace_substring_all (".", "_")
+			Result.replace_substring_all ("-", "_")
 			Result.to_upper
 		end
 
