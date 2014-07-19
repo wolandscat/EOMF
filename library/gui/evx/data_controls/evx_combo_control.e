@@ -60,6 +60,9 @@ feature -- Access
 
 	selected_text: STRING
 		do
+			if ev_data_control.is_empty then
+				populate
+			end
 			Result := ev_data_control.text
 		end
 
@@ -87,9 +90,9 @@ feature -- Commands
 							end
 					)
 					-- Select the first one if nothing selected
-					if not across ev_data_control as combo_items_csr some combo_items_csr.item.is_selected end then
-						ev_data_control.first.enable_select
-					end
+--					if not across ev_data_control as combo_items_csr some combo_items_csr.item.is_selected end then
+--						ev_data_control.first.enable_select
+--					end
 				end
 				ev_data_control.select_actions.resume
 			end
