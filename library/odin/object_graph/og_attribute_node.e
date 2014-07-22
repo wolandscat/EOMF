@@ -73,6 +73,7 @@ feature -- Access
 			from children.start until children.off or attached {OG_OBJECT_PROXY} children.item_for_iteration as og_proxy
 				and then og_proxy.target_object.node_id.is_equal (a_node_key)
 			loop
+				children.forth
 			end
 			check attached {OG_OBJECT_PROXY} children.item_for_iteration as ogp then
 				Result := ogp
