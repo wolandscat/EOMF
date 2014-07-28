@@ -50,6 +50,14 @@ feature -- Initialisation
 			load
 		end
 
+	initialise_create (a_file_path: STRING)
+			-- Make with `a_file_path', which will be created new.
+		do
+			impl.set_file_path (a_file_path)
+			create_default_dt_tree
+			save
+		end
+
 feature -- Access
 
 	file_path: STRING
