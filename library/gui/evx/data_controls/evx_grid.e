@@ -73,6 +73,12 @@ feature -- Access
 			end
 		end
 
+	maximum_height: INTEGER
+			-- maximum height to display, including header, before scroll bars will appear; if = 0, no max height
+	
+	maximum_width: INTEGER
+			-- maximum width to display, before scroll bars will appear; if = 0, no max width
+
 feature -- Status Report
 
 	has_matching_sub_row (a_parent_row: EV_GRID_ROW; a_row_test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN]): BOOLEAN
@@ -87,6 +93,20 @@ feature -- Status Report
 
 feature -- Modification
 
+	set_minimum_dimensions (a_height, a_width: INTEGER)
+		do
+			ev_grid.set_minimum_height (a_height)
+			ev_grid.set_minimum_width (a_width)
+		end
+
+	set_maximum_dimensions (a_height, a_width: INTEGER)
+			-- set maximum dimensions of the overall grid, including header, if there is one. Use a value of 0
+			-- for either argument to only set a limit on one dimension
+		do
+			maximum_height := a_height
+			maximum_width := a_width
+		end
+
 	set_tree_expand_collapse_icons (an_expand_icon, a_collapse_icon: EV_PIXMAP)
 		do
 			if ev_grid.is_tree_enabled then
@@ -98,6 +118,15 @@ feature -- Modification
 		do
 			ev_grid.insert_new_row (ev_grid.row_count + 1)
 			last_row := ev_grid.row (ev_grid.row_count)
+			if attached a_data then
+				last_row.set_data (a_data)
+			end
+		end
+
+	add_sub_row_to_last_row (a_data: detachable ANY)
+		do
+			last_row.insert_subrow (last_row.subrow_count + 1)
+			last_row := last_row.subrow (last_row.subrow_count)
 			if attached a_data then
 				last_row.set_data (a_data)
 			end
@@ -269,6 +298,12 @@ feature -- Modification
 
 feature -- Commands
 
+	expand_all
+			-- expand all trees, if there are multiple top-level trees
+		do
+			ev_grid.expand_all (Void)
+		end
+
 	expand_tree
 			-- expand entire tree, if there is content
 		do
@@ -285,6 +320,13 @@ feature -- Commands
 			end
 		end
 
+	resize_viewable_area_to_content
+			-- resize grid so all content visible, in currenly expanded or collapsed form
+			-- Call 'expand_all' or similar routine first to get the appropriate effect
+		do
+			ev_grid.resize_viewable_area_to_content (maximum_height, maximum_width)
+		end
+
 	resize_columns_to_content
 			-- resize columns to content
 		do
@@ -293,34 +335,8 @@ feature -- Commands
 
 	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER])
 			-- resize columns and then shrink as needed, avoiding fixed_cols
-		local
-			fixed_cols_width, total_width, var_cols_width, grid_width, i: INTEGER
-			reduction_factor: REAL_64
 		do
-			ev_grid.resize_columns_to_content (Default_grid_expansion_factor)
-
-			grid_width := ev_grid.width
-
-			-- add up widths of cols
-			from i := 1 until i > ev_grid.column_count loop
-				if fixed_cols.has (i) then
-					fixed_cols_width := fixed_cols_width + ev_grid.column (i).width
-				else
-					var_cols_width := var_cols_width + ev_grid.column (i).width
-				end
-				total_width := total_width + ev_grid.column (i).width
-				i := i + 1
-			end
-
-			if fixed_cols_width < grid_width then
-				reduction_factor := (grid_width - fixed_cols_width) / var_cols_width
-				from i := 1 until i > ev_grid.column_count loop
-					if not fixed_cols.has (i) then
-						ev_grid.column (i).set_width ((ev_grid.column (i).width * reduction_factor).floor)
-					end
-					i := i + 1
-				end
-			end
+			ev_grid.resize_columns_to_content_and_fit (fixed_cols, Default_grid_expansion_factor)
 		end
 
 	set_checkboxes_recursively (a_gcli: EV_GRID_CHECKABLE_LABEL_ITEM)
@@ -339,7 +355,8 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	do_set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP; an_edit_action: detachable PROCEDURE [ANY, TUPLE])
+	do_set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP; 
+			an_edit_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add column details to `last_row'
 		local
 			gli: EV_GRID_LABEL_ITEM

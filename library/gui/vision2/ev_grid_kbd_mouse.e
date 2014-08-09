@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Form of EV_GRID to add keyboard and mouse wheel accessibility to a grid widget."
-	keywords:    "ADL"
+	keywords:    "Grid, keyboard, mouse"
 	author:      "Peter Gummer <peter.gummer@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2008- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -247,6 +247,23 @@ feature -- Commands
 			row_collapsed: not a_row.is_expanded
 		end
 
+	resize_viewable_area_to_content (a_max_height, a_max_width: INTEGER)
+			-- resize grid so all content visible, in currenly expanded or collapsed form
+			-- Call 'expand_all' or similar routine first to get the appropriate effect
+		do
+			if a_max_height > 0 then
+				set_minimum_height (a_max_height.max (virtual_height + header.height))
+			else
+				set_minimum_height (virtual_height + header.height)
+			end
+
+			if a_max_width > 0 then
+				set_minimum_width (a_max_width.max (virtual_width))
+			else
+				set_minimum_width (virtual_width)
+			end
+		end
+
 	resize_columns_to_content (expansion_factor: REAL)
 			-- resize all columns to content, applying `expansion_factor'
 		require
@@ -260,6 +277,38 @@ feature -- Commands
 					column(i).set_width ((column (i).width * expansion_factor).ceiling)
 				end
 				i := i + 1
+			end
+		end
+
+	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER]; a_grid_expansion_factor: REAL)
+			-- resize columns and then shrink as needed, avoiding fixed_cols
+		local
+			fixed_cols_width, total_width, var_cols_width, grid_width, i: INTEGER
+			reduction_factor: REAL_64
+		do
+			resize_columns_to_content (a_grid_expansion_factor)
+
+			grid_width := width
+
+			-- add up widths of cols
+			from i := 1 until i > column_count loop
+				if fixed_cols.has (i) then
+					fixed_cols_width := fixed_cols_width + column (i).width
+				else
+					var_cols_width := var_cols_width + column (i).width
+				end
+				total_width := total_width + column (i).width
+				i := i + 1
+			end
+
+			if fixed_cols_width < grid_width then
+				reduction_factor := (grid_width - fixed_cols_width) / var_cols_width
+				from i := 1 until i > column_count loop
+					if not fixed_cols.has (i) then
+						column (i).set_width ((column (i).width * reduction_factor).floor)
+					end
+					i := i + 1
+				end
 			end
 		end
 
