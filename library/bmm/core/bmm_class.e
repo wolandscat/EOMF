@@ -89,6 +89,8 @@ feature -- Access
 				end
 				all_ancestors_cache := Result
 			end
+		ensure
+			strict: not Result.has (name.as_upper)
 		end
 
 	immediate_descendants: ARRAYED_LIST [BMM_CLASS]
@@ -110,6 +112,8 @@ feature -- Access
 				end
 				all_descendants_cache := Result
 			end
+		ensure
+			strict: not Result.has (name.as_upper)
 		end
 
 	type_category: STRING
@@ -502,7 +506,7 @@ feature -- Modification
 		end
 
 	add_ancestor (an_anc_class: BMM_CLASS)
-			-- add an ancestor class
+			-- add an ancestor class, using upper-case key
 		require
 			New_ancestor: not ancestors.has_item (an_anc_class)
 		do

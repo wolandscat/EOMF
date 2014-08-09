@@ -1,9 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "[
-				 Simple notion of a library of archetypes, implemented simply
-				 as a directory on the file system
-				 ]"
+	description: "Directory with regex filename-matching facility"
 	keywords:    "file system"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -20,6 +17,9 @@ inherit
 		end
 
 	EOMF_COMPILED_MESSAGE_IDS
+		export
+			{NONE} all;
+		end
 
 create
 	make
@@ -55,7 +55,7 @@ feature -- Access
 			-- set if make failed
 
 	matching_paths: ARRAYED_LIST [STRING]
-			-- file paths matching `base_name_pattern'
+			-- file paths matching `base_name_pattern' under current directory
 
 feature {NONE} -- Implementation
 
@@ -63,6 +63,7 @@ feature {NONE} -- Implementation
 
 	find_matching_file_paths (a_dir_name: STRING)
 			-- add file paths found in `a_dir_name' that match `base_name_pattern'
+			-- recursively applied
 		require
 			Dir_name_valid: not a_dir_name.is_empty
 		local
@@ -77,9 +78,7 @@ feature {NONE} -- Implementation
 				a_dir.open_read
 				across a_dir.linear_representation as fnames_csr loop
 					if not (fnames_csr.item.is_equal (rel_cur_dir) or fnames_csr.item.is_equal (rel_parent_dir)) then
-						check attached file_system.pathname (a_dir_name, fnames_csr.item) as f then
-							fpath := f
-						end
+						fpath := file_system.pathname (a_dir_name, fnames_csr.item)
 						create a_file.make (fpath)
 						if a_file.is_directory then
 							find_matching_file_paths (fpath.twin)
