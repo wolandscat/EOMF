@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (162)
+			create message_table.make (166)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -152,6 +152,10 @@ feature -- Initialisation
 			message_table.put ("Row Filter", ec_row_filter_frame_text)
 			message_table.put ("Filter which rows are shown in the Path Analysis", ec_row_filter_combo_tooltip)
 			message_table.put ("Column View", ec_column_frame_text)
+			message_table.put ("$1 file $2 does not exist or not readable", ec_object_file_not_valid)
+			message_table.put ("$1 file $2 load failure; reason: $3", ec_object_load_failure)
+			message_table.put ("$1 file $2 load failure due to exception during processing", ec_object_load_failure_exception)
+			message_table.put ("$1 file $2 load data conversion failure; reason: $3", ec_object_conv_fail_err)
 			message_table.put ("$1 configuration settings (ODIN format)", ec_config_settings_line1)
 			message_table.put ("Automatically written by application", ec_config_settings_line2)
 			message_table.put ("put_object call to object_converter.object_to_dt with object of type $1 failed", ec_put_object_conversion_failure)
