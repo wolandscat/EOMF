@@ -45,7 +45,7 @@ feature -- Initialisation
 			reset
 			meta_data := a_meta_data
 
-			if attached meta_data.item (metadata_rm_publisher) as md_publisher and attached meta_data.item (metadata_schema_name) as md_schema_name and
+			check attached meta_data.item (metadata_rm_publisher) as md_publisher and attached meta_data.item (metadata_schema_name) as md_schema_name and
 				attached meta_data.item (metadata_rm_release) as md_release and attached meta_data.item (Metadata_schema_path) as md_schema_path
 			then
 				schema_id := create_schema_id (md_publisher, md_schema_name, md_release)
@@ -62,6 +62,7 @@ feature -- Initialisation
 					add_error (ec_BMM_VER, <<schema_id, bmm_ver, Bmm_internal_version>>)
 				end
 				schema_path := md_schema_path
+				create schema_file_accessor.make (schema_path)
 			end
 		end
 
@@ -134,33 +135,19 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 		do
 			reset
 			schema := Void
-			p_schema := Void
-			create model_file.make (schema_path)
-			if not model_file.exists or else not model_file.is_readable then
-				add_error (ec_bmm_schema_file_not_valid, <<schema_path>>)
-			else
-				model_file.open_read
-				model_file.read_stream (model_file.count)
-				create parser.make
-				parser.execute(model_file.last_string, 1)
-				if not parser.syntax_error and then attached parser.output as dt_tree then
-					if not attached {P_BMM_SCHEMA} dt_tree.as_object_from_string (({P_BMM_SCHEMA}).name, Void) as p_sch then
-						add_error (ec_bmm_schema_load_failure_exception, <<schema_path>>)
-					elseif dt_object_converter.errors.has_errors then
-						add_error (ec_bmm_schema_conv_fail_err, <<schema_path, dt_object_converter.errors.as_string>>)
-					else
-						p_schema := p_sch
-						passed := True
-						p_schema.validate_created
-						merge_errors (p_schema.errors)
-						if passed then
-							p_schema.load_finalise
-						end
-					end
-				else
-					add_error (ec_bmm_schema_load_failure, <<schema_path, parser.errors.as_string>>)
+			schema_file_accessor.load
+			if not schema_file_accessor.has_errors then
+				passed := True
+				check attached schema_file_accessor.object as obj then
+					p_schema := obj
 				end
-				model_file.close
+				p_schema.validate_created
+				merge_errors (p_schema.errors)
+				if passed then
+					p_schema.load_finalise
+				end
+			else
+				merge_errors (schema_file_accessor.errors)
 			end
 		ensure
 			attached p_schema or else errors.has_errors
@@ -200,7 +187,8 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			schema := p_schema.bmm_schema
 		end
 
+feature {NONE} -- Implementation
+
+	schema_file_accessor: ODIN_OBJECT_READER [P_BMM_SCHEMA]
+
 end
-
-
-

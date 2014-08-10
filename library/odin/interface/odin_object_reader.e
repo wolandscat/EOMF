@@ -21,11 +21,16 @@ inherit
 		end
 
 create
-	make
+	make, make_load
 
 feature -- Initialisation
 
 	make (a_file_path: STRING)
+		do
+			file_path := a_file_path
+		end
+
+	make_load (a_file_path: STRING)
 		do
 			file_path := a_file_path
 			load
