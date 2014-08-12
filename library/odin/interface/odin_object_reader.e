@@ -15,6 +15,11 @@ class ODIN_OBJECT_READER [G -> DT_CONVERTIBLE]
 inherit
 	ANY_VALIDATOR
 
+	KL_SHARED_FILE_SYSTEM
+		export
+			{NONE} all
+		end
+
 	SHARED_DT_OBJECT_CONVERTER
 		export
 			{NONE} all
@@ -81,11 +86,47 @@ feature -- Commands
 		do
 		end
 
+	save (obj: G)
+		local
+			a_dt_iterator: DT_VISITOR_ITERATOR
+			obj_file: PLAIN_TEXT_FILE
+		do
+			-- serialise to a String
+			serialiser.reset
+			obj.synchronise_to_tree
+			check attached obj.dt_representation as att_dt then
+				create a_dt_iterator.make (att_dt, serialiser)
+			end
+			a_dt_iterator.do_all
+
+			-- write to file
+			create obj_file.make (file_path)
+			if not obj_file.exists then
+				check attached file_system.dirname (file_path) as dir then
+					if not file_system.directory_exists (dir) then
+						file_system.recursive_create_directory (dir)
+					end
+				end
+				obj_file.create_read_write
+			else
+				obj_file.open_write
+			end
+			obj_file.put_string (serialiser.last_result)
+			obj_file.close
+
+			object := obj
+		end
+
 feature {NONE} -- Implementation
 
 	parser: ODIN_PARSER
 		once
 			create Result.make
+		end
+
+	serialiser: DT_ODIN_SERIALISER
+		once
+			create Result.make(create {NATIVE_ODIN_SERIALISATION_PROFILE}.make ("odin"))
 		end
 
 end

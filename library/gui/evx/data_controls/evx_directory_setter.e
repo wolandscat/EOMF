@@ -11,7 +11,7 @@ note
 						    +----------------------------+ +--------+
 
 				 ]"
-	keywords:    "UI, ADL"
+	keywords:    "UI, directory"
 	author:      "Thomas Beale <thomas.beale@OceanInformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2012 Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
@@ -77,6 +77,18 @@ feature -- Modification
 			post_select_agent := an_agent
 		end
 
+	set_button_icon (a_pixmap: EV_PIXMAP)
+			-- set an icon on the browse button
+		do
+			ev_browse_button.set_pixmap (a_pixmap)
+		end
+
+	set_button_tooltip (a_text: STRING)
+			-- set a tooltip on the browse button
+		do
+			ev_browse_button.set_tooltip (utf8_to_utf32 (a_text))
+		end
+
 feature -- Events
 
 	on_browse
@@ -111,7 +123,7 @@ feature {NONE} -- Implementation
 	initialise_browse_button
 		do
 			create ev_browse_button
-			ev_browse_button.set_text (get_text (ec_browse_button_text))
+			ev_browse_button.set_text (utf8_to_utf32 (get_text (ec_browse_button_text)))
 			ev_root_container.extend (ev_browse_button)
 			ev_root_container.disable_item_expand (ev_browse_button)
 			ev_browse_button.select_actions.extend (agent on_browse)

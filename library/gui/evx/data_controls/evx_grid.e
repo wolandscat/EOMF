@@ -160,22 +160,47 @@ feature -- Modification
 
 	add_last_row_pointer_button_press_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
 		do
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
+			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
 				gli.pointer_button_press_actions.force_extend (an_action)
 			end
 		end
 
-	add_last_row_select_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
+	has_last_row_pointer_button_press_actions (a_col: INTEGER): BOOLEAN
+			-- True if `last_row' already has pointer_button_press_actions
 		do
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
+			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+				Result := not gli.pointer_button_press_actions.is_empty
+			end
+		end
+
+	add_last_row_select_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
+			-- add an action if cell corresponding to `a_col' in `last_row' is selected
+		do
+			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
 				gli.select_actions.force_extend (an_action)
+			end
+		end
+
+	has_last_row_select_actions (a_col: INTEGER): BOOLEAN
+			-- True if `last_row' already has select_actions
+		do
+			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+				Result := not gli.select_actions.is_empty
+			end
+		end
+
+	set_last_row_label_col_multi_line (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
+		do
+			set_last_row_label_col (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap)
+			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
+				last_row.set_height (gli.text_height + Default_grid_row_expansion)
 			end
 		end
 
 	update_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
 			-- update column details to `last_sub_row'; any detail that is Void is not changed in existing column
 		do
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
+			if last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
 				if attached a_text then
 					gli.set_text (utf8_to_utf32 (a_text))
 				end
@@ -188,14 +213,8 @@ feature -- Modification
 				if attached a_pixmap then
 					gli.set_pixmap (a_pixmap)
 				end
-			end
-		end
-
-	set_last_row_label_col_multi_line (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
-		do
-			set_last_row_label_col (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap)
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
-				last_row.set_height (gli.text_height + Default_grid_row_expansion)
+			else
+				do_set_last_row_label_col (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap, Void)
 			end
 		end
 
@@ -204,7 +223,7 @@ feature -- Modification
 		local
 			h, i: INTEGER
 		do
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
+			if last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
 				if attached a_text then
 					gli.set_text (utf8_to_utf32 (a_text))
 
@@ -226,6 +245,8 @@ feature -- Modification
 				if attached a_pixmap then
 					gli.set_pixmap (a_pixmap)
 				end
+			else
+				set_last_row_label_col_multi_line (a_col, a_text, a_tooltip, a_fg_colour, a_pixmap)
 			end
 		end
 
