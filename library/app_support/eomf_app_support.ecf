@@ -11,6 +11,7 @@
 		<option warning="true" void_safety="initialization" full_class_checking="true" is_attached_by_default="true"/>
 
 		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="process" location="$ISE_LIBRARY\library\process\process-safe.ecf"/>
 		<library name="encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
