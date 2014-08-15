@@ -163,13 +163,15 @@ feature -- External Commands
 		end
 
 	system_has_command (a_cmd_name: STRING): BOOLEAN
-			-- True if the command `a_cmd_name' is available on the system
+			-- True if the command `a_cmd_name' is available on the system in any form, either
+			-- natively or in cygwin under Windows
 		do
 			Result := standard_has_command (a_cmd_name) or else cygwin_has_command (a_cmd_name)
 		end
 
 	standard_has_command (a_cmd_name: STRING): BOOLEAN
-			-- True if the command `a_cmd_name' is available on the system
+			-- True if the command `a_cmd_name' is available on the native system, i.e. standard
+			-- Linux, MacOS, Windows, ...
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
@@ -182,13 +184,13 @@ feature -- External Commands
 				proc.set_hidden (True)
 				proc.redirect_input_to_stream
 				proc.redirect_output_to_agent (
-					agent (cmds: HASH_TABLE [STRING, STRING]; cmd_name, s: STRING)
+					agent (cmd_name, s: STRING)
 						do
 							if not s.is_empty then
 								s.right_adjust
-								cmds.put (standard_new_command_template (s), cmd_name)
+								command_template_cache.put (standard_new_command_template (s), cmd_name)
 							end
-						end (command_template_cache, a_cmd_name, ?)
+						end (a_cmd_name, ?)
 				)
 				proc.redirect_error_to_agent (agent (s: STRING) do end)
 				proc.launch
@@ -212,13 +214,13 @@ feature -- External Commands
 					proc.set_hidden (True)
 					proc.redirect_input_to_stream
 					proc.redirect_output_to_agent (
-						agent (cmds: HASH_TABLE [STRING, STRING]; cmd_name, s: STRING)
+						agent (cmd_name, s: STRING)
 							do
 								if not s.is_empty then
 									s.right_adjust
-									cmds.put (cygwin_new_command_template (cmd_name), cmd_name)
+									cygwin_command_template_cache.put (cygwin_new_command_template (cmd_name), cmd_name)
 								end
-							end (cygwin_command_template_cache, a_cmd_name, ?)
+							end (a_cmd_name, ?)
 					)
 					proc.redirect_error_to_agent (agent (s: STRING) do end)
 					proc.launch
@@ -229,6 +231,8 @@ feature -- External Commands
 		end
 
 	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING): PROCESS_RESULT
+			-- run a command logically specified by `a_cmd_name' and `a_cmd_switches_args' and return the result;
+			-- figure out from platform specifics and stored command templates how to actually run the command
 		require
 			system_has_command (a_cmd_name)
 		local
@@ -252,16 +256,16 @@ feature -- External Commands
 			end
 		end
 
-	do_system_run_command (a_cmd_string: STRING; in_directory: detachable STRING): PROCESS_RESULT
-			-- run `a_cmd' and return
+	do_system_run_command (a_cmd_line: STRING; in_directory: detachable STRING): PROCESS_RESULT
+			-- run `a_cmd_line' exactly as it is and return result; run process in specified directory if set
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
 			stderr_str, stdout_str: STRING
 		do
-			create Result.make (a_cmd_string, in_directory)
+			create Result.make (a_cmd_line, in_directory)
 			create pf
-			proc := pf.process_launcher_with_command_line (a_cmd_string, in_directory)
+			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
 			proc.set_hidden (True)
 			proc.redirect_input_to_stream
 			proc.redirect_error_to_agent (agent (res: PROCESS_RESULT; s: STRING) do res.set_stderr (s) end (Result, ?))
@@ -274,20 +278,28 @@ feature -- External Commands
 	command_template_cache: HASH_TABLE [STRING, STRING]
 			-- table of command line templates indexed by command name, with a replaceable variable $1,
 			-- which should be replaced by the actual command switches and arguments
-		once
+			-- typical entries:
+			--		"/usr/bin/ls $1", "ls"
+			--		"/usr/local/git/git $1", "git"
+		once ("PROCESS")
 			create Result.make (0)
 		end
 
 	cygwin_command_template_cache: HASH_TABLE [STRING, STRING]
 			-- table of cygwin command line templates indexed by command name, with a replaceable variable $1,
 			-- which should be replaced by the actual command switches and arguments
-		once
+			-- typical entries:
+			--		"/usr/bin/ls $1", "ls"
+			--		"/usr/local/git/git $1", "git"
+		once ("PROCESS")
 			create Result.make (0)
 		end
 
 	standard_command_line (std_cmd_template, cmd_args: STRING): STRING
 			-- generate a command line based on `std_cmd_template' (e.g. 'which $1') that will execute in normal shell
 			-- The `cmd_args' will be substituted into `std_cmd_template' at $1
+			-- Typical result:
+			--	"which $1", "git" => "which git"
 		require
 			std_cmd_template.has_substring ("$1")
 		do
@@ -298,6 +310,8 @@ feature -- External Commands
 	standard_new_command_template (std_cmd: STRING): STRING
 			-- generate a command line based on `std_cmd' (e.g. 'which')
 			-- The result will be std_cmd $1
+			-- Typical result:
+			--	"which" => "which $1"
 		do
 			Result := std_cmd + " $1"
 		end
@@ -305,6 +319,9 @@ feature -- External Commands
 	cygwin_command_line (a_unix_cmd: STRING): STRING
 			-- generate a command line based on `a_unix_cmd' (e.g. 'ls -l') that will execute in a cygwin bash shell on windows
 			-- `a_unix_cmd' may include multiple semi-colon separated commands, e.g. "cd /path/to/my/git/repo; git pull"
+			-- Typical results:
+			--	"c:\cygwin\bin\bash.exe  -c -l %"ls -1%""
+			--	"c:\cygwin\bin\bash.exe  -c -l %"git pull%""
 		do
 			create Result.make_from_string (Cygwin_command_template)
 			Result.replace_substring_all ("$1", a_unix_cmd)
@@ -313,6 +330,9 @@ feature -- External Commands
 	cygwin_new_command_template (a_unix_cmd_name: STRING): STRING
 			-- generate a command line based on `a_unix_cmd_name' (e.g. 'ls') that can execute in a cygwin bash shell on windows
 			-- the result will include a $1 after the command name
+			-- Typical results:
+			--	"c:\cygwin\bin\bash.exe  -c -l %"ls $1%""
+			--	"c:\cygwin\bin\bash.exe  -c -l %"git $1%""
 		do
 			create Result.make_from_string (Cygwin_command_template)
 			Result.replace_substring_all ("$1", a_unix_cmd_name + " $1")
@@ -323,9 +343,6 @@ feature -- External Commands
 		once
 			Result := system_has_command ("git")
 		end
-
-	git_pull_command: STRING = "git pull"
-			-- command to do a pull on a Git repository from the root directory
 
 feature  {NONE} -- Conversion
 
