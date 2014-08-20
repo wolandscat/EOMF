@@ -98,6 +98,20 @@ feature -- Environment
 			ends_with_directory_separator: Result @ Result.count = os_directory_separator
 		end
 
+feature -- Validation
+
+	file_exists (path: STRING): BOOLEAN
+			-- Is `path' a valid, existing file?
+		do
+			Result := file_system.file_exists (file_system.canonical_pathname (path))
+		end
+
+	directory_exists (path: STRING): BOOLEAN
+			-- Is `path' a valid, existing directory?
+		do
+			Result := file_system.directory_exists (file_system.canonical_pathname (path))
+		end
+
 feature -- External Commands
 
 	Default_editor_app_command: STRING
@@ -146,22 +160,6 @@ feature -- External Commands
    			end
    		end
 
-	Cygwin_which_command_template: STRING
-			-- cygwin version of the which command
-		once
-			Result := cygwin_command_line ("which $1")
-   		end
-
-	Cygwin_bash_exe_path: STRING = "c:\cygwin\bin\bash.exe"
-			-- path of bash on a cygwin installation on Windows
-
-	Cygwin_command_template: STRING
-			-- template string for creating a command to run in cygwin under Windows
-		once
-			create Result.make_from_string (Cygwin_bash_exe_path)
-			Result.append (" -c -l %"$1%"")
-		end
-
 	system_has_command (a_cmd_name: STRING): BOOLEAN
 			-- True if the command `a_cmd_name' is available on the system in any form, either
 			-- natively or in cygwin under Windows
@@ -196,37 +194,6 @@ feature -- External Commands
 				proc.launch
 				proc.wait_for_exit
 				Result := proc.exit_code = 0
-			end
-		end
-
-	cygwin_has_command (a_cmd_name: STRING): BOOLEAN
-			-- True if the command `a_cmd_name' is available under cygwin on windows
-		local
-			pf: PROCESS_FACTORY
-			proc: PROCESS
-		do
-			if is_cygwin then
-				if cygwin_command_template_cache.has (a_cmd_name) then
-					Result := True
-				else
-					create pf
-					proc := pf.process_launcher_with_command_line (standard_command_line (Cygwin_which_command_template, a_cmd_name), Void)
-					proc.set_hidden (True)
-					proc.redirect_input_to_stream
-					proc.redirect_output_to_agent (
-						agent (cmd_name, s: STRING)
-							do
-								if not s.is_empty then
-									s.right_adjust
-									cygwin_command_template_cache.put (cygwin_new_command_template (cmd_name), cmd_name)
-								end
-							end (a_cmd_name, ?)
-					)
-					proc.redirect_error_to_agent (agent (s: STRING) do end)
-					proc.launch
-					proc.wait_for_exit
-					Result := proc.exit_code = 0
-				end
 			end
 		end
 
@@ -285,16 +252,6 @@ feature -- External Commands
 			create Result.make (0)
 		end
 
-	cygwin_command_template_cache: HASH_TABLE [STRING, STRING]
-			-- table of cygwin command line templates indexed by command name, with a replaceable variable $1,
-			-- which should be replaced by the actual command switches and arguments
-			-- typical entries:
-			--		"/usr/bin/ls $1", "ls"
-			--		"/usr/local/git/git $1", "git"
-		once ("PROCESS")
-			create Result.make (0)
-		end
-
 	standard_command_line (std_cmd_template, cmd_args: STRING): STRING
 			-- generate a command line based on `std_cmd_template' (e.g. 'which $1') that will execute in normal shell
 			-- The `cmd_args' will be substituted into `std_cmd_template' at $1
@@ -314,6 +271,65 @@ feature -- External Commands
 			--	"which" => "which $1"
 		do
 			Result := std_cmd + " $1"
+		end
+
+feature -- Cygwin
+
+	Cygwin_which_command_template: STRING
+			-- cygwin version of the which command
+		once
+			Result := cygwin_command_line ("which $1")
+   		end
+
+	Cygwin_bash_exe_path: STRING = "c:\cygwin\bin\bash.exe"
+			-- path of bash on a cygwin installation on Windows
+
+	Cygwin_command_template: STRING
+			-- template string for creating a command to run in cygwin under Windows
+		once
+			create Result.make_from_string (Cygwin_bash_exe_path)
+			Result.append (" -c -l %"$1%"")
+		end
+
+	cygwin_has_command (a_cmd_name: STRING): BOOLEAN
+			-- True if the command `a_cmd_name' is available under cygwin on windows
+		local
+			pf: PROCESS_FACTORY
+			proc: PROCESS
+		do
+			if is_cygwin then
+				if cygwin_command_template_cache.has (a_cmd_name) then
+					Result := True
+				else
+					create pf
+					proc := pf.process_launcher_with_command_line (standard_command_line (Cygwin_which_command_template, a_cmd_name), Void)
+					proc.set_hidden (True)
+					proc.redirect_input_to_stream
+					proc.redirect_output_to_agent (
+						agent (cmd_name, s: STRING)
+							do
+								if not s.is_empty then
+									s.right_adjust
+									cygwin_command_template_cache.put (cygwin_new_command_template (cmd_name), cmd_name)
+								end
+							end (a_cmd_name, ?)
+					)
+					proc.redirect_error_to_agent (agent (s: STRING) do end)
+					proc.launch
+					proc.wait_for_exit
+					Result := proc.exit_code = 0
+				end
+			end
+		end
+
+	cygwin_command_template_cache: HASH_TABLE [STRING, STRING]
+			-- table of cygwin command line templates indexed by command name, with a replaceable variable $1,
+			-- which should be replaced by the actual command switches and arguments
+			-- typical entries:
+			--		"/usr/bin/ls $1", "ls"
+			--		"/usr/local/git/git $1", "git"
+		once ("PROCESS")
+			create Result.make (0)
 		end
 
 	cygwin_command_line (a_unix_cmd: STRING): STRING
@@ -336,12 +352,6 @@ feature -- External Commands
 		do
 			create Result.make_from_string (Cygwin_command_template)
 			Result.replace_substring_all ("$1", a_unix_cmd_name + " $1")
-		end
-
-	system_has_git_command: BOOLEAN
-			-- True if the command 'git' is available on the system
-		once
-			Result := system_has_command ("git")
 		end
 
 feature  {NONE} -- Conversion
@@ -406,18 +416,6 @@ feature {NONE} -- Access
 	    end
 
 feature {NONE} -- Implementation
-
-	file_exists (path: STRING): BOOLEAN
-			-- Is `path' a valid, existing file?
-		do
-			Result := file_system.file_exists (file_system.canonical_pathname (path))
-		end
-
-	directory_exists (path: STRING): BOOLEAN
-			-- Is `path' a valid, existing directory?
-		do
-			Result := file_system.directory_exists (file_system.canonical_pathname (path))
-		end
 
 	extension_replaced (path, new_extension: STRING): STRING
 			-- Copy of `path', with its extension replaced by `new_extension'.
