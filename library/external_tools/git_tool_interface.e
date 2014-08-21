@@ -15,19 +15,6 @@ inherit
 create
 	make
 
-feature -- Access
-
-	repository_name_from_url (a_url: STRING): STRING
-			-- obtain repository name from repo URL
-			-- e.g. get 'adl-archetypes' from 'https://github.com/openEHR/adl-archetypes.git'
-		local
-			a_uri: UT_URI
-		do
-			create a_uri.make (a_url)
-			Result := a_uri.path_base
-			Result := Result.substring (1, Result.substring_index (".git", 1)-1)
-		end
-
 feature -- Queries
 
 	get_remote_url

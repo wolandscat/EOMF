@@ -16,6 +16,11 @@ inherit
 			{ANY} deep_copy, is_deep_equal, deep_twin, standard_is_equal, directory_exists
 		end
 
+	EXTERNAL_TOOL_DEFINITIONS
+		export
+			{NONE} all;
+		end
+
 feature -- Initialisation
 
 	make (a_tool_name: STRING)
@@ -46,6 +51,12 @@ feature -- Status Report
 			-- True if current directory set to point to a real directory
 		do
 			Result := not current_directory.is_empty and then directory_exists (current_directory)
+		end
+
+	last_operation_succeeded: BOOLEAN
+			-- True if last invocation of an external command had 0 exit code
+		do
+			Result := attached last_result as att_pr and then att_pr.succeeded
 		end
 
 feature -- Modification

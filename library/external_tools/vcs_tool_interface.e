@@ -36,7 +36,7 @@ feature -- Initialisation
 			Tool_available: tool_available
 		do
 			remote_repository_url := a_remote_url
-			local_repository_directory := file_system.pathname (a_parent_dir, repository_name_from_url (a_remote_url))
+			local_repository_directory := file_system.pathname (a_parent_dir, repository_name_from_url (a_remote_url, tool_name))
 			do_checkout (a_parent_dir)
 		end
 
@@ -64,12 +64,6 @@ feature -- Access
 
 	remote_repository_url: STRING
 			-- URL of the remote repo
-
-	repository_name_from_url (a_url: STRING): STRING
-			-- obtain repository name from repo URL
-			-- e.g. get 'adl-archetypes' from 'https://github.com/openEHR/adl-archetypes.git'
-		deferred
-		end
 
 feature -- Queries
 

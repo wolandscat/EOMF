@@ -15,18 +15,6 @@ inherit
 create
 	make
 
-feature -- Access
-
-	repository_name_from_url (a_url: STRING): STRING
-			-- obtain repository name from repo URL
-			-- e.g. get 'adl-archetypes' from 'http://svn.example.com:9834/adl-archetypes'
-		local
-			a_uri: UT_URI
-		do
-			create a_uri.make (a_url)
-			Result := a_uri.path_base
-		end
-
 feature -- Queries
 
 	get_remote_url

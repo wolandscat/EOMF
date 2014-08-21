@@ -108,7 +108,7 @@ feature -- Events
 				ev_data_control.set_text (get_directory (initial_dir, pw))
 			end
 			if attached post_select_agent then
-				post_select_agent.call ([])
+				post_select_agent.call ([data_control_text])
 			end
 		end
 
@@ -117,7 +117,7 @@ feature {NONE} -- Implementation
 	default_directory_agent: detachable FUNCTION [ANY, TUPLE, STRING]
 			-- agent that will return a reasonable default directory for when the user hits the browser button
 
-	post_select_agent: detachable PROCEDURE [ANY, TUPLE]
+	post_select_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
 			-- agent to execute after directory choice has been made
 
 	initialise_browse_button

@@ -10,37 +10,9 @@ note
 class SHARED_EXTERNAL_TOOL_INTERFACES
 
 inherit
-	KL_SHARED_FILE_SYSTEM
-
-feature -- Definitions
-
-	Git_control_directory: STRING = ".git"
-
-	Svn_control_directory: STRING = ".svn"
-
-	Git_tool_name: STRING = "git"
-
-	Svn_tool_name: STRING = "svn"
+	EXTERNAL_TOOL_DEFINITIONS
 
 feature -- Status Report
-
-	is_checkout_area (a_dir: STRING): BOOLEAN
-			-- True if `a_dir' is any kind of checkout / clone of a remote repo
-		do
-			Result := is_git_clone (a_dir) or is_svn_checkout (a_dir)
-		end
-
-	is_git_clone (a_dir: STRING): BOOLEAN
-			-- True if `a_dir' has a .git directory
-		do
-			Result := file_system.directory_exists (file_system.pathname (a_dir, Git_control_directory))
-		end
-
-	is_svn_checkout (a_dir: STRING): BOOLEAN
-			-- True if the `a_dir' has a .svn directory
-		do
-			Result := file_system.directory_exists (file_system.pathname (a_dir, Svn_control_directory))
-		end
 
 	has_tool_interface (a_tool_name: STRING): BOOLEAN
 			-- True if there is an interface available for `a_tool_name'

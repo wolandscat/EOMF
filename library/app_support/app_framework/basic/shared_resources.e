@@ -114,6 +114,12 @@ feature -- Validation
 
 feature -- External Commands
 
+	Command_name_pos_param: STRING = "$cmd"
+			-- replaceable string within a command template representing command name
+
+	Arguments_pos_param: STRING = "$args"
+			-- replaceable string within a command template representing command arguments and switches
+
 	Default_editor_app_command: STRING
 			-- An editor application based on operating system.
 		once
@@ -154,9 +160,9 @@ feature -- External Commands
 			-- the command to detect if another command exists, i.e. which/type on unices, where on Windows
 		once
    			if is_windows then
-				Result := "where $1"
+				Result := "where " + Arguments_pos_param
 			else
-   				Result := "which $1"
+   				Result := "which " + Arguments_pos_param
    			end
    		end
 
@@ -178,7 +184,7 @@ feature -- External Commands
 				Result := True
 			else
 				create pf
-				proc := pf.process_launcher_with_command_line (Standard_command_line (System_which_command_template, a_cmd_name), Void)
+				proc := pf.process_launcher_with_command_line (standard_command_line (System_which_command_template, a_cmd_name), Void)
 				proc.set_hidden (True)
 				proc.redirect_input_to_stream
 				proc.redirect_output_to_agent (
@@ -197,6 +203,13 @@ feature -- External Commands
 			end
 		end
 
+	standard_command_line (a_cmd_template, an_args: STRING): STRING
+			-- generate a command line from a command template containing "$args$
+		do
+			create Result.make_from_string (a_cmd_template)
+			Result.replace_substring_all (Arguments_pos_param, an_args)
+		end
+
 	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING): PROCESS_RESULT
 			-- run a command logically specified by `a_cmd_name' and `a_cmd_switches_args' and return the result;
 			-- figure out from platform specifics and stored command templates how to actually run the command
@@ -208,17 +221,19 @@ feature -- External Commands
 			create Result.make (a_cmd_name + " " + a_cmd_switches_args, in_directory)
 			if command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
 				create cmd_line.make_from_string (att_cmd_tpl)
-				cmd_line.replace_substring_all ("$1", a_cmd_switches_args)
+				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
 				Result := do_system_run_command (cmd_line, in_directory)
 
-			elseif cygwin_command_template_cache.has (a_cmd_name) and then attached cygwin_command_template_cache.item (a_cmd_name) as att_cmd_tpl then
-				create cmd_line.make_from_string (att_cmd_tpl)
-				cmd_line.replace_substring_all ("$1", a_cmd_switches_args)
+			elseif cygwin_command_template_list.has (a_cmd_name) then
+				create cmd_line.make_from_string (Cygwin_command_template)
 
 				-- if directory is specified, then insert a "cd dir;" before the command
 				if attached in_directory as att_dir then
-					cmd_line.replace_substring_all (a_cmd_name, "cd `cygpath -u '" + in_directory + "'`; " + a_cmd_name)
+					cmd_line.replace_substring_all (Command_name_pos_param, "cd `cygpath -u '" + in_directory + "'`; " + a_cmd_name)
 				end
+
+				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
+
 				Result := do_system_run_command (cmd_line, Void)
 			end
 		end
@@ -243,43 +258,25 @@ feature -- External Commands
 		end
 
 	command_template_cache: HASH_TABLE [STRING, STRING]
-			-- table of command line templates indexed by command name, with a replaceable variable $1,
+			-- table of command line templates indexed by command name, with a replaceable variable $args,
 			-- which should be replaced by the actual command switches and arguments
 			-- typical entries:
-			--		"/usr/bin/ls $1", "ls"
-			--		"/usr/local/git/git $1", "git"
+			--		"/usr/bin/ls $args", "ls"
+			--		"/usr/local/git/git $args", "git"
 		once ("PROCESS")
 			create Result.make (0)
 		end
 
-	standard_command_line (std_cmd_template, cmd_args: STRING): STRING
-			-- generate a command line based on `std_cmd_template' (e.g. 'which $1') that will execute in normal shell
-			-- The `cmd_args' will be substituted into `std_cmd_template' at $1
-			-- Typical result:
-			--	"which $1", "git" => "which git"
-		require
-			std_cmd_template.has_substring ("$1")
-		do
-			create Result.make_from_string (std_cmd_template)
-			Result.replace_substring_all ("$1", cmd_args)
-		end
-
 	standard_new_command_template (std_cmd: STRING): STRING
 			-- generate a command line based on `std_cmd' (e.g. 'which')
-			-- The result will be std_cmd $1
+			-- The result will be std_cmd $args
 			-- Typical result:
-			--	"which" => "which $1"
+			--	"which" => "which $args"
 		do
-			Result := std_cmd + " $1"
+			Result := std_cmd + " $args"
 		end
 
 feature -- Cygwin
-
-	Cygwin_which_command_template: STRING
-			-- cygwin version of the which command
-		once
-			Result := cygwin_command_line ("which $1")
-   		end
 
 	Cygwin_bash_exe_path: STRING = "c:\cygwin\bin\bash.exe"
 			-- path of bash on a cygwin installation on Windows
@@ -288,7 +285,15 @@ feature -- Cygwin
 			-- template string for creating a command to run in cygwin under Windows
 		once
 			create Result.make_from_string (Cygwin_bash_exe_path)
-			Result.append (" -c -l %"$1%"")
+			Result.append (" -c -l %"" + Command_name_pos_param + " "  + Arguments_pos_param + "%"")
+		end
+
+	cygwin_command_line (a_cmd_name, an_args: STRING): STRING
+			-- generate a command line from a command template containing "$cmd" and "$args"
+		do
+			create Result.make_from_string (Cygwin_command_template)
+			Result.replace_substring_all (Command_name_pos_param, a_cmd_name)
+			Result.replace_substring_all (Arguments_pos_param, an_args)
 		end
 
 	cygwin_has_command (a_cmd_name: STRING): BOOLEAN
@@ -298,11 +303,11 @@ feature -- Cygwin
 			proc: PROCESS
 		do
 			if is_cygwin then
-				if cygwin_command_template_cache.has (a_cmd_name) then
+				if cygwin_command_template_list.has (a_cmd_name) then
 					Result := True
 				else
 					create pf
-					proc := pf.process_launcher_with_command_line (standard_command_line (Cygwin_which_command_template, a_cmd_name), Void)
+					proc := pf.process_launcher_with_command_line (cygwin_command_line ("which ", a_cmd_name), Void)
 					proc.set_hidden (True)
 					proc.redirect_input_to_stream
 					proc.redirect_output_to_agent (
@@ -310,7 +315,7 @@ feature -- Cygwin
 							do
 								if not s.is_empty then
 									s.right_adjust
-									cygwin_command_template_cache.put (cygwin_new_command_template (cmd_name), cmd_name)
+									cygwin_command_template_list.put (cmd_name)
 								end
 							end (a_cmd_name, ?)
 					)
@@ -322,36 +327,13 @@ feature -- Cygwin
 			end
 		end
 
-	cygwin_command_template_cache: HASH_TABLE [STRING, STRING]
-			-- table of cygwin command line templates indexed by command name, with a replaceable variable $1,
-			-- which should be replaced by the actual command switches and arguments
-			-- typical entries:
-			--		"/usr/bin/ls $1", "ls"
-			--		"/usr/local/git/git $1", "git"
+	cygwin_command_template_list: ARRAYED_SET [STRING]
+			-- list of command names known in cygwin. We record just names, because all cygwin 
+			-- commands have to be executed from within a cygwin bash shell, which will work out
+			-- paths of commands from the environment.
 		once ("PROCESS")
 			create Result.make (0)
-		end
-
-	cygwin_command_line (a_unix_cmd: STRING): STRING
-			-- generate a command line based on `a_unix_cmd' (e.g. 'ls -l') that will execute in a cygwin bash shell on windows
-			-- `a_unix_cmd' may include multiple semi-colon separated commands, e.g. "cd /path/to/my/git/repo; git pull"
-			-- Typical results:
-			--	"c:\cygwin\bin\bash.exe  -c -l %"ls -1%""
-			--	"c:\cygwin\bin\bash.exe  -c -l %"git pull%""
-		do
-			create Result.make_from_string (Cygwin_command_template)
-			Result.replace_substring_all ("$1", a_unix_cmd)
-		end
-
-	cygwin_new_command_template (a_unix_cmd_name: STRING): STRING
-			-- generate a command line based on `a_unix_cmd_name' (e.g. 'ls') that can execute in a cygwin bash shell on windows
-			-- the result will include a $1 after the command name
-			-- Typical results:
-			--	"c:\cygwin\bin\bash.exe  -c -l %"ls $1%""
-			--	"c:\cygwin\bin\bash.exe  -c -l %"git $1%""
-		do
-			create Result.make_from_string (Cygwin_command_template)
-			Result.replace_substring_all ("$1", a_unix_cmd_name + " $1")
+			Result.compare_objects
 		end
 
 feature  {NONE} -- Conversion
