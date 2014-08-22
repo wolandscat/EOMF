@@ -31,16 +31,27 @@ feature {NONE} -- Initialization
 			end
 
 			-- try to connect to a local Git repo
-			test_url := "C:\project\openehr\adl-resources"
-			print ("Initialising from local directory " + test_url + "%N")
-			git_if.initialise_from_local (test_url)
-
-			git_if.get_remote_url
-			print ("cmd = " + git_if.last_result.command_line + "%N")
-			if git_if.last_result.succeeded then
-				print ("get_remote_url: " + git_if.remote_repository_url + "%N")
+			if is_windows then
+				test_url := "C:\project\openehr\adl-resources"
 			else
-				print ("get_remote_url failed; errors = " + git_if.last_result.stderr + "%N")
+				test_url := "/home/thomas/project/openEHR/adl-resources"
+			end
+
+			if not system_has_command ("git") then
+				print ("cmd = " + last_command_result.command_line + "%N")
+				if not last_command_succeeded then
+					print ("system_has_command(%"git%") failed; errors = " + last_command_result.stderr + "%N")
+				end
+			else
+				print ("Initialising from local directory " + test_url + "%N")
+				git_if.initialise_from_local (test_url)
+
+				print ("cmd = " + git_if.last_command_result.command_line + "%N")
+				if last_command_result.succeeded then
+					print ("get_remote_url: " + git_if.remote_repository_url + "%N")
+				else
+					print ("get_remote_url failed; errors = " + last_command_result.stderr + "%N")
+				end
 			end
 
 		end

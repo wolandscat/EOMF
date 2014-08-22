@@ -162,7 +162,7 @@ feature -- External Commands
    			if is_windows then
 				Result := "where " + Arguments_pos_param
 			else
-   				Result := "which " + Arguments_pos_param
+   				Result := "/bin/sh -l -c %"which " + Arguments_pos_param + "%""
    			end
    		end
 
@@ -179,12 +179,15 @@ feature -- External Commands
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
+            cmd_line: STRING
 		do
 			if command_template_cache.has (a_cmd_name) then
 				Result := True
 			else
 				create pf
-				proc := pf.process_launcher_with_command_line (standard_command_line (System_which_command_template, a_cmd_name), Void)
+                cmd_line := standard_command_line (System_which_command_template, a_cmd_name)
+                last_command_result_cache.put (create {PROCESS_RESULT}.make (cmd_line, Void))
+				proc := pf.process_launcher_with_command_line (cmd_line, Void)
 				proc.set_hidden (True)
 				proc.redirect_input_to_stream
 				proc.redirect_output_to_agent (
@@ -193,12 +196,14 @@ feature -- External Commands
 							if not s.is_empty then
 								s.right_adjust
 								command_template_cache.put (standard_new_command_template (s), cmd_name)
+                                last_command_result.set_stdout (s)
 							end
 						end (a_cmd_name, ?)
 				)
-				proc.redirect_error_to_agent (agent (s: STRING) do end)
+                proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.set_stderr (s) end)
 				proc.launch
 				proc.wait_for_exit
+                last_command_result.set_exit_code (proc.exit_code)
 				Result := proc.exit_code = 0
 			end
 		end
@@ -210,7 +215,7 @@ feature -- External Commands
 			Result.replace_substring_all (Arguments_pos_param, an_args)
 		end
 
-	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING): PROCESS_RESULT
+	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
 			-- run a command logically specified by `a_cmd_name' and `a_cmd_switches_args' and return the result;
 			-- figure out from platform specifics and stored command templates how to actually run the command
 		require
@@ -218,11 +223,10 @@ feature -- External Commands
 		local
 			cmd_line: STRING
 		do
-			create Result.make (a_cmd_name + " " + a_cmd_switches_args, in_directory)
 			if command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
 				create cmd_line.make_from_string (att_cmd_tpl)
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
-				Result := do_system_run_command (cmd_line, in_directory)
+				do_system_run_command (cmd_line, in_directory)
 
 			elseif cygwin_command_template_list.has (a_cmd_name) then
 				create cmd_line.make_from_string (Cygwin_command_template)
@@ -234,27 +238,27 @@ feature -- External Commands
 
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
 
-				Result := do_system_run_command (cmd_line, Void)
+				do_system_run_command (cmd_line, Void)
 			end
 		end
 
-	do_system_run_command (a_cmd_line: STRING; in_directory: detachable STRING): PROCESS_RESULT
+	do_system_run_command (a_cmd_line: STRING; in_directory: detachable STRING)
 			-- run `a_cmd_line' exactly as it is and return result; run process in specified directory if set
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
 			stderr_str, stdout_str: STRING
 		do
-			create Result.make (a_cmd_line, in_directory)
+            last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
 			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
 			proc.set_hidden (True)
 			proc.redirect_input_to_stream
-			proc.redirect_error_to_agent (agent (res: PROCESS_RESULT; s: STRING) do res.set_stderr (s) end (Result, ?))
-			proc.redirect_output_to_agent (agent (res: PROCESS_RESULT; s: STRING) do res.set_stdout (s) end (Result, ?))
+			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.set_stderr (s) end)
+			proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.set_stdout (s) end)
 			proc.launch
 			proc.wait_for_exit
-			Result.set_exit_code (proc.exit_code)
+			last_command_result.set_exit_code (proc.exit_code)
 		end
 
 	command_template_cache: HASH_TABLE [STRING, STRING]
@@ -275,6 +279,22 @@ feature -- External Commands
 		do
 			Result := std_cmd + " $args"
 		end
+
+    last_command_result: PROCESS_RESULT
+            -- obtain result of last run external command
+        do
+            Result := last_command_result_cache.item
+        end
+
+    last_command_succeeded: BOOLEAN
+        do
+            Result := last_command_result.succeeded
+        end
+ 
+    last_command_result_cache: CELL [PROCESS_RESULT]
+        once ("PROCESS")
+            create Result.put (create {PROCESS_RESULT})
+        end
 
 feature -- Cygwin
 

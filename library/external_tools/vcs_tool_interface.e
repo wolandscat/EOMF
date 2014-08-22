@@ -74,7 +74,7 @@ feature -- Queries
 			current_directory_set
 		deferred
 		ensure
-			last_result.succeeded implies has_remote_repository_url
+			last_command_succeeded implies has_remote_repository_url
 		end
 
 feature -- Commands

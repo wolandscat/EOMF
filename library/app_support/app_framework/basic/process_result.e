@@ -9,15 +9,28 @@ note
 
 class PROCESS_RESULT
 
+inherit
+    ANY
+        redefine
+            default_create
+        end
+
 create
-	make
+	make, default_create
 
 feature -- Definitions
 
 	Exit_did_not_run: INTEGER = -1
+    
+    No_command: STRING = "no_command"
 
 feature -- Initialisation
 
+    default_create
+        do
+            make (No_command, Void)
+        end
+ 
 	make (a_cmd_line: STRING; in_directory: detachable STRING)
 			-- make with exit_code -1 to indicate that no process has run
 		do

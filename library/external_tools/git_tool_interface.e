@@ -19,9 +19,9 @@ feature -- Queries
 
 	get_remote_url
 		do
-			last_result := system_run_command (tool_name, "config --get remote.origin.url", current_directory)
-			if last_result.succeeded then
-				remote_repository_url := last_result.stdout
+			system_run_command (tool_name, "config --get remote.origin.url", current_directory)
+			if last_command_result.succeeded then
+				remote_repository_url := last_command_result.stdout
 				remote_repository_url.right_adjust
 			end
 		end
@@ -30,17 +30,17 @@ feature -- Commands
 
 	do_checkout (repo_parent_dir: STRING)
 		do
-			last_result := system_run_command (tool_name, "clone " + remote_repository_url, repo_parent_dir)
+			system_run_command (tool_name, "clone " + remote_repository_url, repo_parent_dir)
 		end
 
 	do_checkin
 		do
-			last_result := system_run_command (tool_name, "push", current_directory)
+			system_run_command (tool_name, "push", current_directory)
 		end
 
 	do_update
 		do
-			last_result := system_run_command (tool_name, "pull", current_directory)
+			system_run_command (tool_name, "pull", current_directory)
 		end
 
 end

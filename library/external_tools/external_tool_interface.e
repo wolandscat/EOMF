@@ -13,7 +13,7 @@ inherit
 	SHARED_RESOURCES
 		export
 			{NONE} all;
-			{ANY} deep_copy, is_deep_equal, deep_twin, standard_is_equal, directory_exists
+			{ANY} deep_copy, is_deep_equal, deep_twin, standard_is_equal, directory_exists, last_command_result, last_command_succeeded
 		end
 
 	EXTERNAL_TOOL_DEFINITIONS
@@ -39,9 +39,6 @@ feature -- Access
 	current_directory: STRING
 			-- dirctory in which commands should be executed, if value is non-empty
 
-	last_result: detachable PROCESS_RESULT
-			-- result of last external call
-
 feature -- Status Report
 
 	tool_available: BOOLEAN
@@ -51,12 +48,6 @@ feature -- Status Report
 			-- True if current directory set to point to a real directory
 		do
 			Result := not current_directory.is_empty and then directory_exists (current_directory)
-		end
-
-	last_operation_succeeded: BOOLEAN
-			-- True if last invocation of an external command had 0 exit code
-		do
-			Result := attached last_result as att_pr and then att_pr.succeeded
 		end
 
 feature -- Modification

@@ -19,24 +19,24 @@ feature -- Queries
 
 	get_remote_url
 		do
-			last_result := system_run_command (tool_name, "info | grep 'Repository Root' | awk '{print $NF}'", current_directory)
+			system_run_command (tool_name, "info | grep 'Repository Root' | awk '{print $NF}'", current_directory)
 		end
 
 feature -- Commands
 
 	do_checkout (repo_parent_dir: STRING)
 		do
-			last_result := system_run_command (tool_name, "checkout " + remote_repository_url, repo_parent_dir)
+			system_run_command (tool_name, "checkout " + remote_repository_url, repo_parent_dir)
 		end
 
 	do_checkin
 		do
-			last_result := system_run_command (tool_name, "checkin", current_directory)
+			system_run_command (tool_name, "checkin", current_directory)
 		end
 
 	do_update
 		do
-			last_result := system_run_command (tool_name, "update", current_directory)
+			system_run_command (tool_name, "update", current_directory)
 		end
 
 end
