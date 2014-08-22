@@ -21,15 +21,27 @@ feature -- Commands
 		deferred
 		end
 
-	collapse_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
+	collapse_one_level
 		deferred
 		end
 
-	expand_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
+	expand_one_level
 		deferred
 		end
 
-	expand_all (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
+	expand_all
+		deferred
+		end
+
+	collapse_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
+		deferred
+		end
+
+	expand_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
+		deferred
+		end
+
+	expand_all_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN])
 		deferred
 		end
 

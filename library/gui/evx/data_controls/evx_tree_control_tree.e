@@ -7,11 +7,6 @@ note
 	copyright:   "Copyright (c) 2012 Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
-
-
 class EVX_TREE_CONTROL_TREE
 
 inherit
@@ -48,30 +43,44 @@ feature -- Access
 
 feature -- Events
 
-	collapse_one_level (test: FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
+	collapse_one_level
+		do
+			collapse_one_level_filtered (Void)
+		end
+
+	expand_one_level
+		do
+			expand_one_level_filtered (Void)
+		end
+
+	expand_all
+		do
+			expand_all_filtered (Void)
+		end
+
+	collapse_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
 		do
 			create ev_tree_node_list.make (0)
 			ev_tree.recursive_do_all (agent ev_tree_item_collapse_one_level)
-			from ev_tree_node_list.start until ev_tree_node_list.off loop
-				if not attached test or else test.item ([ev_tree_node_list.item]) then
-					ev_tree_node_list.item.collapse
+			across ev_tree_node_list as node_csr loop
+				if not attached test as att_test or else att_test.item ([node_csr.item]) then
+					node_csr.item.collapse
 				end
-				ev_tree_node_list.forth
 			end
 		end
 
-	expand_one_level (test: FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
+	expand_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
 		do
 			do_with_wait_cursor (ev_tree, agent do_expand_one_level (test))
 		end
 
-	expand_all (test: FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
+	expand_all_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
 		do
 			do_with_wait_cursor (ev_tree,
 				agent ev_tree.recursive_do_all (
-					agent (an_ev_tree_node: EV_TREE_NODE; test_agt: FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
+					agent (an_ev_tree_node: EV_TREE_NODE; a_test: detachable FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
 						do
-							if an_ev_tree_node.is_expandable and (not attached test_agt or else test_agt.item ([an_ev_tree_node])) then
+							if an_ev_tree_node.is_expandable and (not attached a_test as att_test or else att_test.item ([an_ev_tree_node])) then
 								an_ev_tree_node.expand
 							end
 						end (?, test)
@@ -98,8 +107,9 @@ feature -- Events
 
 feature {NONE} -- Implementation
 
-	ev_tree_item_expand_one_level (an_ev_tree_node: attached EV_TREE_NODE)
-			--
+	ev_tree_item_expand_one_level (an_ev_tree_node: EV_TREE_NODE)
+			-- starting from `an_ev_tree_node', expand out child nodes that are not currently expanded;
+			-- if `an_ev_tree_node' is not currently expanded, add it to `ev_tree_node_list' for later expansion
 		do
 			if an_ev_tree_node.is_expanded then
 				from an_ev_tree_node.start until an_ev_tree_node.off loop
@@ -113,8 +123,9 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	ev_tree_item_collapse_one_level (an_ev_tree_node: attached EV_TREE_NODE)
-			--
+	ev_tree_item_collapse_one_level (an_ev_tree_node: EV_TREE_NODE)
+			-- if `an_ev_tree_node' is terminal (i.e. not expanded) then add it to `ev_tree_node_list' for
+			-- subsequent collapsing
 		do
 			if an_ev_tree_node.is_expanded then
 				from
@@ -132,8 +143,11 @@ feature {NONE} -- Implementation
 		end
 
 	ev_tree_node_list: ARRAYED_LIST [EV_TREE_NODE]
+		attribute
+			create Result.make (0)
+		end
 
-	ev_tree_do_all_nodes (a_target: attached EV_TREE_NODE; an_action: PROCEDURE[ANY, TUPLE [EV_TREE_NODE]])
+	ev_tree_do_all_nodes (a_target: EV_TREE_NODE; an_action: PROCEDURE[ANY, TUPLE [EV_TREE_NODE]])
 		do
 			from a_target.start until a_target.off loop
 				ev_tree_do_all_nodes (a_target.item, an_action)
@@ -142,12 +156,12 @@ feature {NONE} -- Implementation
 			an_action.call ([a_target])
 		end
 
-	do_expand_one_level (test: FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
+	do_expand_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_TREE_NODE], BOOLEAN])
 		do
 			create ev_tree_node_list.make (0)
 			ev_tree.recursive_do_all (agent ev_tree_item_expand_one_level)
 			from ev_tree_node_list.start until ev_tree_node_list.off loop
-				if not attached test or else test.item ([ev_tree_node_list.item]) then
+				if not attached test as att_test or else att_test.item ([ev_tree_node_list.item]) then
 					ev_tree_node_list.item.expand
 				end
 				ev_tree_node_list.forth

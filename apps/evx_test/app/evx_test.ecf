@@ -72,6 +72,12 @@
 			</option>
 		</cluster>
 
+		<cluster name="eomf_gui_app_resources" location="$EOMF\library\gui_app_resources\" recursive="true">
+			<option>
+				<assertions precondition="true"/>
+			</option>
+		</cluster>
+
 		<cluster name="eomf_gui" location="$EOMF\library\gui\" recursive="true">
 			<option>
 				<assertions precondition="true"/>

@@ -133,6 +133,9 @@ feature {NONE} -- GUI Widgets
 	evx_combo_text_selector: detachable EVX_COMBO_TEXT_SELECTOR_CONTROL
 	evx_grid: detachable EVX_GRID
 	evx_treeview: detachable EVX_TREEVIEW_CONTROL
+	evx_treeview_grid: detachable EVX_TREE_CONTROL_GRID
+	evx_treeview_tree: detachable EVX_TREE_CONTROL_TREE
+
 	evx_dir_setter: detachable EVX_DIRECTORY_SETTER
 	evx_file_path_setter: detachable EVX_FILE_PATH_SETTER
 	evx_ok_cancel_controls: detachable EVX_OK_CANCEL_CONTROLS

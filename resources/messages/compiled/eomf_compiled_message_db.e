@@ -135,7 +135,7 @@ feature -- Initialisation
 			message_table.put ("<<", ec_expand_button_text)
 			message_table.put ("Tree Zoom", ec_view_label_text)
 			message_table.put ("Expand All", ec_expand_complete_button_text)
-			message_table.put ("Expand All", ec_collapse_complete_button_text)
+			message_table.put ("Collapse All", ec_collapse_complete_button_text)
 			message_table.put ("Expand One", ec_expand_one_level_button_text)
 			message_table.put ("Collapse One", ec_collapse_one_level_button_text)
 			message_table.put ("Add new row", ec_add_mi)

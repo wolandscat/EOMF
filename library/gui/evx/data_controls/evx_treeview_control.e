@@ -118,7 +118,7 @@ feature -- Events
 
 	on_collapse_one_level
 		do
-			gui_tree_control.collapse_one_level (collapse_expand_test_agt)
+			gui_tree_control.collapse_one_level_filtered (collapse_expand_test_agt)
 			gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
 		end
 
@@ -127,7 +127,7 @@ feature -- Events
 			do_with_wait_cursor (gui_tree_control.ev_root_widget,
 				agent
 					do
-						gui_tree_control.expand_one_level (collapse_expand_test_agt)
+						gui_tree_control.expand_one_level_filtered (collapse_expand_test_agt)
 						gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
 					end
 			)
@@ -138,7 +138,7 @@ feature -- Events
 			do_with_wait_cursor (gui_tree_control.ev_root_widget,
 				agent
 					do
-						gui_tree_control.expand_all (collapse_expand_test_agt)
+						gui_tree_control.expand_all_filtered (collapse_expand_test_agt)
 						gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
 					end
 			)

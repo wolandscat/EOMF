@@ -34,27 +34,42 @@ feature -- Access
 
 feature -- Commands
 
+	collapse_one_level
+		do
+			collapse_one_level_filtered (Void)
+		end
+
+	expand_one_level
+		do
+			expand_one_level_filtered (Void)
+		end
+
+	expand_all
+		do
+			expand_all_filtered (Void)
+		end
+
 	ev_tree_do_all (a_node_action: PROCEDURE [ANY, TUPLE [EV_GRID_ROW]])
 			-- do `a_node_action' to all nodes in the structure
 		do
 			ev_grid.tree_do_all (a_node_action)
 		end
 
-	collapse_one_level (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	collapse_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		do
 			ev_grid.row_collapse_actions.block
 			ev_grid.collapse_one_level (test)
 			ev_grid.row_collapse_actions.resume
 		end
 
-	expand_one_level (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	expand_one_level_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		do
 			ev_grid.row_expand_actions.block
 			ev_grid.expand_one_level (test)
 			ev_grid.row_expand_actions.resume
 		end
 
-	expand_all (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	expand_all_filtered (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		do
 			ev_grid.row_collapse_actions.block
 			ev_grid.expand_all (test)

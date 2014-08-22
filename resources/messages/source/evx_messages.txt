@@ -25,7 +25,7 @@ templates = <
 		["expand_button_text"] = <"<<">
 		["view_label_text"] = <"Tree Zoom">
 		["expand_complete_button_text"] = <"Expand All">
-		["collapse_complete_button_text"] = <"Expand All">
+		["collapse_complete_button_text"] = <"Collapse All">
 		["expand_one_level_button_text"] = <"Expand One">
 		["collapse_one_level_button_text"] = <"Collapse One">
 
