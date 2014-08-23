@@ -91,14 +91,14 @@ feature -- Modification
 			exit_code := a_code
 		end
 
-	set_stdout (a_str: STRING)
+	append_stdout (a_str: STRING)
 		do
-			stdout := a_str
+			stdout.append (a_str)
 		end
 
-	set_stderr (a_str: STRING)
+	append_stderr (a_str: STRING)
 		do
-			stderr := a_str
+			stderr.append (a_str)
 		end
 
 end

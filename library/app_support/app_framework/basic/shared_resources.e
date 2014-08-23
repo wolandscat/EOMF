@@ -196,11 +196,11 @@ feature -- External Commands
 							if not s.is_empty then
 								s.right_adjust
 								command_template_cache.put (standard_new_command_template (s), cmd_name)
-                                last_command_result.set_stdout (s)
+                                last_command_result.append_stdout (s)
 							end
 						end (a_cmd_name, ?)
 				)
-                proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.set_stderr (s) end)
+                proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
 				proc.launch
 				proc.wait_for_exit
                 last_command_result.set_exit_code (proc.exit_code)
@@ -254,8 +254,8 @@ feature -- External Commands
 			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
 			proc.set_hidden (True)
 			proc.redirect_input_to_stream
-			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.set_stderr (s) end)
-			proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.set_stdout (s) end)
+			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
+			proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.append_stdout (s) end)
 			proc.launch
 			proc.wait_for_exit
 			last_command_result.set_exit_code (proc.exit_code)
