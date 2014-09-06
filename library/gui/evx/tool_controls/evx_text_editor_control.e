@@ -97,19 +97,34 @@ feature -- Access
 
 	show_line_numbers: BOOLEAN
 
+	text_filter_selected: BOOLEAN
+
 	source_text_agt: FUNCTION [ANY, TUPLE, detachable STRING]
 			-- agent that provides access to text
 
 feature -- Modification
 
 	add_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING_8; a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
-			-- add an EVX button to the control panel
+			-- add an EVX button to the control panel, along with two agents for 'do' and 'stop' (the two button states)
 		local
 			evx_button: EVX_BUTTON
 		do
 			create evx_button.make (an_active_pixmap, an_inactive_pixmap, a_button_text, a_tooltip_text, a_do_action, a_stop_action)
 			control_panel.last_added_frame.extend (evx_button.ev_button, False)
 			gui_controls.extend (evx_button)
+		end
+
+	set_text_filter (a_text: STRING; a_tooltip_text: detachable STRING_8; a_filter_agt: attached like filter_agt)
+			-- add a checkbox with a text filter to the control panel that generates an alternate from of the text
+		local
+			evx_filter_cb: EVX_CHECK_BOX_CONTROL
+		do
+			filter_agt := a_filter_agt
+			create evx_filter_cb.make_linked (a_text, a_tooltip_text,
+				agent :BOOLEAN do Result := text_filter_selected end,
+				agent (a_button_state: BOOLEAN) do text_filter_selected := a_button_state; populate end)
+			evx_view_frame.extend (evx_filter_cb.ev_data_control, False)
+			gui_controls.extend (evx_filter_cb)
 		end
 
 feature -- Status Report
@@ -162,14 +177,7 @@ feature -- Commands
 			s: STRING
 		do
 			gui_controls.do_all (agent (an_item: EVX_CONTROL_SHELL) do an_item.populate end)
-			if attached source_text_agt.item ([]) as att_text then
-				if show_line_numbers then
-					s := add_line_numbers (att_text, Line_num_pad_width, " ")
-				else
-					s := att_text
-				end
-				ev_text.set_text (utf8_to_utf32 (s))
-			end
+			ev_text.set_text (utf8_to_utf32 (editor_text))
 		end
 
 feature -- Events
@@ -202,11 +210,44 @@ feature {NONE} -- Implementation
 
 	save_agt: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
+	filter_agt: detachable FUNCTION [ANY, TUPLE [STRING], STRING]
+			-- optional agent to filter text into a new form (still UTF-8)
+
 	save_content
 			-- save content of text editor using `save_agt'
 		do
 			if attached save_agt as att_agt then
 				att_agt.call ([utf32_to_utf8 (ev_text.text)])
+			end
+		end
+
+	editor_text: STRING
+		local
+			raw_text: STRING
+		do
+			if attached source_text_agt.item ([]) as att_text then
+				-- add line numbers if requested	
+				if show_line_numbers then
+					raw_text := add_line_numbers (att_text, Line_num_pad_width, " ")
+				else
+					raw_text := att_text
+				end
+
+				-- filter if requested
+				if text_filter_selected and then attached filter_agt as att_filter_agt then
+					Result := att_filter_agt.item ([raw_text])
+				else
+					Result := raw_text
+				end
+			else
+				create Result.make_empty
+			end
+		end
+
+	select_filter (a_button_state: BOOLEAN)
+		do
+			if a_button_state then
+
 			end
 		end
 

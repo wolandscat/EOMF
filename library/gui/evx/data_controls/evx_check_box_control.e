@@ -19,8 +19,10 @@ class EVX_CHECK_BOX_CONTROL
 
 inherit
 	EVX_DATA_CONTROL
+		rename
+			data_source_setter_agent as on_select_agent
 		redefine
-			data_source_agent, data_source_setter_agent
+			data_source_agent, on_select_agent
 		end
 
 create
@@ -55,11 +57,11 @@ feature -- Initialisation
 
 	make_linked (a_title: STRING; a_tooltip: detachable STRING;
 				a_data_source_agent: like data_source_agent;
-				a_data_source_setter_agent: attached like data_source_setter_agent)
+				a_select_agent: attached like on_select_agent)
 			-- make for a normal form with active semantics
 		do
 			make (a_title, a_tooltip, a_data_source_agent)
-			data_source_setter_agent := a_data_source_setter_agent
+			on_select_agent := a_select_agent
 			ev_data_control.select_actions.extend (agent on_select)
 		ensure
 			not is_readonly
@@ -70,9 +72,10 @@ feature -- Access
 	ev_data_control: EV_CHECK_BUTTON
 
 	data_source_agent: FUNCTION [ANY, TUPLE, BOOLEAN]
-
-	data_source_setter_agent: detachable PROCEDURE [ANY, TUPLE [BOOLEAN]]
 			-- agent for setting the data source
+
+	on_select_agent: detachable PROCEDURE [ANY, TUPLE [BOOLEAN]]
+			-- agent to execute if button is selected by user
 
 feature -- Status Report
 
@@ -112,7 +115,9 @@ feature {NONE} -- Implementation
 
 	on_select
 		do
-			data_source_setter_agent.call ([ev_data_control.is_selected])
+			if attached on_select_agent as att_agt then
+				att_agt.call ([ev_data_control.is_selected])
+			end
 		end
 
 end
