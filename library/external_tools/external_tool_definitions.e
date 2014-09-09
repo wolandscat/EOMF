@@ -46,6 +46,18 @@ feature -- Status Report
 
 feature -- Access
 
+	checkout_area_type (a_dir: STRING): STRING
+			-- True if `a_dir' is any kind of checkout / clone of a remote repo
+		require
+			is_checkout_area (a_dir)
+		do
+			if is_git_clone (a_dir) then
+				Result := Git_tool_name
+			else
+				Result := Svn_tool_name
+			end
+		end
+
 	repository_name_from_url (a_url, a_repo_type: STRING): STRING
 			-- obtain repository name from repo URL
 			-- e.g. get 'adl-archetypes' from 'https://github.com/openEHR/adl-archetypes.git'

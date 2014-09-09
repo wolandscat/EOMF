@@ -12,6 +12,8 @@ class SHARED_EXTERNAL_TOOL_INTERFACES
 inherit
 	EXTERNAL_TOOL_DEFINITIONS
 
+	SHARED_RESOURCES
+
 feature -- Status Report
 
 	has_tool_interface (a_tool_name: STRING): BOOLEAN
@@ -20,9 +22,16 @@ feature -- Status Report
 			Result := tool_interfaces.has (a_tool_name)
 		end
 
-	valid_vcs_type (a_vcs_type: STRING): BOOLEAN
+	tool_available (a_tool_name: STRING): BOOLEAN
+			-- True if `a_tool_name' exists on the system
 		do
-			Result := tool_interfaces.has (a_vcs_type)
+			Result := system_has_command (a_tool_name)
+		end
+
+	tool_supported (a_tool_name: STRING): BOOLEAN
+			-- True if `a_tool_name' exists on the system and has support in this interface
+		do
+			Result := system_has_command (a_tool_name) and has_tool_interface (a_tool_name)
 		end
 
 feature -- Factory
@@ -42,13 +51,17 @@ feature -- Factory
 				check attached {VCS_TOOL_INTERFACE} create_tool_interface (Git_tool_name) as att_tool_if then
 					Result := att_tool_if
 				end
-				Result.initialise_from_local (a_local_dir)
+				if tool_available (Git_tool_name) then
+					Result.initialise_from_local (a_local_dir)
+				end
 
 			elseif is_svn_checkout (a_local_dir) then
 				check attached {VCS_TOOL_INTERFACE} create_tool_interface (Svn_tool_name) as att_tool_if then
 					Result := att_tool_if
 				end
-				Result.initialise_from_local (a_local_dir)
+				if tool_available (Svn_tool_name) then
+					Result.initialise_from_local (a_local_dir)
+				end
 			end
 		end
 
