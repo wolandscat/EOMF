@@ -19,7 +19,7 @@ feature -- Queries
 
 	get_remote_url
 		do
-			system_run_command (tool_name, "info | grep 'Repository Root' | awk '{print $NF}'", current_directory)
+			system_run_command_query (tool_name, "info | grep 'Repository Root' | awk '{print $NF}'", current_directory)
 		end
 
 feature -- Commands

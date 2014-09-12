@@ -184,9 +184,9 @@ feature -- External Commands
 			if command_template_cache.has (a_cmd_name) then
 				Result := True
 			else
-				create pf
                 cmd_line := standard_command_line (System_which_command_template, a_cmd_name)
                 last_command_result_cache.put (create {PROCESS_RESULT}.make (cmd_line, Void))
+				create pf
 				proc := pf.process_launcher_with_command_line (cmd_line, Void)
 				proc.set_hidden (True)
 				proc.redirect_input_to_stream
@@ -213,6 +213,50 @@ feature -- External Commands
 		do
 			create Result.make_from_string (a_cmd_template)
 			Result.replace_substring_all (Arguments_pos_param, an_args)
+		end
+
+	system_run_command_query (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
+			-- run a command logically specified by `a_cmd_name' and `a_cmd_switches_args' and return the result
+			-- in `last_result'.
+		require
+			system_has_command (a_cmd_name)
+		local
+			cmd_line: STRING
+		do
+			if command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
+				create cmd_line.make_from_string (att_cmd_tpl)
+				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
+				do_system_run_command_query (cmd_line, in_directory)
+
+			elseif cygwin_command_template_list.has (a_cmd_name) then
+				create cmd_line.make_from_string (Cygwin_command_template)
+
+				-- if directory is specified, then insert a "cd dir;" before the command
+				if attached in_directory as att_dir then
+					cmd_line.replace_substring_all (Command_name_pos_param, "cd `cygpath -u '" + in_directory + "'`; " + a_cmd_name)
+				end
+				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
+				do_system_run_command_query (cmd_line, Void)
+			end
+		end
+
+	do_system_run_command_query (a_cmd_line: STRING; in_directory: detachable STRING)
+			-- run `a_cmd_line' and return result; run process in specified directory if set
+		local
+			pf: PROCESS_FACTORY
+			proc: PROCESS
+			stderr_str, stdout_str: STRING
+		do
+            last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
+			create pf
+			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
+			proc.set_hidden (True)
+			proc.redirect_input_to_stream
+			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
+			proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.append_stdout (s) end)
+			proc.launch
+			proc.wait_for_exit
+			last_command_result.set_exit_code (proc.exit_code)
 		end
 
 	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
@@ -255,10 +299,25 @@ feature -- External Commands
 			proc.set_hidden (True)
 			proc.redirect_input_to_stream
 			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
-			proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.append_stdout (s) end)
+			if attached stdout_agent.item as att_agt then
+				proc.redirect_output_to_agent (att_agt)
+			else
+				proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.append_stdout (s) end)
+			end
 			proc.launch
 			proc.wait_for_exit
 			last_command_result.set_exit_code (proc.exit_code)
+		end
+
+	stdout_agent: CELL [detachable PROCEDURE [ANY, TUPLE [STRING]]]
+		once ("PROCESS")
+			create Result.put (Void)
+		end
+
+	set_stdout_agent (agt: PROCEDURE [ANY, TUPLE [STRING]])
+			-- set `stdout_agt' to be `agt'
+		do
+			stdout_agent.put (agt)
 		end
 
 	command_template_cache: HASH_TABLE [STRING, STRING]
@@ -271,11 +330,21 @@ feature -- External Commands
 			create Result.make (0)
 		end
 
+	standard_put_system_command (a_command_line, a_command_name: STRING)
+			-- for ay platform except cygwin:
+			-- manually add a command with its command line to the command table, usually to compensate for the command
+			-- not being in the system / user path
+			-- If `a_command_name' already exists, it is replaced
+		do
+			command_template_cache.force (standard_new_command_template (a_command_line), a_command_name)
+		end
+
 	standard_new_command_template (std_cmd: STRING): STRING
 			-- generate a command line based on `std_cmd' (e.g. 'which')
 			-- The result will be std_cmd $args
 			-- Typical result:
 			--	"which" => "which $args"
+			--	"c:\program files\git\git" => "c:\program files\git\git $args"
 		do
 			Result := std_cmd + " $args"
 		end

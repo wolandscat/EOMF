@@ -33,7 +33,7 @@ feature -- Initialisation
 
 	initialise_checkout_from_remote (a_parent_dir, a_remote_url: STRING)
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 		do
 			remote_repository_url := a_remote_url
 			local_repository_directory := file_system.pathname (a_parent_dir, repository_name_from_url (a_remote_url, tool_name))
@@ -42,7 +42,7 @@ feature -- Initialisation
 
 	initialise_from_local (a_local_dir: STRING)
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 		do
 			local_repository_directory := a_local_dir
 			current_directory := local_repository_directory
@@ -70,7 +70,7 @@ feature -- Queries
 	get_remote_url
 			-- determine remote repository URI from local checkout/clone
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 			current_directory_set
 		deferred
 		ensure
@@ -82,7 +82,7 @@ feature -- Commands
 	do_checkout (repo_parent_dir: STRING)
 			-- checkout a repository to a local file system location
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 			Checkout_area_valid: directory_exists (repo_parent_dir)
 			Remote_url_exists: has_remote_repository_url
 		deferred
@@ -91,7 +91,7 @@ feature -- Commands
 	do_checkin
 			-- checkout a repository to a local file system location
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 			current_directory_set
 		deferred
 		end
@@ -99,7 +99,7 @@ feature -- Commands
 	do_update
 			-- update a repository to a local file system location
 		require
-			Tool_available: tool_available
+			Tool_available: system_has_command (tool_name)
 			current_directory_set
 		deferred
 		end

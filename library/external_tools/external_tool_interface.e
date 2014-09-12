@@ -13,7 +13,7 @@ inherit
 	SHARED_RESOURCES
 		export
 			{NONE} all;
-			{ANY} deep_copy, is_deep_equal, deep_twin, standard_is_equal, directory_exists, last_command_result, last_command_succeeded
+			{ANY} deep_copy, is_deep_equal, deep_twin, standard_is_equal, directory_exists, last_command_result, last_command_succeeded, system_has_command
 		end
 
 	EXTERNAL_TOOL_DEFINITIONS
@@ -27,7 +27,6 @@ feature -- Initialisation
 			-- make with `a_tool_name', normally the name of a command line executable
 		do
 			tool_name := a_tool_name
-			tool_available := system_has_command (tool_name)
 			create current_directory.make_empty
 		end
 
@@ -40,9 +39,6 @@ feature -- Access
 			-- dirctory in which commands should be executed, if value is non-empty
 
 feature -- Status Report
-
-	tool_available: BOOLEAN
-		-- True if tool is available in OS environment
 
 	current_directory_set: BOOLEAN
 			-- True if current directory set to point to a real directory
