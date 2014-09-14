@@ -298,26 +298,42 @@ feature -- External Commands
 			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
 			proc.set_hidden (True)
 			proc.redirect_input_to_stream
-			proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
-			if attached stdout_agent.item as att_agt then
+
+			-- let the output go to console if there is no agent taking it
+			if attached stdout_agent as att_agt then
 				proc.redirect_output_to_agent (att_agt)
-			else
-				proc.redirect_output_to_agent (agent (s: STRING) do last_command_result.append_stdout (s) end)
 			end
+
+			-- let the error go to console if there is no agent taking it
+			if attached stderr_agent as att_agt then
+				proc.redirect_error_to_agent (att_agt)
+			end
+
 			proc.launch
 			proc.wait_for_exit
 			last_command_result.set_exit_code (proc.exit_code)
 		end
 
-	stdout_agent: CELL [detachable PROCEDURE [ANY, TUPLE [STRING]]]
-		once ("PROCESS")
-			create Result.put (Void)
+	stdout_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
+		do
+			Result := stdout_agent_cache.item
 		end
 
 	set_stdout_agent (agt: PROCEDURE [ANY, TUPLE [STRING]])
 			-- set `stdout_agt' to be `agt'
 		do
-			stdout_agent.put (agt)
+			stdout_agent_cache.put (agt)
+		end
+
+	stderr_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
+		do
+			Result := stderr_agent_cache.item
+		end
+
+	set_stderr_agent (agt: PROCEDURE [ANY, TUPLE [STRING]])
+			-- set `stderr_agt' to be `agt'
+		do
+			stderr_agent_cache.put (agt)
 		end
 
 	command_template_cache: HASH_TABLE [STRING, STRING]
@@ -423,6 +439,18 @@ feature -- Cygwin
 		once ("PROCESS")
 			create Result.make (0)
 			Result.compare_objects
+		end
+
+feature  {NONE} -- Implementation
+
+	stdout_agent_cache: CELL [detachable PROCEDURE [ANY, TUPLE [STRING]]]
+		once ("PROCESS")
+			create Result.put (Void)
+		end
+
+	stderr_agent_cache: CELL [detachable PROCEDURE [ANY, TUPLE [STRING]]]
+		once ("PROCESS")
+			create Result.put (Void)
 		end
 
 feature  {NONE} -- Conversion

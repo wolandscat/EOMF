@@ -35,12 +35,12 @@ feature -- Commands
 
 	do_checkin
 		do
-			system_run_command (tool_name, "push", current_directory)
+			system_run_command (tool_name, "push --progress", current_directory)
 		end
 
 	do_update
 		do
-			system_run_command (tool_name, "pull", current_directory)
+			system_run_command (tool_name, "pull --progress", current_directory)
 		end
 
 end
