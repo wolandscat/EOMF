@@ -26,17 +26,17 @@ feature -- Commands
 
 	do_checkout (repo_parent_dir: STRING)
 		do
-			system_run_command (tool_name, "checkout " + remote_repository_url, repo_parent_dir)
+			system_run_command_asynchronous (tool_name, "checkout " + remote_repository_url, repo_parent_dir)
 		end
 
 	do_checkin
 		do
-			system_run_command (tool_name, "checkin", current_directory)
+			system_run_command_asynchronous (tool_name, "checkin", current_directory)
 		end
 
 	do_update
 		do
-			system_run_command (tool_name, "update", current_directory)
+			system_run_command_asynchronous (tool_name, "update", current_directory)
 		end
 
 end

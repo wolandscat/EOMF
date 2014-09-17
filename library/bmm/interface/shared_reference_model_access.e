@@ -12,7 +12,7 @@ class SHARED_REFERENCE_MODEL_ACCESS
 feature -- Access
 
 	rm_schemas_access: REFERENCE_MODEL_ACCESS
-		once
+		once ("PROCESS") 
 			create Result.make
 		end
 

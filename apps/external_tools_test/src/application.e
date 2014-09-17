@@ -71,6 +71,7 @@ feature {NONE} -- Initialization
 					print ("Cloning " + git_if.remote_repository_url + " to " + clone_dir + "%N")
 					git_if.initialise_checkout_from_remote (clone_dir, git_if.remote_repository_url)
 					print ("cmd = " + last_command_result.command_line + "%N")
+
 					if not last_command_result.succeeded then
 						print (last_command_result.command_line + " failed; errors = " + last_command_result.stderr + "%N")
 					end

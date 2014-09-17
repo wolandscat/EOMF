@@ -47,13 +47,13 @@ feature -- Element change
 feature {NONE} -- Implementation
 
 	xml_rules_cache: CELL [detachable XML_RULES]
-		once
+		once ("PROCESS") 
 			create Result.put (Void)
 		end
 
 	xml_load_rules_agent_cache: CELL [detachable FUNCTION [ANY, TUPLE, detachable XML_RULES]]
 			-- rule loader
-		once
+		once ("PROCESS") 
 			create Result.put (Void)
 		end
 

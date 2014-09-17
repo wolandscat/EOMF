@@ -46,25 +46,25 @@ feature -- Environment
 
 	is_windows: BOOLEAN
 			-- Is the operating system Microsoft Windows?
-		once
+		once ("PROCESS")
 			Result := {PLATFORM}.is_windows
 		end
 
 	is_unix: BOOLEAN
 			-- Is the operating system some form of Unix?
-		once
+		once ("PROCESS")
 			Result := {PLATFORM}.is_unix
 		end
 
 	is_mac_os_x: BOOLEAN
 			-- Is the operating system Mac OS X?
-		once
+		once ("PROCESS")
 			Result := {PLATFORM}.is_mac
 		end
 
 	is_cygwin: BOOLEAN
 			-- Is there a cygwin environment installed on windows?
-		once
+		once ("PROCESS")
 			Result := {PLATFORM}.is_windows and file_system.file_exists (Cygwin_bash_exe_path)
 		end
 
@@ -74,7 +74,7 @@ feature -- Environment
 			-- Windows would normally be "C:\Documents and Settings\(user)\Local Settings\Temp".
 		local
 			tmp_dir: detachable STRING
-		once
+		once ("PROCESS")
 			tmp_dir := execution_environment.get ("TMP")
 
 			if not attached tmp_dir or else tmp_dir.is_empty then
@@ -122,7 +122,7 @@ feature -- External Commands
 
 	Default_editor_app_command: STRING
 			-- An editor application based on operating system.
-		once
+		once ("PROCESS")
    			if is_windows then
    				Result := "cmd /q /d /c start %"%" /b"
 			elseif is_mac_os_x then
@@ -134,7 +134,7 @@ feature -- External Commands
 
 	Default_text_editor_command: STRING
 			-- A reasonable name of a text editor based on operating system.
-		once
+		once ("PROCESS")
    			if is_windows then
    				Result := "Notepad.exe"
 			elseif is_mac_os_x then
@@ -146,7 +146,7 @@ feature -- External Commands
 
 	Default_difftool_command: STRING
 			-- A reasonable diff tool based on operating system.
-		once
+		once ("PROCESS")
    			if is_windows then
    				-- /e = enable tool to be dismissed with single Esc keystroke, like a dialog
    				-- /u means don't add any paths to Windows recent paths / places
@@ -158,7 +158,7 @@ feature -- External Commands
 
 	System_which_command_template: STRING
 			-- the command to detect if another command exists, i.e. which/type on unices, where on Windows
-		once
+		once ("PROCESS")
    			if is_windows then
 				Result := "where " + Arguments_pos_param
 			else
@@ -259,7 +259,17 @@ feature -- External Commands
 			last_command_result.set_exit_code (proc.exit_code)
 		end
 
-	system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
+	system_run_command_synchronous (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
+		do
+			do_system_run_command (a_cmd_name, a_cmd_switches_args, in_directory, True)
+		end
+
+	system_run_command_asynchronous (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
+		do
+			do_system_run_command (a_cmd_name, a_cmd_switches_args, in_directory, False)
+		end
+
+	do_system_run_command (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING; synchronous: BOOLEAN)
 			-- run a command logically specified by `a_cmd_name' and `a_cmd_switches_args' and return the result;
 			-- figure out from platform specifics and stored command templates how to actually run the command
 		require
@@ -270,7 +280,11 @@ feature -- External Commands
 			if command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
 				create cmd_line.make_from_string (att_cmd_tpl)
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
-				do_system_run_command (cmd_line, in_directory)
+				if synchronous then
+					do_system_run_command_synchronous (cmd_line, in_directory)
+				else
+					do_system_run_command_asynchronous (cmd_line, in_directory)
+				end
 
 			elseif cygwin_command_template_list.has (a_cmd_name) then
 				create cmd_line.make_from_string (Cygwin_command_template)
@@ -282,11 +296,15 @@ feature -- External Commands
 
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
 
-				do_system_run_command (cmd_line, Void)
+				if synchronous then
+					do_system_run_command_synchronous (cmd_line, Void)
+				else
+					do_system_run_command_asynchronous (cmd_line, Void)
+				end
 			end
 		end
 
-	do_system_run_command (a_cmd_line: STRING; in_directory: detachable STRING)
+	do_system_run_command_synchronous (a_cmd_line: STRING; in_directory: detachable STRING)
 			-- run `a_cmd_line' exactly as it is and return result; run process in specified directory if set
 		local
 			pf: PROCESS_FACTORY
@@ -312,6 +330,53 @@ feature -- External Commands
 			proc.launch
 			proc.wait_for_exit
 			last_command_result.set_exit_code (proc.exit_code)
+		end
+
+	do_system_run_command_asynchronous (a_cmd_line: STRING; in_directory: detachable STRING)
+			-- run `a_cmd_line' exactly as it is and return result; run process in specified directory if set
+		local
+			pf: PROCESS_FACTORY
+			proc: PROCESS
+			stderr_str, stdout_str: STRING
+		do
+            last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
+			create pf
+			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
+			proc.set_hidden (True)
+			proc.redirect_input_to_stream
+
+			-- let the output go to console if there is no agent taking it
+			if attached stdout_agent as att_agt then
+				proc.redirect_output_to_agent (att_agt)
+			end
+
+			-- let the error go to console if there is no agent taking it
+			if attached stderr_agent as att_agt then
+				proc.redirect_error_to_agent (att_agt)
+			end
+
+			-- record PROCESS object
+			live_processes.put (proc, a_cmd_line)
+
+			-- set a process terminate event
+			proc.set_on_exit_handler (agent asynchronous_process_cleanup (a_cmd_line))
+
+			proc.launch
+		end
+
+	asynchronous_process_cleanup (a_cmd_line: STRING)
+			-- remove a process descriptor object for `a_cmd_line'
+		do
+			if live_processes.has (a_cmd_line) and then attached live_processes.item (a_cmd_line) as att_proc then
+				last_command_result.set_exit_code (att_proc.exit_code)
+				live_processes.remove (a_cmd_line)
+			end
+		end
+
+	live_processes: HASH_TABLE [PROCESS, STRING]
+			-- current set of external processes executing asycnhronously
+		once ("PROCESS")
+			create Result.make (0)
 		end
 
 	stdout_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
@@ -388,7 +453,7 @@ feature -- Cygwin
 
 	Cygwin_command_template: STRING
 			-- template string for creating a command to run in cygwin under Windows
-		once
+		once ("PROCESS")
 			create Result.make_from_string (Cygwin_bash_exe_path)
 			Result.append (" -c -l %"" + Command_name_pos_param + " "  + Arguments_pos_param + "%"")
 		end
@@ -500,7 +565,7 @@ feature {NONE} -- Access
 
 	execution_environment: EXECUTION_ENVIRONMENT
 			-- Shared instance of the execution environment.
-	    once
+	    once ("PROCESS")
 	        create Result
 	    end
 
@@ -510,7 +575,7 @@ feature {NONE} -- Access
 		end
 
 	os_directory_separator: CHARACTER
-	    once
+	    once ("PROCESS")
 			Result := operating_environment.directory_separator
 	    end
 

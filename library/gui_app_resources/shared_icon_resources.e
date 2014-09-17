@@ -28,7 +28,7 @@ feature -- Status Report
 feature {NONE} -- Shared Objects
 
 	icon_resources: ICON_RESOURCES
-		once
+		once ("PROCESS")
 			create {ICON_RESOURCES_COMPILED} Result.make
 		end
 

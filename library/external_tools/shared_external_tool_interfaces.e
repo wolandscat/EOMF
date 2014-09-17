@@ -69,7 +69,7 @@ feature {NONE} -- Implementation
 
 	tool_interfaces: HASH_TABLE [FUNCTION [ANY, TUPLE, EXTERNAL_TOOL_INTERFACE], STRING]
 			-- table of tool
-		once
+		once ("PROCESS")
 			create Result.make (0)
 			Result.put (agent :GIT_TOOL_INTERFACE do create Result.make (Git_tool_name) end, Git_tool_name)
 			Result.put (agent :SVN_TOOL_INTERFACE do create Result.make (Svn_tool_name) end, Svn_tool_name)

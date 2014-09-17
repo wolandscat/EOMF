@@ -33,7 +33,7 @@ feature {NONE} -- Access
 
 	message_db: MESSAGE_DB
 			-- error database keyed by id
-		once
+		once ("PROCESS")
 			create Result.make
 			Result.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
 		end

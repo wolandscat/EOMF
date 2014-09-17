@@ -18,7 +18,7 @@ feature -- Definitions
 			-- default directory of Reference Model schema files; same as full path to app + "/rm_schemas";
 			-- contains schema files in .dadl format e.g.
 			-- .../rm_schemas/openehr_rm_102.bmm
-		once
+		once ("PROCESS")
 			Result := file_system.pathname (application_startup_directory, "rm_schemas")
 		end
 
