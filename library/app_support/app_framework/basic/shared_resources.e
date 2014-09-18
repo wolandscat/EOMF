@@ -114,6 +114,9 @@ feature -- Validation
 
 feature -- External Commands
 
+	External_process_poll_period: INTEGER = 50
+			-- period in ms for polling an external process that is running by launching process
+
 	Command_name_pos_param: STRING = "$cmd"
 			-- replaceable string within a command template representing command name
 
