@@ -16,7 +16,7 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
 		end
 
-	ERROR_SEVERITY_TYPES
+	GLOBAL_ERROR_REPORTING_LEVEL
 		export
 			{NONE} all
 		end
@@ -342,6 +342,9 @@ feature -- External Commands
 			proc: PROCESS
 			stderr_str, stdout_str: STRING
 		do
+if global_error_reporting_level = Error_type_debug then
+	io.put_string ("----> do_system_run_command_asynchronous (" + a_cmd_line + if attached in_directory as att_dir then att_dir else "" end + ")%N")
+end
             last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
 			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
@@ -364,16 +367,29 @@ feature -- External Commands
 			-- set a process terminate event
 			proc.set_on_exit_handler (agent asynchronous_process_cleanup (a_cmd_line))
 
+if global_error_reporting_level = Error_type_debug then
+	io.put_string ("     PROCESS.launch%N")
+end
 			proc.launch
+if global_error_reporting_level = Error_type_debug then
+	io.put_string ("     PROCESS id = " + proc.id.out + "%N")
+	io.put_string ("<--- do_system_run_command_asynchronous%N")
+end
 		end
 
 	asynchronous_process_cleanup (a_cmd_line: STRING)
 			-- remove a process descriptor object for `a_cmd_line'
 		do
+if global_error_reporting_level = Error_type_debug then
+	io.put_string ("---> asynchronous_process_cleanup (" + a_cmd_line + ")%N")
+end
 			if live_processes.has (a_cmd_line) and then attached live_processes.item (a_cmd_line) as att_proc then
 				last_command_result.set_exit_code (att_proc.exit_code)
 				live_processes.remove (a_cmd_line)
 			end
+if global_error_reporting_level = Error_type_debug then
+	io.put_string ("<--- asynchronous_process_cleanup%N")
+end
 		end
 
 	live_processes: HASH_TABLE [PROCESS, STRING]

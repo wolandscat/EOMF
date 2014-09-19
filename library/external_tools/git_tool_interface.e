@@ -35,12 +35,12 @@ feature -- Commands
 
 	do_checkin
 		do
-			system_run_command_asynchronous (tool_name, "push --progress", current_directory)
+			system_run_command_asynchronous (tool_name, "push --recurse-submodules --progress", current_directory)
 		end
 
 	do_update
 		do
-			system_run_command_asynchronous (tool_name, "pull --progress", current_directory)
+			system_run_command_asynchronous (tool_name, "pull --recurse-submodules --progress", current_directory)
 		end
 
 end

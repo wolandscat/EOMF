@@ -14,7 +14,7 @@ note
 class MESSAGE_BILLBOARD
 
 inherit
-	ERROR_SEVERITY_TYPES
+	GLOBAL_ERROR_REPORTING_LEVEL
 		export
 			{NONE} all;
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal, is_valid_error_type
@@ -24,8 +24,6 @@ inherit
 		export
 			{NONE} all
 		end
-
-	GLOBAL_ERROR_REPORTING_LEVEL
 
 create
 	make
