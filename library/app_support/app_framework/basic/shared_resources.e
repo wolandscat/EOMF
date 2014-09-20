@@ -195,9 +195,21 @@ feature -- External Commands
 				proc.redirect_input_to_stream
 				proc.redirect_output_to_agent (
 					agent (cmd_name, s: STRING)
+						local
+							lf_loc: INTEGER
 						do
 							if not s.is_empty then
+								-- remove any trailing whitespace first
 								s.right_adjust
+
+								-- in the case of Windows 'where', it can return more than one result, so we just take the
+								-- first one and use it.
+								lf_loc := s.index_of ('%N', 1)
+								if lf_loc > 0 then
+									s.remove_tail (s.count - lf_loc + 1)
+									-- remove any lurking CR or other whitespace
+									s.right_adjust
+								end
 								command_template_cache.put (standard_new_command_template (s), cmd_name)
                                 last_command_result.append_stdout (s)
 							end
@@ -268,6 +280,8 @@ feature -- External Commands
 		end
 
 	system_run_command_asynchronous (a_cmd_name, a_cmd_switches_args: STRING; in_directory: detachable STRING)
+			-- typical args:
+			-- "git", "clone -v --recurse-submodules --progress http://github.com/openehr/archetypes.git", "/project/openEHR"
 		do
 			do_system_run_command (a_cmd_name, a_cmd_switches_args, in_directory, False)
 		end
@@ -343,7 +357,7 @@ feature -- External Commands
 			stderr_str, stdout_str: STRING
 		do
 if global_error_reporting_level = Error_type_debug then
-	io.put_string ("----> do_system_run_command_asynchronous (" + a_cmd_line + if attached in_directory as att_dir then att_dir else "" end + ")%N")
+	io.put_string ("----> do_system_run_command_asynchronous (" + a_cmd_line + ", " + if attached in_directory as att_dir then att_dir else "" end + ")%N")
 end
             last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
@@ -445,8 +459,15 @@ end
 			-- Typical result:
 			--	"which" => "which $args"
 			--	"c:\program files\git\git" => "c:\program files\git\git $args"
+		local
+			cmd_str: STRING
 		do
-			Result := std_cmd + " $args"
+			if std_cmd.has (' ') then
+				cmd_str := "%"" + std_cmd + "%""
+			else
+				cmd_str := std_cmd
+			end
+			Result := std_cmd + " " + Arguments_pos_param
 		end
 
     last_command_result: PROCESS_RESULT
