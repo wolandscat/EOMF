@@ -99,15 +99,17 @@ feature -- Command
 	enable_sensitive
 			-- enable user input
 		do
-			cancel_button.enable_sensitive
-			ok_button.enable_sensitive
+			across ev_root_container as button_csr loop
+				button_csr.item.enable_sensitive
+			end
 		end
 
 	disable_sensitive
 			-- disable user input
 		do
-			cancel_button.disable_sensitive
-			ok_button.disable_sensitive
+			across ev_root_container as button_csr loop
+				button_csr.item.disable_sensitive
+			end
 		end
 
 feature {NONE} -- Implementation
