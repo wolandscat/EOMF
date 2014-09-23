@@ -57,6 +57,13 @@ feature -- Traversal
 			do_until_surface_nodes (target, node_action, node_is_included)
 		end
 
+	do_if (node_action: PROCEDURE [ANY, TUPLE [OG_ITEM, INTEGER]];
+			node_is_included: FUNCTION [ANY, TUPLE[OG_ITEM], BOOLEAN])
+			-- Do action only to nodes from top until surface (inclusive), where membership is defined by `node_is_included'.
+		do
+			do_if_nodes (target, node_action, node_is_included)
+		end
+
 feature {NONE} -- Implementation
 
 	do_all_nodes (a_target: OG_NODE; node_enter_action, node_exit_action: PROCEDURE [ANY, TUPLE [OG_ITEM, INTEGER]])
@@ -104,6 +111,22 @@ feature {NONE} -- Implementation
 					elseif node_is_included.item ([a_target_csr.item]) then -- terminal child node
 						node_action.call ([a_target_csr.item, 0])
 					end
+				end
+			end
+		end
+
+	do_if_nodes (a_target: OG_NODE; node_action: PROCEDURE [ANY, TUPLE [OG_ITEM, INTEGER]];
+				node_is_included: FUNCTION [ANY, TUPLE [OG_ITEM], BOOLEAN])
+			-- Do action only to nodes from top down to surface, where membership is defined by `node_is_included'.
+		do
+			if node_is_included.item ([a_target]) then
+				node_action.call ([a_target, 0])
+			end
+			across a_target as a_target_csr loop
+				if attached {OG_NODE} a_target_csr.item as a_node then
+					do_if_nodes (a_node, node_action, node_is_included)
+				elseif node_is_included.item ([a_target_csr.item]) then -- terminal child node
+					node_action.call ([a_target_csr.item, 0])
 				end
 			end
 		end
