@@ -131,7 +131,7 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open"
 			else
-   				Result := "vi"
+   				Result := "xterm -e vi"
    			end
    		end
 
@@ -143,7 +143,7 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open -t"
 			else
-   				Result := "vi"
+   				Result := "xterm -e vi"
    			end
    		end
 
