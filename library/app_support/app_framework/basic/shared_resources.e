@@ -131,7 +131,12 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open"
 			else
-   				Result := "xterm -e vi"
+                if standard_has_command ("xterm") and then command_template_cache.has ("xterm") and then attached command_template_cache.item ("xterm") as att_cmd_tpl then
+                    create Result.make_from_string (att_cmd_tpl)
+                    Result.replace_substring_all (Arguments_pos_param, "-e vi")
+                else
+                    Result := "/usr/bin/xterm -e vi"
+                end
    			end
    		end
 
@@ -143,7 +148,12 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open -t"
 			else
-   				Result := "xterm -e vi"
+                if standard_has_command ("xterm") and then command_template_cache.has ("xterm") and then attached command_template_cache.item ("xterm") as att_cmd_tpl then
+                    create Result.make_from_string (att_cmd_tpl)
+                    Result.replace_substring_all (Arguments_pos_param, "-e vi")
+                else
+                    Result := "/usr/bin/xterm -e vi"
+                end
    			end
    		end
 
@@ -155,7 +165,12 @@ feature -- External Commands
    				-- /u means don't add any paths to Windows recent paths / places
    				Result := "%"C:\Program Files\winmerge\winmergeU.exe%" /e /u /f *.*"
 			else
-   				Result := "sdiff"
+                if standard_has_command ("xterm") and then command_template_cache.has ("xterm") and then attached command_template_cache.item ("xterm") as att_cmd_tpl then
+                    create Result.make_from_string (att_cmd_tpl)
+                    Result.replace_substring_all (Arguments_pos_param, "-e sdiff")
+                else
+                    Result := "/usr/bin/xterm -e sdiff"
+                end
    			end
    		end
 
