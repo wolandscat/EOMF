@@ -22,9 +22,11 @@ feature -- Initialisation
 			precursor (a_tool_name)
 			create local_repository_directory.make_empty
 			create remote_repository_url.make_empty
+			available_branches.compare_objects
 		end
 
 	initialise_remote (a_remote_url: STRING)
+			-- record remote location
 		do
 			remote_repository_url := a_remote_url
 		ensure
@@ -37,7 +39,7 @@ feature -- Initialisation
 		do
 			remote_repository_url := a_remote_url
 			local_repository_directory := file_system.pathname (a_parent_dir, repository_name_from_url (a_remote_url, tool_name))
-			do_checkout (a_parent_dir)
+			do_clone_checkout (a_parent_dir)
 		end
 
 	initialise_from_local (a_local_dir: STRING)
@@ -57,6 +59,12 @@ feature -- Status Report
 			Result := not remote_repository_url.is_empty
 		end
 
+	has_branch (a_branch_name: STRING): BOOLEAN
+			-- True if `a_branch_name' is known among branches locally tracked in this repo
+		do
+			Result := available_branches.has (a_branch_name)
+		end
+
 feature -- Access
 
 	local_repository_directory: STRING
@@ -64,6 +72,33 @@ feature -- Access
 
 	remote_repository_url: STRING
 			-- URL of the remote repo
+
+	checked_out_branch: STRING
+			-- determine what branch is currently checked out; if none, Result
+			-- is empty string
+		require
+			Tool_available: system_has_command (tool_name)
+			current_directory_set
+		deferred
+		ensure
+			last_command_succeeded implies not Result.is_empty
+		end
+
+	available_branches: ARRAYED_LIST [STRING]
+			-- find out what branches are available and record in `available_branches';
+			-- if none, Result is empty
+		require
+			Tool_available: system_has_command (tool_name)
+			current_directory_set
+		deferred
+		end
+
+	synchronisation_status: INTEGER
+			-- return status of this repo w.r.t. upstream origin
+		deferred
+		ensure
+			valid_vcs_status (Result)
+		end
 
 feature -- Queries
 
@@ -79,12 +114,22 @@ feature -- Queries
 
 feature -- Commands
 
-	do_checkout (repo_parent_dir: STRING)
-			-- checkout a repository to a local file system location
+	do_clone_checkout (repo_parent_dir: STRING)
+			-- clone a remote repository to a local file system location and check its trunk / master branch out
 		require
 			Tool_available: system_has_command (tool_name)
-			Checkout_area_valid: directory_exists (repo_parent_dir)
+			Clone_area_valid: directory_exists (repo_parent_dir)
 			Remote_url_exists: has_remote_repository_url
+		deferred
+		end
+
+	do_checkout_branch (a_branch_name: STRING)
+			-- check out named branch
+		require
+			Tool_available: system_has_command (tool_name)
+			Remote_url_exists: has_remote_repository_url
+			Checkout_area_valid: directory_exists (local_repository_directory)
+			Branch_valid: has_branch (a_branch_name)
 		deferred
 		end
 
@@ -92,7 +137,7 @@ feature -- Commands
 			-- checkout a repository to a local file system location
 		require
 			Tool_available: system_has_command (tool_name)
-			current_directory_set
+			Checkout_area_valid: directory_exists (local_repository_directory)
 		deferred
 		end
 

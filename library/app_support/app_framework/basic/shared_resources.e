@@ -112,6 +112,20 @@ feature -- Validation
 			Result := file_system.directory_exists (file_system.canonical_pathname (path))
 		end
 
+feature -- Definitions: version control
+
+	Vcs_status_unknown: INTEGER = 0
+	Vcs_status_files_not_checked_in: INTEGER = 1
+	Vcs_status_up_to_date: INTEGER = 2
+	Vcs_status_pull_required: INTEGER = 3
+	Vcs_status_push_required: INTEGER = 4
+	Vcs_status_diverged: INTEGER = 5
+
+	Valid_vcs_status (a_val: INTEGER): BOOLEAN
+		do
+			Result := a_val >= Vcs_status_unknown and a_val <= Vcs_status_diverged
+		end
+
 feature -- External Commands
 
 	External_process_poll_period: INTEGER = 50
