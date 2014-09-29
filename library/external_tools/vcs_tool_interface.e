@@ -133,7 +133,24 @@ feature -- Commands
 		deferred
 		end
 
-	do_checkin
+	do_stage
+			-- stage local changes on current branch to local repository
+		require
+			Tool_available: system_has_command (tool_name)
+			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
+	do_commit (a_commit_msg: STRING)
+			-- commit local changes on current branch to local repository
+		require
+			Message_valid: not a_commit_msg.is_empty
+			Tool_available: system_has_command (tool_name)
+			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
+	do_push
 			-- checkout a repository to a local file system location
 		require
 			Tool_available: system_has_command (tool_name)
@@ -141,8 +158,8 @@ feature -- Commands
 		deferred
 		end
 
-	do_update
-			-- update a repository to a local file system location
+	do_pull
+			-- update local repository with changes from remote
 		require
 			Tool_available: system_has_command (tool_name)
 			current_directory_set

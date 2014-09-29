@@ -32,7 +32,7 @@ feature -- Status Setting
 feature {NONE} -- Implementation
 
 	global_error_reporting_level_cell: CELL [INTEGER]
-		once
+		once ("PROCESS")
 			create Result.put (Error_type_warning)
 		end
 

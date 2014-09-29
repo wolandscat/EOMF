@@ -59,35 +59,33 @@ feature -- Queries
 			local_commit, remote_commit, merge_commit: STRING
 		do
 			system_run_command_query (tool_name, "diff-files --quiet", current_directory)
-			if last_command_result.succeeded then
-				if last_command_result.exit_code = 1 then
-					Result := Vcs_status_files_not_checked_in
-				else
-					system_run_command_query (tool_name, "rev-parse HEAD", current_directory)
+			if last_command_result.exit_code = 1 then
+				Result := Vcs_status_files_not_committed
+			else
+				system_run_command_query (tool_name, "rev-parse HEAD", current_directory)
+				if last_command_result.succeeded then
+					local_commit := last_command_result.stdout
+					local_commit.right_adjust
+
+					system_run_command_query (tool_name, "rev-parse @{u}", current_directory)
 					if last_command_result.succeeded then
-						local_commit := last_command_result.stdout
-						local_commit.right_adjust
+						remote_commit := last_command_result.stdout
+						remote_commit.right_adjust
 
-						system_run_command_query (tool_name, "rev-parse @{u}", current_directory)
-						if last_command_result.succeeded then
-							remote_commit := last_command_result.stdout
-							remote_commit.right_adjust
+						if local_commit.is_equal (remote_commit) then
+							Result := Vcs_status_up_to_date
+						else
+							system_run_command_query (tool_name, "merge-base HEAD @{u}", current_directory)
+							if last_command_result.succeeded then
+								merge_commit := last_command_result.stdout
+								merge_commit.right_adjust
 
-							if local_commit.is_equal (remote_commit) then
-								Result := Vcs_status_up_to_date
-							else
-								system_run_command_query (tool_name, "merge-base HEAD @{u}", current_directory)
-								if last_command_result.succeeded then
-									merge_commit := last_command_result.stdout
-									merge_commit.right_adjust
-
-									if local_commit.is_equal (merge_commit) then
-										Result := Vcs_status_pull_required
-									elseif remote_commit.is_equal (merge_commit) then
-										Result := Vcs_status_push_required
-									else
-										Result := Vcs_status_diverged
-									end
+								if local_commit.is_equal (merge_commit) then
+									Result := Vcs_status_pull_required
+								elseif remote_commit.is_equal (merge_commit) then
+									Result := Vcs_status_push_required
+								else
+									Result := Vcs_status_diverged
 								end
 							end
 						end
@@ -109,12 +107,22 @@ feature -- Commands
 			system_run_command_asynchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
-	do_checkin
+	do_stage
+		do
+			system_run_command_asynchronous (tool_name, "add -A", current_directory)
+		end
+
+	do_commit (a_commit_msg: STRING)
+		do
+			system_run_command_asynchronous (tool_name, "commit -a -m " + a_commit_msg, current_directory)
+		end
+
+	do_push
 		do
 			system_run_command_asynchronous (tool_name, "push --recurse-submodules --progress", current_directory)
 		end
 
-	do_update
+	do_pull
 		do
 			system_run_command_asynchronous (tool_name, "pull --recurse-submodules --progress", current_directory)
 		end

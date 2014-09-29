@@ -53,12 +53,24 @@ feature -- Commands
 			system_run_command_asynchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
-	do_checkin
+	do_stage
+		do
+			-- null operation
+		end
+
+	do_commit  (a_commit_msg: STRING)
+			-- commit local changes on current branch to local repository
+			-- FIXME: not implemented
+		do
+
+		end
+
+	do_push
 		do
 			system_run_command_asynchronous (tool_name, "checkin", current_directory)
 		end
 
-	do_update
+	do_pull
 		do
 			system_run_command_asynchronous (tool_name, "update", current_directory)
 		end
