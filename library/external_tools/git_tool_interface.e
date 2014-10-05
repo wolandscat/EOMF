@@ -113,8 +113,12 @@ feature -- Commands
 		end
 
 	do_commit (a_commit_msg: STRING)
+		local
+			msg: STRING
 		do
-			system_run_command_asynchronous (tool_name, "commit -a -m " + a_commit_msg, current_directory)
+			create msg.make_from_string (a_commit_msg)
+			msg.replace_substring_all ("%"", "\%"")
+			system_run_command_asynchronous (tool_name, "commit -a -m %"" + msg + "%"", current_directory)
 		end
 
 	do_push
