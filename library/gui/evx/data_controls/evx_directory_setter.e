@@ -72,11 +72,6 @@ feature -- Modification
 			default_directory_agent := an_agent
 		end
 
-	set_post_select_agent (an_agent: like post_select_agent)
-		do
-			post_select_agent := an_agent
-		end
-
 	set_button_icon (a_pixmap: EV_PIXMAP)
 			-- set an icon on the browse button
 		do
@@ -107,8 +102,8 @@ feature -- Events
 			check attached proximate_ev_window (ev_root_container) as pw then
 				ev_data_control.set_text (get_directory (initial_dir, pw))
 			end
-			if attached post_select_agent then
-				post_select_agent.call ([data_control_text])
+			if attached data_source_setter_agent as ds_agt then
+				ds_agt.call ([data_control_text])
 			end
 		end
 
@@ -116,9 +111,6 @@ feature {NONE} -- Implementation
 
 	default_directory_agent: detachable FUNCTION [ANY, TUPLE, STRING]
 			-- agent that will return a reasonable default directory for when the user hits the browser button
-
-	post_select_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
-			-- agent to execute after directory choice has been made
 
 	initialise_browse_button
 		do
