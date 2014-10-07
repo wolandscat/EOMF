@@ -65,7 +65,7 @@ feature -- Environment
 	is_cygwin: BOOLEAN
 			-- Is there a cygwin environment installed on windows?
 		once ("PROCESS")
-			Result := {PLATFORM}.is_windows and file_system.file_exists (Cygwin_bash_exe_path)
+			Result := not Cygwin_bash_exe_path.is_empty
 		end
 
 	system_temp_file_directory: STRING
@@ -145,8 +145,8 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open"
 			else
-                if standard_has_command ("xterm") and then command_template_cache.has ("xterm") and then attached command_template_cache.item ("xterm") as att_cmd_tpl then
-                    create Result.make_from_string (att_cmd_tpl)
+   				Result := standard_command ("xterm") 
+				if not Result.is_empty then
                     Result.replace_substring_all (Arguments_pos_param, "-e vi")
                 else
                     Result := "/usr/bin/xterm -e vi"
@@ -158,12 +158,12 @@ feature -- External Commands
 			-- A reasonable name of a text editor based on operating system.
 		once ("PROCESS")
    			if is_windows then
-   				Result := "Notepad.exe"
+   				Result := standard_command ("Notepad") 
 			elseif is_mac_os_x then
 				Result := "open -t"
 			else
-                if standard_has_command ("xterm") and then command_template_cache.has ("xterm") and then attached command_template_cache.item ("xterm") as att_cmd_tpl then
-                    create Result.make_from_string (att_cmd_tpl)
+   				Result := standard_command ("xterm") 
+				if not Result.is_empty then
                     Result.replace_substring_all (Arguments_pos_param, "-e vi")
                 else
                     Result := "/usr/bin/xterm -e vi"
@@ -197,6 +197,46 @@ feature -- External Commands
    				Result := "/bin/sh -l -c %"which " + Arguments_pos_param + "%""
    			end
    		end
+
+	is_command_template (a_str: STRING): BOOLEAN
+			-- True if `a_str' contains a path rather than just a command name
+		do
+			Result := a_str.has (os_directory_separator)
+		end
+
+	convert_to_command_template (a_str: STRING): STRING
+			-- Convert the name of a command or command line to the full path version;
+			-- retain any traling command line
+		local
+			spc_pos: INTEGER
+			std_cmd, cmd, cmd_trailing: STRING
+		do
+			spc_pos := a_str.index_of (' ', 1)
+			if spc_pos > 0 then
+				cmd := a_str.substring (1, spc_pos - 1)
+				cmd_trailing := a_str.substring (spc_pos, a_str.count)
+			else
+				cmd := a_str
+				create cmd_trailing.make_empty
+			end
+			std_cmd := standard_command (cmd)
+			if not std_cmd.is_empty then
+				Result := std_cmd + cmd_trailing
+			else
+				Result := a_str
+			end
+		end
+
+	standard_command (a_cmd_name: STRING): STRING
+			-- try to obtain the system's full path for the standard (i.e. not cygwin) command `a_cmd_name'
+		do
+            if standard_has_command (a_cmd_name) and then command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
+				create Result.make_from_string (att_cmd_tpl)
+				Result.replace_substring_all (Arguments_pos_param, "")
+			else
+				create Result.make_empty
+			end
+		end
 
 	system_has_command (a_cmd_name: STRING): BOOLEAN
 			-- True if the command `a_cmd_name' is available on the system in any form, either
@@ -517,8 +557,24 @@ end
 
 feature -- Cygwin
 
-	Cygwin_bash_exe_path: STRING = "c:\cygwin\bin\bash.exe"
+	Cygwin_bash_exe_path: STRING
 			-- path of bash on a cygwin installation on Windows
+		once
+			create Result.make_empty
+		    if {PLATFORM}.is_windows then
+				if file_system.file_exists (Cygwin32_bash_exe_path) then
+					Result := Cygwin32_bash_exe_path
+				elseif file_system.file_exists (Cygwin64_bash_exe_path) then
+					Result := Cygwin64_bash_exe_path
+				end
+		    end
+		end
+
+	Cygwin32_bash_exe_path: STRING = "c:\cygwin\bin\bash.exe"
+			-- path of bash on a cygwin 32 installation on Windows
+
+	Cygwin64_bash_exe_path: STRING = "c:\cygwin64\bin\bash.exe"
+			-- path of bash on a cygwin 64 installation on Windows
 
 	Cygwin_command_template: STRING
 			-- template string for creating a command to run in cygwin under Windows
