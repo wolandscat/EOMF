@@ -40,6 +40,9 @@ feature -- Initialisation
 			remote_repository_url := a_remote_url
 			local_repository_directory := file_system.pathname (a_parent_dir, repository_name_from_url (a_remote_url, tool_name))
 			do_clone_checkout (a_parent_dir)
+			current_directory := local_repository_directory
+		ensure
+			current_directory_set
 		end
 
 	initialise_from_local (a_local_dir: STRING)
@@ -49,6 +52,8 @@ feature -- Initialisation
 			local_repository_directory := a_local_dir
 			current_directory := local_repository_directory
 			get_remote_url
+		ensure
+			current_directory_set
 		end
 
 feature -- Status Report
