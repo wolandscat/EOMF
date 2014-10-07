@@ -86,6 +86,7 @@ feature -- Events
 			-- Let the user browse for the file path
 		local
 			lpos: INTEGER
+			file_str: STRING
 		do
 			file_path := data_source_agent.item ([]).twin
 			file_path.left_adjust
@@ -100,20 +101,26 @@ feature -- Events
 
 			-- set options string appropriately
 			create options.make_empty
-			if lpos < file_path.count then
+			if lpos > 0 then
 				options.append (file_path.substring (lpos, file_path.count))
 				file_path.remove_substring (lpos, file_path.count)
 			end
 
 			-- do the browse
 			check attached proximate_ev_window (ev_root_container) as pw then
-				ev_data_control.set_text (get_file (file_path, pw))
+				file_str := get_file (file_path, pw)
 			end
 
 			-- add back in options
-			if attached options as o then
-				ev_data_control.set_text (ev_data_control.text + o)
+			if attached options as opts then
+				file_str.append (opts)
 			end
+			ev_data_control.set_text (file_str)
+
+			if attached data_source_setter_agent as ds_agt then
+				ds_agt.call ([data_control_text])
+			end
+
 		end
 
 feature {NONE} -- Implmentation
