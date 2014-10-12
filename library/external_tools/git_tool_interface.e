@@ -43,7 +43,7 @@ feature -- Queries
 		do
 			create Result.make (0)
 			Result.compare_objects
-			system_run_command_query (tool_name, "branch", current_directory)
+			system_run_command_query (tool_name, "branch -a", current_directory)
 			if last_command_result.succeeded then
 				str := last_command_result.stdout
 				str.replace_substring_all ("* ", "")
