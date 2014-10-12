@@ -182,7 +182,7 @@ feature -- Application Switches
 	set_error_reporting_level (v: INTEGER)
 			-- Set `status_reporting_level'.
 		do
-			app_cfg.put_value ("/general/error_reporting_level", v)
+			app_cfg.put_integer_value ("/general/error_reporting_level", v)
 		end
 
 feature {NONE} -- Implementation

@@ -24,7 +24,7 @@ feature -- Definitions
 
 feature -- Application Switches
 
-	rm_schemas_load_list: LIST [STRING]
+	rm_schemas_load_list: ARRAYED_LIST [STRING]
 			-- list of RM schemas to use
 		do
 			Result := app_cfg.string_list_value ("/rm_schemas/load_list")
@@ -34,12 +34,12 @@ feature -- Application Switches
 			no_empty_items: Result.for_all (agent (s: STRING): BOOLEAN do Result := attached s and then not s.is_empty end)
 		end
 
-	set_rm_schemas_load_list (a_schema_list: LIST [STRING])
+	set_rm_schemas_load_list (a_schema_list: ARRAYED_LIST [STRING])
 			-- set rm_schemas(s)
 		require
 			a_schema_list_valid: not a_schema_list.is_empty
 		do
-			app_cfg.put_value ("/rm_schemas/load_list", a_schema_list)
+			app_cfg.put_string_list_value ("/rm_schemas/load_list", a_schema_list)
 		end
 
 	rm_schema_directory: STRING
@@ -53,7 +53,7 @@ feature -- Application Switches
 		require
 			path_not_empty: not a_path.is_empty
 		do
-			app_cfg.put_value ("/file_system/rm_schema_directory", a_path)
+			app_cfg.put_string_value ("/file_system/rm_schema_directory", a_path)
 		end
 
 end

@@ -38,7 +38,6 @@ feature -- Initialisation
 		do
 			impl := an_impl
 			create errors.make
-			create requested_resources.make (0)
 			create refresh_listeners.make (0)
 		end
 
@@ -68,76 +67,115 @@ feature -- Access
 
 	requested_resources: ARRAYED_SET [STRING]
 			-- paths that the application has requsted so far
+		do
+			create Result.make (0)
+			Result.compare_objects
+			Result.merge (string_value_cache.current_keys)
+			Result.merge (string_list_value_cache.current_keys)
+			Result.merge (boolean_value_cache.current_keys)
+			Result.merge (integer_value_cache.current_keys)
+			Result.merge (object_value_cache.current_keys)
+		end
 
 	integer_value (a_path: STRING): INTEGER
 			-- get the integer value for resource at `a_path'
 		do
-			if has_resource (a_path) and then attached {INTEGER} dt_tree.value_at_path (a_path) as int then
+			if integer_value_cache.has (a_path) then
+				Result := integer_value_cache.item (a_path)
+			elseif has_resource (a_path) and then attached {INTEGER} dt_tree.value_at_path (a_path) as int then
 				Result := int
+				integer_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	boolean_value (a_path: STRING): BOOLEAN
 			-- get the boolean value for resource at `a_path'
 		do
-			if has_resource (a_path) and then attached {BOOLEAN} dt_tree.value_at_path (a_path) as bool then
+			if boolean_value_cache.has (a_path) then
+				Result := boolean_value_cache.item (a_path)
+			elseif has_resource (a_path) and then attached {BOOLEAN} dt_tree.value_at_path (a_path) as bool then
 				Result := bool
+				boolean_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	string_value (a_path: STRING): STRING
 			-- get the string value for resource at `a_path'; return empty string if nothing found
 		do
-			if has_resource (a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
-				Result := str
+			if string_value_cache.has (a_path) then
+				check attached string_value_cache.item (a_path) as val then
+					Result := val
+				end
 			else
-				create Result.make (0)
+				if has_resource (a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
+					Result := str
+				else
+					create Result.make (0)
+				end
+				string_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	string_list_value (a_path: STRING): ARRAYED_LIST [STRING]
 			-- List of items specified in file at `a_path'.
 		do
-			if has_resource(a_path) and then attached {ARRAYED_LIST [STRING]} dt_tree.value_list_at_path (a_path) as lst_str then
-				Result := lst_str
+			if string_list_value_cache.has (a_path) then
+				check attached string_list_value_cache.item (a_path) as val then
+					Result := val
+				end
 			else
-				create Result.make (0)
+				if has_resource (a_path) and then attached {ARRAYED_LIST [STRING]} dt_tree.value_list_at_path (a_path) as lst_str then
+					Result := lst_str
+				else
+					create Result.make (0)
+				end
+				string_list_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	string_value_env_var_sub (a_path: STRING): STRING
 			-- get the string value for `a_path', with any env vars of form "$var" substituted
 		do
-			if has_resource(a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
-				Result := substitute_env_vars (str)
+			if string_value_cache.has (a_path) then
+				check attached string_value_cache.item (a_path) as val then
+					Result := val
+				end
 			else
-				create Result.make (0)
+				if has_resource (a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
+					Result := substitute_env_vars (str)
+				else
+					create Result.make (0)
+				end
+				string_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	any_value (a_path:  STRING): detachable ANY
 			-- get the value for resource_name
 		do
-			if has_resource(a_path) then
+			if object_value_cache.has (a_path) then
+				check attached object_value_cache.item (a_path) as val then
+					Result := val
+				end
+			elseif has_resource (a_path) then
 				Result := dt_tree.value_at_path (a_path)
+				object_value_cache.put (Result, a_path)
 			end
-			requested_resources.extend (a_path)
 		end
 
 	object_value (a_path: STRING; a_type_name: STRING): detachable ANY
 			-- get complex object at `a_path'
 		do
-			if has_resource(a_path) then
+			if object_value_cache.has (a_path) then
+				check attached object_value_cache.item (a_path) as val then
+					Result := val
+				end
+			elseif has_resource (a_path) then
 				if attached {DT_COMPLEX_OBJECT} dt_tree.node_at_path (a_path) as dt_obj then
 					Result := dt_obj.as_object_from_string (a_type_name, Void)
+					object_value_cache.put (Result, a_path)
 				end
 			end
-			requested_resources.extend (a_path)
 		end
 
 	errors: ERROR_ACCUMULATOR
@@ -155,18 +193,32 @@ feature -- Status Report
 
 feature -- Modification
 
-	put_value (a_path: STRING; a_value: ANY)
+	put_integer_value (a_path: STRING; a_value: INTEGER)
 			-- put an instance of any ODIN leaf value type
 		do
-			if not attached dt_tree then
-				create_default_dt_tree
-			end
-			if has_resource (a_path) then
-				dt_tree.set_value_at_path (a_value, a_path)
-			else
-				dt_tree.put_value_at_path (a_value, a_path)
-			end
-			is_dirty := True
+			put_dt_value (a_path, a_value)
+			integer_value_cache.force (a_value, a_path)
+		end
+
+	put_boolean_value (a_path: STRING; a_value: BOOLEAN)
+			-- put an instance of any ODIN leaf value type
+		do
+			put_dt_value (a_path, a_value)
+			boolean_value_cache.force (a_value, a_path)
+		end
+
+	put_string_value (a_path: STRING; a_value: STRING)
+			-- put an instance of any ODIN leaf value type
+		do
+			put_dt_value (a_path, a_value)
+			string_value_cache.force (a_value, a_path)
+		end
+
+	put_string_list_value (a_path: STRING; a_value: ARRAYED_LIST [STRING])
+			-- put an instance of any ODIN leaf value type
+		do
+			put_dt_value (a_path, a_value)
+			string_list_value_cache.force (a_value, a_path)
 		end
 
 	put_object (a_path: STRING; a_value: ANY)
@@ -190,6 +242,7 @@ feature -- Modification
 				raise ("put_object_conversion_failure for type " + a_value.generating_type + " to Data Tree form")
 			end
 			is_dirty := True
+			object_value_cache.force (a_value, a_path)
 		end
 
 	add_refresh_listener (an_agent: PROCEDURE [ANY, TUPLE])
@@ -209,6 +262,18 @@ feature -- Element Removal
 				dt_attr.parent.remove_attribute (dt_attr.im_attr_name)
 			end
 			is_dirty := True
+
+			if string_value_cache.has (a_path) then
+				string_value_cache.remove (a_path)
+			elseif string_list_value_cache.has (a_path) then
+				string_list_value_cache.remove (a_path)
+			elseif boolean_value_cache.has (a_path) then
+				boolean_value_cache.remove (a_path)
+			elseif integer_value_cache.has (a_path) then
+				integer_value_cache.remove (a_path)
+			elseif object_value_cache.has (a_path) then
+				object_value_cache.remove (a_path)
+			end
 		ensure
 			Path_removed: not has_resource (a_path)
 		end
@@ -260,6 +325,50 @@ feature {NONE} -- Implementation
 
 	refresh_listeners: ARRAYED_LIST [PROCEDURE [ANY, TUPLE]]
 			-- listeners to execute on file refresh
+
+	string_value_cache: HASH_TABLE [STRING, STRING]
+			-- String values already found this session
+		once
+			create Result.make (0)
+		end
+
+	string_list_value_cache: HASH_TABLE [ARRAYED_LIST [STRING], STRING]
+			-- String list values already found this session
+		once
+			create Result.make (0)
+		end
+
+	boolean_value_cache: HASH_TABLE [BOOLEAN, STRING]
+			-- Boolean values already found this session
+		once
+			create Result.make (0)
+		end
+
+	integer_value_cache: HASH_TABLE [INTEGER, STRING]
+			-- Integer values already found this session
+		once
+			create Result.make (0)
+		end
+
+	object_value_cache: HASH_TABLE [detachable ANY, STRING]
+			-- Reference object values already found this session
+		once
+			create Result.make (0)
+		end
+
+	put_dt_value (a_path: STRING; a_value: ANY)
+			-- put an instance of any ODIN leaf value type
+		do
+			if not attached dt_tree then
+				create_default_dt_tree
+			end
+			if has_resource (a_path) then
+				dt_tree.set_value_at_path (a_value, a_path)
+			else
+				dt_tree.put_value_at_path (a_value, a_path)
+			end
+			is_dirty := True
+		end
 
 end
 
