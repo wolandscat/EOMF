@@ -42,7 +42,7 @@
 		<library name="ise_process" location="$ISE_LIBRARY\library\process\process-safe.ecf"/>
 		<library name="ise_docking" location="$ISE_LIBRARY\library\docking\docking-safe.ecf"/>
 
-		<library name="iso8601" location="$EIFFEL_HUB\library\iso8601\src\iso8601.ecf"/>
+		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
 
 		<cluster name="app" location="..\src\" recursive="true"/>
 
