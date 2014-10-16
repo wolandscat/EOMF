@@ -32,6 +32,10 @@ inherit
 create
 	make, make_linked, make_readonly
 
+feature -- Definitions
+
+	Max_row_count: INTEGER = 30
+
 feature -- Initialisation
 
 	make (a_title: STRING; a_data_source_agent: like data_source_agent;
@@ -77,7 +81,7 @@ feature {NONE} -- Implementation
 		do
 			if attached data_source_agent.item ([]) as att_list then
 				populate_ev_multi_list_from_list (ev_data_control, att_list)
-				ev_data_control.set_minimum_height ((ev_data_control.row_height * att_list.count * Default_grid_expansion_factor).floor)
+				ev_data_control.set_minimum_height ((ev_data_control.row_height * att_list.count.min (Max_row_count) * Default_grid_expansion_factor).floor)
 			end
 		end
 

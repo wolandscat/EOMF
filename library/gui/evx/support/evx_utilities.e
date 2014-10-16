@@ -189,6 +189,23 @@ feature {NONE} -- Implementation
 			create Result
 		end
 
+	set_max_size_to_monitor (a_window: EV_WINDOW)
+		local
+			screen_area: EV_RECTANGLE
+		do
+			screen_area := monitor_area (a_window)
+			a_window.set_maximum_width (screen_area.width)
+			a_window.set_maximum_height (screen_area.height)
+		end
+
+	monitor_area (a_window: EV_WINDOW): EV_RECTANGLE
+		local
+			screen: EV_SCREEN
+		do
+			create screen
+			Result := screen.monitor_area_from_window (a_window)
+		end
+
 end
 
 
