@@ -105,6 +105,11 @@ feature -- Access
 			valid_vcs_status (Result)
 		end
 
+	uncommitted_files: ARRAYED_LIST [STRING]
+			-- obtain formatted list of untracked and/or uncommitted files
+		deferred
+		end
+
 feature -- Queries
 
 	get_remote_url

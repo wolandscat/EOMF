@@ -40,6 +40,13 @@ feature -- Queries
 		do
 		end
 
+	uncommitted_files: ARRAYED_LIST [STRING]
+			-- FIXME: not implemented
+			-- obtain formatted list of untracked and/or uncommitted files
+		do
+			create Result.make (0)
+		end
+
 feature -- Commands
 
 	do_clone_checkout (repo_parent_dir: STRING)

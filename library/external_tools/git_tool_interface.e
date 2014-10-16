@@ -94,6 +94,16 @@ feature -- Queries
 			end
 		end
 
+	uncommitted_files: ARRAYED_LIST [STRING]
+			-- obtain formatted list of untracked and/or uncommitted files
+		do
+			create Result.make (0)
+			system_run_command_query (tool_name, "status -s", current_directory)
+			if last_command_result.succeeded then
+				Result.append (last_command_result.stdout.split ('%N'))
+			end
+		end
+
 feature -- Commands
 
 	do_clone_checkout (repo_parent_dir: STRING)
