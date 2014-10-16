@@ -65,10 +65,12 @@ feature -- Initialisation
 			-- create the data control and add to ev_container
 			create_ev_data_control
 			ev_root_container.extend (ev_data_control)
-			ev_data_control.set_minimum_width (min_width.max (default_min_width))
-
-			ev_root_container.set_minimum_height (mh)
-			ev_root_container.set_minimum_width (mw)
+			if min_width > 0 then
+				ev_root_container.set_minimum_width (mw)
+			end
+			if min_height > 0 then
+				ev_root_container.set_minimum_height (mh)
+			end
 
 			-- control expanding characteristics of main control
 			if (arrange_horizontally and min_width > 0) or else (not arrange_horizontally and min_height > 0) then

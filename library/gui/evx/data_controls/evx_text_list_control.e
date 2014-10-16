@@ -24,13 +24,13 @@ class EVX_TEXT_LIST_CONTROL
 inherit
 	EVX_MLIST_CONTROL
 		rename
-			make as make_mlist, make_linked as make_linked_mlist
+			make as make_mlist, make_readonly as make_readonly_mlist, make_linked as make_linked_mlist
 		redefine
 			data_source_agent, data_source_setter_agent
 		end
 
 create
-	make, make_linked
+	make, make_linked, make_readonly
 
 feature -- Initialisation
 
@@ -40,6 +40,12 @@ feature -- Initialisation
 			make_mlist (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally, Void)
 		ensure
 			not is_readonly
+		end
+
+	make_readonly (a_title: STRING; a_data_source_agent: like data_source_agent;
+			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+		do
+			make_readonly_mlist (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally, Void)
 		end
 
 	make_linked (a_title: STRING; a_data_source_agent: like data_source_agent;
@@ -69,7 +75,10 @@ feature {NONE} -- Implementation
 
 	do_populate_control_from_source
 		do
-			populate_ev_multi_list_from_list (ev_data_control, data_source_agent.item ([]))
+			if attached data_source_agent.item ([]) as att_list then
+				populate_ev_multi_list_from_list (ev_data_control, att_list)
+				ev_data_control.set_minimum_height ((ev_data_control.row_height * att_list.count * Default_grid_expansion_factor).floor)
+			end
 		end
 
 	process_in_place_edit

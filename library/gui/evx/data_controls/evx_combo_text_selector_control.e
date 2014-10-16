@@ -117,7 +117,7 @@ feature -- Commands
 				ev_data_control.enable_sensitive
 				not_sensitive := True
 			end
-
+			
 			-- populate with all possible values
 			ev_data_control.wipe_out
 			value_set.do_all (

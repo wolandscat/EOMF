@@ -125,7 +125,7 @@ feature {NONE} -- Implementation
 			if not ev_mlist.is_empty then
 				from i := 1 until i > ev_mlist.column_count loop
 					ev_mlist.resize_column_to_content (i)
-					if attached ev_mlist.column_title (i) then
+					if not ev_mlist.column_title (i).is_empty then
 						-- FIXME: a pure hack to get round the problem of Multi-list column resizing not including title contents
 						ev_mlist.set_column_width (ev_mlist.column_width (i).max (ev_mlist.column_title (i).count * 12), i)
 					end
