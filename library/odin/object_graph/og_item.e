@@ -34,7 +34,7 @@ feature -- Initialisation
 feature -- Access
 
 	node_id: STRING
-				-- id of this node
+			-- id of this node
 
 	node_key: STRING
 			-- uses compressed path if it exists
@@ -47,12 +47,13 @@ feature -- Access
 
 	path: OG_PATH
 			-- absolute path of this node relative to the root; may produce non-unique paths
+			-- uses compressed path if it exists
 		do
 			Result := get_path (Void)
 		end
 
 	path_to_node (a_node: OG_OBJECT): OG_PATH
-			-- absolute path of this node relative to the root
+			-- absolute path of this node relative to `a_node'
 		do
 			Result := get_path (a_node)
 		end
@@ -166,7 +167,8 @@ feature {NONE} -- Implementation
 			a_path_item: OG_PATH_ITEM
 			og_path: detachable OG_PATH
 		do
-			-- get the node list from here back up to the root, but don't include the root OG_OBJECT_NODE
+			-- get the node list from here back up to the root or `stop_node' if set, 
+			-- but don't include the root OG_OBJECT_NODE
 			create og_nodes.make(0)
 			from csr := Current until csr.parent = Void or csr ~ stop_node loop
 				og_nodes.put_front (csr)

@@ -24,9 +24,15 @@ feature -- Initialisation
 feature -- Command
 
 	do_all
-			-- start the serialisation process; the result will be in `serialiser_output'
+			-- do all nodes in tree
 		do
-			tree_iterator.do_all (agent node_enter_action (?,?), agent node_exit_action (?,?))
+			tree_iterator.do_all (agent node_enter_action, agent node_exit_action)
+		end
+
+	do_until_surface_plus_one (is_included_agt: FUNCTION [ANY, TUPLE [OG_NODE], BOOLEAN]; dont_test_root: BOOLEAN)
+			-- do nodes for which is_included_agt returns True and then one more
+		do
+			tree_iterator.do_until_surface_plus_one (agent node_enter_action, agent node_exit_action, is_included_agt, dont_test_root)
 		end
 
 feature {NONE} -- Implementation

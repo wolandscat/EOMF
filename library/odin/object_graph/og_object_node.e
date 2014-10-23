@@ -32,9 +32,6 @@ feature -- Access
 	path_map: HASH_TABLE [OG_ITEM, OG_PATH]
 			-- obtain all paths below this point
 			-- compute in an efficient fashion
-			-- While node_ids on object nodes are optional, this routine is not guaranteed to get every object, s
-			-- ince the only path to some objects is the path to the parent attribute. In these cases, the object
-			-- node is favoured, and therefore some attributes nodes could be missing.
 		local
 			child_attr: like child_type
 			a_path: OG_PATH
