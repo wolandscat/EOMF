@@ -51,6 +51,8 @@ feature -- Definitions
 			-- required by UTF-16 files, but if the file has been converted from UTF-16 or UTF-32
 			-- then the BOM in a UTF-8 file will be 0xEF 0xBB 0xBF (dec equivalent: 239, 187, 191)
 
+	UTF8_bom_length: INTEGER = 3
+
 	UTF8_copyright_char: CHARACTER = '%/169/'
 
 	Time_epoch: DATE_TIME

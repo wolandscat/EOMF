@@ -75,12 +75,12 @@ feature -- Commands
 			file_context.read_matching_lines (attr_names, Comment_leader, Max_lines)
 			last_parse_content.wipe_out
 
-			if file_context.file_lines.count > 0 then
-				across file_context.file_lines as file_lines_csr loop
-					line := file_lines_csr.item
-					lpos := line.index_of ('<', 1)+1
+			if file_context.line_buf_count > 0 then
+				across file_context.line_buf as line_buf_csr loop
+					line := line_buf_csr.item
+					lpos := line.index_of ('<', 1) + 1
 					if lpos > 1 then
-						rpos := line.index_of ('>', lpos)-1
+						rpos := line.index_of ('>', lpos) - 1
 						if rpos >= lpos then
 							-- check for quoted "" or '' and remove
 							if line.item (lpos) = '%"' or line.item (lpos) = '%'' then
