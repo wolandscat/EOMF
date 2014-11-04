@@ -130,7 +130,6 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 	load
 			-- load schema into in-memory form
 		local
-			model_file: PLAIN_TEXT_FILE
 			parser: ODIN_PARSER
 		do
 			reset
