@@ -18,7 +18,7 @@ inherit
 
 feature -- Application Switches
 
-	current_work_directory: attached STRING
+	current_work_directory: STRING
 			-- Directory where archetypes are currently being opened and saved
 			-- from GUI open and save buttons; automatic opens (due to clicking
 			-- on archetype name) still use main repository directory.
@@ -26,11 +26,11 @@ feature -- Application Switches
 			Result := app_cfg.string_value ("/file_system/current_work_directory")
 		end
 
-	set_current_work_directory (a_path: attached STRING)
+	set_current_work_directory (a_path: STRING)
 			-- set the directory where archetypes are currently being opened and saved.
 		do
 			if not a_path.is_empty then
-				app_cfg.put_value ("/file_system/current_work_directory", a_path)
+				app_cfg.put_string_value ("/file_system/current_work_directory", a_path)
 			else
 				app_cfg.remove_resource ("/file_system/current_work_directory")
 			end
@@ -47,7 +47,7 @@ feature -- Application Switches
 		require
 			v > 0
 		do
-			app_cfg.put_value ("/gui/app_width", v)
+			app_cfg.put_integer_value ("/gui/app_width", v)
 		end
 
 	app_height: INTEGER
@@ -61,7 +61,7 @@ feature -- Application Switches
 		require
 			v > 0
 		do
-			app_cfg.put_value ("/gui/app_height", v)
+			app_cfg.put_integer_value ("/gui/app_height", v)
 		end
 
 	app_x_position: INTEGER
@@ -73,7 +73,7 @@ feature -- Application Switches
 	set_app_x_position (v: INTEGER)
 			-- set app x position
 		do
-			app_cfg.put_value ("/gui/app_x_position", v)
+			app_cfg.put_integer_value ("/gui/app_x_position", v)
 		end
 
 	app_y_position: INTEGER
@@ -85,7 +85,7 @@ feature -- Application Switches
 	set_app_y_position (v: INTEGER)
 			-- set app y position
 		do
-			app_cfg.put_value ("/gui/app_y_position", v)
+			app_cfg.put_integer_value ("/gui/app_y_position", v)
 		end
 
 	app_maximised: BOOLEAN
@@ -97,7 +97,7 @@ feature -- Application Switches
 	set_app_maximised (flag: BOOLEAN)
 			-- set app maximised flag
 		do
-			app_cfg.put_value("/gui/app_maximised", flag)
+			app_cfg.put_boolean_value("/gui/app_maximised", flag)
 		end
 
 	main_notebook_tab_pos: INTEGER
@@ -111,7 +111,7 @@ feature -- Application Switches
 		require
 			a_tab_pos_valid: a_tab_pos > 0
 		do
-			app_cfg.put_value("/gui/main_notebook_tab_pos", a_tab_pos)
+			app_cfg.put_integer_value ("/gui/main_notebook_tab_pos", a_tab_pos)
 		end
 
 	explorer_split_position: INTEGER
@@ -125,7 +125,7 @@ feature -- Application Switches
 		require
 			v > 0
 		do
-			app_cfg.put_value ("/gui/explorer_split_position", v)
+			app_cfg.put_integer_value ("/gui/explorer_split_position", v)
 		end
 
 	main_split_position: INTEGER
@@ -139,21 +139,21 @@ feature -- Application Switches
 		require
 			v > 0
 		do
-			app_cfg.put_value ("/gui/main_split_position", v)
+			app_cfg.put_integer_value ("/gui/main_split_position", v)
 		end
 
-	text_editor_command: attached STRING
+	text_editor_command: STRING
 			-- Path of editor application for ADL files.
 		do
 			Result := app_cfg.string_value_env_var_sub ("/commands/text_editor_command")
 		end
 
-	set_text_editor_command (a_value: attached STRING)
+	set_text_editor_command (a_value: STRING)
 			-- set editor
 		require
 			value_not_empty: not a_value.is_empty
 		do
-			app_cfg.put_value ("/commands/text_editor_command", a_value)
+			app_cfg.put_string_value ("/commands/text_editor_command", a_value)
 		end
 
 end
