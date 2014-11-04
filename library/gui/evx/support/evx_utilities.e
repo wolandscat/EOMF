@@ -31,36 +31,6 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	show_in_system_browser (url: STRING)
-			-- Launch the operating system's default browser to display the contents of `url'.
-		require
-			url_not_empty: not url.is_empty
-		local
-			command: STRING
-			process: PROCESS
-		do
-   			if {PLATFORM}.is_windows then
-   				command := "cmd /q /d /c start %"%" /b"
-			elseif {PLATFORM}.is_mac then
-				command := "open"
-			elseif {PLATFORM}.is_unix then
-   				command := "xdg-open"
-			else
-   				command := "firefox"
-   			end
-
-			command := command + " %"" + url + "%""
-
-   			if {PLATFORM}.is_windows and {PLATFORM}.is_thread_capable then
-	   			process := (create {PROCESS_FACTORY}).process_launcher (command, Void, Void)
-	   			process.set_hidden (True)
-	   			process.set_separate_console (False)
-	   			process.launch
-   			else
-				(create {EXECUTION_ENVIRONMENT}).launch (command)
-   			end
-		end
-
 	populate_ev_multi_list_from_hash (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable HASH_TABLE [ANY, STRING])
 			-- populate rows of a multi-column list with name - value pairs in a HASH_TABLE
 			-- Note that the value type is assumed to have a sensible outpur from its 'out' function

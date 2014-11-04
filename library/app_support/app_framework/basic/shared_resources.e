@@ -103,13 +103,13 @@ feature -- Validation
 	file_exists (path: STRING): BOOLEAN
 			-- Is `path' a valid, existing file?
 		do
-			Result := file_system.file_exists (file_system.canonical_pathname (path))
+			Result := file_system.file_exists (path)
 		end
 
 	directory_exists (path: STRING): BOOLEAN
 			-- Is `path' a valid, existing directory?
 		do
-			Result := file_system.directory_exists (file_system.canonical_pathname (path))
+			Result := file_system.directory_exists (path)
 		end
 
 feature -- Definitions: version control
@@ -187,6 +187,36 @@ feature -- External Commands
                 end
    			end
    		end
+
+	show_in_system_browser (url: STRING)
+			-- Launch the operating system's default browser to display the contents of `url'.
+		require
+			url_not_empty: not url.is_empty
+		local
+			command: STRING
+			process: PROCESS
+		do
+   			if {PLATFORM}.is_windows then
+   				command := "cmd /q /d /c start %"%" /b"
+			elseif {PLATFORM}.is_mac then
+				command := "open"
+			elseif {PLATFORM}.is_unix then
+   				command := "xdg-open"
+			else
+   				command := "firefox"
+   			end
+
+			command := command + " %"" + url + "%""
+
+   			if {PLATFORM}.is_windows and {PLATFORM}.is_thread_capable then
+	   			process := (create {PROCESS_FACTORY}).process_launcher (command, Void, Void)
+	   			process.set_hidden (True)
+	   			process.set_separate_console (False)
+	   			process.launch
+   			else
+				(create {EXECUTION_ENVIRONMENT}).launch (command)
+   			end
+		end
 
 	System_which_command_template: STRING
 			-- the command to detect if another command exists, i.e. which/type on unices, where on Windows
@@ -329,7 +359,6 @@ feature -- External Commands
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
-			stderr_str, stdout_str: STRING
 		do
             last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
@@ -395,7 +424,6 @@ feature -- External Commands
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
-			stderr_str, stdout_str: STRING
 		do
             last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
@@ -423,7 +451,6 @@ feature -- External Commands
 		local
 			pf: PROCESS_FACTORY
 			proc: PROCESS
-			stderr_str, stdout_str: STRING
 		do
 if global_error_reporting_level = Error_type_debug then
 	io.put_string ("----> do_system_run_command_asynchronous (" + a_cmd_line + ", " + if attached in_directory as att_dir then att_dir else "" end + ")%N")
@@ -559,13 +586,25 @@ feature -- Cygwin
 
 	Cygwin_bash_exe_path: STRING
 			-- path of bash on a cygwin installation on Windows
-		once
+		require
+		    {PLATFORM}.is_windows
+		local
+			i: INTEGER
+			cyg32path, cyg64path: STRING
+		once ("PROCESS")
 			create Result.make_empty
 		    if {PLATFORM}.is_windows then
-				if file_system.file_exists (Cygwin32_bash_exe_path) then
-					Result := Cygwin32_bash_exe_path
-				elseif file_system.file_exists (Cygwin64_bash_exe_path) then
-					Result := Cygwin64_bash_exe_path
+				create cyg32path.make_from_string (Cygwin32_bash_exe_path)
+				create cyg64path.make_from_string (Cygwin64_bash_exe_path)
+				from i := 1 until i > Windows_drives.count or not Result.is_empty loop
+					cyg32path.put (Windows_drives.item (i), 1)
+					cyg64path.put (Windows_drives.item (i), 1)
+					if file_system.file_exists (cyg32path) then
+						Result := cyg32path
+					elseif file_system.file_exists (cyg64path) then
+						Result := cyg64path
+					end
+					i := i + 1
 				end
 		    end
 		end
@@ -575,6 +614,9 @@ feature -- Cygwin
 
 	Cygwin64_bash_exe_path: STRING = "c:\cygwin64\bin\bash.exe"
 			-- path of bash on a cygwin 64 installation on Windows
+
+	Windows_drives: STRING = "cdefgh"
+			-- a reasonable set of drive letters to look for things
 
 	Cygwin_command_template: STRING
 			-- template string for creating a command to run in cygwin under Windows
