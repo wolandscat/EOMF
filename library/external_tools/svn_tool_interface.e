@@ -40,7 +40,7 @@ feature -- Queries
 		do
 		end
 
-	uncommitted_files: ARRAYED_LIST [STRING]
+	uncommitted_files: ARRAYED_LIST [TUPLE [status, filename: STRING]]
 			-- FIXME: not implemented
 			-- obtain formatted list of untracked and/or uncommitted files
 		do
@@ -60,16 +60,19 @@ feature -- Commands
 			system_run_command_asynchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
-	do_stage
+	do_stage_all
 		do
-			-- null operation
+			-- nothing to do 
 		end
 
-	do_commit  (a_commit_msg: STRING)
-			-- commit local changes on current branch to local repository
-			-- FIXME: not implemented
+	do_stage (file_list: ARRAYED_LIST [STRING])
 		do
+			-- nothing to do
+		end
 
+	do_commit (a_commit_msg: STRING)
+			-- FIXME: to be implemented
+		do
 		end
 
 	do_push

@@ -105,7 +105,7 @@ feature -- Access
 			valid_vcs_status (Result)
 		end
 
-	uncommitted_files: ARRAYED_LIST [STRING]
+	uncommitted_files: ARRAYED_LIST [TUPLE [status, filename: STRING]]
 			-- obtain formatted list of untracked and/or uncommitted files
 		deferred
 		end
@@ -143,16 +143,25 @@ feature -- Commands
 		deferred
 		end
 
-	do_stage
-			-- stage local changes on current branch to local repository
+	do_stage_all
+			-- stage all local changes on current branch to local repository
 		require
 			Tool_available: system_has_command (tool_name)
 			Checkout_area_valid: directory_exists (local_repository_directory)
 		deferred
 		end
 
+	do_stage (file_list: ARRAYED_LIST [STRING])
+			-- stage local changes on current branch to local repository
+		require
+			Tool_available: system_has_command (tool_name)
+			Files_to_commit: not file_list.is_empty
+			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
 	do_commit (a_commit_msg: STRING)
-			-- commit local changes on current branch to local repository
+			-- commit all staged changes
 		require
 			Message_valid: not a_commit_msg.is_empty
 			Tool_available: system_has_command (tool_name)
