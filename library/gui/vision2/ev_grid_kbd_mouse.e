@@ -204,29 +204,29 @@ feature -- Commands
 	step_to_viewable_parent_of_selected_row
 			-- If the selected row is hidden within a collapsed parent, select its nearest viewable parent.
 		do
-			if selected_cell /= Void then
-				step_to_row (selected_cell.row.index)
+			if attached selected_cell as att_cell then
+				step_to_row (att_cell.row.index)
 			end
 		end
 
-	expand_tree (a_row: EV_GRID_ROW; test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	expand_tree (a_row: EV_GRID_ROW; test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 			-- Expand `row' and all of its sub-rows, recursively.
 		require
 			is_tree_enabled
 		local
 			i: INTEGER
 		do
-			if a_row.is_expandable and (not attached test or else test.item ([a_row])) then
+			if a_row.is_expandable and (not attached test_agt as att_test or else att_test.item ([a_row])) then
 				a_row.expand_actions.block
 				a_row.expand
 				a_row.expand_actions.resume
 				from i := 1 until i > a_row.subrow_count loop
-					expand_tree (a_row.subrow (i), test)
+					expand_tree (a_row.subrow (i), test_agt)
 					i := i + 1
 				end
 			end
 		ensure
-			row_expanded: a_row.is_expandable and (not attached test or else test.item ([a_row])) implies a_row.is_expanded
+			row_expanded: a_row.is_expandable and (not attached test_agt or else test_agt.item ([a_row])) implies a_row.is_expanded
 		end
 
 	collapse_tree (a_row: EV_GRID_ROW)
@@ -330,7 +330,7 @@ feature -- Commands
 			top_level_rows.do_all (agent tree_do_all_nodes (?, a_node_action))
 		end
 
-	collapse_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	collapse_one_level (test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		require
 			is_tree_enabled
 		local
@@ -342,7 +342,7 @@ feature -- Commands
 					get_grid_row_collapsable_nodes (row (i))
 				end
 				from ev_grid_row_list.start until ev_grid_row_list.off loop
-					if not attached test or else test.item ([ev_grid_row_list.item]) then
+					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_grid_row_list.item]) then
 						ev_grid_row_list.item.collapse_actions.block
 						ev_grid_row_list.item.collapse
 						ev_grid_row_list.item.collapse_actions.resume
@@ -353,7 +353,7 @@ feature -- Commands
 			end
 		end
 
-	expand_one_level (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+	expand_one_level (test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		require
 			is_tree_enabled
 		local
@@ -365,7 +365,7 @@ feature -- Commands
 					get_grid_row_expandable_nodes (row (i))
 				end
 				from ev_grid_row_list.start until ev_grid_row_list.off loop
-					if not attached test or else test.item ([ev_grid_row_list.item]) then
+					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_grid_row_list.item]) then
 						ev_grid_row_list.item.expand_actions.block
 						ev_grid_row_list.item.expand
 						ev_grid_row_list.item.expand_actions.resume
@@ -376,15 +376,15 @@ feature -- Commands
 			end
 		end
 
-	expand_all (test: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
-			-- expand rows that pass `test'
+	expand_all (test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+			-- expand rows that pass `test_agt'
 		require
 			is_tree_enabled
 		local
 			i: INTEGER
 		do
 			from i := 1 until i > row_count loop
-				expand_tree (row (i), test)
+				expand_tree (row (i), test_agt)
 				i := i + row (i).subrow_count_recursive + 1
 			end
 		end
@@ -401,8 +401,8 @@ feature -- Commands
 			end
 		end
 
-	collapse_except (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
-			-- collapse except rows that pass `test'
+	collapse_except (test_agt: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+			-- collapse except rows that pass `test_agt'
 		require
 			is_tree_enabled
 		local
@@ -411,7 +411,7 @@ feature -- Commands
 		do
 			create matching_rows.make (0)
 			from i := 1 until i > row_count loop
-				if test.item ([row (i)]) and attached row (i).parent_row then
+				if test_agt.item ([row (i)]) and attached row (i).parent_row then
 					matching_rows.extend (i)
 				end
 				i := i + 1
