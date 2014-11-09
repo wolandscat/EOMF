@@ -164,8 +164,8 @@ feature {NONE} -- Implementation
 			screen_area: EV_RECTANGLE
 		do
 			screen_area := monitor_area (a_window)
-			a_window.set_maximum_width (screen_area.width)
-			a_window.set_maximum_height (screen_area.height)
+			a_window.set_maximum_width ((0.8 * screen_area.width).floor)
+			a_window.set_maximum_height ((0.8 * screen_area.height).floor)
 		end
 
 	monitor_area (a_window: EV_WINDOW): EV_RECTANGLE
