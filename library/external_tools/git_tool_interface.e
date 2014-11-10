@@ -50,6 +50,10 @@ feature -- Queries
 				str.prune_all ('%R')
 				str.prune_all (' ')
 				Result.append (str.split ('%N'))
+				if Result.last.is_empty then
+					Result.finish
+					Result.remove
+				end
 			end
 		end
 
@@ -62,8 +66,8 @@ feature -- Queries
 			cmd_args: STRING
 		do
 			-- see if there are any local files not staged
-			system_run_command_query (tool_name, "diff-files --quiet", current_directory)
-			if last_command_result.exit_code = 1 then
+			system_run_command_query (tool_name, "status --porcelain", current_directory)
+			if last_command_result.stdout.has_substring ("??") then
 				Result := Vcs_status_files_not_committed
 			else
 				create cmd_args.make_empty
@@ -106,53 +110,6 @@ feature -- Queries
 			end
 		end
 
-	synchronisation_status_2: INTEGER
-			-- SLOW VERSION
-			-- return status of this repo w.r.t. upstream origin
-			-- algorithm based on stackoverflow: http://stackoverflow.com/questions/3258243/git-check-if-pull-needed
-		local
-			local_commit, remote_commit, merge_commit: STRING
-		do
-			-- see if there are any local files not staged
-			system_run_command_query (tool_name, "diff-files --quiet", current_directory)
-			if last_command_result.exit_code = 1 then
-				Result := Vcs_status_files_not_committed
-			else
-				-- obtain local commit id on this branch
-				system_run_command_query (tool_name, "rev-parse HEAD", current_directory)
-				if last_command_result.succeeded then
-					local_commit := last_command_result.stdout
-					local_commit.right_adjust
-
-					-- obtain remote commit id on this branch
-					system_run_command_query (tool_name, "rev-parse @{u}", current_directory)
-					if last_command_result.succeeded then
-						remote_commit := last_command_result.stdout
-						remote_commit.right_adjust
-
-						if local_commit.is_equal (remote_commit) then
-							Result := Vcs_status_up_to_date
-						else
-							-- obtain the commit at which the current branch and its remote diverge
-							system_run_command_query (tool_name, "merge-base HEAD @{u}", current_directory)
-							if last_command_result.succeeded then
-								merge_commit := last_command_result.stdout
-								merge_commit.right_adjust
-
-								if local_commit.is_equal (merge_commit) then
-									Result := Vcs_status_pull_required
-								elseif remote_commit.is_equal (merge_commit) then
-									Result := Vcs_status_push_required
-								else
-									Result := Vcs_status_diverged
-								end
-							end
-						end
-					end
-				end
-			end
-		end
-
 	uncommitted_files: ARRAYED_LIST [TUPLE [status, filename: STRING]]
 			-- obtain formatted list of untracked and/or uncommitted files
 		local
@@ -166,11 +123,13 @@ feature -- Queries
 				string_recs.append (last_command_result.stdout.split ('%N'))
 
 				across string_recs as string_rec_csr loop
-					create file_record
-					-- supposedly reliable: first field of string rec (see https://git-htmldocs.googlecode.com/git/git-status.html)
-					file_record.status := string_rec_csr.item.substring (1, 2)
-					file_record.filename := string_rec_csr.item.substring (4, string_rec_csr.item.count)
-					Result.extend (file_record)
+					if not string_rec_csr.item.is_empty then
+						create file_record
+						-- supposedly reliable: first field of string rec (see https://git-htmldocs.googlecode.com/git/git-status.html)
+						file_record.status := string_rec_csr.item.substring (1, 2)
+						file_record.filename := string_rec_csr.item.substring (4, string_rec_csr.item.count)
+						Result.extend (file_record)
+					end
 				end
 			end
 		end
