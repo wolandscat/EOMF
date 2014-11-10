@@ -22,7 +22,21 @@ inherit
 		end
 
 create
-	make
+	make, make_fixed
+
+feature -- Definitions
+
+   	rel_cur_dir: STRING
+			-- generate correct String for platform meaning 'current directory', normally "."
+		once
+			Result := file_system.relative_current_directory
+		end
+
+   	rel_parent_dir: STRING
+			-- generate correct String for platform meaning 'parent directory', normally ".."
+		once
+			Result := file_system.relative_parent_directory
+		end
 
 feature {NONE} -- Initialisation
 
@@ -42,8 +56,22 @@ feature {NONE} -- Initialisation
 			if not base_name_pattern_regex.is_compiled then
 				errors.add_error (ec_regex_invalid, <<base_name_pattern>>, generator + ".make")
 			else
-				find_matching_file_paths (a_dir_name)
+				find_matching_file_paths (a_dir_name, True)
 			end
+		end
+
+	make_fixed (a_dir_name, a_file_name: STRING)
+			-- initialise with `a_dir_name', and a literal file name to match exactly (faster
+			-- than `make', which uses regex matching)
+		require
+			Dir_name_exists: not a_dir_name.is_empty
+			Filename_valid: not a_file_name.is_empty
+   		do
+   			create errors.make
+   			create matching_paths.make (0)
+			create base_name_pattern_regex.make
+			base_name_pattern := a_file_name
+			find_matching_file_paths (a_dir_name, False)
 		end
 
 feature -- Access
@@ -61,7 +89,7 @@ feature {NONE} -- Implementation
 
 	base_name_pattern_regex: RX_PCRE_REGULAR_EXPRESSION
 
-	find_matching_file_paths (a_dir_name: STRING)
+	find_matching_file_paths (a_dir_name: STRING; use_regex_matching: BOOLEAN)
 			-- add file paths found in `a_dir_name' that match `base_name_pattern'
 			-- recursively applied
 		require
@@ -69,10 +97,8 @@ feature {NONE} -- Implementation
 		local
 			a_dir: DIRECTORY
 			a_file: RAW_FILE
-			rel_cur_dir, rel_parent_dir, fpath: STRING
+			fpath: STRING
    		do
-   			rel_cur_dir := file_system.relative_current_directory
-   			rel_parent_dir := file_system.relative_parent_directory
 			create a_dir.make (a_dir_name)
 			if a_dir.exists and a_dir.is_readable then
 				a_dir.open_read
@@ -81,8 +107,10 @@ feature {NONE} -- Implementation
 						fpath := file_system.pathname (a_dir_name, fnames_csr.item)
 						create a_file.make (fpath)
 						if a_file.is_directory then
-							find_matching_file_paths (fpath.twin)
-						elseif base_name_pattern_regex.recognizes (fnames_csr.item) then
+							find_matching_file_paths (fpath.twin, use_regex_matching)
+						elseif use_regex_matching and then base_name_pattern_regex.recognizes (fnames_csr.item) or else
+							base_name_pattern.is_equal (fnames_csr.item) 
+						then
 							matching_paths.extend (fpath)
 						end
 					end
