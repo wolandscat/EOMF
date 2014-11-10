@@ -169,8 +169,9 @@ feature -- Commands
 			msg: STRING
 		do
 			create msg.make_from_string (a_commit_msg)
-			msg.replace_substring_all ("%"", "\%"")
-			system_run_command_asynchronous (tool_name, "commit -m %"" + msg + "%"", current_directory)
+			-- replace any double quote characters with single quote characters
+			msg.replace_substring_all ("%"", "'")
+			system_run_command_asynchronous (tool_name, "commit -m \%"" + msg + "\%"", current_directory)
 		end
 
 	do_push
