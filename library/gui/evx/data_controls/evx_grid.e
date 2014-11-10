@@ -256,14 +256,17 @@ feature -- Modification
 			end
 		end
 
-	last_row_add_checkbox (col: INTEGER)
+	last_row_add_checkbox (col: INTEGER; checked, editable: BOOLEAN)
 			-- Add a checkbox column to `col' of a `last_row'
 		local
 			gcli: EV_GRID_CHECKABLE_LABEL_ITEM
 		do
 			create gcli
 			last_row.set_item (col, gcli)
-			gcli.set_is_checked (True)
+			gcli.set_is_checked (checked)
+			if not editable then
+				gcli.disable_sensitive
+			end
 			if ev_grid.is_tree_enabled then
 				gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
 			end
