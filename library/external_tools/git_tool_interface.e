@@ -64,10 +64,14 @@ feature -- Queries
 			local_commit, remote_commit, merge_commit: STRING
 			cmd_res: LIST [STRING]
 			cmd_args: STRING
+			sts_res: STRING
 		do
 			-- see if there are any local files not staged
 			system_run_command_query (tool_name, "status --porcelain", current_directory)
-			if last_command_result.stdout.has_substring ("??") then
+
+			-- logically we should jsut check if it is empty, but we can't trust git commands
+			-- not to put in \r\n junk. If there are real files, then the length is > 2
+			if last_command_result.stdout.count > 2 then
 				Result := Vcs_status_files_not_committed
 			else
 				create cmd_args.make_empty
@@ -144,12 +148,12 @@ feature -- Commands
 	do_checkout_branch (a_branch_name: STRING)
 			-- check out named branch
 		do
-			system_run_command_asynchronous (tool_name, "checkout " + a_branch_name, current_directory)
+			system_run_command_synchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
 	do_stage_all
 		do
-			system_run_command_asynchronous (tool_name, "add -A", current_directory)
+			system_run_command_synchronous (tool_name, "add -A", current_directory)
 		end
 
 	do_stage (file_list: ARRAYED_LIST [STRING])
@@ -161,7 +165,7 @@ feature -- Commands
 				file_spec.append (file_name_csr.item)
 				file_spec.append_character (' ')
 			end
-			system_run_command_asynchronous (tool_name, "add " + file_spec, current_directory)
+			system_run_command_synchronous (tool_name, "add " + file_spec, current_directory)
 		end
 
 	do_commit (a_commit_msg: STRING)
@@ -171,7 +175,7 @@ feature -- Commands
 			create msg.make_from_string (a_commit_msg)
 			-- replace any double quote characters with single quote characters
 			msg.replace_substring_all ("%"", "'")
-			system_run_command_asynchronous (tool_name, "commit -m \%"" + msg + "\%"", current_directory)
+			system_run_command_synchronous (tool_name, "commit -m \%"" + msg + "\%"", current_directory)
 		end
 
 	do_push
