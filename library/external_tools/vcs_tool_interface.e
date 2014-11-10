@@ -22,7 +22,6 @@ feature -- Initialisation
 			precursor (a_tool_name)
 			create local_repository_directory.make_empty
 			create remote_repository_url.make_empty
-			available_branches.compare_objects
 		end
 
 	initialise_remote (a_remote_url: STRING)
