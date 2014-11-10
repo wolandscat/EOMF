@@ -75,7 +75,7 @@ feature -- Access
 
 	maximum_height: INTEGER
 			-- maximum height to display, including header, before scroll bars will appear; if = 0, no max height
-	
+
 	maximum_width: INTEGER
 			-- maximum width to display, before scroll bars will appear; if = 0, no max width
 
@@ -264,7 +264,9 @@ feature -- Modification
 			create gcli
 			last_row.set_item (col, gcli)
 			gcli.set_is_checked (True)
-			gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
+			if ev_grid.is_tree_enabled then
+				gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
+			end
 		end
 
 	remove_matching_sub_rows (a_parent_row: EV_GRID_ROW; a_row_test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
@@ -382,7 +384,7 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	do_set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP; 
+	do_set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP;
 			an_edit_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add column details to `last_row'
 		local
