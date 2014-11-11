@@ -32,7 +32,7 @@ feature -- Initialisation
 			has_remote_repository_url
 		end
 
-	initialise_checkout_from_remote (a_parent_dir, a_remote_url: STRING)
+	initialise_clone_remote_and_checkout (a_parent_dir, a_remote_url: STRING)
 		require
 			Tool_available: system_has_command (tool_name)
 		do

@@ -45,23 +45,21 @@ feature -- Factory
 			end
 		end
 
-	create_vcs_tool_interface_from_checkout (a_local_dir: STRING): detachable VCS_TOOL_INTERFACE
+	create_tool_interface_from_checkout (a_local_dir: STRING): detachable VCS_TOOL_INTERFACE
+			-- create the right kind of tool interface for the checkout area;
+			-- dont' create anything if no tool available (i.e. installed somewhere on system)
 		do
-			if is_git_clone (a_local_dir) then
+			if is_git_clone (a_local_dir) and then tool_available (Git_tool_name) then
 				check attached {VCS_TOOL_INTERFACE} create_tool_interface (Git_tool_name) as att_tool_if then
 					Result := att_tool_if
 				end
-				if tool_available (Git_tool_name) then
-					Result.initialise_from_local (a_local_dir)
-				end
+				Result.initialise_from_local (a_local_dir)
 
-			elseif is_svn_checkout (a_local_dir) then
+			elseif is_svn_checkout (a_local_dir) and then tool_available (Svn_tool_name) then
 				check attached {VCS_TOOL_INTERFACE} create_tool_interface (Svn_tool_name) as att_tool_if then
 					Result := att_tool_if
 				end
-				if tool_available (Svn_tool_name) then
-					Result.initialise_from_local (a_local_dir)
-				end
+				Result.initialise_from_local (a_local_dir)
 			end
 		end
 

@@ -26,8 +26,8 @@ feature -- Definitions
 
 feature -- Status Report
 
-	is_checkout_area (a_dir: STRING): BOOLEAN
-			-- True if `a_dir' is any kind of checkout / clone of a remote repo
+	is_vcs_checkout_area (a_dir: STRING): BOOLEAN
+			-- True if `a_dir' is any kind of version control system checkout / clone of a remote repo
 		do
 			Result := is_git_clone (a_dir) or is_svn_checkout (a_dir)
 		end
@@ -46,10 +46,10 @@ feature -- Status Report
 
 feature -- Access
 
-	checkout_area_type (a_dir: STRING): STRING
+	vcs_checkout_area_type (a_dir: STRING): STRING
 			-- True if `a_dir' is any kind of checkout / clone of a remote repo
 		require
-			is_checkout_area (a_dir)
+			is_vcs_checkout_area (a_dir)
 		do
 			if is_git_clone (a_dir) then
 				Result := Git_tool_name
