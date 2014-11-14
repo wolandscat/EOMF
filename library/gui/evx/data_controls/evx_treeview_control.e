@@ -50,7 +50,8 @@ create
 feature -- Initialisation
 
 	make (a_tree_ctl: EVX_TREE_CONTROL_I; a_collapse_expand_test_agt: like collapse_expand_test_agt;
-			a_tree_collapse_all_icon, a_tree_collapse_icon, a_tree_expand_icon, a_tree_expand_all_icon: EV_PIXMAP)
+			a_tree_collapse_all_icon, a_tree_collapse_icon, a_tree_expand_icon, a_tree_expand_all_icon: EV_PIXMAP;
+			a_resize_agt: like resize_agt)
 		local
 			ev_hbox: EV_HORIZONTAL_BOX
 		do
@@ -94,6 +95,11 @@ feature -- Initialisation
 			ev_hbox.extend (ev_expand_button)
 
 			collapse_expand_test_agt := a_collapse_expand_test_agt
+			if attached a_resize_agt as att_agt then
+				resize_agt := att_agt
+			else
+				resize_agt := agent gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
+			end
 		end
 
 feature -- Access
@@ -103,8 +109,6 @@ feature -- Access
 	gui_tree_control: EVX_TREE_CONTROL_I
 
 	ev_expand_button, ev_expand_one_button, ev_collapse_one_button, ev_collapse_button: EV_BUTTON
-
-	collapse_expand_test_agt: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN]
 
 feature -- Commands
 
@@ -119,7 +123,7 @@ feature -- Events
 	on_collapse_one_level
 		do
 			gui_tree_control.collapse_one_level_filtered (collapse_expand_test_agt)
-			gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
+			resize_agt.call ([])
 		end
 
 	on_expand_one_level
@@ -128,7 +132,7 @@ feature -- Events
 				agent
 					do
 						gui_tree_control.expand_one_level_filtered (collapse_expand_test_agt)
-						gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
+						resize_agt.call ([])
 					end
 			)
 		end
@@ -139,7 +143,7 @@ feature -- Events
 				agent
 					do
 						gui_tree_control.expand_all_filtered (collapse_expand_test_agt)
-						gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
+						resize_agt.call ([])
 					end
 			)
 		end
@@ -147,17 +151,19 @@ feature -- Events
 	on_collapse_all
 		do
 			gui_tree_control.collapse_all
-			gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
+			resize_agt.call ([])
 		end
 
 	on_collapse_except (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
 		do
 			gui_tree_control.collapse_except (test)
-		--	gui_tree_control.resize_columns_to_content (Default_grid_expansion_factor)
 		end
 
 feature {NONE} -- Implementation
 
+	collapse_expand_test_agt: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN]
+
+	resize_agt: detachable PROCEDURE [ANY, TUPLE]
 
 end
 
