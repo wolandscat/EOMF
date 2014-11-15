@@ -54,22 +54,16 @@ feature -- Initialisation
 				-- add some more spacing due to title
 				mh := mh + Default_border_width
 				mw := mw + Default_border_width
-
-				if arrange_horizontally then
-					mw := mw + ev_title_label.width + Default_padding_width
-				else
-					mh := mh + ev_title_label.height + Default_padding_width
-				end
 			end
 
 			-- create the data control and add to ev_container
 			create_ev_data_control
 			ev_root_container.extend (ev_data_control)
 			if min_width > 0 then
-				ev_root_container.set_minimum_width (mw)
+				ev_data_control.set_minimum_width (mw)
 			end
 			if min_height > 0 then
-				ev_root_container.set_minimum_height (mh)
+				ev_data_control.set_minimum_height (mh)
 			end
 
 			-- control expanding characteristics of main control
