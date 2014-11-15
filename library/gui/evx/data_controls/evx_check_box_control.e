@@ -22,7 +22,7 @@ inherit
 		rename
 			data_source_setter_agent as on_select_agent
 		redefine
-			data_source_agent, on_select_agent
+			data_source_agent, on_select_agent, do_enable_editable, do_disable_editable
 		end
 
 create
@@ -118,6 +118,20 @@ feature {NONE} -- Implementation
 			if attached on_select_agent as att_agt then
 				att_agt.call ([ev_data_control.is_selected])
 			end
+		end
+
+	do_enable_editable
+			-- enable editing
+		do
+			precursor
+			ev_data_control.enable_sensitive
+		end
+
+	do_disable_editable
+			-- disable editing
+		do
+			precursor
+			ev_data_control.disable_sensitive
 		end
 
 end
