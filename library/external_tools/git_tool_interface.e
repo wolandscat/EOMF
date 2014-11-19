@@ -59,7 +59,53 @@ feature -- Queries
 
 	synchronisation_status: INTEGER
 			-- return status of this repo w.r.t. upstream origin
+			-- does not require a fetch to be done first
+		local
+			local_commit, remote_commit: STRING
+			cmd_res: LIST [STRING]
+			cmd_args: STRING
+		do
+			-- see if there are any local files not staged
+			system_run_command_query (tool_name, "status --porcelain", current_directory)
+
+			-- logically we should just check if it is empty, but we can't trust git commands
+			-- not to put in \r\n junk. If there are real files, then the length is > 2
+			if last_command_result.stdout.count > 2 then
+				Result := Vcs_status_files_not_committed
+			else
+				create cmd_args.make_empty
+
+				-- Run git commands: 
+				-- 	obtain local commit id on this branch
+				-- 	obtain remote commit id on this branch
+				cmd_args.append ("rev-parse HEAD")
+				cmd_args.append (" && " + tool_name + " ls-remote origin HEAD")
+
+				system_run_command_query (tool_name, cmd_args, current_directory)
+				cmd_res := last_command_result.stdout.split ('%N')
+				if cmd_res.count >= 2 then
+					local_commit := cmd_res[1]
+					local_commit.right_adjust
+
+					remote_commit := cmd_res[2]
+					remote_commit.replace_substring_all ("HEAD", "")
+					remote_commit.right_adjust
+
+					if local_commit.is_equal (remote_commit) then
+						Result := Vcs_status_up_to_date
+					else
+						Result := Vcs_status_sync_required
+					end
+				else
+					Result := Vcs_status_unknown
+				end
+			end
+		end
+
+	merge_status: INTEGER
+			-- return status of this repo w.r.t. upstream origin
 			-- algorithm based on stackoverflow: http://stackoverflow.com/questions/3258243/git-check-if-pull-needed
+			-- call after fetch
 		local
 			local_commit, remote_commit, merge_commit: STRING
 			cmd_res: LIST [STRING]
@@ -69,25 +115,23 @@ feature -- Queries
 			-- see if there are any local files not staged
 			system_run_command_query (tool_name, "status --porcelain", current_directory)
 
-			-- logically we should jsut check if it is empty, but we can't trust git commands
+			-- logically we should just check if it is empty, but we can't trust git commands
 			-- not to put in \r\n junk. If there are real files, then the length is > 2
 			if last_command_result.stdout.count > 2 then
 				Result := Vcs_status_files_not_committed
 			else
-				create cmd_args.make_empty
-
 				-- Run 3 git commands: 
 				-- 	obtain local commit id on this branch
 				-- 	obtain remote commit id on this branch
 				-- 	obtain the commit at which the current branch and its remote diverge
-				-- Equivalent command: git rev-parse HEAD && git rev-parse @{u} && git merge-base HEAD @{u}
+				create cmd_args.make_empty
 				cmd_args.append ("rev-parse HEAD")
 				cmd_args.append (" && " + tool_name + " rev-parse @{u}")
 				cmd_args.append (" && " + tool_name + " merge-base HEAD @{u}")
 				
 				system_run_command_query (tool_name, cmd_args, current_directory)
 				cmd_res := last_command_result.stdout.split ('%N')
-				if cmd_res.count >= 3 then
+				if cmd_res.count >= 2 then
 					local_commit := cmd_res[1]
 					local_commit.right_adjust
 
@@ -186,6 +230,11 @@ feature -- Commands
 	do_pull
 		do
 			system_run_command_asynchronous (tool_name, "pull --recurse-submodules --progress", current_directory)
+		end
+
+	do_fetch
+		do
+			system_run_command_asynchronous (tool_name, "fetch --quiet origin", current_directory)
 		end
 
 end

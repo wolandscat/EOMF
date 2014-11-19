@@ -98,7 +98,14 @@ feature -- Access
 		end
 
 	synchronisation_status: INTEGER
-			-- return status of this repo w.r.t. upstream origin
+			-- return sync status of this repo w.r.t. upstream origin
+		deferred
+		ensure
+			valid_vcs_status (Result)
+		end
+
+	merge_status: INTEGER
+			-- return merge status of this repo w.r.t. upstream origin
 		deferred
 		ensure
 			valid_vcs_status (Result)
@@ -173,6 +180,14 @@ feature -- Commands
 		require
 			Tool_available: system_has_command (tool_name)
 			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
+	do_fetch
+			-- update local repository index with changes from remote
+		require
+			Tool_available: system_has_command (tool_name)
+			current_directory_set
 		deferred
 		end
 

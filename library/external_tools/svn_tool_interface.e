@@ -36,7 +36,11 @@ feature -- Queries
 
 	synchronisation_status: INTEGER
 			-- FIXME: not implemented
-			-- return status of this repo w.r.t. upstream origin
+		do
+		end
+
+	merge_status: INTEGER
+			-- FIXME: not implemented
 		do
 		end
 
@@ -78,6 +82,11 @@ feature -- Commands
 	do_push
 		do
 			system_run_command_asynchronous (tool_name, "checkin", current_directory)
+		end
+
+	do_fetch
+		do
+			-- nothing to do
 		end
 
 	do_pull

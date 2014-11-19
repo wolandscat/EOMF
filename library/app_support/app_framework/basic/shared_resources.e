@@ -117,9 +117,10 @@ feature -- Definitions: version control
 	Vcs_status_unknown: INTEGER = 0
 	Vcs_status_files_not_committed: INTEGER = 1
 	Vcs_status_up_to_date: INTEGER = 2
-	Vcs_status_pull_required: INTEGER = 3
-	Vcs_status_push_required: INTEGER = 4
-	Vcs_status_diverged: INTEGER = 5
+	Vcs_status_sync_required: INTEGER = 3
+	Vcs_status_pull_required: INTEGER = 4
+	Vcs_status_push_required: INTEGER = 5
+	Vcs_status_diverged: INTEGER = 6
 
 	Valid_vcs_status (a_val: INTEGER): BOOLEAN
 		do
