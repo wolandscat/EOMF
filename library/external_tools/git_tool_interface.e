@@ -234,7 +234,7 @@ feature -- Commands
 
 	do_fetch
 		do
-			system_run_command_asynchronous (tool_name, "fetch --quiet origin", current_directory)
+			system_run_command_asynchronous (tool_name, "fetch --progress origin", current_directory)
 		end
 
 end
