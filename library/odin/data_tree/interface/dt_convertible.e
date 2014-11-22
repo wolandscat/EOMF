@@ -27,19 +27,10 @@ feature -- Initialisation
 
 feature -- Representation
 
-	dt_representation: detachable DT_COMPLEX_OBJECT
+	dt_representation: DT_COMPLEX_OBJECT
 			-- representation as a data tree
-		note
-			option: transient
-		attribute
-		end
-
-feature -- Synchronisation
-
-	synchronise_to_tree
-			-- synchronise to parse tree representation
 		do
-			create dt_representation.make_from_object (Current)
+			create Result.make_from_object (Current)
 		end
 
 feature -- Finalisation
@@ -47,18 +38,6 @@ feature -- Finalisation
 	finalise_dt
 			-- finalisation routine to guarantee validity on creation from dt
 		do
-		end
-
-feature -- Duplication
-
-	safe_deep_twin: like Current
-		local
-			dt_co: detachable DT_COMPLEX_OBJECT
-		do
-			dt_co := dt_representation
-			dt_representation := Void
-			Result := deep_twin
-			dt_representation := dt_co
 		end
 
 feature {DT_OBJECT_CONVERTER} -- Conversion

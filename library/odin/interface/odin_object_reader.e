@@ -93,10 +93,7 @@ feature -- Commands
 		do
 			-- serialise to a String
 			serialiser.reset
-			obj.synchronise_to_tree
-			check attached obj.dt_representation as att_dt then
-				create a_dt_iterator.make (att_dt, serialiser)
-			end
+			create a_dt_iterator.make (obj.dt_representation, serialiser)
 			a_dt_iterator.do_all
 
 			-- write to file
