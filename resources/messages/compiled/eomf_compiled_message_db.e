@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (166)
+			create message_table.make (167)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -125,6 +125,7 @@ feature -- Initialisation
 			message_table.put ("Schema $1 included schema $2 validity failure", ec_BMM_INCERR)
 			message_table.put ("Schema $1 included schema $2 validity warning", ec_BMM_INCWARN)
 			message_table.put ("Schema $1 archetype parent class $2 not defined in schema", ec_BMM_ARPAR)
+			message_table.put ("Schema $1 RM release $2 not valid; should be 3-part numeric version", ec_BMM_RMREL)
 			message_table.put ("No pixmap found for $1", ec_get_icon_pixmap)
 			message_table.put ("No pixmap found for $1", ec_no_pixmap_found)
 			message_table.put ("(unknown)", ec_unknown_value)

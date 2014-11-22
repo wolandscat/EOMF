@@ -110,6 +110,7 @@ feature -- Definitions
 		ec_BMM_INCERR: STRING = "BMM_INCERR"
 		ec_BMM_INCWARN: STRING = "BMM_INCWARN"
 		ec_BMM_ARPAR: STRING = "BMM_ARPAR"
+		ec_BMM_RMREL: STRING = "BMM_RMREL"
 		ec_get_icon_pixmap: STRING = "get_icon_pixmap"
 		ec_no_pixmap_found: STRING = "no_pixmap_found"
 		ec_unknown_value: STRING = "unknown_value"

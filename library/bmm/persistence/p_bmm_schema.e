@@ -482,6 +482,11 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			package_classes: HASH_TABLE [STRING, STRING]
 			class_names: ARRAYED_LIST [STRING]
 		do
+			-- check that RM shema release is valid
+			if not valid_standard_version (rm_release) then
+				add_error (ec_BMM_RMREL, <<schema_id, rm_release>>)
+			end
+
 			-- check archetype parent class in list of class names
 			if attached archetype_parent_class as apc and then not has_class_definition (apc) then
 				add_error (ec_BMM_ARPAR, <<schema_id, apc>>)

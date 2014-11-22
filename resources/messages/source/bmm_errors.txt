@@ -71,6 +71,7 @@ templates = <
 		["BMM_INCERR"] = <"Schema $1 included schema $2 validity failure">
 		["BMM_INCWARN"] = <"Schema $1 included schema $2 validity warning">
 		["BMM_ARPAR"] = <"Schema $1 archetype parent class $2 not defined in schema">
+		["BMM_RMREL"] = <"Schema $1 RM release $2 not valid; should be 3-part numeric version">
 	>
 >
 
