@@ -247,18 +247,18 @@ feature -- Commands
 			row_collapsed: not a_row.is_expanded
 		end
 
-	resize_viewable_area_to_content (a_max_height, a_max_width: INTEGER)
+	resize_viewable_area_to_content (a_height_limit, a_width_limit: INTEGER)
 			-- resize grid so all content visible, in currenly expanded or collapsed form
 			-- Call 'expand_all' or similar routine first to get the appropriate effect
 		do
-			if a_max_height > 0 then
-				set_minimum_height (a_max_height.max (virtual_height + header.height))
+			if a_height_limit > 0 then
+				set_minimum_height (a_height_limit.min (virtual_height + header.height))
 			else
 				set_minimum_height (virtual_height + header.height)
 			end
 
-			if a_max_width > 0 then
-				set_minimum_width (a_max_width.max (virtual_width))
+			if a_width_limit > 0 then
+				set_minimum_width (a_width_limit.min (virtual_width))
 			else
 				set_minimum_width (virtual_width)
 			end
