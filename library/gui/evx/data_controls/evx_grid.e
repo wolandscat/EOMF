@@ -356,7 +356,7 @@ feature -- Commands
 			-- resize grid so all content visible, in currenly expanded or collapsed form
 			-- Call 'expand_all' or similar routine first to get the appropriate effect
 		do
-			ev_grid.resize_viewable_area_to_content (maximum_height, maximum_width)
+			ev_grid.resize_viewable_area_to_content (maximum_height, maximum_width, Default_grid_expansion_factor)
 		end
 
 	resize_columns_to_content

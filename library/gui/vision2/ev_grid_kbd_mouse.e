@@ -247,21 +247,33 @@ feature -- Commands
 			row_collapsed: not a_row.is_expanded
 		end
 
-	resize_viewable_area_to_content (a_height_limit, a_width_limit: INTEGER)
-			-- resize grid so all content visible, in currenly expanded or collapsed form
-			-- Call 'expand_all' or similar routine first to get the appropriate effect
+	resize_viewable_area_to_content (a_height_limit, a_width_limit: INTEGER; expansion_factor: REAL)
+			-- resize grid so all content visible, in currenly expanded or collapsed form.
+			-- If either of first two arguments is 0, use `virtual_height' and `virtual_weight', else use the minimum of the
+			-- argument and `virtual_xxx'. The last number should be a number like 1.1 (10%). If the last argument is set to 0, 1 is assumed.
+		local
+			exp_factor: REAL
+			targ_height, targ_width: INTEGER
 		do
-			if a_height_limit > 0 then
-				set_minimum_height (a_height_limit.min (virtual_height + header.height))
+			if expansion_factor = 0 then
+				exp_factor := 1.0
 			else
-				set_minimum_height (virtual_height + header.height)
+				exp_factor := expansion_factor
 			end
 
-			if a_width_limit > 0 then
-				set_minimum_width (a_width_limit.min (virtual_width))
+			if a_height_limit > 0 then
+				targ_height := a_height_limit.min (virtual_height + header.height)
 			else
-				set_minimum_width (virtual_width)
+				targ_height := virtual_height + header.height
 			end
+			set_minimum_height ((targ_height * exp_factor).ceiling)
+
+			if a_width_limit > 0 then
+				targ_width := a_width_limit.min (virtual_width)
+			else
+				targ_width := virtual_width
+			end
+			set_minimum_width ((targ_width * exp_factor).ceiling)
 		end
 
 	resize_columns_to_content (expansion_factor: REAL)
