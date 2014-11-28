@@ -288,7 +288,7 @@ feature -- External Commands
 				Result := True
 			else
                 cmd_line := standard_command_line (System_which_command_template, a_cmd_name)
-                last_command_result_cache.put (create {PROCESS_RESULT}.make (cmd_line, Void))
+                last_command_check_result_cache.put (create {PROCESS_RESULT}.make (cmd_line, Void))
 				create pf
 				proc := pf.process_launcher_with_command_line (cmd_line, Void)
 				proc.set_hidden (True)
@@ -311,14 +311,14 @@ feature -- External Commands
 									s.right_adjust
 								end
 								command_template_cache.put (standard_new_command_template (s), cmd_name)
-                                last_command_result.append_stdout (s)
+                                last_command_check_result.append_stdout (s)
 							end
 						end (a_cmd_name, ?)
 				)
-                proc.redirect_error_to_agent (agent (s: STRING) do last_command_result.append_stderr (s) end)
+                proc.redirect_error_to_agent (agent (s: STRING) do last_command_check_result.append_stderr (s) end)
 				proc.launch
 				proc.wait_for_exit
-                last_command_result.set_exit_code (proc.exit_code)
+                last_command_check_result.set_exit_code (proc.exit_code)
 				Result := proc.exit_code = 0
 			end
 		end
@@ -578,7 +578,28 @@ end
             Result := last_command_result.succeeded
         end
  
+    last_command_check_succeeded: BOOLEAN
+        do
+            Result := last_command_check_result.succeeded
+        end
+ 
     last_command_result_cache: CELL [PROCESS_RESULT]
+			-- cached object for last run command
+        once ("PROCESS")
+            create Result.put (create {PROCESS_RESULT})
+        end
+
+    last_command_check_result: PROCESS_RESULT
+			-- obtain result of last run external command check
+        do
+            Result := last_command_check_result_cache.item
+        end
+
+    last_command_check_result_cache: CELL [PROCESS_RESULT]
+			-- cached object for last run command check; we separate this from 
+			-- `last_command_result_cache' because otherwise in workbench mode, 
+			-- pre-condition calls to `standard_has_command' pollute the main
+			-- command result cache
         once ("PROCESS")
             create Result.put (create {PROCESS_RESULT})
         end
