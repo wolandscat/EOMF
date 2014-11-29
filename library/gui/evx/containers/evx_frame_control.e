@@ -23,7 +23,7 @@ create
 
 feature -- Initialisation
 
-	make (a_title: STRING; min_height, min_width: INTEGER; horizontal_flag: BOOLEAN)
+	make (a_title: STRING; horizontal_flag: BOOLEAN)
 		do
 			create ev_root_container
 			ev_root_container.set_text (a_title)

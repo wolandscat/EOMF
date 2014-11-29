@@ -44,12 +44,12 @@ create
 feature -- Initialisation
 
 	make (a_title: STRING; a_tooltip: STRING; a_data_source: like data_source_agent;
-			a_value_set: like value_set; min_width: INTEGER)
+			a_value_set: like value_set; min_width_in_chars: INTEGER)
 		require
 			a_value_set.object_comparison
 		do
 			value_set := a_value_set
-			make_text_control (a_title, a_data_source, Text_min_height, min_width, True)
+			make_text_control (a_title, a_data_source, 1, min_width_in_chars, True)
 			if attached a_tooltip then
 				ev_data_control.set_tooltip (a_tooltip)
 			end
@@ -59,12 +59,12 @@ feature -- Initialisation
 		end
 
 	make_readonly (a_title: STRING; a_tooltip: STRING; a_data_source: like data_source_agent;
-			a_value_set: like value_set; min_width: INTEGER)
+			a_value_set: like value_set; min_width_in_chars: INTEGER)
 		require
 			a_value_set.object_comparison
 		do
 			value_set := a_value_set
-			make_readonly_text_control (a_title, a_data_source, Text_min_height, min_width, True)
+			make_readonly_text_control (a_title, a_data_source, 1, min_width_in_chars, True)
 			if attached a_tooltip then
 				ev_data_control.set_tooltip (a_tooltip)
 			end
@@ -77,14 +77,14 @@ feature -- Initialisation
 			a_data_source_setter_agent: like data_source_setter_agent;
 			a_data_source_remove_agent: like data_source_remove_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_width: INTEGER)
+			min_width_in_chars: INTEGER)
 		require
 			a_value_set.object_comparison
 		do
 			value_set := a_value_set
 			make_linked_text_control (a_title,
 				a_data_source, a_data_source_setter_agent, a_data_source_remove_agent,
-				an_undo_redo_chain, Text_min_height, min_width, True)
+				an_undo_redo_chain, 1, min_width_in_chars, True)
 			if attached a_tooltip then
 				ev_data_control.set_tooltip (a_tooltip)
 			end

@@ -36,11 +36,11 @@ create
 feature -- Initialisation
 
 	make (a_data_source_agent: like data_source_agent;
-			min_height, min_width: INTEGER;
+			min_lines, min_width_in_chars: INTEGER;
 			a_header_strings_agent: like header_strings_agent;
 			a_data_row_agt: like data_row_agt)
 		do
-			make_mlist ("", a_data_source_agent, min_height, min_width, False, a_header_strings_agent)
+			make_mlist ("", a_data_source_agent, min_lines, min_width_in_chars, False, a_header_strings_agent)
 			data_row_agt := a_data_row_agt
 		ensure
 			not is_readonly
@@ -51,13 +51,13 @@ feature -- Initialisation
 			a_data_source_remove_agent: like data_source_remove_agent;
 			a_data_source_modify_agent: like data_source_modify_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_height, min_width: INTEGER;
+			min_lines, min_width_in_chars: INTEGER;
 			a_header_strings_agent: like header_strings_agent;
 			a_data_row_agt: like data_row_agt)
 		do
 			make_editable_mlist ("",
 				a_data_source_agent, a_data_source_create_agent, a_data_source_remove_agent, an_undo_redo_chain,
-				min_height, min_width, False, a_header_strings_agent)
+				min_lines, min_width_in_chars, False, a_header_strings_agent)
 			data_source_modify_agent := a_data_source_modify_agent
 			data_row_agt := a_data_row_agt
 		ensure

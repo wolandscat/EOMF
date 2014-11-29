@@ -42,9 +42,9 @@ feature -- Initialisation
 
 	make (a_title: STRING; a_tooltip: detachable STRING; a_data_source_agent: like data_source_agent;
 			a_select_agent: detachable PROCEDURE [ANY, TUPLE];
-			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
-			make_data_control (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally)
+			make_data_control (a_title, a_data_source_agent, Text_min_height, min_width_in_chars * Text_char_width, arrange_horizontally)
 			if attached a_tooltip then
 				ev_data_control.set_tooltip (a_tooltip)
 			end

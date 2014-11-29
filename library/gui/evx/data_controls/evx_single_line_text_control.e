@@ -36,27 +36,27 @@ create
 feature -- Initialisation
 
 	make (a_title: STRING; a_data_source_agent: like data_source_agent;
-			min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
-			make_text_data_control (a_title, a_data_source_agent, Text_min_height, min_width, arrange_horizontally)
+			make_text_data_control (a_title, a_data_source_agent, 1, min_width_in_chars, arrange_horizontally)
 		end
 
 	make_readonly (a_title: detachable STRING; a_data_source_agent: like data_source_agent;
-			min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 			-- make so that no user interaction with visual control is possible
 		do
-			make_readonly_text_control (a_title, a_data_source_agent, Text_min_height, min_width, arrange_horizontally)
+			make_readonly_text_control (a_title, a_data_source_agent, 1, min_width_in_chars, arrange_horizontally)
 		end
 
 	make_linked (a_title: STRING; a_data_source_agent: like data_source_agent;
 			a_data_source_setter_agent: like data_source_setter_agent;
 			a_data_source_remove_agent: like data_source_remove_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
 			make_linked_text_data_control (a_title,
 				a_data_source_agent, a_data_source_setter_agent, a_data_source_remove_agent,
-				an_undo_redo_chain, Text_min_height, min_width, arrange_horizontally)
+				an_undo_redo_chain, 1, min_width_in_chars, arrange_horizontally)
 		end
 
 feature -- Access

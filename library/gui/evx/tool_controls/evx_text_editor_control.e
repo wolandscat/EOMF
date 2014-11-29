@@ -67,7 +67,7 @@ feature {NONE}-- Initialization
 			-- ---------- text control -----------
 			create ev_text
 			ev_text.disable_edit
-			ev_text.set_tab_width ((ev_text.tab_width/2).floor.max (1))  -- this is in pixels, and assumes 7-pixel wide chars
+			ev_text.set_tab_width ((ev_text.tab_width/2).floor.max (1))  -- this is in pixels
 			ev_root_container.extend (ev_text)
 
 			-- ---------- view controls control panel -----------
@@ -76,7 +76,7 @@ feature {NONE}-- Initialization
 			ev_root_container.disable_item_expand (control_panel.ev_root_container)
 
 			-- ---------- view panel frame ----------
-			create evx_view_frame.make (get_text (ec_view_controls_text), 85, 100, False)
+			create evx_view_frame.make (get_text (ec_view_controls_text), False)
 			control_panel.add_frame_control (evx_view_frame, False)
 
 			-- ---------- line numbers Check box ----------

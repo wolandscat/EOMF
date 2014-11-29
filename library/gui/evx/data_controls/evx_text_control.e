@@ -20,7 +20,7 @@ deferred class EVX_TEXT_CONTROL
 inherit
 	EVX_TITLED_DATA_CONTROL
 		rename
-			make as make_data_control, make_linked as make_linked_data_control
+			make as make_data_control, make_readonly as make_readonly_data_control, make_linked as make_linked_data_control
 		redefine
 			data_source_agent, data_source_setter_agent, do_enable_editable, do_disable_editable
 		end
@@ -28,21 +28,27 @@ inherit
 feature -- Initialisation
 
 	make (a_title: STRING; a_data_source_agent: like data_source_agent;
-			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_lines, min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
-			make_data_control (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally)
+			make_data_control (a_title, a_data_source_agent, min_lines * text_min_height, min_width_in_chars * Text_char_width, arrange_horizontally)
 			ev_data_control.focus_in_actions.extend (agent on_select_all)
+		end
+
+	make_readonly (a_title: detachable STRING; a_data_source_agent: like data_source_agent;
+			min_lines, min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
+		do
+			make_readonly_data_control (a_title, a_data_source_agent, min_lines * text_min_height, min_width_in_chars * Text_char_width, arrange_horizontally)
 		end
 
 	make_linked (a_title: STRING; a_data_source_agent: like data_source_agent;
 			a_data_source_setter_agent: like data_source_setter_agent;
 			a_data_source_remove_agent: like data_source_remove_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_lines, min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
 			make_linked_data_control (a_title,
 				a_data_source_agent, a_data_source_setter_agent, a_data_source_remove_agent,
-				an_undo_redo_chain, min_height, min_width, arrange_horizontally)
+				an_undo_redo_chain, min_lines * text_min_height, min_width_in_chars * Text_char_width, arrange_horizontally)
 			ev_data_control.focus_in_actions.extend (agent on_select_all)
 			ev_data_control.focus_out_actions.extend (agent do if is_editable then process_edit end end)
 		end

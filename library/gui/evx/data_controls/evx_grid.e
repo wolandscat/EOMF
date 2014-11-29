@@ -326,6 +326,8 @@ feature -- Modification
 	wipe_out
 		do
 			ev_grid.wipe_out
+			ev_grid.set_minimum_height (ev_grid.header.height)
+			ev_grid.set_minimum_width (20)
 		end
 
 feature -- Commands

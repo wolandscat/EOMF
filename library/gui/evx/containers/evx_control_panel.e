@@ -104,7 +104,7 @@ feature -- Modification
 		local
 			evx_frame: EVX_FRAME_CONTROL
 		do
-			create evx_frame.make (a_title, 0, 0, False)
+			create evx_frame.make (a_title, False)
 
 			ev_main_vbox.extend (evx_frame.ev_root_container)
 			if not can_expand then

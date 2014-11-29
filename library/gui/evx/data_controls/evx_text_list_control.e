@@ -39,29 +39,29 @@ feature -- Definitions
 feature -- Initialisation
 
 	make (a_title: STRING; a_data_source_agent: like data_source_agent;
-			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_lines, min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
-			make_mlist (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally, Void)
+			make_mlist (a_title, a_data_source_agent, min_lines, min_width_in_chars, arrange_horizontally, Void)
 		ensure
 			not is_readonly
 		end
 
 	make_readonly (a_title: STRING; a_data_source_agent: like data_source_agent;
-			min_height, min_width: INTEGER; arrange_horizontally: BOOLEAN)
+			min_lines, min_width_in_chars: INTEGER; arrange_horizontally: BOOLEAN)
 		do
-			make_readonly_mlist (a_title, a_data_source_agent, min_height, min_width, arrange_horizontally, Void)
+			make_readonly_mlist (a_title, a_data_source_agent, min_lines, min_width_in_chars, arrange_horizontally, Void)
 		end
 
 	make_linked (a_title: STRING; a_data_source_agent: like data_source_agent;
 			a_data_source_create_agent: like data_source_setter_agent;
 			a_data_source_remove_agent: like data_source_remove_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_height, min_width: INTEGER;
+			min_lines, min_width_in_chars: INTEGER;
 			arrange_horizontally: BOOLEAN)
 		do
 			make_linked_mlist (a_title,
 				a_data_source_agent, a_data_source_create_agent, a_data_source_remove_agent, an_undo_redo_chain,
-				min_height, min_width, arrange_horizontally, Void)
+				min_lines, min_width_in_chars, arrange_horizontally, Void)
 		ensure
 			not is_readonly
 		end
