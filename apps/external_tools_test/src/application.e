@@ -29,6 +29,7 @@ feature {NONE} -- Initialization
 			has_cmd: BOOLEAN
 		do
 			cmd := "git"
+			set_global_error_reporting_level (error_type_debug)
 
 			-- create accessor
 			check attached {GIT_TOOL_INTERFACE} create_tool_interface ("git") as att_tool_if then
@@ -69,7 +70,7 @@ feature {NONE} -- Initialization
 
 					-- run git clone into temp area
 					print ("Cloning " + git_if.remote_repository_url + " to " + clone_dir + "%N")
-					git_if.initialise_checkout_from_remote (clone_dir, git_if.remote_repository_url)
+					git_if.initialise_clone_remote_and_checkout (clone_dir, git_if.remote_repository_url)
 					print ("cmd = " + last_command_result.command_line + "%N")
 
 					if not last_command_result.succeeded then
