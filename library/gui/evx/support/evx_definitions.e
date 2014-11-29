@@ -12,9 +12,9 @@ class EVX_DEFINITIONS
 feature -- Definitions
 
 	default_min_height: INTEGER
-			-- create as 1.4 x default font height
+			-- create as 1.5 x default font height
 		once
-			Result := ((create {EV_FONT}).height * 1.4).floor
+			Result := ((create {EV_FONT}).height * 1.5).floor
 		end
 
 	default_min_width: INTEGER = 50
@@ -66,7 +66,11 @@ feature -- Definitions
 			Result := ((create {EV_FONT}).height * 1.5).floor
 		end
 
-	Label_min_width: INTEGER = 35
+	Text_char_width: INTEGER
+			-- obtain from default font height
+		once
+			Result := (create {EV_FONT}).width
+		end
 
 	Default_grid_expansion_factor: REAL = 1.04
 			-- amount to spread columns by to enhance readability
