@@ -67,6 +67,17 @@ feature -- Access
 			create Result.make_empty
 		end
 
+	error_output: STRING
+			-- obtain error output; use `stderr' value if available, but if nothing there
+			-- use `stdout' value.
+		do
+			if not stderr.is_empty then
+				Result := stderr
+			else
+				Result := stdout
+			end
+		end
+
 feature -- Status Report
 
 	succeeded: BOOLEAN
