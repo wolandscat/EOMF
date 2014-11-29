@@ -15,12 +15,6 @@ deferred class EVX_DATA_CONTROL
 inherit
 	EVX_CONTROL_SHELL
 
-feature -- Definitions
-
-	default_min_height: INTEGER = 23
-
-	default_min_width: INTEGER = 50
-
 feature -- Access
 
 	ev_data_control: EV_PRIMITIVE

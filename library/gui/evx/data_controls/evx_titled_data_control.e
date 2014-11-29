@@ -52,8 +52,11 @@ feature -- Initialisation
 				ev_root_container.disable_item_expand (ev_title_label)
 
 				-- add some more spacing due to title
-				mh := mh + Default_border_width
-				mw := mw + Default_border_width
+				if arrange_horizontally then
+					mw := mw + Default_border_width
+				else
+					mh := mh + Default_border_width
+				end
 			end
 
 			-- create the data control and add to ev_container

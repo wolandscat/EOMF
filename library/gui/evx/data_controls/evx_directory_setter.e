@@ -22,7 +22,7 @@ class EVX_DIRECTORY_SETTER
 inherit
 	EVX_SINGLE_LINE_TEXT_CONTROL
 		rename
-			make as make_text_control, make_linked as make_linked_text_control, make_readonly as make_readonly_text_control
+			make as make_single_line_text_control, make_linked as make_linked_single_line_text_control, make_readonly as make_readonly_single_line_text_control
 		end
 
 create
@@ -30,17 +30,17 @@ create
 
 feature -- Initialisation
 
-	make (a_title: STRING; a_data_source: like data_source_agent; min_height, min_width: INTEGER)
+	make (a_title: STRING; a_data_source: like data_source_agent; min_width: INTEGER)
 		do
-			make_text_control (a_title, a_data_source, min_height, min_width, True)
+			make_single_line_text_control (a_title, a_data_source, min_width, True)
 			initialise_browse_button
 		ensure
 			not is_readonly
 		end
 
-	make_readonly (a_title: STRING; a_data_source: like data_source_agent; min_height, min_width: INTEGER)
+	make_readonly (a_title: STRING; a_data_source: like data_source_agent; min_width: INTEGER)
 		do
-			make_readonly_text_control (a_title, a_data_source, min_height, min_width, True)
+			make_readonly_single_line_text_control (a_title, a_data_source, min_width, True)
 		ensure
 			is_readonly
 		end
@@ -49,9 +49,9 @@ feature -- Initialisation
 			a_data_source_setter_agent: like data_source_setter_agent;
 			a_data_source_remove_agent: like data_source_remove_agent;
 			an_undo_redo_chain: like undo_redo_chain;
-			min_height, min_width: INTEGER)
+			min_width: INTEGER)
 		do
-			make_linked_text_control (a_title, a_data_source, a_data_source_setter_agent, a_data_source_remove_agent, an_undo_redo_chain, min_height, min_width, True)
+			make_linked_single_line_text_control (a_title, a_data_source, a_data_source_setter_agent, a_data_source_remove_agent, an_undo_redo_chain, min_width, True)
 			initialise_browse_button
 		ensure
 			not is_readonly

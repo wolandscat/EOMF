@@ -250,7 +250,9 @@ feature -- Commands
 	resize_viewable_area_to_content (a_height_limit, a_width_limit: INTEGER; expansion_factor: REAL)
 			-- resize grid so all content visible, in currenly expanded or collapsed form.
 			-- If either of first two arguments is 0, use `virtual_height' and `virtual_weight', else use the minimum of the
-			-- argument and `virtual_xxx'. The last number should be a number like 1.1 (10%). If the last argument is set to 0, 1 is assumed.
+			-- argument and `virtual_xxx'. The last number should be a number like 1.1 (10%). 
+		require
+			Sane_expansion_factor: expansion_factor >= 1.0 and expansion_factor <= 2.0
 		local
 			exp_factor: REAL
 			targ_height, targ_width: INTEGER
@@ -292,13 +294,15 @@ feature -- Commands
 			end
 		end
 
-	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER]; a_grid_expansion_factor: REAL)
-			-- resize columns and then shrink as needed, avoiding fixed_cols
+	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER]; expansion_factor: REAL)
+			-- resize columns according to their content and then shrink as needed, avoiding `fixed_cols'
+		require
+			Sane_expansion_factor: expansion_factor >= 1.0 and expansion_factor <= 2.0
 		local
 			fixed_cols_width, total_width, var_cols_width, grid_width, i: INTEGER
 			reduction_factor: REAL_64
 		do
-			resize_columns_to_content (a_grid_expansion_factor)
+			resize_columns_to_content (expansion_factor)
 
 			grid_width := width
 
@@ -343,6 +347,7 @@ feature -- Commands
 		end
 
 	collapse_one_level (test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+			-- collapse terminal open branches in tree that satisfy `test_agt'
 		require
 			is_tree_enabled
 		local
@@ -366,6 +371,7 @@ feature -- Commands
 		end
 
 	expand_one_level (test_agt: detachable FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
+			-- expand terminal collapsed branches in tree that satisfy `test_agt'
 		require
 			is_tree_enabled
 		local
@@ -402,6 +408,7 @@ feature -- Commands
 		end
 
 	collapse_all
+			-- collapse whole tree
 		require
 			is_tree_enabled
 		local
@@ -494,7 +501,8 @@ feature {NONE} -- Implementation
 		end
 
 	get_grid_row_collapsable_nodes (an_ev_grid_row: EV_GRID_ROW)
-			-- record nodes for collapsing if they have all non-expanded children
+			-- obtain list of nodes that have all non-expanded children in
+			-- `ev_grid_row_list'
 		require
 			an_ev_grid_row.is_expandable
 		local
@@ -518,6 +526,7 @@ feature {NONE} -- Implementation
 		end
 
 	tree_do_all_nodes (a_grid_row: EV_GRID_ROW; a_node_action: PROCEDURE [ANY, TUPLE [EV_GRID_ROW]])
+			-- perform `a_node_action' for all nodes in tree below `a_grid_row'
 		require
 			is_tree_enabled
 		local

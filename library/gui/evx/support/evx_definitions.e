@@ -11,13 +11,21 @@ class EVX_DEFINITIONS
 
 feature -- Definitions
 
+	default_min_height: INTEGER
+			-- create as 1.4 x default font height
+		once
+			Result := ((create {EV_FONT}).height * 1.4).floor
+		end
+
+	default_min_width: INTEGER = 50
+
 	Sane_screen_coord: INTEGER = -2500
 			-- assumed 'most negative' screen X or Y position that app could, due to use of multiple screens. If it is more negative
 			-- than this, at least on windows, assume that the app was minimised and start it in a default screen location instead
 
 	Default_padding_width: INTEGER = 3
 
-	Default_border_width: INTEGER = 4
+	Default_border_width: INTEGER = 3
 
 	Max_padding_width: INTEGER = 10
 
@@ -52,11 +60,15 @@ feature -- Definitions
 			Result.set_height_in_points (10)
 		end
 
-	Text_min_height: INTEGER = 23
+	Text_min_height: INTEGER
+			-- create as 1.5 x default font height
+		once
+			Result := ((create {EV_FONT}).height * 1.5).floor
+		end
 
 	Label_min_width: INTEGER = 35
 
-	Default_grid_expansion_factor: REAL = 1.05
+	Default_grid_expansion_factor: REAL = 1.04
 			-- amount to spread columns by to enhance readability
 
 	Default_grid_row_expansion: INTEGER = 4
