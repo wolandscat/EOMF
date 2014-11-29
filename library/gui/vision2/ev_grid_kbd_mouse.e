@@ -264,9 +264,9 @@ feature -- Commands
 			end
 
 			if a_height_limit > 0 then
-				targ_height := a_height_limit.min (virtual_height + header.height)
+				targ_height := a_height_limit.min (visible_row_count * row_height + header.height)
 			else
-				targ_height := virtual_height + header.height
+				targ_height := visible_row_count * row_height + header.height
 			end
 			set_minimum_height ((targ_height * exp_factor).ceiling)
 
