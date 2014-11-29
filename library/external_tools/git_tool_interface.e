@@ -75,7 +75,7 @@ feature -- Queries
 			else
 				create cmd_args.make_empty
 
-				-- Run git commands: 
+				-- Run git commands:
 				-- 	obtain local commit id on this branch
 				-- 	obtain remote commit id on this branch
 				cmd_args.append ("rev-parse HEAD")
@@ -120,7 +120,7 @@ feature -- Queries
 			if last_command_result.stdout.count > 2 then
 				Result := Vcs_status_files_not_committed
 			else
-				-- Run 3 git commands: 
+				-- Run 3 git commands:
 				-- 	obtain local commit id on this branch
 				-- 	obtain remote commit id on this branch
 				-- 	obtain the commit at which the current branch and its remote diverge
@@ -128,7 +128,7 @@ feature -- Queries
 				cmd_args.append ("rev-parse HEAD")
 				cmd_args.append (" && " + tool_name + " rev-parse @{u}")
 				cmd_args.append (" && " + tool_name + " merge-base HEAD @{u}")
-				
+
 				system_run_command_query (tool_name, cmd_args, current_directory)
 				cmd_res := last_command_result.stdout.split ('%N')
 				if cmd_res.count >= 2 then
@@ -186,7 +186,7 @@ feature -- Commands
 
 	do_clone_checkout (repo_parent_dir: STRING)
 		do
-			system_run_command_asynchronous (tool_name, "clone -v --recurse-submodules --progress " + remote_repository_url, repo_parent_dir)
+			system_run_command_asynchronous (tool_name, "clone -v --progress " + remote_repository_url, repo_parent_dir)
 		end
 
 	do_checkout_branch (a_branch_name: STRING)
@@ -224,12 +224,12 @@ feature -- Commands
 
 	do_push
 		do
-			system_run_command_asynchronous (tool_name, "push --recurse-submodules --progress", current_directory)
+			system_run_command_asynchronous (tool_name, "push --progress", current_directory)
 		end
 
 	do_pull
 		do
-			system_run_command_asynchronous (tool_name, "pull --recurse-submodules --progress", current_directory)
+			system_run_command_asynchronous (tool_name, "pull --progress", current_directory)
 		end
 
 	do_fetch
