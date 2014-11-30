@@ -64,12 +64,24 @@ feature -- Commands
 			system_run_command_asynchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
-	do_stage_all
+	do_revert_files (a_file_list: ARRAYED_LIST [STRING])
+			-- revert local changes to existing file
+			-- FIXME: to be implemented
 		do
-			-- nothing to do 
 		end
 
-	do_stage (file_list: ARRAYED_LIST [STRING])
+	do_clean_files (a_file_list: ARRAYED_LIST [STRING])
+			-- remove local untracked tile
+			-- FIXME: to be implemented
+		do
+		end
+
+	do_stage_all
+		do
+			-- nothing to do
+		end
+
+	do_stage_files (a_file_list: ARRAYED_LIST [STRING])
 		do
 			-- nothing to do
 		end

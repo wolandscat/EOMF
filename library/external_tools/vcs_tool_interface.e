@@ -157,11 +157,29 @@ feature -- Commands
 		deferred
 		end
 
-	do_stage (file_list: ARRAYED_LIST [STRING])
+	do_revert_files (a_file_list: ARRAYED_LIST [STRING])
+			-- revert local changes to existing file; remove if not tracked
+		require
+			Tool_available: system_has_command (tool_name)
+			Files_to_commit: not a_file_list.is_empty
+			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
+	do_clean_files (a_file_list: ARRAYED_LIST [STRING])
+			-- remove untracked file
+		require
+			Tool_available: system_has_command (tool_name)
+			Files_to_commit: not a_file_list.is_empty
+			Checkout_area_valid: directory_exists (local_repository_directory)
+		deferred
+		end
+
+	do_stage_files (a_file_list: ARRAYED_LIST [STRING])
 			-- stage local changes on current branch to local repository
 		require
 			Tool_available: system_has_command (tool_name)
-			Files_to_commit: not file_list.is_empty
+			Files_to_commit: not a_file_list.is_empty
 			Checkout_area_valid: directory_exists (local_repository_directory)
 		deferred
 		end

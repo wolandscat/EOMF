@@ -195,21 +195,47 @@ feature -- Commands
 			system_run_command_synchronous (tool_name, "checkout " + a_branch_name, current_directory)
 		end
 
-	do_stage_all
-		do
-			system_run_command_synchronous (tool_name, "add -A", current_directory)
-		end
-
-	do_stage (file_list: ARRAYED_LIST [STRING])
+	do_revert_files (a_file_list: ARRAYED_LIST [STRING])
+			-- revert local changes to existing file
 		local
 			file_spec: STRING
 		do
 			create file_spec.make_empty
-			across file_list as file_name_csr loop
+			across a_file_list as file_name_csr loop
+				file_spec.append (file_name_csr.item)
+				file_spec.append_character (' ')
+			end
+			system_run_command_synchronous (tool_name, "checkout " + file_spec, current_directory)
+		end
+
+	do_clean_files (a_file_list: ARRAYED_LIST [STRING])
+			-- remove local untracked tile
+		local
+			file_spec: STRING
+		do
+			create file_spec.make_empty
+			across a_file_list as file_name_csr loop
+				file_spec.append (file_name_csr.item)
+				file_spec.append_character (' ')
+			end
+			system_run_command_synchronous (tool_name, "clean -f " + file_spec, current_directory)
+		end
+
+	do_stage_files (a_file_list: ARRAYED_LIST [STRING])
+		local
+			file_spec: STRING
+		do
+			create file_spec.make_empty
+			across a_file_list as file_name_csr loop
 				file_spec.append (file_name_csr.item)
 				file_spec.append_character (' ')
 			end
 			system_run_command_synchronous (tool_name, "add " + file_spec, current_directory)
+		end
+
+	do_stage_all
+		do
+			system_run_command_synchronous (tool_name, "add -A", current_directory)
 		end
 
 	do_commit (a_commit_msg: STRING)
