@@ -4,9 +4,6 @@ EIFGENs/
 *.wb
 *.pyc
 .scons*
-
 *.exe
 *.rc
-*.rc
 *.log
-*.rc
