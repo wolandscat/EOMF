@@ -126,8 +126,8 @@ feature -- Queries
 				-- 	obtain the commit at which the current branch and its remote diverge
 				create cmd_args.make_empty
 				cmd_args.append ("rev-parse HEAD")
-				cmd_args.append (" && " + tool_name + " rev-parse @{u}")
-				cmd_args.append (" && " + tool_name + " merge-base HEAD @{u}")
+				cmd_args.append (" && " + command_name_pos_param + " rev-parse @{u}")
+				cmd_args.append (" && " + command_name_pos_param + " merge-base HEAD @{u}")
 
 				system_run_command_query (tool_name, cmd_args, current_directory)
 				cmd_res := last_command_result.stdout.split ('%N')

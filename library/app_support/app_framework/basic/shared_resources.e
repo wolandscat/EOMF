@@ -336,11 +336,20 @@ feature -- External Commands
 		require
 			system_has_command (a_cmd_name)
 		local
-			cmd_line: STRING
+			cmd_line, tpl_cmd: STRING
 		do
 			if command_template_cache.has (a_cmd_name) and then attached command_template_cache.item (a_cmd_name) as att_cmd_tpl then
 				create cmd_line.make_from_string (att_cmd_tpl)
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
+
+				-- see if the part substituted by `a_cmd_switches_args' contains any $cmd; if so, 
+				-- substitute them with the full command path
+				if cmd_line.has_substring (Command_name_pos_param) then
+					create tpl_cmd.make_from_string (att_cmd_tpl)
+					tpl_cmd.replace_substring_all (Arguments_pos_param, "")
+					tpl_cmd.right_adjust
+					cmd_line.replace_substring_all (Command_name_pos_param, tpl_cmd)
+				end
 				do_system_run_command_query (cmd_line, in_directory)
 
 			elseif cygwin_command_template_list.has (a_cmd_name) then
