@@ -62,8 +62,6 @@ feature -- Queries
 			-- does not require a fetch to be done first
 		local
 			local_commit, remote_commit: STRING
-			cmd_res: LIST [STRING]
-			cmd_args: STRING
 		do
 			-- see if there are any local files not staged
 			system_run_command_query (tool_name, "status --porcelain", current_directory)
@@ -73,31 +71,21 @@ feature -- Queries
 			if last_command_result.stdout.count > 2 then
 				Result := Vcs_status_files_not_committed
 			else
-				create cmd_args.make_empty
-
 				-- Run git commands:
 				-- 	obtain local commit id on this branch
 				-- 	obtain remote commit id on this branch
-				cmd_args.append ("rev-parse HEAD")
-				cmd_args.append (" && " + tool_name + " ls-remote origin HEAD")
+				system_run_command_query (tool_name, "rev-parse HEAD", current_directory)
+				local_commit := last_command_result.stdout
+				local_commit.right_adjust
 
-				system_run_command_query (tool_name, cmd_args, current_directory)
-				cmd_res := last_command_result.stdout.split ('%N')
-				if cmd_res.count >= 2 then
-					local_commit := cmd_res[1]
-					local_commit.right_adjust
+				system_run_command_query (tool_name, "ls-remote origin HEAD", current_directory)
+				remote_commit := last_command_result.stdout
+				remote_commit.right_adjust
 
-					remote_commit := cmd_res[2]
-					remote_commit.replace_substring_all ("HEAD", "")
-					remote_commit.right_adjust
-
-					if local_commit.is_equal (remote_commit) then
-						Result := Vcs_status_up_to_date
-					else
-						Result := Vcs_status_sync_required
-					end
+				if local_commit.is_equal (remote_commit) then
+					Result := Vcs_status_up_to_date
 				else
-					Result := Vcs_status_unknown
+					Result := Vcs_status_sync_required
 				end
 			end
 		end
