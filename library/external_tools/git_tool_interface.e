@@ -108,8 +108,6 @@ feature -- Queries
 			-- call after fetch
 		local
 			local_commit, remote_commit, merge_commit: STRING
-			cmd_res: LIST [STRING]
-			cmd_args: STRING
 			sts_res: STRING
 		do
 			-- see if there are any local files not staged
@@ -124,36 +122,28 @@ feature -- Queries
 				-- 	obtain local commit id on this branch
 				-- 	obtain remote commit id on this branch
 				-- 	obtain the commit at which the current branch and its remote diverge
-				create cmd_args.make_empty
-				cmd_args.append ("rev-parse HEAD")
-				cmd_args.append (" && " + command_name_pos_param + " rev-parse @{u}")
-				cmd_args.append (" && " + command_name_pos_param + " merge-base HEAD @{u}")
+				system_run_command_query (tool_name, "rev-parse HEAD", current_directory)
+				local_commit := last_command_result.stdout
+				local_commit.right_adjust
 
-				system_run_command_query (tool_name, cmd_args, current_directory)
-				cmd_res := last_command_result.stdout.split ('%N')
-				if cmd_res.count >= 2 then
-					local_commit := cmd_res[1]
-					local_commit.right_adjust
+				system_run_command_query (tool_name, "rev-parse @{u}", current_directory)
+				remote_commit := last_command_result.stdout
+				remote_commit.right_adjust
 
-					remote_commit := cmd_res[2]
-					remote_commit.right_adjust
-
-					if local_commit.is_equal (remote_commit) then
-						Result := Vcs_status_up_to_date
-					else
-						merge_commit := cmd_res[3]
-						merge_commit.right_adjust
-
-						if local_commit.is_equal (merge_commit) then
-							Result := Vcs_status_pull_required
-						elseif remote_commit.is_equal (merge_commit) then
-							Result := Vcs_status_push_required
-						else
-							Result := Vcs_status_diverged
-						end
-					end
+				if local_commit.is_equal (remote_commit) then
+					Result := Vcs_status_up_to_date
 				else
-					Result := Vcs_status_unknown
+					system_run_command_query (tool_name, "merge-base HEAD @{u}", current_directory)
+					merge_commit := last_command_result.stdout
+					merge_commit.right_adjust
+
+					if local_commit.is_equal (merge_commit) then
+						Result := Vcs_status_pull_required
+					elseif remote_commit.is_equal (merge_commit) then
+						Result := Vcs_status_push_required
+					else
+						Result := Vcs_status_diverged
+					end
 				end
 			end
 		end
