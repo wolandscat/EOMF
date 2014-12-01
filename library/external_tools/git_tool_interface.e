@@ -79,9 +79,8 @@ feature -- Queries
 				local_commit.right_adjust
 
 				system_run_command_query (tool_name, "ls-remote origin HEAD", current_directory)
-				remote_commit := last_command_result.stdout
-				remote_commit.right_adjust
-
+				remote_commit := last_command_result.stdout.substring (1, last_command_result.stdout.index_of ('%T', 1) - 1)
+		
 				if local_commit.is_equal (remote_commit) then
 					Result := Vcs_status_up_to_date
 				else
