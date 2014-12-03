@@ -18,9 +18,12 @@ feature -- Commands
 			-- Perform `action' with an hourglass mouse cursor, restoring the cursor when done.
 		local
 			ptr_style: detachable EV_POINTER_STYLE
+			ev_app: EV_APPLICATION
 		do
+			create ev_app
 			ptr_style := an_ev_widget.pointer_style
 			an_ev_widget.set_pointer_style ((create {EV_STOCK_PIXMAPS}).wait_cursor)
+			ev_app.process_graphical_events
 			action.call ([])
 			an_ev_widget.set_pointer_style (ptr_style)
 		rescue
