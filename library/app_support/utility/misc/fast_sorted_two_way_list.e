@@ -28,31 +28,40 @@ inherit
 create
 	make
 
+create {TWO_WAY_LIST}
+	make_sublist
+
 feature -- Access
 
 	search_after (v: like item)
 			-- Go to first position with item greater than or
 			-- equal to `v', using the binary split method.
 		local
-			i,j,k:INTEGER
-			found:BOOLEAN
+			i,j,k: INTEGER
+			found: BOOLEAN
 		do
-			from
-				start
-				i := 1
-				j := count + 1
-			until
-				i + 1 > j or found
-			loop
-				k := (i + j)//2
-				go_i_th(k)
-				if v < item then
-					j := k
-				elseif v > item then
-					i := k + 1
-					go_i_th(i)
-				else
-					found := True
+			-- small optimisation that often works: assume that the new item may in fact
+			-- be sorted w.r.t. to last item added
+			if islast and then v >= item then
+				forth
+			else
+				from
+					start
+					i := 1
+					j := count + 1
+				until
+					i + 1 > j or found
+				loop
+					k := (i + j)//2
+					go_i_th (k)
+					if v < item then
+						j := k
+					elseif v > item then
+						i := k + 1
+						go_i_th (i)
+					else
+						found := True
+					end
 				end
 			end
 		end
@@ -61,8 +70,8 @@ feature -- Access
 			-- Go to first position with item less than or
 			-- equal to `v', using the binary split method.
 		local
-			i,j,k:INTEGER
-			found:BOOLEAN
+			i,j,k: INTEGER
+			found: BOOLEAN
 		do
 			from
 				start
@@ -72,12 +81,12 @@ feature -- Access
 				i + 1 > j or found
 			loop
 				k := (i + j)//2
-				go_i_th(k)
+				go_i_th (k)
 				if v > item then
 					i := k
 				elseif v < item then
 					j := k - 1
-					go_i_th(j)
+					go_i_th (j)
 				else
 					found := True
 				end
