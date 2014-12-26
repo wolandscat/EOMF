@@ -224,9 +224,9 @@ feature -- Output
 		do
 			create Result.make(0)
 			if upper_unbounded then
-				Result.append (serialise_primitive_value (lower) + "..*")
+				Result.append (serialise_primitive_value (lower) + Multiplicity_range_delimiter)
 			elseif not is_point then
-				Result.append (serialise_primitive_value (lower) + ".." + serialise_primitive_value (upper))
+				Result.append (serialise_primitive_value (lower) + Multiplicity_range_delimiter + serialise_primitive_value (upper))
 			else
 				Result.append (serialise_primitive_value (lower))
 			end
