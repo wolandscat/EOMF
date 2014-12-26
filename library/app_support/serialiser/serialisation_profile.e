@@ -16,11 +16,6 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
 		end
 
-	STRING_UTILITIES
-		export
-			{NONE} all
-		end
-
 feature -- Initialisation
 
 	make (an_output_format: STRING)
@@ -97,6 +92,27 @@ feature  {ANY_SERIALISER} -- Factory
 			end
 		end
 
-end
+	quote_clean (str: STRING): STRING
+			-- generate clean copy of `str' and convert
+			--	\ to \\
+			-- 	" to \"
+			-- otherwise just return original string
+		local
+			i: INTEGER
+		do
+			if str.has ('\') or str.has ('"') then
+				create Result.make (str.count)
+				from i := 1 until i > str.count loop
+					if str.item (i) = '\' or str.item (i) = '"' then
+						Result.append_character ('\')
+					end
+					Result.append_character (str.item (i))
+					i := i + 1
+				end
+			else
+				Result := str
+			end
+		end
 
+end
 
