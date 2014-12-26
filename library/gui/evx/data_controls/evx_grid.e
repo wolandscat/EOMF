@@ -10,7 +10,7 @@ note
 class EVX_GRID
 
 inherit
-	STRING_UTILITIES
+	EVX_UTILITIES
 		export
 			{NONE} all
 		end

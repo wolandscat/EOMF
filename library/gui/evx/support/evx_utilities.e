@@ -179,6 +179,34 @@ feature {NONE} -- Implementation
 			Result := screen.monitor_area_from_window (a_window)
 		end
 
+feature -- Unicode
+
+	utf8_to_utf32 (utf8_bytes: STRING): STRING_32
+			-- `utf8_bytes' converted from a sequence of UTF-8 bytes to 32-bit Unicode characters.
+		do
+			utf8_encoding.convert_to (utf32_encoding, utf8_bytes)
+			Result := utf8_encoding.last_converted_string_32
+		end
+
+	utf32_to_utf8 (utf32_bytes: STRING_32): STRING_8
+			-- `utf32_bytes' converted from a sequence of UTF-32 bytes to UTF-8 byte sequence
+		do
+			utf32_encoding.convert_to (utf8_encoding, utf32_bytes)
+			Result := utf32_encoding.last_converted_string_8
+		end
+
+feature {NONE} -- Unicode
+
+	utf8_encoding: ENCODING
+	    once
+	        create Result.make ({CODE_PAGE_CONSTANTS}.utf8)
+	    end
+
+	utf32_encoding: ENCODING
+	    once
+	        create Result.make ({CODE_PAGE_CONSTANTS}.utf32)
+	    end
+
 end
 
 
