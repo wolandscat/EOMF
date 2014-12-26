@@ -404,10 +404,14 @@ debug("ODIN_parse")
 		io.put_string(indent + "object_key: " + obj_key + 
 			" (setting " + attr_nodes.item.im_attr_name + " to Multiple)%N")
 end
-			if not attr_nodes.is_empty then
-				attr_nodes.item.set_container_type
+			if obj_key.is_empty then
+				abort_with_error (ec_SOBK, <<attr_nodes.item.path>>)
 			else
-				abort_with_error (ec_SGEE, <<attr_node.im_attr_name>>)
+				if not attr_nodes.is_empty then
+					attr_nodes.item.set_container_type
+				else
+					abort_with_error (ec_SGEE, <<attr_nodes.item.path>>)
+				end
 			end
 		}
 	;

@@ -308,7 +308,9 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 
 						-- check if all classes mentioned in each package exist in the local schema
 						across a_pkg.classes as classes_csr loop
-							if not has_class_definition (classes_csr.item) then
+							if classes_csr.item.is_empty then
+								add_error (ec_BMM_PKGCE, <<schema_id, a_pkg.name>>)
+							elseif not has_class_definition (classes_csr.item) then
 								add_error (ec_BMM_PKGCL, <<schema_id, classes_csr.item, a_pkg.name>>)
 							end
 						end
@@ -541,23 +543,29 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 		do
 			-- check that all ancestors exist
 			across a_class_def.ancestors as ancs_csr loop
-				if not has_class_definition (ancs_csr.item) then
+				if ancs_csr.item.is_empty then
+					add_validity_error (a_class_def.source_schema_id, "BMM_ANCE", <<a_class_def.source_schema_id, a_class_def.name>>)
+				elseif not has_class_definition (ancs_csr.item) then
 					add_validity_error (a_class_def.source_schema_id, "BMM_ANC", <<a_class_def.source_schema_id, a_class_def.name, ancs_csr.item>>)
 				end
 			end
 
 			-- check that all generic parameter.conforms_to_type exist exists
-			if a_class_def.is_generic then
-				across a_class_def.generic_parameter_defs as gen_param_defs_csr loop
-					if attached gen_param_defs_csr.item.conforms_to_type as conf_type and then not has_class_definition (conf_type) then
-						add_validity_error (a_class_def.source_schema_id, "BMM_GPCT", <<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
+			if not has_errors then
+				if a_class_def.is_generic then
+					across a_class_def.generic_parameter_defs as gen_param_defs_csr loop
+						if attached gen_param_defs_csr.item.conforms_to_type as conf_type and then not has_class_definition (conf_type) then
+							add_validity_error (a_class_def.source_schema_id, "BMM_GPCT", <<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
+						end
 					end
 				end
 			end
 
 			-- validate the properties
-			across a_class_def.properties as props_csr loop
-				validate_property (a_class_def, props_csr.item)
+			if not has_errors then
+				across a_class_def.properties as props_csr loop
+					validate_property (a_class_def, props_csr.item)
+				end
 			end
 		end
 

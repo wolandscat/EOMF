@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (167)
+			create message_table.make (170)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -101,6 +101,7 @@ feature -- Initialisation
 			message_table.put ("Schema $1 BMM version $2 (assumed) incompatible with software version $3", ec_BMM_VERASS)
 			message_table.put ("Schema $1 class definition $2 property $3 type $4 not defined in schema", ec_BMM_PTV)
 			message_table.put ("Schema $1 class definition $2 ancestor $3 does not exist in schema", ec_BMM_ANC)
+			message_table.put ("Schema $1 class definition $2 includes empty ancestor class name", ec_BMM_ANCE)
 			message_table.put ("Schema $1 class definition $2 generic parameter $3 constraint type $4 does not exist in schema", ec_BMM_GPCT)
 			message_table.put ("Schema $1 class definition $2 container property $3 target type not defined", ec_BMM_CPT)
 			message_table.put ("Schema $1 class definition $2 container property $3 target type $4 not found in schema", ec_BMM_CPTV)
@@ -117,6 +118,7 @@ feature -- Initialisation
 			message_table.put ("Schema $1 class definition $2 not declared in any package", ec_BMM_PKGID)
 			message_table.put ("Schema $1 top-level sibling package definitions cannot include a package which is the child of another", ec_BMM_PKGTL)
 			message_table.put ("Schema $1 packages with qualified name found in package $2 (qualified names not allowed except at top-level)", ec_BMM_PKGQN)
+			message_table.put ("Schema $1 package $2 contains class with empty name", ec_BMM_PKGCE)
 			message_table.put ("Schema $1 has duplicate class name $2 in package $3 and also package $4", ec_BMM_CLPKDP)
 			message_table.put ("Schema $1 has duplicate class name $2 in class definitions", ec_BMM_CLDUP)
 			message_table.put ("Schema $1 archetype_closure_package $2 does not exist", ec_BMM_MDLPK)
@@ -179,8 +181,9 @@ feature -- Initialisation
 			message_table.put ("Data source mentions unknown type $1 (object add failed)", ec_dt_unknown_type_in_source)
 			message_table.put ("Syntax error: invalid term code reference: '$1'; code string can only contain digits, letters and '.', '_' and '-' and must commence with a letter or digit", ec_STCV)
 			message_table.put ("Syntax error: invalid term code reference has no code: '$1'", ec_STNC)
-			message_table.put ("Syntax error (SGEE)generic object not enclosed by normal object not allowed", ec_SGEE)
-			message_table.put ("Syntax error (SDAT)invalid attribute value", ec_SDAT)
+			message_table.put ("Syntax error (SGEE) generic object at $1 not enclosed by normal object not allowed", ec_SGEE)
+			message_table.put ("Syntax error (SDAT) invalid attribute value", ec_SDAT)
+			message_table.put ("Syntax error (SOBK) empty object key at path $1", ec_SOBK)
 			message_table.put ("assumed value $1 not within constraint value space", ec_VOBAV)
 			message_table.put ("invalid term code constraint: $1", ec_VCPCV)
 			message_table.put ("invalid ordinal constraint: duplicated value $1", ec_VCOV)
