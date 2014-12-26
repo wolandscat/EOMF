@@ -59,19 +59,7 @@ feature -- Conversion
 			end
 		end
 
-feature -- Element Change
-
-	concatenate (items: ARRAY [STRING]): STRING
-			-- turn <<str, str, str...>> into a STRING
-		local
-			i:INTEGER
-		do
-			create Result.make(0)
-			from i := items.lower until i > items.upper loop
-				Result.append(items.item(i))
-				i := i + 1
-			end
-		end
+feature -- Formatting
 
 	indented (s, indent: STRING): STRING
 			-- indent every line in 's' by 'indent' and return result
@@ -155,25 +143,18 @@ feature -- Element Change
 
 feature -- Matching
 
-	regex_from_string (a_str: STRING): STRING
-			-- turn an ordinary string like "abc" into a regex that can be used with standard regex matching
-			-- libs like gobo
-		do
-			Result := ".*" + a_str + ".*"
-		end
-
-	valid_regex (a_regex: STRING): BOOLEAN
-			-- True if `a_regex' is valid according to standard PERL-based regex rules
-		require
-			Regex_valid: not a_regex.is_empty
-		local
-			regex_matcher: RX_PCRE_REGULAR_EXPRESSION
-		do
-			create regex_matcher.make
-			regex_matcher.set_case_insensitive (True)
-			regex_matcher.compile (a_regex)
-			Result := regex_matcher.is_compiled
-		end
+-- 	valid_regex (a_regex: STRING): BOOLEAN
+-- 			-- True if `a_regex' is valid according to standard PERL-based regex rules
+-- 		require
+-- 			Regex_valid: not a_regex.is_empty
+-- 		local
+-- 			regex_matcher: RX_PCRE_REGULAR_EXPRESSION
+-- 		do
+-- 			create regex_matcher.make
+-- 			regex_matcher.set_case_insensitive (True)
+-- 			regex_matcher.compile (a_regex)
+-- 			Result := regex_matcher.is_compiled
+-- 		end
 
 end
 
