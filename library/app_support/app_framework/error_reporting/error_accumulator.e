@@ -44,11 +44,10 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			from list.start until list.off loop
-				if list.item.severity = error_type_error then
-					Result.extend (list.item.code)
+			across list as list_csr loop
+				if list_csr.item.severity = error_type_error then
+					Result.extend (list_csr.item.code)
 				end
-				list.forth
 			end
 		end
 
@@ -57,11 +56,10 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			from list.start until list.off loop
-				if list.item.severity = error_type_warning then
-					Result.extend (list.item.code)
+			across list as list_csr loop
+				if list_csr.item.severity = error_type_warning then
+					Result.extend (list_csr.item.code)
 				end
-				list.forth
 			end
 		end
 
@@ -92,23 +90,15 @@ feature -- Status Report
 	has_matching_error (a_code: STRING): BOOLEAN
 			-- True if there has been an error whose code starts with code `a_code'
 		do
-			Result := list.there_exists (
-				agent (an_err: ERROR_DESCRIPTOR; a_match_code: STRING): BOOLEAN
-					do
-						Result := an_err.severity = error_type_error and an_err.code.starts_with (a_match_code)
-					end (?, a_code)
-			)
+			Result := across list as list_csr some 
+				list_csr.item.severity = error_type_error and list_csr.item.code.starts_with (a_code) end
 		end
 
 	has_matching_warning (a_code: STRING): BOOLEAN
 			-- True if there has been a warning whose code starts with code `a_code'
 		do
-			Result := list.there_exists (
-				agent (an_err: ERROR_DESCRIPTOR; a_match_code: STRING): BOOLEAN
-					do
-						Result := an_err.severity = error_type_warning and an_err.code.starts_with (a_match_code)
-					end (?, a_code)
-			)
+			Result := across list as list_csr some 
+				list_csr.item.severity = error_type_warning and list_csr.item.code.starts_with (a_code) end
 		end
 
 feature -- Modification
