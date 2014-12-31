@@ -111,15 +111,6 @@ feature -- Access
 
 feature -- Status Report
 
-	has_file (a_file_name: STRING): BOOLEAN
-			-- Does `a_file_name' exist in `current_directory'?
-		local
-			a_file: PLAIN_TEXT_FILE
-   		do
-			create a_file.make (current_directory + operating_environment.Directory_separator.out + a_file_name)
-			Result := a_file.exists
-		end
-
 	file_writable (a_file_name: STRING): BOOLEAN
 			-- True if named file is writable, or else doesn't exist
 		require

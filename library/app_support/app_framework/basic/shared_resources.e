@@ -100,16 +100,16 @@ feature -- Environment
 
 feature -- Validation
 
-	file_exists (path: STRING): BOOLEAN
-			-- Is `path' a valid, existing file?
+	file_exists (a_file_path: STRING): BOOLEAN
+			-- Is `a_file_path' a valid, existing file?
 		do
-			Result := file_system.file_exists (path)
+			Result := file_system.file_exists (a_file_path)
 		end
 
-	directory_exists (path: STRING): BOOLEAN
-			-- Is `path' a valid, existing directory?
+	directory_exists (a_dir_path: STRING): BOOLEAN
+			-- Is `a_dir_path' a valid, existing directory?
 		do
-			Result := file_system.directory_exists (path)
+			Result := file_system.directory_exists (a_dir_path)
 		end
 
 feature -- Definitions: version control
