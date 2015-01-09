@@ -122,13 +122,15 @@ feature -- Modification
 	replace_child_by_id (a_node: like child_type; an_old_id: STRING)
 			-- replace node with id `an_old_id' by `an_obj'
 		require
-			Node_valid: not has_child (a_node) and not has_child_with_id (a_node.node_id)
+			Node_valid: not has_child (a_node)
 			Old_id_valid: has_child_with_id (an_old_id)
 		do
 			children_ordered.go_i_th (children_ordered.index_of (child_with_id (an_old_id), 1))
 			children_ordered.replace (a_node)
 			children.replace (a_node, an_old_id)
-			children.replace_key (a_node.node_id, an_old_id)
+			if not a_node.node_id.is_equal (an_old_id) then
+				children.replace_key (a_node.node_id, an_old_id)
+			end
 			a_node.set_parent (Current)
 		ensure
 			Replacement_made: child_with_id (a_node.node_id) = a_node
