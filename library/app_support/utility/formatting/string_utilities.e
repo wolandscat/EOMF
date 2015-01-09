@@ -119,6 +119,18 @@ feature -- Formatting
 			end
 		end
 
+	arrayed_list_out (str_list: ARRAYED_LIST [STRING]): STRING
+			-- generate readable comma-separated form of `str_list'
+		do
+			create Result.make_empty
+			across str_list as strs_csr loop
+				if not Result.is_empty then
+					Result.append (", ")
+				end
+				Result.append (strs_csr.item)
+			end
+		end
+
 feature -- Matching
 
 -- 	valid_regex (a_regex: STRING): BOOLEAN
