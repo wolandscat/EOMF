@@ -677,6 +677,7 @@ end
 					end
 				end
 				if attached {DT_CONVERTIBLE} Result as a_dt_conv then
+					-- FIXME: consider passing the error status or accumulator to this routine, so it can decide whether to run or not
 					a_dt_conv.finalise_dt
 				end
 			end

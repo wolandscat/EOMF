@@ -506,11 +506,14 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			across canonical_packages as pkgs_csr loop
 				pkgs_csr.item.do_recursive_classes (
 					agent (a_pkg: P_BMM_PACKAGE; a_class_name: STRING; pkg_class_list: HASH_TABLE [STRING, STRING])
+						local
+							cname: STRING
 						do
-							if pkg_class_list.has (a_class_name.as_lower) and then attached pkg_class_list.item (a_class_name.as_lower) as cl_item then
+							cname := a_class_name.as_lower
+							if pkg_class_list.has (cname) and then attached pkg_class_list.item (cname) as cl_item then
 								add_error (ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
 							else
-								pkg_class_list.put (a_pkg.name, a_class_name.as_lower)
+								pkg_class_list.put (a_pkg.name, cname)
 							end
 						end (?, ?, package_classes)
 				)
