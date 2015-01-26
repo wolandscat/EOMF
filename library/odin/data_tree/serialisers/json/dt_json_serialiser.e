@@ -11,6 +11,9 @@ class DT_JSON_SERIALISER
 
 inherit
 	DT_SERIALISER
+		redefine
+			reset
+		end
 
 	JSON_SYMBOLS
 		export
@@ -24,6 +27,14 @@ inherit
 
 create
 	make
+
+feature -- Commands
+
+	reset
+		do
+			precursor
+			multiple_attr_count := 0
+		end
 
 feature -- Visitor
 
