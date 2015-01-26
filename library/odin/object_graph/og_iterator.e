@@ -127,8 +127,8 @@ feature {NONE} -- Implementation
 			-- Do action only to nodes from top down to surface plus one, where membership is defined by `node_is_included'.
 		do
 			node_enter_action.call ([a_target, 0])
-			across a_target as a_target_csr loop
-				if dont_test_root or else node_is_included.item ([a_target]) then
+			if dont_test_root or else node_is_included.item ([a_target]) then
+				across a_target as a_target_csr loop
 					if attached {OG_NODE} a_target_csr.item as a_node then
 						do_until_surface_nodes_plus_one (a_node, node_enter_action, node_exit_action, node_is_included, False)
 					else
