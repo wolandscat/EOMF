@@ -64,10 +64,13 @@ feature -- Access (persistent features from .cfg file)
 
 feature -- Access
 
-	im_class_flat_rules_by_type: detachable HASH_TABLE [XML_IM_CLASS_SERIALISATION_RULES, INTEGER]
+	im_class_flat_rules_by_type: HASH_TABLE [detachable XML_IM_CLASS_SERIALISATION_RULES, STRING]
 			-- set of rules to do with IM class, based on `im_class_rules' but with
 			-- entry for every concrete type requested through `rules_for_type' that
 			-- conforms to a type in `im_class_rules'
+		attribute
+			create Result.make (0)
+		end
 
 	rules_for_type (a_type_name: STRING): detachable XML_IM_CLASS_SERIALISATION_RULES
 			-- get rules for `a_type_name', including any rules defined for a precursor
@@ -75,29 +78,31 @@ feature -- Access
 		local
 			type_tid, rule_type_tid: INTEGER
 		do
-			type_tid := dt_dynamic_type_from_string (a_type_name)
-			if attached im_class_flat_rules_by_type and then im_class_flat_rules_by_type.has (type_tid) then
-				Result := im_class_flat_rules_by_type.item (type_tid)
+			if im_class_flat_rules_by_type.has (a_type_name) then
+				Result := im_class_flat_rules_by_type.item (a_type_name)
 			else
 				-- we do the creation here, because this object may have been read from a text file
 				-- and there is no guarantee of make having been run. A slightly cleaner approach
 				-- would be to make it DT_CONVERTIBLE and then a make routine can be called on it
-				if not attached im_class_flat_rules_by_type then
-					create im_class_flat_rules_by_type.make (0)
-				end
-				from im_class_rules.start until attached Result or im_class_rules.off loop
-					rule_type_tid := dt_dynamic_type_from_string (im_class_rules.key_for_iteration)
+				type_tid := dt_dynamic_type_from_string (a_type_name)
+
+				-- go through all the rules, since the type we are looking for might inherit
+				-- from more than one of them.
+				across im_class_rules as class_rules_csr loop
+					rule_type_tid := dt_dynamic_type_from_string (class_rules_csr.key)
 					if rule_type_tid >= 0 and then type_conforms_to (type_tid, rule_type_tid) then
-						if not im_class_flat_rules_by_type.has (type_tid) then
-							im_class_flat_rules_by_type.put (im_class_rules.item_for_iteration, type_tid)
+						if not im_class_flat_rules_by_type.has (a_type_name) then
+							im_class_flat_rules_by_type.put (class_rules_csr.item.deep_twin, a_type_name)
 						else
-							im_class_flat_rules_by_type.item (type_tid).merge (im_class_rules.item_for_iteration)
+							im_class_flat_rules_by_type.item (a_type_name).merge (class_rules_csr.item)
 						end
 					end
-					im_class_rules.forth
 				end
-				if im_class_flat_rules_by_type.has (type_tid) then
-					Result := im_class_flat_rules_by_type.item (type_tid)
+
+				if not im_class_flat_rules_by_type.has (a_type_name) then
+					im_class_flat_rules_by_type.put (Void, a_type_name)
+				else
+					Result := im_class_flat_rules_by_type.item (a_type_name)
 				end
 			end
 		end

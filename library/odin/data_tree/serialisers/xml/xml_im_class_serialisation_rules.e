@@ -20,10 +20,11 @@ feature -- Initialisation
 
 feature -- Access
 
-	convert_to_xml_attr_attr_names: ARRAYED_LIST [STRING]
+	convert_to_xml_attr_attr_names: ARRAYED_SET [STRING]
 			-- set of IM class attribute names that should become, along with their value, an XML attribute on the enclosing XML tag
         attribute
             create Result.make (0)
+			Result.compare_objects
         end
 
 feature -- Status Report
@@ -36,7 +37,7 @@ feature -- Element Change
 	merge (other: XML_IM_CLASS_SERIALISATION_RULES)
 			-- merge in rules in `other'
 		do
-			convert_to_xml_attr_attr_names.append (other.convert_to_xml_attr_attr_names)
+			convert_to_xml_attr_attr_names.merge (other.convert_to_xml_attr_attr_names)
 			output_dt_im_type_name_as_xml_attr := output_dt_im_type_name_as_xml_attr or other.output_dt_im_type_name_as_xml_attr
 		end
 
