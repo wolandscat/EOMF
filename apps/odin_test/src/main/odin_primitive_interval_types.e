@@ -81,25 +81,25 @@ feature -- Access
 			create {POINT_INTERVAL[DOUBLE]} Result.make (0)
 		end
 
-	my_date_interval: INTERVAL[DATE]
-		attribute
-			create {POINT_INTERVAL[DATE]} Result.make (create {DATE}.make_now)
-		end
+--	my_date_interval: INTERVAL[DATE]
+--		attribute
+--			create {POINT_INTERVAL[DATE]} Result.make (create {DATE}.make_now)
+--		end
 
-	my_date_time_interval: INTERVAL[DATE_TIME]
-		attribute
-			create {POINT_INTERVAL[DATE_TIME]} Result.make (create {DATE_TIME}.make_now)
-		end
+--	my_date_time_interval: INTERVAL[DATE_TIME]
+--		attribute
+--			create {POINT_INTERVAL[DATE_TIME]} Result.make (create {DATE_TIME}.make_now)
+--		end
 
-	my_time_interval: INTERVAL[TIME]
-		attribute
-			create {POINT_INTERVAL[TIME]} Result.make (create {TIME}.make_now)
-		end
+--	my_time_interval: INTERVAL[TIME]
+--		attribute
+--			create {POINT_INTERVAL[TIME]} Result.make (create {TIME}.make_now)
+--		end
 
-	my_duration_interval: INTERVAL[DATE_TIME_DURATION]
-		attribute
-			create {POINT_INTERVAL[DATE_TIME_DURATION]} Result.make (create {DATE_TIME_DURATION}.make_definite (0, 0, 0, 0))
-		end
+--	my_duration_interval: INTERVAL[DATE_TIME_DURATION]
+--		attribute
+--			create {POINT_INTERVAL[DATE_TIME_DURATION]} Result.make (create {DATE_TIME_DURATION}.make_definite (0, 0, 0, 0))
+--		end
 
 	my_iso8601_date_interval: INTERVAL[ISO8601_DATE]
 		attribute
@@ -193,25 +193,25 @@ feature -- Element change
 			my_natural_64_interval := a_nat
 		end
 
-	set_my_date_interval (a_date_interval: like my_date_interval)
-		do
-			my_date_interval := a_date_interval
-		end
+--	set_my_date_interval (a_date_interval: like my_date_interval)
+--		do
+--			my_date_interval := a_date_interval
+--		end
 
-	set_my_date_time_interval (a_date_time_interval: like my_date_time_interval)
-		do
-			my_date_time_interval := a_date_time_interval
-		end
+--	set_my_date_time_interval (a_date_time_interval: like my_date_time_interval)
+--		do
+--			my_date_time_interval := a_date_time_interval
+--		end
 
-	set_my_time_interval (a_time_interval: like my_time_interval)
-		do
-			my_time_interval := a_time_interval
-		end
+--	set_my_time_interval (a_time_interval: like my_time_interval)
+--		do
+--			my_time_interval := a_time_interval
+--		end
 
-	set_my_duration_interval (a_duration_interval: like my_duration_interval)
-		do
-			my_duration_interval := a_duration_interval
-		end
+--	set_my_duration_interval (a_duration_interval: like my_duration_interval)
+--		do
+--			my_duration_interval := a_duration_interval
+--		end
 
 	set_my_iso8601_date_interval (a_iso8601_date_interval: like my_iso8601_date_interval)
 		do

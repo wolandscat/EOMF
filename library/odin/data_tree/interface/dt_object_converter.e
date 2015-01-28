@@ -222,7 +222,7 @@ debug ("DT")
 end
 
 			-- complex objects, including of container types, get their type names written in to the DT node here
-			a_dt_co.set_type_name (an_obj.generating_type)
+			a_dt_co.set_im_type_name (an_obj.generating_type)
 
 			-- if the static type is known, and different from the dynamic type of the object, set the visible flag
 			if a_static_tid /= No_type and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
@@ -244,7 +244,7 @@ debug ("DT")
 end
 				if not eif_hash_obj.is_empty  then
 					create a_dt_attr.make_nested_container
-					a_dt_attr.set_type_name (an_obj.generating_type)
+					a_dt_attr.set_im_type_name (an_obj.generating_type)
 					if a_static_tid /= 0 and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
 						a_dt_attr.set_type_visible
 					end
@@ -260,7 +260,7 @@ debug ("DT")
 end
 				if not eif_seq_obj.is_empty then
 					create a_dt_attr.make_nested_container
-					a_dt_attr.set_type_name (an_obj.generating_type)
+					a_dt_attr.set_im_type_name (an_obj.generating_type)
 					if a_static_tid /= 0 and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
 						a_dt_attr.set_type_visible
 					end
@@ -338,7 +338,7 @@ debug ("DT")
 end
 								if not eif_hash_fld_val.is_empty  then
 									create a_dt_attr.make_container (eif_fld_name)
-									a_dt_attr.set_type_name (eif_fld_val.generating_type)
+									a_dt_attr.set_im_type_name (eif_fld_val.generating_type)
 									if attached_type (fld_static_tid) /= attached_type (fld_att_dyn_tid) then
 										a_dt_attr.set_type_visible
 									end
@@ -354,7 +354,7 @@ debug ("DT")
 end
 								if not eif_seq_fld_val.is_empty then
 									create a_dt_attr.make_container (eif_fld_name)
-									a_dt_attr.set_type_name (eif_fld_val.generating_type)
+									a_dt_attr.set_im_type_name (eif_fld_val.generating_type)
 									if attached_type (fld_static_tid) /= attached_type (fld_att_dyn_tid) then
 										a_dt_attr.set_type_visible
 									end

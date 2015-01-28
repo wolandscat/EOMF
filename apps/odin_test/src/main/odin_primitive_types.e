@@ -59,25 +59,25 @@ feature -- Access
 
 	my_double: DOUBLE assign set_my_double
 
-	my_date: DATE assign set_my_date
-		attribute
-			create Result.make_now
-		end
+--	my_date: DATE assign set_my_date
+--		attribute
+--			create Result.make_now
+--		end
 
-	my_date_time: DATE_TIME assign set_my_date_time
-		attribute
-			create Result.make_now
-		end
+--	my_date_time: DATE_TIME assign set_my_date_time
+--		attribute
+--			create Result.make_now
+--		end
 
-	my_time: TIME assign set_my_time
-		attribute
-			create Result.make_now
-		end
+--	my_time: TIME assign set_my_time
+--		attribute
+--			create Result.make_now
+--		end
 
-	my_duration: DATE_TIME_DURATION assign set_my_duration
-		attribute
-			create Result.make_definite (0, 0, 0, 0)
-		end
+--	my_duration: DATE_TIME_DURATION assign set_my_duration
+--		attribute
+--			create Result.make_definite (0, 0, 0, 0)
+--		end
 
 	my_iso8601_date: ISO8601_DATE assign set_my_iso8601_date
 		attribute
@@ -206,25 +206,25 @@ feature -- Element change
 			my_natural_64 := a_nat
 		end
 
-	set_my_date (a_date: like my_date)
-		do
-			my_date := a_date
-		end
+--	set_my_date (a_date: like my_date)
+--		do
+--			my_date := a_date
+--		end
 
-	set_my_date_time (a_date_time: like my_date_time)
-		do
-			my_date_time := a_date_time
-		end
+--	set_my_date_time (a_date_time: like my_date_time)
+--		do
+--			my_date_time := a_date_time
+--		end
 
-	set_my_time (a_time: like my_time)
-		do
-			my_time := a_time
-		end
+--	set_my_time (a_time: like my_time)
+--		do
+--			my_time := a_time
+--		end
 
-	set_my_duration (a_duration: like my_duration)
-		do
-			my_duration := a_duration
-		end
+--	set_my_duration (a_duration: like my_duration)
+--		do
+--			my_duration := a_duration
+--		end
 
 	set_my_iso8601_date (a_iso8601_date: like my_iso8601_date)
 		do

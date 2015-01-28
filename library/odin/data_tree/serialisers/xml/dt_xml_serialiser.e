@@ -311,11 +311,11 @@ feature {NONE} -- Implementation
 	xml_attrs_for_dt_complex_object (a_dt_obj: DT_COMPLEX_OBJECT): detachable HASH_TABLE [STRING, STRING]
 			-- generate XML attribute table for `a_dt_obj' based on XML rules, if any found
 		do
-			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as srt then
+			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as type_rules then
 				create Result.make (0)
 
 				-- put the IM type name in the XML attributes
-				if srt.output_dt_im_type_name_as_xml_attr then
+				if type_rules.output_dt_im_type_name_as_xml_attr then
 					if a_dt_obj.is_typed then
 						Result.put (a_dt_obj.im_type_name, "im:type")
 					end
@@ -330,14 +330,12 @@ feature {NONE} -- Implementation
 
 				-- for each rule of type 'convert object value to XML attribute', see if the attribute exists
 				-- and if so, construct the appropriate XML attribute information to put into the tag, below
-				if attached srt.convert_to_xml_attr_attr_names as cvt_names then
-					across cvt_names as cvt_names_csr loop
-						if a_dt_obj.has_attribute (cvt_names_csr.item) and then
-							attached a_dt_obj.attribute_node (cvt_names_csr.item) as dt_attr and then attached {DT_PRIMITIVE_OBJECT} dt_attr.first_child as dt_po
-						then
-							dt_attr_nodes_to_ignore.extend (dt_attr)
-							Result.put (dt_po.value.out, cvt_names_csr.item)
-						end
+				across type_rules.convert_to_xml_attr_attr_names as cvt_names_csr loop
+					if a_dt_obj.has_attribute (cvt_names_csr.item) and then
+						attached a_dt_obj.attribute_node (cvt_names_csr.item) as dt_attr and then attached {DT_PRIMITIVE_OBJECT} dt_attr.first_child as dt_po
+					then
+						dt_attr_nodes_to_ignore.extend (dt_attr)
+						Result.put (dt_po.value.out, cvt_names_csr.item)
 					end
 				end
 			end
@@ -346,7 +344,7 @@ feature {NONE} -- Implementation
 	xml_attrs_for_dt_primitive_object (a_dt_obj: DT_PRIMITIVE_OBJECT): detachable HASH_TABLE [STRING, STRING]
 			-- generate XML attribute table for `a_dt_obj' based on XML rules, if any found
 		do
-			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as srt then
+			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as type_rules then
 				create Result.make (0)
 
 				-- put the DT node id in the result for ids that are not just numbers (numbers are generated in
@@ -357,7 +355,7 @@ feature {NONE} -- Implementation
 				end
 
 --				-- put the IM type name in the result
---				if srt.output_dt_im_type_name_as_xml_attr then
+--				if type_rules.output_dt_im_type_name_as_xml_attr then
 --					if a_dt_obj.is_typed then
 --						Result.put (a_dt_obj.im_type_name, "im:type")
 --					end

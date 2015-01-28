@@ -110,25 +110,25 @@ feature -- Access
 			create Result.make (0)
 		end
 
-	my_date_arrayed_list: ARRAYED_LIST[DATE]
-		attribute
-			create Result.make (0)
-		end
+--	my_date_arrayed_list: ARRAYED_LIST[DATE]
+--		attribute
+--			create Result.make (0)
+--		end
 
-	my_date_time_arrayed_list: ARRAYED_LIST[DATE_TIME]
-		attribute
-			create Result.make (0)
-		end
+--	my_date_time_arrayed_list: ARRAYED_LIST[DATE_TIME]
+--		attribute
+--			create Result.make (0)
+--		end
 
-	my_time_arrayed_list: ARRAYED_LIST[TIME]
-		attribute
-			create Result.make (0)
-		end
+--	my_time_arrayed_list: ARRAYED_LIST[TIME]
+--		attribute
+--			create Result.make (0)
+--		end
 
-	my_duration_arrayed_list: ARRAYED_LIST[DATE_TIME_DURATION]
-		attribute
-			create Result.make (0)
-		end
+--	my_duration_arrayed_list: ARRAYED_LIST[DATE_TIME_DURATION]
+--		attribute
+--			create Result.make (0)
+--		end
 
 	my_iso8601_date_arrayed_list: ARRAYED_LIST[ISO8601_DATE]
 		attribute
@@ -257,25 +257,25 @@ feature -- Element change
 			my_natural_64_arrayed_list := a_nat_arrayed_list
 		end
 
-	set_my_date_arrayed_list (a_date_arrayed_list: like my_date_arrayed_list)
-		do
-			my_date_arrayed_list := a_date_arrayed_list
-		end
+--	set_my_date_arrayed_list (a_date_arrayed_list: like my_date_arrayed_list)
+--		do
+--			my_date_arrayed_list := a_date_arrayed_list
+--		end
 
-	set_my_date_time_arrayed_list (a_date_time_arrayed_list: like my_date_time_arrayed_list)
-		do
-			my_date_time_arrayed_list := a_date_time_arrayed_list
-		end
+--	set_my_date_time_arrayed_list (a_date_time_arrayed_list: like my_date_time_arrayed_list)
+--		do
+--			my_date_time_arrayed_list := a_date_time_arrayed_list
+--		end
 
-	set_my_time_arrayed_list (a_time_arrayed_list: like my_time_arrayed_list)
-		do
-			my_time_arrayed_list := a_time_arrayed_list
-		end
+--	set_my_time_arrayed_list (a_time_arrayed_list: like my_time_arrayed_list)
+--		do
+--			my_time_arrayed_list := a_time_arrayed_list
+--		end
 
-	set_my_duration_arrayed_list (a_duration_arrayed_list: like my_duration_arrayed_list)
-		do
-			my_duration_arrayed_list := a_duration_arrayed_list
-		end
+--	set_my_duration_arrayed_list (a_duration_arrayed_list: like my_duration_arrayed_list)
+--		do
+--			my_duration_arrayed_list := a_duration_arrayed_list
+--		end
 
 	set_my_iso8601_date_arrayed_list (a_iso8601_date_arrayed_list: like my_iso8601_date_arrayed_list)
 		do

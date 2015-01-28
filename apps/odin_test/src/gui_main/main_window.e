@@ -343,4 +343,9 @@ feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be manag
 			create Result.make (0)
 		end
 
+	odin_fast_parser: FAST_ODIN_PARSER
+		once
+			create Result.make
+		end
+
 end

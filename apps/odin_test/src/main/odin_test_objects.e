@@ -38,18 +38,18 @@ feature -- Access
 			-- list of {test data set, test proc, test set name}
 		once
 			create Result.make(0)
-			Result.extend ([round_trip_tests, agent round_trip, "Round trip tests"])
-			Result.extend ([from_odin_tests, agent from_odin, "From odin tests"])
+			Result.extend ([round_trip_tests, agent do_round_trip_test, "Round trip tests"])
+			Result.extend ([from_odin_tests, agent do_from_odin_test, "From odin tests"])
+			Result.extend ([from_odin_tests, agent do_performance_test, "Performance tests"])
 		end
 
 	from_odin_tests: HASH_TABLE [STRING, STRING]
-			-- table of dadl test texts keyed by their name
+			-- table of ODIN test texts keyed by their name
 		local
 			dir: DIRECTORY
 			an_odin_file: PLAIN_TEXT_FILE
 			file_name, file_path, dir_path: STRING
 			file_names: ARRAYED_LIST [STRING]
-			m_ivl: MULTIPLICITY_INTERVAL
 		once
 			create Result.make(0)
 			dir_path := file_system.pathname (file_system.pathname (file_system.pathname (
@@ -105,10 +105,10 @@ feature -- Access
 			Result.set_my_string ("This is the last dance")
 			Result.set_my_string_8 ("Birds and bees")
 --			Result.set_my_string_32 ("And honey trees")
-			Result.set_my_date (create {DATE}.make_now)
-			Result.set_my_date_time (create {DATE_TIME}.make_now)
-			Result.set_my_time (create {TIME}.make_now)
-			Result.set_my_duration (create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0))
+--			Result.set_my_date (create {DATE}.make_now)
+--			Result.set_my_date_time (create {DATE_TIME}.make_now)
+--			Result.set_my_time (create {TIME}.make_now)
+--			Result.set_my_duration (create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0))
 			Result.set_my_iso8601_date (create {ISO8601_DATE}.make_from_string("2001-08-12"))
 			Result.set_my_iso8601_date_time (create {ISO8601_DATE_TIME}.make_from_string("2001-08-12T03:46:00"))
 			Result.set_my_iso8601_time (create {ISO8601_TIME}.make_from_string("03:46:00"))
@@ -135,10 +135,10 @@ feature -- Access
 			Result.set_my_real_64_interval (create {PROPER_INTERVAL[REAL_64]}.make_bounded_included(10.0, 20.0))
 			Result.set_my_double_interval (create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(300.0, 50000.0))
 
-			Result.set_my_date_interval (create {PROPER_INTERVAL[DATE]}.make_bounded_included(create {DATE}.make(2000, 1, 3), create {DATE}.make(2005, 12, 19)))
-			Result.set_my_date_time_interval (create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included(create {DATE_TIME}.make(2000, 1, 3, 11, 30, 0), create {DATE_TIME}.make(2005, 12, 19, 11, 30, 0)))
-			Result.set_my_time_interval (create {POINT_INTERVAL[TIME]}.make(create {TIME}.make(11, 30, 0)))
-			Result.set_my_duration_interval (create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included(create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0), create {DATE_TIME_DURATION}.make_definite (5, 0, 0, 0)))
+--			Result.set_my_date_interval (create {PROPER_INTERVAL[DATE]}.make_bounded_included(create {DATE}.make(2000, 1, 3), create {DATE}.make(2005, 12, 19)))
+--			Result.set_my_date_time_interval (create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included(create {DATE_TIME}.make(2000, 1, 3, 11, 30, 0), create {DATE_TIME}.make(2005, 12, 19, 11, 30, 0)))
+--			Result.set_my_time_interval (create {POINT_INTERVAL[TIME]}.make(create {TIME}.make(11, 30, 0)))
+--			Result.set_my_duration_interval (create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included(create {DATE_TIME_DURATION}.make_definite (1, 0, 0, 0), create {DATE_TIME_DURATION}.make_definite (5, 0, 0, 0)))
 
 			Result.set_my_iso8601_date_interval (create {PROPER_INTERVAL[ISO8601_DATE]}.make_bounded_included(create {ISO8601_DATE}.make_from_string("2001-08-12"), create {ISO8601_DATE}.make_from_string("2004-12-25")))
 			Result.set_my_iso8601_date_time_interval (create {PROPER_INTERVAL[ISO8601_DATE_TIME]}.make_bounded_included(create {ISO8601_DATE_TIME}.make_from_string("2001-08-12T03:46:00"), create {ISO8601_DATE_TIME}.make_from_string("2003-01-12T03:46:00")))
@@ -175,10 +175,10 @@ feature -- Access
 			Result.set_my_string_arrayed_list (create {ARRAYED_LIST[STRING]}.make_from_array(<<"this", "is", "a", "string", "list">>))
 	--		Result.set_my_string_32_arrayed_list (create {ARRAYED_LIST[STRING_32]}.make_from_array(<<#, #, #, #>>))
 
-			Result.set_my_date_arrayed_list (create {ARRAYED_LIST[DATE]}.make_from_array(<<create {DATE}.make_now, create {DATE}.make_day_month_year(12, 8, 1965)>>))
-			Result.set_my_date_time_arrayed_list (create {ARRAYED_LIST[DATE_TIME]}.make_from_array(<<create {DATE_TIME}.make_now, create {DATE_TIME}.make(1965, 8, 12, 14, 8, 0)>>))
-			Result.set_my_time_arrayed_list (create {ARRAYED_LIST[TIME]}.make_from_array(<<create {TIME}.make_now, create {TIME}.make(2, 30, 0)>>))
-			Result.set_my_duration_arrayed_list (create {ARRAYED_LIST[DATE_TIME_DURATION]}.make_from_array(<<create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0)>>))
+--			Result.set_my_date_arrayed_list (create {ARRAYED_LIST[DATE]}.make_from_array(<<create {DATE}.make_now, create {DATE}.make_day_month_year(12, 8, 1965)>>))
+--			Result.set_my_date_time_arrayed_list (create {ARRAYED_LIST[DATE_TIME]}.make_from_array(<<create {DATE_TIME}.make_now, create {DATE_TIME}.make(1965, 8, 12, 14, 8, 0)>>))
+--			Result.set_my_time_arrayed_list (create {ARRAYED_LIST[TIME]}.make_from_array(<<create {TIME}.make_now, create {TIME}.make(2, 30, 0)>>))
+--			Result.set_my_duration_arrayed_list (create {ARRAYED_LIST[DATE_TIME_DURATION]}.make_from_array(<<create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0)>>))
 
 			Result.set_my_iso8601_date_arrayed_list (create {ARRAYED_LIST[ISO8601_DATE]}.make_from_array(<<create {ISO8601_DATE}.make_from_string("2001-01-02"), create {ISO8601_DATE}.make_from_string("2007-07-22")>>))
 			Result.set_my_iso8601_date_time_arrayed_list (create {ARRAYED_LIST[ISO8601_DATE_TIME]}.make_from_array(<<create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T00:47:00"), create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T03:45:00")>>))
@@ -215,10 +215,10 @@ feature -- Access
 			Result.set_my_string_arrayed_list (create {ARRAYED_LIST[STRING]}.make_from_array(<<"this">>))
 	--		Result.set_my_string_32_arrayed_list (create {ARRAYED_LIST[STRING_32]}.make_from_array(<<#>>))
 
-			Result.set_my_date_arrayed_list (create {ARRAYED_LIST[DATE]}.make_from_array(<<create {DATE}.make_now>>))
-			Result.set_my_date_time_arrayed_list (create {ARRAYED_LIST[DATE_TIME]}.make_from_array(<<create {DATE_TIME}.make_now>>))
-			Result.set_my_time_arrayed_list (create {ARRAYED_LIST[TIME]}.make_from_array(<<create {TIME}.make_now>>))
-			Result.set_my_duration_arrayed_list (create {ARRAYED_LIST[DATE_TIME_DURATION]}.make_from_array(<<create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0)>>))
+--			Result.set_my_date_arrayed_list (create {ARRAYED_LIST[DATE]}.make_from_array(<<create {DATE}.make_now>>))
+--			Result.set_my_date_time_arrayed_list (create {ARRAYED_LIST[DATE_TIME]}.make_from_array(<<create {DATE_TIME}.make_now>>))
+--			Result.set_my_time_arrayed_list (create {ARRAYED_LIST[TIME]}.make_from_array(<<create {TIME}.make_now>>))
+--			Result.set_my_duration_arrayed_list (create {ARRAYED_LIST[DATE_TIME_DURATION]}.make_from_array(<<create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0)>>))
 
 			Result.set_my_iso8601_date_arrayed_list (create {ARRAYED_LIST[ISO8601_DATE]}.make_from_array(<<create {ISO8601_DATE}.make_from_string("2001-01-02")>>))
 			Result.set_my_iso8601_date_time_arrayed_list (create {ARRAYED_LIST[ISO8601_DATE_TIME]}.make_from_array(<<create {ISO8601_DATE_TIME}.make_from_string("2001-01-02T00:47:00")>>))
@@ -274,22 +274,22 @@ feature -- Access
 				create {PROPER_INTERVAL[DOUBLE]}.make_bounded_included(40.0345, 3000.23), create {PROPER_INTERVAL[DOUBLE]}.make_upper_unbounded(29.09894, True)
 			>>))
 
-			Result.set_my_arrayed_list_interval_date (create {ARRAYED_LIST[INTERVAL[DATE]]}.make_from_array (<<
-				create {PROPER_INTERVAL[DATE]}.make_bounded_included (create {DATE}.make_day_month_year (12, 8, 1965), create {DATE}.make_now),
-				create {PROPER_INTERVAL[DATE]}.make_upper_unbounded (create {DATE}.make_day_month_year (02, 12, 2009), True)
-			>>))
-			Result.set_my_arrayed_list_interval_date_time (create {ARRAYED_LIST[INTERVAL[DATE_TIME]]}.make_from_array (<<
-				create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included (create {DATE_TIME}.make (1965, 8, 12, 14, 8, 0), create {DATE_TIME}.make_now),
-				create {PROPER_INTERVAL[DATE_TIME]}.make_upper_unbounded (create {DATE_TIME}.make (2013, 4, 22, 10, 30, 0), True)
-			>>))
-			Result.set_my_arrayed_list_interval_time (create {ARRAYED_LIST[INTERVAL[TIME]]}.make_from_array (<<
-				create {PROPER_INTERVAL[TIME]}.make_bounded_included (create {TIME}.make (2, 30, 0), create {TIME}.make (2, 45, 0)),
-				create {PROPER_INTERVAL[TIME]}.make_upper_unbounded (create {TIME}.make (2, 30, 0), True)
-			>>))
-			Result.set_my_arrayed_list_interval_duration (create {ARRAYED_LIST[INTERVAL[DATE_TIME_DURATION]]}.make_from_array(<<
-				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included (create {DATE_TIME_DURATION}.make_definite (0, 4, 0, 0), create {DATE_TIME_DURATION}.make_definite (1, 4, 0, 0)),
-				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_upper_unbounded (create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0), True)
-			>>))
+--			Result.set_my_arrayed_list_interval_date (create {ARRAYED_LIST[INTERVAL[DATE]]}.make_from_array (<<
+--				create {PROPER_INTERVAL[DATE]}.make_bounded_included (create {DATE}.make_day_month_year (12, 8, 1965), create {DATE}.make_now),
+--				create {PROPER_INTERVAL[DATE]}.make_upper_unbounded (create {DATE}.make_day_month_year (02, 12, 2009), True)
+--			>>))
+--			Result.set_my_arrayed_list_interval_date_time (create {ARRAYED_LIST[INTERVAL[DATE_TIME]]}.make_from_array (<<
+--				create {PROPER_INTERVAL[DATE_TIME]}.make_bounded_included (create {DATE_TIME}.make (1965, 8, 12, 14, 8, 0), create {DATE_TIME}.make_now),
+--				create {PROPER_INTERVAL[DATE_TIME]}.make_upper_unbounded (create {DATE_TIME}.make (2013, 4, 22, 10, 30, 0), True)
+--			>>))
+--			Result.set_my_arrayed_list_interval_time (create {ARRAYED_LIST[INTERVAL[TIME]]}.make_from_array (<<
+--				create {PROPER_INTERVAL[TIME]}.make_bounded_included (create {TIME}.make (2, 30, 0), create {TIME}.make (2, 45, 0)),
+--				create {PROPER_INTERVAL[TIME]}.make_upper_unbounded (create {TIME}.make (2, 30, 0), True)
+--			>>))
+--			Result.set_my_arrayed_list_interval_duration (create {ARRAYED_LIST[INTERVAL[DATE_TIME_DURATION]]}.make_from_array(<<
+--				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_bounded_included (create {DATE_TIME_DURATION}.make_definite (0, 4, 0, 0), create {DATE_TIME_DURATION}.make_definite (1, 4, 0, 0)),
+--				create {PROPER_INTERVAL[DATE_TIME_DURATION]}.make_upper_unbounded (create {DATE_TIME_DURATION}.make(32, 0, 0, 5, 0, 0), True)
+--			>>))
 
 			Result.set_my_arrayed_list_interval_iso8601_date (create {ARRAYED_LIST[INTERVAL[ISO8601_DATE]]}.make_from_array (<<
 				create {PROPER_INTERVAL[ISO8601_DATE]}.make_bounded_included (create {ISO8601_DATE}.make_from_string("2001-01-02"), create {ISO8601_DATE}.make_from_string("2007-07-22")),
@@ -312,7 +312,7 @@ feature -- Access
 
 feature -- Test procedures
 
-	round_trip (an_obj: ANY)
+	do_round_trip_test (an_obj: ANY)
 		local
 			dt: DT_COMPLEX_OBJECT
 		do
@@ -351,7 +351,7 @@ feature -- Test procedures
 			set_serialised_text (odin_engine.serialised, a_format)
 		end
 
-	from_odin (an_odin_text: STRING)
+	do_from_odin_test (an_odin_text: STRING)
 		do
 			set_source_text (an_odin_text)
 			odin_engine.set_source (an_odin_text, 0)
@@ -363,9 +363,58 @@ feature -- Test procedures
 			end
 		end
 
+	max_iterations: INTEGER = 50
+
+	do_performance_test (an_odin_text: STRING)
+		local
+			i: INTEGER
+			stopwatch: DT_STOPWATCH
+		do
+			set_source_text (an_odin_text)
+
+			create stopwatch.make
+
+			-- standard parser
+			append_status ("Commencing " + max_iterations.out + " iterations with standard ODIN parser %N")
+			stopwatch.start
+			from i := 1 until i > max_iterations or odin_engine.errors.has_errors loop
+				odin_engine.set_source (an_odin_text, 0)
+				odin_engine.parse
+				i := i + 1
+			end
+			stopwatch.stop
+			if odin_engine.parse_succeeded then
+				append_status ("%TParse succeeded - " + max_iterations.out + " iterations took " + stopwatch.elapsed_time.out + "%N")
+			else
+				append_status ("%TParse failed " + odin_engine.errors.as_string + "%N")
+			end
+
+			-- fast parser
+			append_status ("Commencing " + max_iterations.out + " iterations with FAST ODIN parser %N")
+			stopwatch.reset
+			stopwatch.start
+			from i := 1 until i > max_iterations or fast_odin_engine.errors.has_errors loop
+				fast_odin_engine.set_source (an_odin_text, 0)
+				fast_odin_engine.parse
+				i := i + 1
+			end
+			stopwatch.stop
+			if fast_odin_engine.parse_succeeded then
+				append_status ("%TFAST Parse succeeded - " + max_iterations.out + " iterations took " + stopwatch.elapsed_time.out + "%N")
+			else
+				append_status ("%TFAST Parse failed " + fast_odin_engine.errors.as_string + "%N")
+			end
+
+		end
+
 feature {NONE} -- Implementation
 
 	odin_engine: ODIN_ENGINE
+		once
+			create Result.make
+		end
+
+	fast_odin_engine: FAST_ODIN_ENGINE
 		once
 			create Result.make
 		end

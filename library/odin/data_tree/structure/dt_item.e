@@ -59,7 +59,7 @@ feature -- Status Report
 			Result := representation.is_root
 		end
 
-	set_type_name (a_type_name: STRING)
+	set_im_type_name (a_type_name: STRING)
 			-- set type name
 		require
 			Type_name_valid: not a_type_name.is_empty
@@ -69,12 +69,12 @@ feature -- Status Report
 
 feature -- Modification
 
-	set_visible_type_name (a_type_name: STRING)
+	set_visible_im_type_name (a_type_name: STRING)
 			-- set type name
 		require
 			Type_name_valid: not a_type_name.is_empty
 		do
-			set_type_name (a_type_name)
+			set_im_type_name (a_type_name)
 			set_type_visible
 		end
 
