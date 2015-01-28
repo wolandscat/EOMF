@@ -42,6 +42,15 @@ feature {NONE} -- Implementation
 			create Result.make (0)
 		end
 
+	quote_characters: HASH_TABLE [STRING, CHARACTER]
+			-- styles in this format, keyed by logical name
+		once
+			create Result.make(0)
+			Result.put("\\",			'\')
+			Result.put("\%"",			'"')
+			Result.put("\t",			'%T')
+			Result.put("\n",			'%N')
+		end
 end
 
 

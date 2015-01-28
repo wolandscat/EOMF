@@ -159,7 +159,7 @@ feature -- Modification
 				else
 					last_result.remove_tail (format_item (FMT_NEWLINE).count)
 				end
-				last_result.append (a_node.as_serialised_string (agent primitive_value_to_simple_string, agent xml_quote))
+				last_result.append (a_node.as_serialised_string (agent primitive_value_to_simple_string, agent profile.clean))
 				last_object_primitive := True
 			end
 		end
@@ -180,7 +180,7 @@ feature -- Modification
 				agent primitive_value_to_xml_tagged_string (a_node.parent.im_attr_name, depth//2, ?),
 				Void,
 				Void,
-				agent xml_quote))
+				agent profile.clean))
 			last_object_primitive := True
 		end
 

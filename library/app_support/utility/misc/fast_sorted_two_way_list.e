@@ -34,34 +34,24 @@ create {TWO_WAY_LIST}
 feature -- Access
 
 	search_after (v: like item)
-			-- Go to first position with item greater than or
-			-- equal to `v', using the binary split method.
-		local
-			i,j,k: INTEGER
-			found: BOOLEAN
+			-- Go to first item that is
+			-- greater than or equal to `v'!
 		do
-			-- small optimisation that often works: assume that the new item may in fact
-			-- be sorted w.r.t. to last item added
-			if islast and then v >= item then
-				forth
+			if off then
+				from start until after or else v <= item loop
+					forth
+				end
 			else
-				from
-					start
-					i := 1
-					j := count + 1
-				until
-					i + 1 > j or found
-				loop
-					k := (i + j)//2
-					go_i_th (k)
-					if v < item then
-						j := k
-					elseif v > item then
-						i := k + 1
-						go_i_th (i)
-					else
-						found := True
-					end
+				-- Search backwards.
+				-- Cursor may end up before the target position
+				-- or even `before'.
+				from until before or else v > item loop
+					back
+				end
+				-- Search forwards.
+				if before then start end
+				from until after or else v <= item loop
+					forth
 				end
 			end
 		end

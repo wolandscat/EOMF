@@ -100,18 +100,24 @@ feature  {ANY_SERIALISER} -- Factory
 		local
 			i: INTEGER
 		do
-			if str.has ('\') or str.has ('"') then
+			if across quote_characters as chars_csr some str.has (chars_csr.key) end then
 				create Result.make (str.count)
 				from i := 1 until i > str.count loop
-					if str.item (i) = '\' or str.item (i) = '"' then
-						Result.append_character ('\')
+					if attached quote_characters.item (str.item (i)) as repl then
+						Result.append (repl)
+					else
+						Result.append_character (str.item (i))
 					end
-					Result.append_character (str.item (i))
 					i := i + 1
 				end
 			else
 				Result := str
 			end
+		end
+
+	quote_characters: HASH_TABLE [STRING, CHARACTER]
+			-- single characters that need quoting
+		deferred
 		end
 
 end

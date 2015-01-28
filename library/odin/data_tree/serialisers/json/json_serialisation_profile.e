@@ -11,9 +11,6 @@ deferred class JSON_SERIALISATION_PROFILE
 
 inherit
 	SERIALISATION_PROFILE
-		redefine
-			clean
-		end
 
 feature {ANY_SERIALISER} -- Access
 
@@ -33,10 +30,14 @@ feature {ANY_SERIALISER} -- Access
 			create Result.make(0)
 		end
 
-	quote_patterns: HASH_TABLE [STRING, STRING]
+	quote_characters: HASH_TABLE [STRING, CHARACTER]
 			-- styles in this format, keyed by logical name
 		once
 			create Result.make(0)
+			Result.put("\\",			'\')
+			Result.put("\%"",			'"')
+			Result.put("\t",			'%T')
+			Result.put("\n",			'%N')
 		end
 
 feature {ANY_SERIALISER} -- Factory
@@ -45,47 +46,6 @@ feature {ANY_SERIALISER} -- Factory
 			-- apply `a_style' to `elem'
 		do
 			Result := elem
-		end
-
-	clean (str: STRING): STRING
-			-- generate clean copy of `str' by inserting \ quoting for chars in `quoted_chars' not already quoted in `str':
-			-- find all instances of '\' and '"' that are not already being used in the quote patterns, e.g. like:
-			--	\n, \r, \t, \\, \", \'
-			-- and convert
-			--	\ to \\
-			-- 	" to \"
-		do
-			if not str.is_empty then
-				Result := json_clean (str)
-			else
-				Result := str
-			end
-		end
-
-feature {NONE} -- Implementation
-
-	json_clean (str: STRING): STRING
-			-- generate clean copy of `str' and convert
-			--	\ to \\
-			-- 	" to \"
-			-- otherwise just return original string
-		local
-			i: INTEGER
-		do
-			create Result.make (str.count)
-			from i := 1 until i > str.count loop
-				if str.item (i) = '%N'  then
-					Result.append ("\n")
-				elseif str.item (i) = '%T'  then
-					Result.append ("\t")
-				else
-					if str.item (i) = '\' or str.item (i) = '"' then
-						Result.append_character ('\')
-					end
-					Result.append_character (str.item (i))
-				end
-				i := i + 1
-			end
 		end
 
 end

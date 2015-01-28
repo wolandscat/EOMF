@@ -57,10 +57,12 @@ feature {ANY_SERIALISER} -- Access
 			create Result.make(0)
 		end
 
-	quote_patterns: HASH_TABLE[STRING, STRING]
+	quote_characters: HASH_TABLE [STRING, CHARACTER]
 			-- styles in this format, keyed by logical name
 		once
 			create Result.make(0)
+			Result.put("\\",			'\')
+			Result.put("\%"",			'"')
 		end
 
 feature {ANY_SERIALISER} -- Factory
