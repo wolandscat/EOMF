@@ -30,7 +30,6 @@ feature {ANY_SERIALISER} -- Access
 		end
 
 	quote_characters: HASH_TABLE [STRING, CHARACTER]
-			-- styles in this format, keyed by logical name
 		once
 			create Result.make(0)
 			Result.put("&lt;",			'<')

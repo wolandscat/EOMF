@@ -78,12 +78,8 @@ feature  {ANY_SERIALISER} -- Factory
 		end
 
 	clean (str: STRING): STRING
-			-- generate clean copy of `str' by inserting \ quoting for chars in `quoted_chars' not already quoted in `str':
-			-- find all instances of '\' and '"' that are not already being used in the quote patterns, e.g. like:
-			--	\n, \r, \t, \\, \", \'
-			-- and convert
-			--	\ to \\
-			-- 	" to \"
+			-- generate clean copy of `str' for particular format; behaviour determined by contents of 
+			-- `quote_characters' in descendants
 		do
 			if not str.is_empty then
 				Result := quote_clean (str)
@@ -93,9 +89,7 @@ feature  {ANY_SERIALISER} -- Factory
 		end
 
 	quote_clean (str: STRING): STRING
-			-- generate clean copy of `str' and convert
-			--	\ to \\
-			-- 	" to \"
+			-- if quoting needed `str', generate clean copy of `str' containing quoting determined by `quote_characters'
 			-- otherwise just return original string
 		local
 			i: INTEGER

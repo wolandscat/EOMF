@@ -173,8 +173,6 @@ feature -- Commands
 		end
 
 	populate
-		local
-			s: STRING
 		do
 			gui_controls.do_all (agent (an_item: EVX_CONTROL_SHELL) do an_item.populate end)
 			ev_text.set_text (utf8_to_utf32 (editor_text))
