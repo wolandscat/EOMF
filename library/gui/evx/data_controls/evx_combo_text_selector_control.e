@@ -88,8 +88,8 @@ feature -- Initialisation
 			if attached a_tooltip then
 				ev_data_control.set_tooltip (a_tooltip)
 			end
-			ev_data_control.select_actions.extend (agent propagate_select_action)
 			ev_data_control.select_actions.extend (agent do if is_editable then process_edit end end)
+			ev_data_control.select_actions.extend (agent propagate_select_action)
 		ensure
 			not is_readonly
 		end
