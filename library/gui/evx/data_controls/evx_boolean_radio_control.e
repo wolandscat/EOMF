@@ -24,11 +24,12 @@ feature -- Initialisation
 			a_state_1_tooltip_text, a_state_2_tooltip_text: detachable STRING;
 			a_data_source_agent: like data_source_agent;
 			a_data_source_setter_agent: like data_source_setter_agent;
-			min_height, min_width: INTEGER)
+			min_height, min_width: INTEGER; arrange_horizontally_flag: BOOLEAN)
 		do
 			data_source_agent := a_data_source_agent
 			data_source_setter_agent := a_data_source_setter_agent
 
+			arrange_horizontally := arrange_horizontally_flag
 			create_ev_data_control
 			ev_data_control.set_text (utf8_to_utf32 (a_state_1_label))
 			ev_data_control_peer.set_text (utf8_to_utf32 (a_state_2_label))
@@ -47,7 +48,7 @@ feature -- Initialisation
 
 feature -- Access
 
-	ev_root_container: EV_VERTICAL_BOX
+	ev_root_container: EV_BOX
 			-- holding the two radio buttons; add this container to parent widget hierarchy
 
 	ev_data_control: EV_RADIO_BUTTON
@@ -106,11 +107,17 @@ feature -- Modification
 
 feature {NONE} -- Implementation
 
+	arrange_horizontally: BOOLEAN
+
 	create_ev_data_control
 		do
 			create ev_data_control
 			create ev_data_control_peer
-			create ev_root_container
+			if arrange_horizontally then
+				create {EV_HORIZONTAL_BOX} ev_root_container
+			else
+				create {EV_VERTICAL_BOX} ev_root_container
+			end
 			ev_root_container.extend (ev_data_control)
 			ev_root_container.disable_item_expand (ev_data_control)
 			ev_root_container.extend (ev_data_control_peer)
