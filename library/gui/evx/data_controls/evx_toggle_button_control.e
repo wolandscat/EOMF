@@ -37,10 +37,7 @@ feature -- Initialisation
 			create state_1_settings
 			create state_2_settings
 
-			-- reverse the lables, because a button shows the state
-			-- its not in, not the current state
-			state_2_settings.label := utf8_to_utf32 (a_state_1_label)
-			state_1_settings.label := utf8_to_utf32 (a_state_2_label)
+			set_labels (a_state_1_label, a_state_2_label)
 
 			create ev_data_control
 			ev_data_control.set_minimum_height (default_min_height)
@@ -77,12 +74,21 @@ feature -- Commands
 
 feature -- Modification
 
-	set_pixmaps (a_state_1_pixmap, a_state_2_pixmap: detachable EV_PIXMAP)
-		do
+	set_pixmaps (a_state_1_pixmap, a_state_2_pixmap: EV_PIXMAP)
 			-- as for the labels, reverse the pixmaps because a button shows
 			-- the other state, not the current one
+		do
 			state_2_settings.pixmap := a_state_1_pixmap
 			state_1_settings.pixmap := a_state_2_pixmap
+		end
+
+	set_labels (a_state_1_label, a_state_2_label: STRING)
+			-- as for the labels, reverse the pixmaps because a button shows
+			-- the other state, not the current one
+		do
+			state_2_settings.label := utf8_to_utf32 (a_state_1_label)
+			state_1_settings.label := utf8_to_utf32 (a_state_2_label)
+
 		end
 
 feature {NONE} -- Implementation
@@ -112,11 +118,10 @@ feature {NONE} -- Implementation
 			end
 
 			ev_data_control.set_text (settings.label)
-			if attached settings.pixmap then
-				ev_data_control.set_pixmap (settings.pixmap)
+			if attached settings.pixmap as att_pixmap then
+				ev_data_control.set_pixmap (att_pixmap)
 			end
 		end
 
 end
-
 
