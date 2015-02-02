@@ -49,6 +49,10 @@ feature -- Modification
 				checked_for_rules := True
 			end
 
+			-- clear list of attr nodes that may be serialised as XML attrs (i.e. in tag) so
+			-- as to ignore during normal descent
+			dt_attr_nodes_to_ignore.wipe_out
+
 			-- if we are on the root node, output the XML header
 			if a_node.is_root then
 				if attached serialisation_rules.doc_header then
@@ -113,7 +117,7 @@ feature -- Modification
 			xml_attrs: detachable HASH_TABLE [STRING, STRING]
 		do
 			if dt_attr_nodes_to_ignore.has (a_node) then
-				ignoring_dt_objects := True
+				ignoring_dt_primitive_objects := True
 			else
 				-- don't output tag if a container type, since tags come out with each object rather than
 				-- the attribute in that case
@@ -124,7 +128,7 @@ feature -- Modification
 						xml_attrs := xml_attrs_for_dt_complex_object (dt_obj)
 					end
 					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.im_attr_name, xml_attrs) +
-						format_item(FMT_NEWLINE))
+						format_item (FMT_NEWLINE))
 				end
 			end
 		end
@@ -133,8 +137,7 @@ feature -- Modification
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
 			if dt_attr_nodes_to_ignore.has (a_node) then
-				ignoring_dt_objects := False
-				dt_attr_nodes_to_ignore.prune (a_node)
+				ignoring_dt_primitive_objects := False
 			else
 				if not a_node.is_container_type and not attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child then
 					-- output an indent unless a primitive type (in which case, tags are inline)
@@ -151,7 +154,7 @@ feature -- Modification
 	start_primitive_object (a_node: DT_PRIMITIVE_OBJECT; depth: INTEGER)
 			-- start serialising a DT_PRIMITIVE_OBJECT
 		do
-			if not ignoring_dt_objects then
+			if not ignoring_dt_primitive_objects then
 				-- generate an XML tag if object in a container
 				if a_node.parent.is_container_type then
 					-- output indent + tag
@@ -272,7 +275,7 @@ feature -- Commands
 			precursor
 			checked_for_rules := False
 			serialisation_rules := Void
-			ignoring_dt_objects := False
+			ignoring_dt_primitive_objects := False
 		end
 
 feature {NONE} -- Implementation
@@ -283,7 +286,7 @@ feature {NONE} -- Implementation
 	last_object_primitive: BOOLEAN
 			-- True if last object traversed was a DT_PRIMITIVE_XX object
 
-	ignoring_dt_objects: BOOLEAN
+	ignoring_dt_primitive_objects: BOOLEAN
 			-- True if currently ignoring DT objects; only applies to primitive objects under single-value attributes
 
 	checked_for_rules: BOOLEAN
