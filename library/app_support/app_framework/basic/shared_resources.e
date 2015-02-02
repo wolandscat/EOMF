@@ -219,6 +219,36 @@ feature -- External Commands
    			end
 		end
 
+	show_in_system_explorer (dir_path: STRING)
+			-- Launch the operating system's default file system Explorer to display the directory `dir_path'
+		require
+			dir_not_empty: not dir_path.is_empty
+		local
+			command: STRING
+			process: PROCESS
+		do
+   			if {PLATFORM}.is_windows then
+   				command := "cmd /q /d /c explorer"
+			elseif {PLATFORM}.is_mac then
+				command := "open"
+			elseif {PLATFORM}.is_unix then
+   				command := "xdg-open"
+			else
+   				command := "open"
+   			end
+
+			command := command + " %"" + dir_path + "%""
+
+   			if {PLATFORM}.is_windows and {PLATFORM}.is_thread_capable then
+	   			process := (create {PROCESS_FACTORY}).process_launcher (command, Void, Void)
+	   			process.set_hidden (True)
+	   			process.set_separate_console (False)
+	   			process.launch
+   			else
+				(create {EXECUTION_ENVIRONMENT}).launch (command)
+   			end
+		end
+
 	System_which_command_template: STRING
 			-- the command to detect if another command exists, i.e. which/type on unices, where on Windows
 		once ("PROCESS")

@@ -65,6 +65,13 @@ feature -- Access
 		attribute
 		end
 
+	ev_explore_button: detachable EV_BUTTON
+			-- optional button to launch an explorer on the directory
+		note
+			option: stable
+		attribute
+		end
+
 feature -- Modification
 
 	set_default_directory_agent (an_agent: like default_directory_agent)
@@ -82,6 +89,17 @@ feature -- Modification
 			-- set a tooltip on the browse button
 		do
 			ev_browse_button.set_tooltip (utf8_to_utf32 (a_text))
+		end
+
+	add_explore_button (an_explore_agent: PROCEDURE [ANY, TUPLE [STRING]]; an_icon: EV_PIXMAP)
+			-- add an explorer lanuch button to the right of the browse button
+		do
+			explore_agent := an_explore_agent
+			create ev_explore_button
+			ev_explore_button.set_pixmap (an_icon)
+			ev_root_container.extend (ev_explore_button)
+			ev_root_container.disable_item_expand (ev_explore_button)
+			ev_explore_button.select_actions.extend (agent on_explore)
 		end
 
 feature -- Events
@@ -107,10 +125,19 @@ feature -- Events
 			end
 		end
 
+	on_explore
+		do
+			if attached explore_agent as att_agt then
+				att_agt.call ([data_control_text])
+			end
+		end
+
 feature {NONE} -- Implementation
 
 	default_directory_agent: detachable FUNCTION [ANY, TUPLE, STRING]
 			-- agent that will return a reasonable default directory for when the user hits the browser button
+
+	explore_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
 
 	initialise_browse_button
 		do
