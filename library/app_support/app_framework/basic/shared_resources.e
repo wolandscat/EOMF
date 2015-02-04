@@ -725,22 +725,6 @@ feature -- Cygwin
 			Result.compare_objects
 		end
 
-feature -- Output
-
-	print_stdout (a_str: STRING)
-			-- print `a_str' on stdout
-		do
-			io.set_output_default
-			io.put_string (a_str)
-		end
-
-	print_stderr (a_str: STRING)
-			-- print `a_str' on stderr
-		do
-			io.set_error_default
-			io.put_string (a_str)
-		end
-
 feature {NONE} -- Implementation
 
 	stdout_agent_cache: CELL [detachable PROCEDURE [ANY, TUPLE [STRING]]]

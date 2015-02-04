@@ -16,12 +16,17 @@ feature -- Definitions
 
 	Application_developer_name: STRING
 			-- usually the company or organisation name of the application vendor.
-		once
+		once ("PROCESS")
 			Result := "unknown_app_dev"
 		end
 
 	Default_application_name: STRING
-		once
+		once ("PROCESS")
+			Result := "unknown_app"
+		end
+
+	Fallback_application_name: STRING
+		once ("PROCESS")
 			Result := "unknown_app"
 		end
 
@@ -36,15 +41,9 @@ feature -- Definitions
 			end
 		end
 
-	Default_user_config_file_path: STRING
-			-- Full path to resource configuration file.
-		do
-			Result := file_system.pathname (Default_user_config_file_directory, application_name + User_config_file_extension)
-		end
-
 	Default_xml_rules_file_path: STRING
 			-- Default full path to XML rules file for all adl_workbench-derived apps
-		once
+		once ("PROCESS")
 			Result := file_system.pathname (Default_user_config_file_directory, extension_replaced ("xml_rules", User_config_file_extension))
 		ensure
 			not_empty: not Result.is_empty
@@ -54,7 +53,7 @@ feature -- Access
 
 	app_cfg: CONFIG_FILE_ACCESS
 			-- accessor object for application config file
-		once
+		once ("PROCESS")
 			Result := app_cfg_cell.item
 			Result.initialise (user_config_file_path)
 			app_cfg_initialise
@@ -73,19 +72,40 @@ feature -- Access
 			Result.append (execution_environment.root_directory_name + "etc")
 		end
 
+	fallback_user_config_file_directory: STRING
+			-- This default directory can be used as a fallback rather than forcing every related app to have its
+			-- own .cfg file, with essentially the same information (configured directories etc).
+			-- (On Unix/Linux/Macosx(?) systems, we would normally locate this in /etc/adl_workbench)
+		once
+			if attached execution_environment.home_directory_name as hd then
+				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), Fallback_application_name)
+			else
+				Result := file_system.current_working_directory
+			end
+		end
+
 	user_config_file_directory: STRING
 			-- OS-specific place for user config file(s) for this application.
 			-- Follows the model home_path/app_vendor/app_name.
-		do
+		once
 			check attached execution_environment.home_directory_name as hd then
 				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), extension_removed (application_name))
+			end
+
+			-- if the directory doesn't exist, attempt to find a fallback directory
+			if not file_system.directory_exists (Result) and then file_system.directory_exists (fallback_user_config_file_directory) then
+				Result := fallback_user_config_file_directory
 			end
 		end
 
 	user_config_file_path: STRING
 			-- Full path to resource configuration file.
-		do
-			Result := file_system.pathname (user_config_file_directory, extension_replaced (application_name, User_config_file_extension))
+		once
+			if not user_config_file_directory.is_equal (fallback_user_config_file_directory) then
+				Result := file_system.pathname (user_config_file_directory, extension_replaced (application_name, User_config_file_extension))
+			else
+				Result := file_system.pathname (user_config_file_directory, extension_replaced (Fallback_application_name, User_config_file_extension))
+			end
 		end
 
 	application_full_path: STRING
