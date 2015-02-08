@@ -89,8 +89,8 @@ feature -- Commands
 	populate
 		do
 			do_populate_control_from_source
-			if attached header_strings_agent then
-				ev_data_control.set_column_titles (header_strings_agent.item ([]))
+			if attached header_strings_agent as att_agt then
+				ev_data_control.set_column_titles (att_agt.item ([]))
 			end
 			if is_editable then
 				set_columns_editable

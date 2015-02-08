@@ -91,6 +91,11 @@ feature -- Status Report
 			Result := i <= a_parent_row.subrow_count
 		end
 
+	has_last_row: BOOLEAN
+		do
+			Result := attached last_row
+		end
+
 feature -- Modification
 
 	set_minimum_dimensions (a_height, a_width: INTEGER)
@@ -115,35 +120,56 @@ feature -- Modification
 		end
 
 	add_row (a_data: detachable ANY)
+		local
+			new_row: EV_GRID_ROW
 		do
 			ev_grid.insert_new_row (ev_grid.row_count + 1)
-			last_row := ev_grid.row (ev_grid.row_count)
+			new_row := ev_grid.row (ev_grid.row_count)
 			if attached a_data then
-				last_row.set_data (a_data)
+				new_row.set_data (a_data)
 			end
+			last_row := new_row
+		ensure
+			has_last_row
 		end
 
 	add_sub_row_to_last_row (a_data: detachable ANY)
+		require
+			has_last_row
+		local
+			new_row: EV_GRID_ROW
 		do
-			last_row.insert_subrow (last_row.subrow_count + 1)
-			last_row := last_row.subrow (last_row.subrow_count)
-			if attached a_data then
-				last_row.set_data (a_data)
+			if attached last_row as att_last_row then
+				att_last_row.insert_subrow (att_last_row.subrow_count + 1)
+				new_row := att_last_row.subrow (att_last_row.subrow_count)
+				if attached a_data then
+					new_row.set_data (a_data)
+				end
+				last_row := new_row
 			end
+		ensure
+			new_last_row: last_row /= old last_row
 		end
 
 	add_sub_row (a_parent_row: EV_GRID_ROW; a_data: detachable ANY)
+		local
+			new_row: EV_GRID_ROW
 		do
 			a_parent_row.insert_subrow (a_parent_row.subrow_count + 1)
-			last_row := a_parent_row.subrow (a_parent_row.subrow_count)
+			new_row := a_parent_row.subrow (a_parent_row.subrow_count)
 			if attached a_data then
-				last_row.set_data (a_data)
+				new_row.set_data (a_data)
 			end
+			last_row := new_row
+		ensure
+			has_last_row
 		end
 
 	set_last_row (a_row: EV_GRID_ROW)
 		do
 			last_row := a_row
+		ensure
+			has_last_row
 		end
 
 	set_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
@@ -159,116 +185,141 @@ feature -- Modification
 		end
 
 	add_last_row_pointer_button_press_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
+			-- add `an_action' to `last_row's `pointer_button_press_actions'
+		require
+			has_last_row
 		do
-			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+			if attached last_row as att_last_row and then attached {EV_GRID_ITEM} att_last_row.item (a_col) as gli then
 				gli.pointer_button_press_actions.force_extend (an_action)
 			end
 		end
 
 	has_last_row_pointer_button_press_actions (a_col: INTEGER): BOOLEAN
 			-- True if `last_row' already has pointer_button_press_actions
+		require
+			has_last_row
 		do
-			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+			if attached last_row as att_last_row and then attached {EV_GRID_ITEM} att_last_row.item (a_col) as gli then
 				Result := not gli.pointer_button_press_actions.is_empty
 			end
 		end
 
 	add_last_row_select_actions (a_col: INTEGER; an_action: PROCEDURE [ANY, TUPLE])
 			-- add an action if cell corresponding to `a_col' in `last_row' is selected
+		require
+			has_last_row
 		do
-			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+			if attached last_row as att_last_row and then attached {EV_GRID_ITEM} att_last_row.item (a_col) as gli then
 				gli.select_actions.force_extend (an_action)
 			end
 		end
 
 	has_last_row_select_actions (a_col: INTEGER): BOOLEAN
 			-- True if `last_row' already has select_actions
+		require
+			has_last_row
 		do
-			if attached {EV_GRID_ITEM} last_row.item (a_col) as gli then
+			if attached last_row as att_last_row and then attached {EV_GRID_ITEM} att_last_row.item (a_col) as gli then
 				Result := not gli.select_actions.is_empty
 			end
 		end
 
 	set_last_row_label_col_multi_line (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
+		require
+			has_last_row
 		do
-			set_last_row_label_col (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap)
-			if attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
-				last_row.set_height (gli.text_height + Default_grid_row_expansion)
+			if attached last_row as att_last_row then
+				set_last_row_label_col (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap)
+				if attached {EV_GRID_LABEL_ITEM} att_last_row.item (a_col) as gli then
+					att_last_row.set_height (gli.text_height + Default_grid_row_expansion)
+				end
 			end
 		end
 
 	update_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
 			-- update column details to `last_sub_row'; any detail that is Void is not changed in existing column
+		require
+			has_last_row
 		do
-			if last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
-				if attached a_text then
-					gli.set_text (utf8_to_utf32 (a_text))
+			if attached last_row as att_last_row then
+				if att_last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} att_last_row.item (a_col) as gli then
+					if attached a_text then
+						gli.set_text (utf8_to_utf32 (a_text))
+					end
+					if attached a_tooltip then
+						gli.set_tooltip (utf8_to_utf32 (a_tooltip))
+					end
+					if attached a_font then
+						gli.set_font (a_font)
+					end
+					if attached a_fg_colour then
+						gli.set_foreground_color (a_fg_colour)
+					end
+					if attached a_pixmap then
+						gli.set_pixmap (a_pixmap)
+					end
+				else
+					do_set_last_row_label_col (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap, Void)
 				end
-				if attached a_tooltip then
-					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
-				end
-				if attached a_font then
-					gli.set_font (a_font)
-				end
-				if attached a_fg_colour then
-					gli.set_foreground_color (a_fg_colour)
-				end
-				if attached a_pixmap then
-					gli.set_pixmap (a_pixmap)
-				end
-			else
-				do_set_last_row_label_col (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap, Void)
 			end
 		end
 
 	update_last_row_label_col_multi_line (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
 			-- update column details to `last_sub_row'; any detail that is Void is not changed in existing column
+		require
+			has_last_row
 		local
 			h, i: INTEGER
 		do
-			if last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} last_row.item (a_col) as gli then
-				if attached a_text then
-					gli.set_text (utf8_to_utf32 (a_text))
+			if attached last_row as att_last_row then
+				if att_last_row.count >= a_col and then attached {EV_GRID_LABEL_ITEM} att_last_row.item (a_col) as gli then
+					if attached a_text then
+						gli.set_text (utf8_to_utf32 (a_text))
 
-					-- figure out height of row
-					from i := 1 until i > last_row.count loop
-						if attached {EV_GRID_LABEL_ITEM} last_row.item (i) as col_gli then
-							h := h.max (col_gli.text_height)
+						-- figure out height of row
+						from i := 1 until i > att_last_row.count loop
+							if attached {EV_GRID_LABEL_ITEM} att_last_row.item (i) as col_gli then
+								h := h.max (col_gli.text_height)
+							end
+							i := i + 1
 						end
-						i := i + 1
+						att_last_row.set_height (h + Default_grid_row_expansion)
 					end
-					last_row.set_height (h + Default_grid_row_expansion)
+					if attached a_tooltip then
+						gli.set_tooltip (utf8_to_utf32 (a_tooltip))
+					end
+					if attached a_font then
+						gli.set_font (a_font)
+					end
+					if attached a_fg_colour then
+						gli.set_foreground_color (a_fg_colour)
+					end
+					if attached a_pixmap then
+						gli.set_pixmap (a_pixmap)
+					end
+				else
+					set_last_row_label_col_multi_line (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap)
 				end
-				if attached a_tooltip then
-					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
-				end
-				if attached a_font then
-					gli.set_font (a_font)
-				end
-				if attached a_fg_colour then
-					gli.set_foreground_color (a_fg_colour)
-				end
-				if attached a_pixmap then
-					gli.set_pixmap (a_pixmap)
-				end
-			else
-				set_last_row_label_col_multi_line (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap)
 			end
 		end
 
 	last_row_add_checkbox (col: INTEGER; checked, editable: BOOLEAN)
 			-- Add a checkbox column to `col' of a `last_row'
+		require
+			has_last_row
 		local
 			gcli: EV_GRID_CHECKABLE_LABEL_ITEM
 		do
-			create gcli
-			last_row.set_item (col, gcli)
-			gcli.set_is_checked (checked)
-			if not editable then
-				gcli.disable_sensitive
-			end
-			if ev_grid.is_tree_enabled then
-				gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
+			if attached last_row as att_last_row then
+				create gcli
+				att_last_row.set_item (col, gcli)
+				gcli.set_is_checked (checked)
+				if not editable then
+					gcli.disable_sensitive
+				end
+				if ev_grid.is_tree_enabled then
+					gcli.pointer_button_press_actions.force_extend (agent set_checkboxes_recursively (gcli))
+				end
 			end
 		end
 
@@ -328,6 +379,9 @@ feature -- Modification
 			ev_grid.wipe_out
 			ev_grid.set_minimum_height (ev_grid.header.height)
 			ev_grid.set_minimum_width (20)
+			last_row := Void
+		ensure
+			not has_last_row
 		end
 
 feature -- Commands
@@ -395,36 +449,38 @@ feature {NONE} -- Implementation
 		local
 			gli: EV_GRID_LABEL_ITEM
 		do
-			if attached a_text then
-				if attached an_edit_action as att_action then
-					create {EV_GRID_EDITABLE_ITEM} gli.make_with_text (utf8_to_utf32 (a_text))
-					gli.pointer_double_press_actions.force_extend (agent gli.activate)
-					gli.deactivate_actions.force_extend (att_action)
+			if attached last_row as att_last_row then
+				if attached a_text then
+					if attached an_edit_action as att_action then
+						create {EV_GRID_EDITABLE_ITEM} gli.make_with_text (utf8_to_utf32 (a_text))
+						gli.pointer_double_press_actions.force_extend (agent gli.activate)
+						gli.deactivate_actions.force_extend (att_action)
+					else
+						create gli.make_with_text (utf8_to_utf32 (a_text))
+					end
 				else
-					create gli.make_with_text (utf8_to_utf32 (a_text))
+					if attached an_edit_action as att_action then
+						create {EV_GRID_EDITABLE_ITEM} gli.default_create
+						gli.pointer_double_press_actions.force_extend (agent gli.activate)
+						gli.deactivate_actions.force_extend (att_action)
+					else
+						create gli.default_create
+					end
 				end
-			else
-				if attached an_edit_action as att_action then
-					create {EV_GRID_EDITABLE_ITEM} gli.default_create
-					gli.pointer_double_press_actions.force_extend (agent gli.activate)
-					gli.deactivate_actions.force_extend (att_action)
-				else
-					create gli.default_create
+				if attached a_font then
+					gli.set_font (a_font)
 				end
+				if attached a_fg_colour then
+					gli.set_foreground_color (a_fg_colour)
+				end
+				if attached a_pixmap then
+					gli.set_pixmap (a_pixmap)
+				end
+				if attached a_tooltip then
+					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
+				end
+				att_last_row.set_item (a_col, gli)
 			end
-			if attached a_font then
-				gli.set_font (a_font)
-			end
-			if attached a_fg_colour then
-				gli.set_foreground_color (a_fg_colour)
-			end
-			if attached a_pixmap then
-				gli.set_pixmap (a_pixmap)
-			end
-			if attached a_tooltip then
-				gli.set_tooltip (utf8_to_utf32 (a_tooltip))
-			end
-			last_row.set_item (a_col, gli)
 		end
 
 end

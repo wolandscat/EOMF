@@ -108,21 +108,23 @@ feature {NONE} -- Implementation
 			new_key, new_val: STRING
 			new_row: EV_MULTI_COLUMN_LIST_ROW
 		do
-			new_key := "new_key#" + uniqueness_counter.out
-			new_val := "new_value"
+			if attached data_source_remove_agent as att_remove_agt and attached data_source_setter_agent as att_setter_agt then
+				new_key := "new_key#" + uniqueness_counter.out
+				new_val := "new_value"
 
-			create new_row
-			new_row.extend (new_key)
-			new_row.extend (new_val)
-			ev_data_control.extend (new_row)
-	--		new_row.pointer_button_press_actions.force_extend (agent mlist_handler (ev_data_control, ?, ?, ?, ?, ?, ?, ?, ?))
+				create new_row
+				new_row.extend (new_key)
+				new_row.extend (new_val)
+				ev_data_control.extend (new_row)
+		--		new_row.pointer_button_press_actions.force_extend (agent mlist_handler (ev_data_control, ?, ?, ?, ?, ?, ?, ?, ?))
 
-			data_source_setter_agent.call ([new_key, new_val])
-			if attached undo_redo_chain as urc then
-				urc.add_link (ev_data_control,
-					agent data_source_remove_agent.call ([new_key]), agent populate, -- undo
-					agent data_source_setter_agent.call ([new_key, new_val]), agent populate -- redo
-				)
+				att_setter_agt.call ([new_key, new_val])
+				if attached undo_redo_chain as urc then
+					urc.add_link (ev_data_control,
+						agent att_remove_agt.call ([new_key]), agent populate, -- undo
+						agent att_setter_agt.call ([new_key, new_val]), agent populate -- redo
+					)
+				end
 			end
 		end
 
@@ -130,17 +132,21 @@ feature {NONE} -- Implementation
 		local
 			old_key, old_val: STRING
 		do
-			old_key := ev_data_control.selected_item.i_th (1)
-			old_val := ev_data_control.selected_item.i_th (2)
+			if attached ev_data_control.selected_item as att_sel_item and attached data_source_remove_agent as att_remove_agt and
+				attached data_source_setter_agent as att_setter_agt
+			then
+				old_key := att_sel_item.i_th (1)
+				old_val := att_sel_item.i_th (2)
 
-			data_source_remove_agent.call ([old_key])
-			ev_data_control.remove_selected_item
+				att_remove_agt.call ([old_key])
+				ev_data_control.remove_selected_item
 
-			if attached undo_redo_chain as urc then
-				urc.add_link (ev_data_control,
-					agent data_source_setter_agent.call ([old_key, old_val]), agent populate,  -- undo
-					agent data_source_remove_agent.call ([old_key]), agent populate -- redo
-				)
+				if attached undo_redo_chain as urc then
+					urc.add_link (ev_data_control,
+						agent att_setter_agt.call ([old_key, old_val]), agent populate,  -- undo
+						agent att_remove_agt.call ([old_key]), agent populate -- redo
+					)
+				end
 			end
 		end
 

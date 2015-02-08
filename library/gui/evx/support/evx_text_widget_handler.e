@@ -43,8 +43,8 @@ feature -- Edit events
 	on_copy
 			-- Copy the selected item, depending on which widget has focus.
 		do
-			if attached focused_text and then focused_text.has_selection then
-				focused_text.copy_selection
+			if attached focused_text as att_foc_txt and then att_foc_txt.has_selection then
+				att_foc_txt.copy_selection
 			end
 		end
 
@@ -53,27 +53,27 @@ feature -- Edit events
 		local
 			old_length: INTEGER
 		do
-			if attached focused_text and then focused_text.is_editable then
+			if attached focused_text as att_foc_txt and then att_foc_txt.is_editable then
 				on_delete
-				old_length := focused_text.text_length
-				focused_text.paste (focused_text.caret_position)
-				focused_text.set_caret_position (focused_text.caret_position + focused_text.text_length - old_length)
+				old_length := att_foc_txt.text_length
+				att_foc_txt.paste (att_foc_txt.caret_position)
+				att_foc_txt.set_caret_position (att_foc_txt.caret_position + att_foc_txt.text_length - old_length)
 			end
 		end
 
 	on_delete
 			-- Delete the selected item, depending on which widget has focus.
 		do
-			if attached focused_text and then focused_text.is_editable and focused_text.has_selection then
-				focused_text.delete_selection
+			if attached focused_text as att_foc_txt and then att_foc_txt.is_editable and then att_foc_txt.has_selection then
+				att_foc_txt.delete_selection
 			end
 		end
 
 	on_select_all
 			-- Select all text in the currently focused text box, if any.
 		do
-			if attached focused_text and then focused_text.text_length > 0 then
-				focused_text.select_all
+			if attached focused_text as att_foc_txt and then att_foc_txt.text_length > 0 then
+				att_foc_txt.select_all
 			end
 		end
 
@@ -83,11 +83,8 @@ feature -- Edit events
 			-- If called from a keyboard shortcut, execute the action unless a text box is focused.
 			-- Executing it within a text box would cause it to be performed twice.
 			-- For some actions this wouldn't really matter (cut, copy), but for paste it would be a blatant bug.
-		local
-			t: detachable EV_TEXT_COMPONENT
 		do
-			t := focused_text
-			if not attached t or else attached {EV_RICH_TEXT} t then
+			if not attached focused_text or else attached {EV_RICH_TEXT} focused_text then
 				action.call ([])
 			end
 		end

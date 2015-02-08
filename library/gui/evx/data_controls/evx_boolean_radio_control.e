@@ -127,8 +127,8 @@ feature {NONE} -- Implementation
 	toggle_state
 			-- change state
 		do
-			if attached data_source_setter_agent then
-				data_source_setter_agent.call ([not data_source_agent.item ([])])
+			if attached data_source_setter_agent as att_agt then
+				att_agt.call ([not data_source_agent.item ([])])
 			end
 		end
 

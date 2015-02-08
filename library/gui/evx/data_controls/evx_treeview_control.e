@@ -123,7 +123,9 @@ feature -- Events
 	on_collapse_one_level
 		do
 			gui_tree_control.collapse_one_level_filtered (collapse_expand_test_agt)
-			resize_agt.call ([])
+			if attached resize_agt as att_agt then
+				att_agt.call ([])
+			end
 		end
 
 	on_expand_one_level
@@ -132,7 +134,9 @@ feature -- Events
 				agent
 					do
 						gui_tree_control.expand_one_level_filtered (collapse_expand_test_agt)
-						resize_agt.call ([])
+						if attached resize_agt as att_agt then
+							att_agt.call ([])
+						end
 					end
 			)
 		end
@@ -143,7 +147,9 @@ feature -- Events
 				agent
 					do
 						gui_tree_control.expand_all_filtered (collapse_expand_test_agt)
-						resize_agt.call ([])
+						if attached resize_agt as att_agt then
+							att_agt.call ([])
+						end
 					end
 			)
 		end
@@ -151,7 +157,9 @@ feature -- Events
 	on_collapse_all
 		do
 			gui_tree_control.collapse_all
-			resize_agt.call ([])
+			if attached resize_agt as att_agt then
+				att_agt.call ([])
+			end
 		end
 
 	on_collapse_except (test: FUNCTION [ANY, TUPLE [EV_GRID_ROW], BOOLEAN])
@@ -161,7 +169,7 @@ feature -- Events
 
 feature {NONE} -- Implementation
 
-	collapse_expand_test_agt: detachable FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN]
+	collapse_expand_test_agt: FUNCTION [ANY, TUPLE [EV_SELECTABLE], BOOLEAN]
 
 	resize_agt: detachable PROCEDURE [ANY, TUPLE]
 

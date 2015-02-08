@@ -69,8 +69,8 @@ feature -- Status Report
 	has_button (a_title: STRING): BOOLEAN
 			-- is there any button with title `a_title'?
 		do
-			Result := attached added_buttons and then
-				(added_buttons.has(a_title) or a_title.same_string (ok_button.text) or a_title.same_string (cancel_button.text))
+			Result := attached added_buttons as att_added_buttons and then
+				(att_added_buttons.has(a_title) or a_title.same_string (ok_button.text) or a_title.same_string (cancel_button.text))
 		end
 
 feature -- Modification
@@ -81,14 +81,18 @@ feature -- Modification
 			not has_button (a_title)
 		local
 			a_button: EV_BUTTON
+			buttons_table: HASH_TABLE [EV_BUTTON, STRING]
 		do
-			if not attached added_buttons then
-				create added_buttons.make (0)
+			if attached added_buttons as att_added_buttons then
+				buttons_table := att_added_buttons
+			else
+				create buttons_table.make (0)
+				added_buttons := buttons_table
 			end
 			create a_button
 			a_button.set_text (a_title)
 			a_button.select_actions.extend (an_agent)
-			added_buttons.put (a_button, a_title)
+			buttons_table.put (a_button, a_title)
 			ev_root_container.start
 			ev_root_container.put_right (a_button)
 			ev_root_container.disable_item_expand (a_button)

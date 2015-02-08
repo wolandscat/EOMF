@@ -63,8 +63,8 @@ feature -- Commands
 --				ui_context.show
 --			end
 			undo_action.call ([])
-			if attached undo_display_action then
-				undo_display_action.call ([])
+			if attached undo_display_action as att_action then
+				att_action.call ([])
 			end
 		end
 
@@ -83,8 +83,8 @@ feature -- Commands
 --				ui_context.show
 --			end
 			redo_action.call ([])
-			if attached redo_display_action then
-				redo_display_action.call ([])
+			if attached redo_display_action as att_action then
+				att_action.call ([])
 			end
 		end
 

@@ -36,6 +36,7 @@ feature -- Initialisation
 			initialise_browse_button
 		ensure
 			not is_readonly
+			has_browse_button
 		end
 
 	make_readonly (a_title: STRING; a_data_source: like data_source_agent; min_width_in_chars: INTEGER)
@@ -55,6 +56,7 @@ feature -- Initialisation
 			initialise_browse_button
 		ensure
 			not is_readonly
+			has_browse_button
 		end
 
 feature -- Access
@@ -72,6 +74,13 @@ feature -- Access
 		attribute
 		end
 
+feature -- Status Resport
+
+	has_browse_button: BOOLEAN
+		do
+			Result := attached ev_browse_button
+		end
+
 feature -- Modification
 
 	set_default_directory_agent (an_agent: like default_directory_agent)
@@ -82,13 +91,17 @@ feature -- Modification
 	set_button_icon (a_pixmap: EV_PIXMAP)
 			-- set an icon on the browse button
 		do
-			ev_browse_button.set_pixmap (a_pixmap)
+			check attached ev_browse_button as att_browse_btn then
+				att_browse_btn.set_pixmap (a_pixmap)
+			end
 		end
 
 	set_button_tooltip (a_text: STRING)
 			-- set a tooltip on the browse button
 		do
-			ev_browse_button.set_tooltip (utf8_to_utf32 (a_text))
+			check attached ev_browse_button as att_browse_btn then
+				att_browse_btn.set_tooltip (utf8_to_utf32 (a_text))
+			end
 		end
 
 	add_explore_button (an_explore_agent: PROCEDURE [ANY, TUPLE [STRING]]; an_icon: EV_PIXMAP)
@@ -146,6 +159,8 @@ feature {NONE} -- Implementation
 			ev_root_container.extend (ev_browse_button)
 			ev_root_container.disable_item_expand (ev_browse_button)
 			ev_browse_button.select_actions.extend (agent on_browse)
+		ensure
+			has_browse_button
 		end
 
 	get_directory (init_value: detachable STRING; a_parent_window: EV_WINDOW): STRING
@@ -170,7 +185,7 @@ feature {NONE} -- Implementation
 			-- make the user provide something sensible
 			from until attached user_dir loop
 				dialog.show_modal_to_window (a_parent_window)
-				if not attached dialog.selected_button_name or else dialog.selected_button_name.is_equal (dialog_names.ev_cancel) then
+				if not attached dialog.selected_button_name as att_sel_btn_name or else att_sel_btn_name.is_equal (dialog_names.ev_cancel) then
 					user_dir := default_result
 				else
 					if not dialog.directory.is_empty then

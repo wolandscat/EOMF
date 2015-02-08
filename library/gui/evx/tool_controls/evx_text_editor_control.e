@@ -110,8 +110,10 @@ feature -- Modification
 			evx_button: EVX_BUTTON
 		do
 			create evx_button.make (an_active_pixmap, an_inactive_pixmap, a_button_text, a_tooltip_text, a_do_action, a_stop_action)
-			control_panel.last_added_frame.extend (evx_button.ev_button, False)
-			gui_controls.extend (evx_button)
+			if attached control_panel.last_added_frame as att_frame then
+				att_frame.extend (evx_button.ev_button, False)
+				gui_controls.extend (evx_button)
+			end
 		end
 
 	set_text_filter (a_text: STRING; a_tooltip_text: detachable STRING_8; a_filter_agt: attached like filter_agt)

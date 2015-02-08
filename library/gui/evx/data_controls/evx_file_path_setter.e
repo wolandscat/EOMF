@@ -87,40 +87,43 @@ feature -- Events
 		local
 			lpos: INTEGER
 			file_str: STRING
+			path, options_str: STRING
 		do
-			file_path := data_source_agent.item ([]).twin
-			file_path.left_adjust
-			file_path.right_adjust
 
-			-- if there are quotes around the path, go past the path
-			if file_path.item (1) = '%"' then
-				lpos := file_path.index_of ('%"', 2) + 1
-			else
-				lpos := file_path.index_of (' ', 1)
+			if attached data_source_agent.item ([]) as att_path then
+				path := att_path.twin
+				path.left_adjust
+				path.right_adjust
+				file_path := path
+
+				-- if there are quotes around the path, go past the path
+				if path.item (1) = '%"' then
+					lpos := path.index_of ('%"', 2) + 1
+				else
+					lpos := path.index_of (' ', 1)
+				end
+
+				-- set options string appropriately
+				create options_str.make_empty
+				options := options_str
+				if lpos > 0 then
+					options_str.append (path.substring (lpos, path.count))
+					path.remove_substring (lpos, path.count)
+				end
+
+				-- do the browse
+				check attached proximate_ev_window (ev_root_container) as pw then
+					file_str := get_file (path, pw)
+				end
+
+				-- add back in options
+				file_str.append (options_str)
+				ev_data_control.set_text (file_str)
+
+				if attached data_source_setter_agent as ds_agt then
+					ds_agt.call ([data_control_text])
+				end
 			end
-
-			-- set options string appropriately
-			create options.make_empty
-			if lpos > 0 then
-				options.append (file_path.substring (lpos, file_path.count))
-				file_path.remove_substring (lpos, file_path.count)
-			end
-
-			-- do the browse
-			check attached proximate_ev_window (ev_root_container) as pw then
-				file_str := get_file (file_path, pw)
-			end
-
-			-- add back in options
-			if attached options as opts then
-				file_str.append (opts)
-			end
-			ev_data_control.set_text (file_str)
-
-			if attached data_source_setter_agent as ds_agt then
-				ds_agt.call ([data_control_text])
-			end
-
 		end
 
 feature {NONE} -- Implmentation
@@ -148,7 +151,7 @@ feature {NONE} -- Implmentation
 
 			from until attached user_file loop
 				dialog.show_modal_to_window (a_parent_window)
-				if not attached dialog.selected_button or else dialog.selected_button_name.is_equal (dialog_names.ev_cancel) then
+				if not attached dialog.selected_button as att_sel_btn or else att_sel_btn.is_equal (dialog_names.ev_cancel) then
 					user_file := default_result
 				else
 					if not dialog.file_name.is_empty then

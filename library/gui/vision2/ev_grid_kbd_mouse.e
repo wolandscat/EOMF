@@ -93,12 +93,12 @@ feature -- Events
 		local
 			a_row: EV_GRID_ROW
 		do
-			if attached key and row_count > 0 then
+			if row_count > 0 and attached first_visible_row as att_first_row and attached last_visible_row as att_last_row then
 				if not ev_application.shift_pressed and not ev_application.alt_pressed then
 					if ev_application.ctrl_pressed then
 						if key.code = key_up then
 							key.set_code (key_menu)
-							scroll_to_row (first_visible_row.index - 1)
+							scroll_to_row (att_first_row.index - 1)
 						elseif key.code = key_down then
 							key.set_code (key_menu)
 							if visible_row_indexes.count > 1 then
@@ -109,16 +109,16 @@ feature -- Events
 						elseif key.code = key_end then
 							scroll_to_row (row_count)
 						elseif key.code = key_page_up then
-							scroll_to_row (index_of_viewable_offset_from_row (first_visible_row.index, 1 - visible_row_indexes.count))
+							scroll_to_row (index_of_viewable_offset_from_row (att_first_row.index, 1 - visible_row_indexes.count))
 						elseif key.code = key_page_down then
-							scroll_to_row (last_visible_row.index)
+							scroll_to_row (att_last_row.index)
 						end
 					elseif key.code = key_home then
 						step_to_row (1)
 					elseif key.code = key_end then
 						step_to_row (row_count)
-					elseif selected_cell /= Void then
-						a_row := selected_cell.row
+					elseif attached selected_cell as att_sel_cell then
+						a_row := att_sel_cell.row
 
 						if key.code = key_page_up then
 							step_to_row (index_of_viewable_offset_from_row (a_row.index, 1 - visible_row_indexes.count))
@@ -135,19 +135,19 @@ feature -- Events
 								a_row.collapse
 							end
 						elseif key.code = key_left then
-							if selected_cell.column.index = a_row.index_of_first_item then
+							if att_sel_cell.column.index = a_row.index_of_first_item then
 								if a_row.is_expanded then
 									a_row.collapse
-								elseif a_row.parent_row /= Void then
-									step_to_row (a_row.parent_row.index)
+								elseif attached a_row.parent_row as att_parent_row then
+									step_to_row (att_parent_row.index)
 								end
 							end
 						elseif key.code = key_back_space then
-							if a_row.parent_row /= Void then
-								step_to_row (a_row.parent_row.index)
+							if attached a_row.parent_row as att_parent_row then
+								step_to_row (att_parent_row.index)
 							end
-						elseif user_key_map.has (key.code) then
-							user_key_map.item (key.code).call ([])
+						elseif attached user_key_map.item (key.code) as att_key_item then
+							att_key_item.call ([])
 						end
 					end
 				end
@@ -157,9 +157,9 @@ feature -- Events
 	on_mouse_wheel (step: INTEGER)
 			-- Scroll `grid' when the mouse wheel moves.
 		do
-			if row_count > 0 then
+			if row_count > 0 and attached first_visible_row as att_first_row then
 				if step > 0 then
-					scroll_to_row (first_visible_row.index - step)
+					scroll_to_row (att_first_row.index - step)
 				else
 					scroll_to_row (visible_row_indexes [visible_row_indexes.count.min (1 - step)])
 				end
@@ -354,17 +354,16 @@ feature -- Commands
 			i: INTEGER
 		do
 			from i := 1 until i > row_count loop
-				create ev_grid_row_list.make (0)
+				ev_grid_row_list.wipe_out
 				if row (i).is_expandable then
 					get_grid_row_collapsable_nodes (row (i))
 				end
-				from ev_grid_row_list.start until ev_grid_row_list.off loop
-					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_grid_row_list.item]) then
-						ev_grid_row_list.item.collapse_actions.block
-						ev_grid_row_list.item.collapse
-						ev_grid_row_list.item.collapse_actions.resume
+				across ev_grid_row_list as ev_row_csr loop
+					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_row_csr.item]) then
+						ev_row_csr.item.collapse_actions.block
+						ev_row_csr.item.collapse
+						ev_row_csr.item.collapse_actions.resume
 					end
-					ev_grid_row_list.forth
 				end
 				i := i + row (i).subrow_count_recursive + 1
 			end
@@ -382,13 +381,12 @@ feature -- Commands
 				if row (i).is_expandable then
 					get_grid_row_expandable_nodes (row (i))
 				end
-				from ev_grid_row_list.start until ev_grid_row_list.off loop
-					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_grid_row_list.item]) then
-						ev_grid_row_list.item.expand_actions.block
-						ev_grid_row_list.item.expand
-						ev_grid_row_list.item.expand_actions.resume
+				across ev_grid_row_list as ev_row_csr loop
+					if not attached test_agt as att_test_agt or else att_test_agt.item ([ev_row_csr.item]) then
+						ev_row_csr.item.expand_actions.block
+						ev_row_csr.item.expand
+						ev_row_csr.item.expand_actions.resume
 					end
-					ev_grid_row_list.forth
 				end
 				i := i + row (i).subrow_count_recursive + 1
 			end
@@ -452,7 +450,7 @@ feature -- Commands
 		local
 			csr: detachable EV_GRID_ROW
 		do
-			from csr := a_row until csr = Void or csr.is_expanded loop
+			from csr := a_row until csr = Void or else csr.is_expanded loop
 				if csr.is_expandable then
 					csr.expand_actions.block
 					csr.expand
@@ -475,7 +473,10 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	ev_grid_row_list: detachable ARRAYED_LIST [EV_GRID_ROW]
+	ev_grid_row_list: ARRAYED_LIST [EV_GRID_ROW]
+		attribute
+			create Result.make (0)
+		end
 
 	get_grid_row_expandable_nodes (an_ev_grid_row: EV_GRID_ROW)
 			-- for `an_ev_grid_row' generate list of expandable child rows
@@ -501,8 +502,7 @@ feature {NONE} -- Implementation
 		end
 
 	get_grid_row_collapsable_nodes (an_ev_grid_row: EV_GRID_ROW)
-			-- obtain list of nodes that have all non-expanded children in
-			-- `ev_grid_row_list'
+			-- obtain list of nodes that have all non-expanded children in `ev_grid_row_list'
 		require
 			an_ev_grid_row.is_expandable
 		local

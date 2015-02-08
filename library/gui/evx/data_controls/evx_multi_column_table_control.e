@@ -123,16 +123,16 @@ feature {NONE} -- Implementation
 				create old_val.make_empty
 			end
 
-			if not old_val.same_string (new_val) then
-				data_source_modify_agent.call ([col_name, key, new_val])
+			if not old_val.same_string (new_val) and attached data_source_modify_agent as att_modify_agt then
+				att_modify_agt.call ([col_name, key, new_val])
 
 				if attached undo_redo_chain as urc then
 					urc.add_link (ev_data_control,
 						-- undo
-						agent data_source_modify_agent.call ([col_name, key, old_val]),
+						agent att_modify_agt.call ([col_name, key, old_val]),
 						agent (ev_data_control.i_th (ev_data_control.widget_row)).put_i_th (old_val, ev_data_control.widget_column),
 						-- redo
-						agent data_source_modify_agent.call ([col_name, key, new_val]),
+						agent att_modify_agt.call ([col_name, key, new_val]),
 						agent (ev_data_control.i_th (ev_data_control.widget_row)).put_i_th (new_val, ev_data_control.widget_column)
 					)
 				end

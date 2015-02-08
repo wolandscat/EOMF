@@ -130,31 +130,31 @@ feature {NONE} -- Implementation
 			end
 
 			if not old_val.same_string (new_val) then
-				if attached update_validity_agent and attached validity_error_msg_agent and then
-					 not update_validity_agent.item ([new_val])
+				if attached update_validity_agent as att_validity_agt and then attached validity_error_msg_agent as att_err_msg_agt and then
+					 not att_validity_agt.item ([new_val])
 				then
 					ev_data_control.focus_out_actions.block
-					create error_dialog.make_with_text (validity_error_msg_agent.item ([<<new_val>>]))
+					create error_dialog.make_with_text (att_err_msg_agt.item ([<<new_val>>]))
 					check attached proximate_ev_window (ev_data_control) as pw then
 						error_dialog.show_modal_to_window (pw)
 					end
 					populate
 					ev_data_control.focus_out_actions.resume
-				else
+				elseif attached data_source_setter_agent as att_setter_agt and attached data_source_remove_agent as att_rmeove_agt then
 					-- if user is removing value then use the remove agent, else use the setting agent
 					if old_val.is_empty then
-						undo_agt := data_source_remove_agent
+						undo_agt := att_rmeove_agt
 					else
-						undo_agt := agent data_source_setter_agent.call ([old_val])
+						undo_agt := agent att_setter_agt.call ([old_val])
 					end
 
 					if new_val.is_empty then
-						redo_agt := data_source_remove_agent
+						redo_agt := att_rmeove_agt
 					else
-						redo_agt := agent data_source_setter_agent.call ([new_val])
+						redo_agt := agent att_setter_agt.call ([new_val])
 					end
 
-					data_source_setter_agent.call ([new_val])
+					att_setter_agt.call ([new_val])
 
 					if attached undo_redo_chain as urc and attached undo_agt as ua and attached redo_agt as ra then
 						urc.add_link (ev_data_control, ua, agent populate, ra, agent populate)

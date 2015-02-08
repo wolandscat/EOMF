@@ -58,11 +58,16 @@ feature -- Modification
 
 	add_linked_control (a_control: EVX_TITLED_DATA_CONTROL)
 			-- add a control that is to be repopulated if this control is selected in some way
+		local
+			data_controls: ARRAYED_LIST [EVX_DATA_CONTROL]
 		do
-			if not attached linked_data_controls then
-				create linked_data_controls.make(0)
+			if attached linked_data_controls as att_ldc then
+				data_controls := att_ldc
+			else
+				create data_controls.make(0)
+				linked_data_controls := data_controls
 			end
-			linked_data_controls.extend (a_control)
+			data_controls.extend (a_control)
 		end
 
 feature -- Commands
