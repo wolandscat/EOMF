@@ -152,9 +152,10 @@ feature -- Commands
 			mi: EV_MENU_ITEM
 		do
 			mi := menu_item (a_menu_item_key)
-			check attached accelerators end
-			mi.set_text (mi.text + "%T" + accelerators.shortcut_text (key, ctrl, alt, shift))
-			mi.select_actions.do_all (agent accelerators.add_shortcut (?, key, ctrl, alt, shift))
+			if attached accelerators as att_accs then
+				mi.set_text (mi.text + "%T" + att_accs.shortcut_text (key, ctrl, alt, shift))
+				mi.select_actions.do_all (agent att_accs.add_shortcut (?, key, ctrl, alt, shift))
+			end
 		ensure
 			has_key: menu_item (a_menu_item_key).text.as_upper.ends_with ((key_strings [key]).as_upper)
 			has_ctrl: ctrl implies menu_item (a_menu_item_key).text.has_substring (key_strings [key_ctrl])
@@ -170,9 +171,10 @@ feature -- Commands
 			mi: EV_MENU_ITEM
 		do
 			mi := menu_item (a_menu_item_key)
-			check attached accelerators end
-			mi.set_text (mi.text + "%T" + accelerators.shortcut_text (key, ctrl, alt, shift))
-			accelerators.add_shortcut (action, key, ctrl, alt, shift)
+			if attached accelerators as att_accs then
+				mi.set_text (mi.text + "%T" + att_accs.shortcut_text (key, ctrl, alt, shift))
+				att_accs.add_shortcut (action, key, ctrl, alt, shift)
+			end
 		ensure
 			has_key: menu_item (a_menu_item_key).text.as_upper.ends_with ((key_strings [key]).as_upper)
 			has_ctrl: ctrl implies menu_item (a_menu_item_key).text.has_substring (key_strings [key_ctrl])
