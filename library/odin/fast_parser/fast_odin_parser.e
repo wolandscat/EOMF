@@ -796,8 +796,8 @@ end
 
 			-- if the keyed_objects were all empty, then the attribute can be thrown away 
 			-- as well, since we don't create void object structures
-			if attr_nodes.item.is_empty then
-				attr_nodes.item.parent.remove_attribute (attr_nodes.item.im_attr_name)
+			if attr_nodes.item.is_empty and attached attr_nodes.item.parent as att_dt_obj then
+				att_dt_obj.remove_attribute (attr_nodes.item.im_attr_name)
 			end
 
 			-- if the current C_ATTRIBUTE_NODE is a synthesised one, under a keyed object,

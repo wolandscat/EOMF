@@ -93,8 +93,10 @@ feature -- Access
 					if rule_type_tid >= 0 and then type_conforms_to (type_tid, rule_type_tid) then
 						if not im_class_flat_rules_by_type.has (a_type_name) then
 							im_class_flat_rules_by_type.put (class_rules_csr.item.deep_twin, a_type_name)
+						elseif attached im_class_flat_rules_by_type.item (a_type_name) as att_rules_for_type then
+							att_rules_for_type.merge (class_rules_csr.item)
 						else
-							im_class_flat_rules_by_type.item (a_type_name).merge (class_rules_csr.item)
+							im_class_flat_rules_by_type.force (class_rules_csr.item.deep_twin, a_type_name)
 						end
 					end
 				end

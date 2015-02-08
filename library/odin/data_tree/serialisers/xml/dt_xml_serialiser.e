@@ -40,9 +40,9 @@ feature -- Modification
 		local
 			doc_attr_name, doc_hdr: STRING
 		do
-			if not checked_for_rules and not attached serialisation_rules or xml_rules_out_of_date then
-				if xml_rules.serialisation_rules.has (a_node.im_type_name) then
-					serialisation_rules := xml_rules.serialisation_rules.item (a_node.im_type_name)
+			if not checked_for_rules or xml_rules_out_of_date then
+				if xml_rules.serialisation_rules.has (a_node.im_type_name) and attached xml_rules.serialisation_rules.item (a_node.im_type_name) as att_rules then
+					serialisation_rules := att_rules
 				else
 					create serialisation_rules.make
 				end
@@ -60,9 +60,8 @@ feature -- Modification
 					if attached serialisation_rules.doc_tag then
 						if serialisation_rules.doc_tag.item (1) = '$' then
 							doc_attr_name := serialisation_rules.doc_tag.substring (2, serialisation_rules.doc_tag.count)
-							if a_node.has_attribute (doc_attr_name) and then
-								a_node.attribute_node (doc_attr_name).child_count > 0 and then
-								attached {DT_PRIMITIVE_OBJECT} a_node.attribute_node (doc_attr_name).first_child as dt_p_o
+							if a_node.has_attribute (doc_attr_name) and then attached a_node.attribute_node (doc_attr_name) as att_dt_attr
+								and then att_dt_attr.child_count > 0 and then attached {DT_PRIMITIVE_OBJECT} att_dt_attr.first_child as dt_p_o
 							then
 								doc_tag_value := dt_p_o.value.out
 							else
@@ -81,9 +80,9 @@ feature -- Modification
 				end
 
 			-- only output object-level tag for object inside a container
-			elseif a_node.parent.is_container_type then
+			elseif attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
 				-- output the starting tag with attributes
-				last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name,
+				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name,
 					xml_attrs_for_dt_complex_object (a_node)) + format_item (FMT_NEWLINE))
 			end
 		end
@@ -106,8 +105,8 @@ feature -- Modification
 				last_result.append (format_item(FMT_NEWLINE))
 
 			-- end tag for items in a container
-			elseif a_node.parent.is_container_type then
-				last_result.append (create_indent(depth//2) + xml_tag_end (a_node.parent.im_attr_name) + format_item(FMT_NEWLINE))
+			elseif attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (create_indent(depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
 			end
 		end
 
@@ -156,9 +155,9 @@ feature -- Modification
 		do
 			if not ignoring_dt_primitive_objects then
 				-- generate an XML tag if object in a container
-				if a_node.parent.is_container_type then
+				if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
 					-- output indent + tag
-					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, xml_attrs_for_dt_primitive_object (a_node)))
+					last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, xml_attrs_for_dt_primitive_object (a_node)))
 				else
 					last_result.remove_tail (format_item (FMT_NEWLINE).count)
 				end
@@ -170,8 +169,8 @@ feature -- Modification
 	end_primitive_object (a_node: DT_PRIMITIVE_OBJECT; depth: INTEGER)
 			-- end serialising a DT_PRIMITIVE_OBJECT
 		do
-			if a_node.parent.is_container_type then
-				last_result.append (xml_tag_end (a_node.parent.im_attr_name) + format_item(FMT_NEWLINE))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
 			end
 		end
 
@@ -179,12 +178,11 @@ feature -- Modification
 			-- start serialising an DT_PRIMITIVE_OBJECT_LIST
 		do
 			-- generate an XML tag if object in a container
-			last_result.append (a_node.as_serialised_string (
-				agent primitive_value_to_xml_tagged_string (a_node.parent.im_attr_name, depth//2, ?),
-				Void,
-				Void,
-				agent profile.clean))
-			last_object_primitive := True
+			if attached a_node.parent as att_dt_attr then
+				last_result.append (a_node.as_serialised_string (
+					agent primitive_value_to_xml_tagged_string (att_dt_attr.im_attr_name, depth//2, ?), Void, Void, agent profile.clean))
+				last_object_primitive := True
+			end
 		end
 
 	end_primitive_object_list (a_node: DT_PRIMITIVE_OBJECT_LIST; depth: INTEGER)
@@ -198,8 +196,8 @@ feature -- Modification
 			str: STRING
 		do
 			-- generate an XML tag if object in a container
-			if a_node.parent.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, Void))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
 			end
 
 			-- generate value as a multi-line text
@@ -210,24 +208,26 @@ feature -- Modification
 	end_primitive_object_interval (a_node: DT_PRIMITIVE_OBJECT_INTERVAL; depth: INTEGER)
 			-- end serialising a DT_PRIMITIVE_OBJECT_INTERVAL
 		do
-			if a_node.parent.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_end (a_node.parent.im_attr_name) + format_item (FMT_NEWLINE))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
 			end
 		end
 
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_SIMPLE
 		do
-			across a_node.value as ivl_csr loop
-				-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
-				if not ivl_csr.is_first then
-					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, Void) + format_item (FMT_NEWLINE))
-				end
-				last_result.append (indented (primitive_interval_to_xml_tagged_string (ivl_csr.item), create_indent (depth//2 + 1)))
+			if attached a_node.parent as att_dt_attr then
+				across a_node.value as ivl_csr loop
+					-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
+					if not ivl_csr.is_first then
+						last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void) + format_item (FMT_NEWLINE))
+					end
+					last_result.append (indented (primitive_interval_to_xml_tagged_string (ivl_csr.item), create_indent (depth//2 + 1)))
 
-				-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
-				if not ivl_csr.is_last then
-					last_result.append (create_indent (depth//2) + xml_tag_end (a_node.parent.im_attr_name) + format_item (FMT_NEWLINE))
+					-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
+					if not ivl_csr.is_last then
+						last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
+					end
 				end
 			end
 		end
@@ -247,8 +247,8 @@ feature -- Modification
 	end_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- end serialising a DT_OBJECT_REFERENCE
 		do
-			if a_node.parent.is_container_type then
-				last_result.append (xml_tag_end (a_node.parent.im_attr_name) + format_item(FMT_NEWLINE))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
 			end
 		end
 
@@ -262,8 +262,8 @@ feature -- Modification
 	end_object_reference_list (a_node: DT_OBJECT_REFERENCE_LIST; depth: INTEGER)
 			-- end serialising a DT_OBJECT_REFERENCE_LIST
 		do
-			if a_node.parent.is_container_type then
-				last_result.append (xml_tag_end (a_node.parent.im_attr_name) + format_item(FMT_NEWLINE))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
 			end
 		end
 
@@ -274,14 +274,17 @@ feature -- Commands
 		do
 			precursor
 			checked_for_rules := False
-			serialisation_rules := Void
+			create serialisation_rules.make
 			ignoring_dt_primitive_objects := False
 		end
 
 feature {NONE} -- Implementation
 
-	serialisation_rules: detachable XML_SERIALISATION_RULES
+	serialisation_rules: XML_SERIALISATION_RULES
 			-- serialisation rules for the type of the root object being processed here
+		attribute
+			create Result.make
+		end
 
 	last_object_primitive: BOOLEAN
 			-- True if last object traversed was a DT_PRIMITIVE_XX object
@@ -303,8 +306,8 @@ feature {NONE} -- Implementation
 			-- start serialising a DT_OBJECT_LEAF
 		do
 			-- generate an XML tag if object in a container
-			if a_node.parent.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_start (a_node.parent.im_attr_name, Void))
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
 			else
 				last_result.remove_tail (format_item (FMT_NEWLINE).count)
 			end

@@ -89,9 +89,11 @@ feature -- Initialisation
 			valid_path_string (s)
 		do
 			parser.execute(s)
-			is_absolute := parser.output.is_absolute
-			is_terminal := parser.output.is_terminal
-			items := parser.output.items
+			if attached parser.output as att_op then
+				is_absolute := att_op.is_absolute
+				is_terminal := att_op.is_terminal
+				items := att_op.items
+			end
 		end
 
 	make_pure_from_string (s: STRING)
@@ -104,9 +106,11 @@ feature -- Initialisation
 		do
 			s1 := strip_predicates(s)
 			parser.execute(s1)
-			is_absolute := parser.output.is_absolute
-			is_terminal := parser.output.is_terminal
-			items := parser.output.items
+			if attached parser.output as att_op then
+				is_absolute := att_op.is_absolute
+				is_terminal := att_op.is_terminal
+				items := att_op.items
+			end
 		end
 
 	make_from_other (other: OG_PATH)
@@ -123,7 +127,10 @@ feature -- Initialisation
 
 feature -- Access
 
-	items: ARRAYED_LIST[OG_PATH_ITEM]
+	items: ARRAYED_LIST [OG_PATH_ITEM]
+		attribute
+			create Result.make (0)
+		end
 
 	new_cursor: INDEXABLE_ITERATION_CURSOR [OG_PATH_ITEM]
 			-- Fresh cursor associated with current structure
@@ -444,15 +451,17 @@ feature -- Comparison
 			if a_path.count <= count then
 				parser.execute (a_path)
 
-				from
-					parser.output.start
-					start
-					Result := True
-				until
-					not Result and parser.output.off
-				loop
-					Result := Result and item.is_equal(parser.output.item)
-					parser.output.forth
+				if attached parser.output as att_op then
+					from
+						att_op.start
+						start
+						Result := True
+					until
+						not Result and att_op.off
+					loop
+						Result := Result and item.is_equal(att_op.item)
+						att_op.forth
+					end
 				end
 			end
 		end

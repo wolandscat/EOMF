@@ -97,7 +97,7 @@ feature -- Visitor
 					last_result.append (symbol (SYM_JSON_END_OBJECT))
 				end
 				last_result.append (symbol (SYM_JSON_END_ARRAY))
-				if a_node.parent.last /= a_node then
+				if attached a_node.parent as att_dt_obj and then att_dt_obj.last /= a_node then
 					last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
 				end
 				last_result.append (format_item (FMT_NEWLINE))
@@ -216,7 +216,7 @@ feature {NONE} -- Implementation
 			-- counter for how many multiple attributes at the current point
 
 	start_object_item (a_node: DT_OBJECT_ITEM; depth: INTEGER)
-			-- start serialising a DT_OBJECT_LEAF
+			-- start serialising a DT_OBJECT_ITEM
 		do
 			-- for containers contianing primitive types, put out the key as if it were an attribute name (JSON doesn't distinguish between hash
 			-- keys and proper attribute names)
@@ -231,10 +231,10 @@ feature {NONE} -- Implementation
 		end
 
 	end_object_item (a_node: DT_OBJECT_ITEM; depth: INTEGER)
-			-- start serialising a DT_OBJECT_LEAF
+			-- end serialising a DT_OBJECT_ITEM
 		do
-			if a_node.parent.is_container_type and then a_node.parent.last_child /= a_node or else
-				not a_node.parent.is_container_type and then a_node.parent.parent.last /= a_node.parent
+			if attached a_node.parent as att_dt_attr and then (att_dt_attr.is_container_type and then att_dt_attr.last_child /= a_node or else
+				not att_dt_attr.is_container_type and then attached att_dt_attr.parent as att_dt_obj and then att_dt_obj.last /= att_dt_attr)
 			then
 				last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
 			end

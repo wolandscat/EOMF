@@ -292,28 +292,30 @@ feature -- Modification
 				end
 
 				-- deal with the object
-				if an_og_path.is_last then
-					dt_attr.put_child (new_dt_obj)
-				else -- any interior path node must be a DT_COMPLEX_OBJECT
-					if dt_attr.is_container_type and an_og_path.item.is_addressable then
-						if dt_attr.has_child_with_id (an_og_path.item.object_id) then
-							dt_obj := dt_attr.child_with_id (an_og_path.item.object_id)
+				if attached dt_attr as att_dt_attr then
+					if an_og_path.is_last then
+						att_dt_attr.put_child (new_dt_obj)
+					else -- any interior path node must be a DT_COMPLEX_OBJECT
+						if att_dt_attr.is_container_type and an_og_path.item.is_addressable then
+							if dt_attr.has_child_with_id (an_og_path.item.object_id) then
+								dt_obj := dt_attr.child_with_id (an_og_path.item.object_id)
+							else
+								create {DT_COMPLEX_OBJECT} dt_obj.make_identified (an_og_path.item.object_id)
+								att_dt_attr.put_child (dt_obj)
+							end
+						elseif not att_dt_attr.is_container_type and not an_og_path.item.is_addressable then
+							if att_dt_attr.children.count = 1 then
+								dt_obj := dt_attr.first_child
+							else
+								create {DT_COMPLEX_OBJECT} dt_obj.make_anonymous
+								att_dt_attr.put_child (dt_obj)
+							end
 						else
-							create {DT_COMPLEX_OBJECT} dt_obj.make_identified (an_og_path.item.object_id)
-							dt_attr.put_child (dt_obj)
+							-- error state
 						end
-					elseif not dt_attr.is_container_type and not an_og_path.item.is_addressable then
-						if dt_attr.children.count = 1 then
-							dt_obj := dt_attr.first_child
-						else
-							create {DT_COMPLEX_OBJECT} dt_obj.make_anonymous
-							dt_attr.put_child (dt_obj)
+						if attached {DT_COMPLEX_OBJECT} dt_obj as dt_complex_obj then
+							parent_dt_obj := dt_complex_obj
 						end
-					else
-						-- error state
-					end
-					if attached {DT_COMPLEX_OBJECT} dt_obj as dt_complex_obj then
-						parent_dt_obj := dt_complex_obj
 					end
 				end
 				an_og_path.forth

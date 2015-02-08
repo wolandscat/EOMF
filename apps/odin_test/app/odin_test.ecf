@@ -6,7 +6,7 @@
 			<exclude>/\.git$</exclude>
 			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
+		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="all" syntax="standard">
 			<debug name="__unnamed_debug__" enabled="false"/>
 			<debug name="arch_dir" enabled="false"/>
 			<debug name="bb" enabled="false"/>

@@ -55,9 +55,9 @@ feature -- Access
 	node_key: STRING
 			-- uses differential path if it exists
 		do
-			if has_differential_path then
-				Result := differential_path.as_string
-				if not differential_path.is_root then
+			if has_differential_path and then attached differential_path as att_diff_path then
+				Result := att_diff_path.as_string
+				if not att_diff_path.is_root then
 					Result.append_character ({OG_PATH}.segment_separator)
 				end
 				Result.append (node_id)
@@ -71,7 +71,7 @@ feature -- Access
 			Valid_node_id: has_proxy_child_with_target_id (a_node_key)
 		do
 			from children.start until children.off or attached {OG_OBJECT_PROXY} children.item_for_iteration as og_proxy
-				and then og_proxy.target_object.node_id.is_equal (a_node_key)
+				and then attached og_proxy.target_object as att_targ_obj and then att_targ_obj.node_id.is_equal (a_node_key)
 			loop
 				children.forth
 			end
@@ -113,7 +113,8 @@ feature -- Status Report
 			Valid_node_id: not a_node_key.is_empty
 		do
 			Result := across children as child_obj_csr some
-				attached {OG_OBJECT_PROXY} child_obj_csr.item as og_proxy and then og_proxy.target_object.node_id.is_equal (a_node_key)
+				attached {OG_OBJECT_PROXY} child_obj_csr.item as og_proxy and then attached
+					og_proxy.target_object as att_targ_obj and then att_targ_obj.node_id.is_equal (a_node_key)
 			end
 		end
 
@@ -170,12 +171,12 @@ feature -- Modification
 			-- set `differential_path'
 		do
 			differential_path := a_path
-			if attached parent then
-				parent.replace_node_id (node_id, node_key)
+			if attached parent as att_parent then
+				att_parent.replace_node_id (node_id, node_key)
 			end
 		ensure
 			Compessed_path_set: differential_path = a_path
-			Parent_has_child: not is_root implies parent.child_with_id (node_key) = Current
+			Parent_has_child: not is_root implies attached parent as att_parent and then att_parent.child_with_id (node_key) = Current
 			Differential_path_flag_set: has_differential_path
 		end
 
@@ -190,9 +191,11 @@ feature -- Modification
 	set_differential_path_to_here
 			-- compress the path and reparent current node to root node
 		do
-			differential_path := parent.path
-			if not parent.is_root then
-				reparent_to_root
+			if attached parent as att_parent then
+				differential_path := att_parent.path
+				if not att_parent.is_root then
+					reparent_to_root
+				end
 			end
 		ensure
 			Differential_path_set: attached differential_path

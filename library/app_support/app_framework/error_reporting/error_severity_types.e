@@ -40,6 +40,16 @@ feature -- Access
 			Result.force (Error_type_debug_name, Error_type_debug)
 		end
 
+	error_type_name (an_error_type: INTEGER): STRING
+			-- get an error from `error_type_name_table'
+		require
+			is_valid_error_type (an_error_type)
+		do
+			check attached error_type_name_table.item (an_error_type) as err_str then
+				Result := err_str
+			end
+		end
+
 	error_type_id_table: HASH_TABLE [INTEGER, STRING]
 			-- codes of message types keyed by message type name
 		once

@@ -93,6 +93,17 @@ feature {NONE} -- Initialization
 
 			set_title ("ODIN test bench")
 
+			-- set agents
+			evx_menu_bar.add_menu ("File", "&File")
+			evx_menu_bar.add_menu_item ("Exit", "E&xit", Void, agent exit_app)
+
+			evx_menu_bar.add_menu ("Edit", "&Edit")
+			evx_menu_bar.add_menu_item ("Edit>Copy", "&Copy", Void, agent text_widget_handler.on_copy)
+			evx_menu_bar.add_menu_item ("Edit>Select All", "Select &All", Void, agent text_widget_handler.on_select_all)
+
+			explorer_tree.select_actions.extend (agent select_explorer_item)
+
+
 			initialise_accelerators
 
 			text_widget_handler.set_root (Current)
@@ -105,18 +116,6 @@ feature {NONE} -- Initialization
 	create_interface_objects
 			-- Create objects
 		do
-			create evx_menu_bar.make
-
-			evx_menu_bar.add_menu ("File", "&File")
-			evx_menu_bar.add_menu_item ("File>Open", "&Open", Void, Void)
-			evx_menu_bar.add_menu_item ("File>Save As", "&Save As", Void, Void)
-			evx_menu_bar.add_menu_separator
-			evx_menu_bar.add_menu_item ("Exit", "E&xit", Void, agent exit_app)
-
-			evx_menu_bar.add_menu ("Edit", "&Edit")
-			evx_menu_bar.add_menu_item ("Edit>Copy", "&Copy", Void, agent text_widget_handler.on_copy)
-			evx_menu_bar.add_menu_item ("Edit>Select All", "Select &All", Void, agent text_widget_handler.on_select_all)
-
 			-- ============ Left hand explorer / main work area split =============
 			create explorer_split_area
 
@@ -133,7 +132,6 @@ feature {NONE} -- Initialization
 			create explorer_tree
 			explorer_area.extend (explorer_tree)
 			explorer_tree.set_minimum_width (150)
-			explorer_tree.select_actions.extend (agent select_explorer_item)
 
 			-- main work area
 			create main_split_area
@@ -179,6 +177,9 @@ feature {NONE} -- Initialization
 			main_split_area.extend (status_area)
 			main_split_area.disable_item_expand (status_area)
 
+
+			-- menu bar
+			create evx_menu_bar.make
 		end
 
 	initialise_ui_basic
@@ -208,8 +209,6 @@ feature {NONE} -- Initialization
 		do
 			create evx_accelerators.make (accelerators)
 			evx_menu_bar.set_accelerators (evx_accelerators)
-			evx_menu_bar.add_menu_shortcut ("File>Open", key_o, True, False, False)
-			evx_menu_bar.add_menu_shortcut ("File>Save As", key_s, True, False, False)
 			evx_menu_bar.add_menu_shortcut_for_action ("Edit>Copy", agent text_widget_handler.call_unless_text_focused (agent text_widget_handler.on_copy), key_c, True, False, False)
 			evx_menu_bar.add_menu_shortcut ("Edit>Select All", key_a, True, False, False)
 		end
@@ -219,17 +218,16 @@ feature -- Events
 	select_explorer_item
 			-- Called by `select_actions' of `explorer_tree'.
 		do
-			if attached {EV_TREE_NODE} explorer_tree.selected_item as node then
-				if attached {STRING} node.data as node_data and then
-					attached {PROCEDURE [ANY, TUPLE[STRING]]} node.parent.data as test_proc
-				then
+			if attached {EV_TREE_NODE} explorer_tree.selected_item as node and then
+				attached node.data as att_node_data and then
+				attached node.parent as att_node_parent
+			then
+				if attached {STRING} att_node_data as att_str and then attached {PROCEDURE [ANY, TUPLE[STRING]]} att_node_parent.data as test_proc then
 					status_area.set_text ("")
-					test_proc.call ([node_data])
-				elseif attached node.data as node_data and then
-					attached {PROCEDURE [ANY, TUPLE[ANY]]} node.parent.data as test_proc
-				then
+					test_proc.call ([att_str])
+				elseif attached {PROCEDURE [ANY, TUPLE[ANY]]} att_node_parent.data as test_proc then
 					status_area.set_text ("")
-					test_proc.call ([node_data])
+					test_proc.call ([att_node_data])
 				end
 			end
 		end
@@ -306,7 +304,9 @@ feature {NONE} -- Implementation
 	update_serialised_area (text, format: STRING)
 			-- Write `text' to `serialised_text'.
 		do
-			serialised_panes.item (format).set_text (text)
+			check attached serialised_panes.item (format) as att_pane then
+				att_pane.set_text (text)
+			end
 		end
 
 feature {NONE} -- Standard Windows behaviour that EiffelVision ought to be managing automatically

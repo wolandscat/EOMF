@@ -63,9 +63,9 @@ feature -- Output
 	as_string: STRING
 		do
 			create Result.make_empty
-			Result.append (error_type_name_table.item (severity) + " ")
-			if attached location and not location.is_empty then
-				Result.append (location + ": ")
+			Result.append (error_type_name (severity) + " ")
+			if attached location as att_loc and then not att_loc.is_empty then
+				Result.append (att_loc + ": ")
 			end
 			Result.append ("(" + code + ") " + message)
 		end

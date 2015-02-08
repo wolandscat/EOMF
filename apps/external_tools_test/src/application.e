@@ -38,7 +38,7 @@ feature {NONE} -- Initialization
 
 			-- try to connect to a local Git repo
 			if is_windows then
-				local_dir := "C:\project\openehr\adl-resources"
+				local_dir := "C:\dev\openehr\adl-resources"
 				clone_dir := "C:\temp"
 			else
 				local_dir := "/home/thomas/project/openEHR/adl-resources"

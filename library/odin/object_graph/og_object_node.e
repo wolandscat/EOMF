@@ -61,16 +61,16 @@ feature -- Access
 							a_path := sub_child_all_paths_csr.key.twin
 
 							if sub_child_obj_node.is_addressable then
-								if attached {OG_OBJECT_PROXY} sub_child_obj_node as og_proxy and then not og_proxy.has_sibling_target then
-									a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, og_proxy.target_object.node_id))
+								if attached {OG_OBJECT_PROXY} sub_child_obj_node as og_proxy and then not og_proxy.has_sibling_target and then attached og_proxy.target_object as att_targ_obj then
+									a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, att_targ_obj.node_id))
 								else
 									a_path.prepend_segment (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj_node.node_id))
 								end
 							else
 								a_path.prepend_segment (create {OG_PATH_ITEM}.make (child_attr.node_id))
 							end
-							if child_attr.has_differential_path then
-								a_path.prepend_path (child_attr.differential_path.deep_twin)
+							if attached child_attr.differential_path as att_diff_path then
+								a_path.prepend_path (att_diff_path.deep_twin)
 							end
 							if is_root then
 								a_path.set_absolute
@@ -81,8 +81,8 @@ feature -- Access
 
 					-- add path for the current child object
 					create a_path.make_relative (create {OG_PATH_ITEM}.make_with_object_id (child_attr.node_id, sub_child_obj.node_id))
-					if child_attr.has_differential_path then
-						a_path.prepend_path (child_attr.differential_path.deep_twin)
+					if attached child_attr.differential_path as att_diff_path then
+						a_path.prepend_path (att_diff_path.deep_twin)
 					end
 					if is_root then
 						a_path.set_absolute
@@ -288,8 +288,8 @@ feature {OG_OBJECT_NODE} -- Implementation
 						cand_path := child_csr.key
 					end
 				end
-				if not cand_path.is_empty then
-					a_path.go_i_th (children.item (cand_path).differential_path.count + 1)
+				if not cand_path.is_empty and attached children.item (cand_path) as att_item and then attached att_item.differential_path as att_diff_path then
+					a_path.go_i_th (att_diff_path.count + 1)
 					Result := a_path.sub_path_from_item
 					Result.compress_path (cand_path)
 					if a_path.is_absolute then

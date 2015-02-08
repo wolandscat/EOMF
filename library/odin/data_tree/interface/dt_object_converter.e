@@ -122,7 +122,7 @@ end
 						src_obj_fld := obj_ref_csr.item.source_object_field_index
 						if attached {DT_OBJECT_REFERENCE} obj_ref_csr.item as a_dt_obj_ref then
 							if a_dt_co.has_path (a_dt_obj_ref.value.as_string) then
-								if attached a_dt_co.node_at_path (a_dt_obj_ref.value.as_string).as_object_ref as targ_obj then
+								if attached a_dt_co.node_at_path (a_dt_obj_ref.value.as_string) as att_dt_attr and then attached att_dt_attr.as_object_ref as targ_obj then
 									if a_dt_obj_ref.is_source_object_container then
 										if attached {HASH_TABLE [ANY, HASHABLE]} src_obj as a_hash_table and attached a_dt_obj_ref.hash_key as hk then
 											a_hash_table.extend (targ_obj, hk)

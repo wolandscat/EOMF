@@ -65,7 +65,7 @@ feature -- Access
 		require
 			not is_root
 		do
-			from Result := parent until Result.is_root loop
+			from Result := parent until not attached Result loop
 				Result := Result.parent
 			end
 		end
@@ -76,7 +76,7 @@ feature -- Access
 		local
 			csr: detachable OG_NODE
 		do
-			from csr := parent until csr.is_root or csr = a_node loop
+			from csr := parent until not attached csr as att_csr or else att_csr = a_node loop
 				csr := csr.parent
 			end
 			Result := csr = a_node
@@ -146,7 +146,9 @@ feature -- Serialisation
 		require
 			Depth_valid: depth >= 0
 		do
-			content_item.enter_subtree (visitor, depth)
+			if attached content_item as att_item then
+				att_item.enter_subtree (visitor, depth)
+			end
 		end
 
 	exit_subtree (visitor:  ANY; depth: INTEGER)
@@ -154,7 +156,9 @@ feature -- Serialisation
 		require
 			Depth_valid: depth >= 0
 		do
-			content_item.exit_subtree (visitor, depth)
+			if attached content_item as att_item then
+				att_item.exit_subtree (visitor, depth)
+			end
 		end
 
 feature {NONE} -- Implementation
@@ -167,7 +171,7 @@ feature {NONE} -- Implementation
 			a_path_item: OG_PATH_ITEM
 			og_path: detachable OG_PATH
 		do
-			-- get the node list from here back up to the root or `stop_node' if set, 
+			-- get the node list from here back up to the root or `stop_node' if set,
 			-- but don't include the root OG_OBJECT_NODE
 			create og_nodes.make(0)
 			from csr := Current until csr.parent = Void or csr ~ stop_node loop
@@ -184,11 +188,11 @@ feature {NONE} -- Implementation
 				-- now on an OG_ATTR_NODE
 				if attached {OG_ATTRIBUTE_NODE} og_nodes.item as og_attr then
 					create a_path_item.make (og_attr.node_id)
-					if og_attr.has_differential_path then
+					if og_attr.has_differential_path and attached og_attr.differential_path as att_diff_path then
 						if attached og_path as att_path then
-							att_path.append_path (og_attr.differential_path.deep_twin)
+							att_path.append_path (att_diff_path.deep_twin)
 						else
-							og_path := og_attr.differential_path.deep_twin
+							og_path := att_diff_path.deep_twin
 						end
 						check attached og_path as att_path then
 							att_path.append_segment (a_path_item)

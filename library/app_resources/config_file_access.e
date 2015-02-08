@@ -82,7 +82,9 @@ feature -- Access
 		do
 			if integer_value_cache.has (a_path) then
 				Result := integer_value_cache.item (a_path)
-			elseif has_resource (a_path) and then attached {INTEGER} dt_tree.value_at_path (a_path) as int then
+			elseif has_resource (a_path) and then attached dt_tree as att_dt_tree
+				and then attached {INTEGER} att_dt_tree.value_at_path (a_path) as int
+			then
 				Result := int
 				integer_value_cache.put (Result, a_path)
 			end
@@ -93,7 +95,9 @@ feature -- Access
 		do
 			if boolean_value_cache.has (a_path) then
 				Result := boolean_value_cache.item (a_path)
-			elseif has_resource (a_path) and then attached {BOOLEAN} dt_tree.value_at_path (a_path) as bool then
+			elseif has_resource (a_path) and then attached dt_tree as att_dt_tree
+				and then attached {BOOLEAN} att_dt_tree.value_at_path (a_path) as bool
+			then
 				Result := bool
 				boolean_value_cache.put (Result, a_path)
 			end
@@ -107,7 +111,9 @@ feature -- Access
 					Result := val
 				end
 			else
-				if has_resource (a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
+				if has_resource (a_path) and then attached dt_tree as att_dt_tree
+					and then attached {STRING} att_dt_tree.value_at_path (a_path) as str
+				then
 					Result := str
 				else
 					create Result.make (0)
@@ -124,7 +130,9 @@ feature -- Access
 					Result := val
 				end
 			else
-				if has_resource (a_path) and then attached {ARRAYED_LIST [STRING]} dt_tree.value_list_at_path (a_path) as lst_str then
+				if has_resource (a_path) and then attached dt_tree as att_dt_tree
+					and then attached {ARRAYED_LIST [STRING]} att_dt_tree.value_list_at_path (a_path) as lst_str
+				then
 					Result := lst_str
 				else
 					create Result.make (0)
@@ -141,7 +149,9 @@ feature -- Access
 					Result := val
 				end
 			else
-				if has_resource (a_path) and then attached {STRING} dt_tree.value_at_path (a_path) as str then
+				if has_resource (a_path) and then attached dt_tree as att_dt_tree and then
+					attached {STRING} att_dt_tree.value_at_path (a_path) as str
+				then
 					Result := substitute_env_vars (str)
 				else
 					create Result.make (0)
@@ -157,8 +167,8 @@ feature -- Access
 				check attached object_value_cache.item (a_path) as val then
 					Result := val
 				end
-			elseif has_resource (a_path) then
-				Result := dt_tree.value_at_path (a_path)
+			elseif has_resource (a_path) and attached dt_tree as att_dt_tree then
+				Result := att_dt_tree.value_at_path (a_path)
 				object_value_cache.put (Result, a_path)
 			end
 		end
@@ -170,9 +180,9 @@ feature -- Access
 				check attached object_value_cache.item (a_path) as val then
 					Result := val
 				end
-			elseif has_resource (a_path) then
-				if attached {DT_COMPLEX_OBJECT} dt_tree.node_at_path (a_path) as dt_obj then
-					Result := dt_obj.as_object_from_string (a_type_name, Void)
+			elseif has_resource (a_path) and attached dt_tree as att_dt_tree then
+				if attached {DT_COMPLEX_OBJECT} att_dt_tree.node_at_path (a_path) as att_dt_obj then
+					Result := att_dt_obj.as_object_from_string (a_type_name, Void)
 					object_value_cache.put (Result, a_path)
 				end
 			end
@@ -188,7 +198,7 @@ feature -- Status Report
 	has_resource (a_path:  STRING): BOOLEAN
 			-- True if there is a resource at `a_path'
 		do
-			Result := attached dt_tree and then dt_tree.has_path (a_path)
+			Result := attached dt_tree as att_dt_tree and then att_dt_tree.has_path (a_path)
 		end
 
 feature -- Modification
@@ -230,19 +240,21 @@ feature -- Modification
 			if not attached dt_tree then
 				create_default_dt_tree
 			end
-			obj_dt_tree := dt_object_converter.object_to_dt (a_value)
-			if not dt_object_converter.errors.has_errors then
-				if has_resource (a_path) and then attached dt_tree.attribute_node_at_path (a_path) as dt_attr then
-					dt_attr.remove_all_children
-					dt_attr.put_child (obj_dt_tree)
+			if attached dt_tree as att_dt_tree then
+				obj_dt_tree := dt_object_converter.object_to_dt (a_value)
+				if not dt_object_converter.errors.has_errors then
+					if has_resource (a_path) and then attached att_dt_tree.attribute_node_at_path (a_path) as att_dt_attr then
+						att_dt_attr.remove_all_children
+						att_dt_attr.put_child (obj_dt_tree)
+					else
+						att_dt_tree.put_object_at_path (obj_dt_tree, a_path)
+					end
 				else
-					dt_tree.put_object_at_path (obj_dt_tree, a_path)
+					raise ("put_object_conversion_failure for type " + a_value.generating_type + " to Data Tree form")
 				end
-			else
-				raise ("put_object_conversion_failure for type " + a_value.generating_type + " to Data Tree form")
+				is_dirty := True
+				object_value_cache.force (a_value, a_path)
 			end
-			is_dirty := True
-			object_value_cache.force (a_value, a_path)
 		end
 
 	add_refresh_listener (an_agent: PROCEDURE [ANY, TUPLE])
@@ -258,21 +270,23 @@ feature -- Element Removal
 		require
             Valid_path: has_resource (a_path)
 		do
-			check attached dt_tree.attribute_node_at_path (a_path) as dt_attr then
-				dt_attr.parent.remove_attribute (dt_attr.im_attr_name)
-			end
-			is_dirty := True
+			if attached dt_tree as att_dt_tree then
+				if attached att_dt_tree.attribute_node_at_path (a_path) as att_dt_attr and then attached att_dt_attr.parent as att_dt_obj then
+					att_dt_obj.remove_attribute (att_dt_attr.im_attr_name)
+				end
+				is_dirty := True
 
-			if string_value_cache.has (a_path) then
-				string_value_cache.remove (a_path)
-			elseif string_list_value_cache.has (a_path) then
-				string_list_value_cache.remove (a_path)
-			elseif boolean_value_cache.has (a_path) then
-				boolean_value_cache.remove (a_path)
-			elseif integer_value_cache.has (a_path) then
-				integer_value_cache.remove (a_path)
-			elseif object_value_cache.has (a_path) then
-				object_value_cache.remove (a_path)
+				if string_value_cache.has (a_path) then
+					string_value_cache.remove (a_path)
+				elseif string_list_value_cache.has (a_path) then
+					string_list_value_cache.remove (a_path)
+				elseif boolean_value_cache.has (a_path) then
+					boolean_value_cache.remove (a_path)
+				elseif integer_value_cache.has (a_path) then
+					integer_value_cache.remove (a_path)
+				elseif object_value_cache.has (a_path) then
+					object_value_cache.remove (a_path)
+				end
 			end
 		ensure
 			Path_removed: not has_resource (a_path)
@@ -362,12 +376,14 @@ feature {NONE} -- Implementation
 			if not attached dt_tree then
 				create_default_dt_tree
 			end
-			if has_resource (a_path) then
-				dt_tree.set_value_at_path (a_value, a_path)
-			else
-				dt_tree.put_value_at_path (a_value, a_path)
+			if attached dt_tree as att_dt_tree then
+				if has_resource (a_path) then
+					att_dt_tree.set_value_at_path (a_value, a_path)
+				else
+					att_dt_tree.put_value_at_path (a_value, a_path)
+				end
+				is_dirty := True
 			end
-			is_dirty := True
 		end
 
 end

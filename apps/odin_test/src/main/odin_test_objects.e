@@ -327,9 +327,9 @@ feature -- Test procedures
 			append_status("Parse ODIN%N")
 			odin_engine.set_source (odin_engine.serialised, 0)
 			odin_engine.parse
-			if odin_engine.parse_succeeded then
+			if odin_engine.parse_succeeded and then attached odin_engine.tree as att_tree then
 				-- display tree in node explorer
-				if attached odin_engine.tree.as_object_from_string (an_obj.generator, Void) as new_obj then
+				if attached att_tree.as_object_from_string (an_obj.generator, Void) as new_obj then
 					append_status("%TSuccessfully created " + new_obj.generator + " object from ODIN%N")
 				else
 					append_status("%TFailed to create " + an_obj.generator + " object from ODIN Error%N")
