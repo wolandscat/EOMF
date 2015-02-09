@@ -43,12 +43,14 @@ feature -- Status Report
 			-- True if there is a package at the path `a_path' under this package
 		local
 			pkg_names: LIST [STRING]
-			pkg_csr: detachable P_BMM_PACKAGE_CONTAINER
+			pkg_csr: P_BMM_PACKAGE_CONTAINER
 		do
 			pkg_names := a_path.as_upper.split (Package_name_delimiter)
 			pkg_csr := Current
 			from pkg_names.start until pkg_names.off or not pkg_csr.packages.has (pkg_names.item) loop
-				pkg_csr := pkg_csr.packages.item (pkg_names.item)
+				check attached pkg_csr.packages.item (pkg_names.item) as att_pkg then
+					pkg_csr := att_pkg
+				end
 				pkg_names.forth
 			end
 			Result := pkg_names.off

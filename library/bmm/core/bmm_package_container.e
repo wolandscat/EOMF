@@ -34,9 +34,9 @@ feature -- Access
 			pkg_names := a_path.as_upper.split (Package_name_delimiter)
 			pkg_names.start
 			Result := packages.item (pkg_names.item)
-			from pkg_names.forth until pkg_names.off loop
-				if attached Result.packages.item (pkg_names.item) as pkg then
-					Result := pkg
+			from pkg_names.forth until pkg_names.off or not attached Result loop
+				if attached Result as att_pkg then
+					Result := att_pkg.packages.item (pkg_names.item)
 				end
 				pkg_names.forth
 			end

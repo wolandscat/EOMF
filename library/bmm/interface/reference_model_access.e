@@ -336,17 +336,17 @@ feature {NONE} -- Implementation
 					from i := 1 until finished or i > Max_inclusion_depth loop
 						finished := True
 						across schema_inclusion_map as map_csr loop
-							if candidate_schemas.has (map_csr.key) and then attached candidate_schemas.item (map_csr.key).p_schema as included_schema then
+							if candidate_schemas.has (map_csr.key) and then attached candidate_schemas_item (map_csr.key).p_schema as included_schema then
 								-- only process current schema if its lower level includes have already been copied into it,
 								-- or if it had no includes, since only then is it ready to be itself included in the next one up the chain
 								-- If this included schema is in this state, merge its contents into each schema that includes it
 								if included_schema.state = {P_BMM_SCHEMA}.State_includes_processed then
 									-- iterate over the schemas that include `included_schema' and process the inclusion
 									across map_csr.item as schemas_csr loop
-										check attached candidate_schemas.item (schemas_csr.item).p_schema as including_schema then
+										check attached candidate_schemas_item (schemas_csr.item).p_schema as including_schema then
 											if including_schema.state = {P_BMM_SCHEMA}.State_includes_pending then
 												including_schema.merge (included_schema)
-												add_info (ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas.item (schemas_csr.item).schema_id>>)
+												add_info (ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas_item (schemas_csr.item).schema_id>>)
 												finished := False
 											end
 										end
@@ -365,7 +365,7 @@ feature {NONE} -- Implementation
 					across candidate_schemas as schemas_csr loop
 						schema_desc := schemas_csr.item
 						if schema_desc.is_top_level and schemas_load_list.has (schema_desc.schema_id) then
-							if schema_desc.passed and schema_desc.p_schema.state = {P_BMM_SCHEMA}.State_includes_processed then
+							if schema_desc.passed and attached schema_desc.p_schema as att_p_schema and then att_p_schema.state = {P_BMM_SCHEMA}.State_includes_processed then
 								-- validate the schema & if passed, put it into `top_level_schemas'
 								schema_desc.validate
 								merge_validation_errors (schema_desc)
@@ -395,11 +395,10 @@ feature {NONE} -- Implementation
 					rm_closures := schemas_csr.item.archetype_rm_closure_packages
 					across rm_closures as rm_closures_csr loop
 						qualified_rm_closure_name := publisher_qualified_rm_closure_key (model_publisher, rm_closures_csr.item)
-						if not schemas_by_rm_closure.has (qualified_rm_closure_name) then
-							schemas_by_rm_closure.put (schemas_csr.item, qualified_rm_closure_name.as_lower)
+						if schemas_by_rm_closure.has (qualified_rm_closure_name) and then attached schemas_by_rm_closure.item (qualified_rm_closure_name) as att_schema then
+							add_info (ec_bmm_schema_duplicate_found, <<qualified_rm_closure_name, att_schema.schema_id, schemas_csr.key>>)
 						else
-							add_info (ec_bmm_schema_duplicate_found, <<qualified_rm_closure_name, schemas_by_rm_closure.item (qualified_rm_closure_name).schema_id,
-								schemas_csr.key>>)
+							schemas_by_rm_closure.put (schemas_csr.item, qualified_rm_closure_name.as_lower)
 						end
 					end
 				end
@@ -441,31 +440,32 @@ feature {NONE} -- Implementation
 		local
 			includes: HASH_TABLE [BMM_INCLUDE_SPEC, STRING]
 			includers: ARRAYED_SET[STRING]
+			target_schema: SCHEMA_DESCRIPTOR
 		do
-			all_schemas.item (a_schema_id).load
-			if all_schemas.item (a_schema_id).passed then
-				all_schemas.item (a_schema_id).validate_includes (all_schemas.current_keys)
-				if all_schemas.item (a_schema_id).passed then
-					add_info (ec_bmm_schema_info_loaded, <<a_schema_id, all_schemas.item (a_schema_id).p_schema.primitive_types.count.out,
-						all_schemas.item (a_schema_id).p_schema.class_definitions.count.out>>)
-					includes := all_schemas.item (a_schema_id).p_schema.includes
+			target_schema := all_schemas_item (a_schema_id)
+			target_schema.load
+			if target_schema.passed then
+				target_schema.validate_includes (all_schemas.current_keys)
+				if target_schema.passed and attached target_schema.p_schema as att_p_schema then
+					add_info (ec_bmm_schema_info_loaded, <<a_schema_id, att_p_schema.primitive_types.count.out, att_p_schema.class_definitions.count.out>>)
+					includes := att_p_schema.includes
 					if not includes.is_empty then
 						across includes as includes_csr loop
 							if not schema_inclusion_map.has (includes_csr.item.id) then
 								create includers.make (0)
 								schema_inclusion_map.put (includers, includes_csr.item.id)
 							end
-							schema_inclusion_map.item (includes_csr.item.id).extend (a_schema_id)
+							schema_inclusion_map_item (includes_csr.item.id).extend (a_schema_id)
 							if not all_schemas.has (includes_csr.item.id) then
 								load_schema_include_closure (includes_csr.item.id)
 							end
 						end
 					end
 				else
-					add_error (ec_bmm_schema_includes_valiidation_failed, <<a_schema_id, all_schemas.item (a_schema_id).errors.as_string>>)
+					add_error (ec_bmm_schema_includes_valiidation_failed, <<a_schema_id, target_schema.errors.as_string>>)
 				end
 			else
-				add_error (ec_bmm_schema_load_failure, <<a_schema_id, all_schemas.item (a_schema_id).errors.as_string>>)
+				add_error (ec_bmm_schema_load_failure, <<a_schema_id, target_schema.errors.as_string>>)
 			end
 		end
 
@@ -478,22 +478,22 @@ feature {NONE} -- Implementation
 			errors_to_propagate: BOOLEAN
 			targ_sd, client_sd: SCHEMA_DESCRIPTOR
 		do
-			if attached sd.p_schema then
-				err_table := sd.p_schema.schema_error_table
+			if attached sd.p_schema as att_p_schema then
+				err_table := att_p_schema.schema_error_table
 				across err_table as err_table_csr loop
 					-- merge errors into the offending schema error accumulator
-					all_schemas.item (err_table_csr.key).merge_errors (err_table_csr.item)
+					all_schemas_item (err_table_csr.key).merge_errors (err_table_csr.item)
 
 					-- iterate through all schemas including err_table.key_for_iteration, except for `sd' since it will already have been marked
 					-- Note that there will be an entry in err_table for warnings as well as errors, so we have to process these properly
 					if schema_inclusion_map.has (err_table_csr.key) then
-						schema_inclusion_map.item (err_table_csr.key).do_all (
+						schema_inclusion_map_item (err_table_csr.key).do_all (
 							agent (a_client_schema, a_source_schema: STRING; err_accum: ERROR_ACCUMULATOR)
 								do
 									if err_accum.has_errors then
-										all_schemas.item (a_client_schema).add_error (ec_BMM_INCERR, <<a_client_schema, a_source_schema>>)
+										all_schemas_item (a_client_schema).add_error (ec_BMM_INCERR, <<a_client_schema, a_source_schema>>)
 									else
-										all_schemas.item (a_client_schema).add_warning (ec_BMM_INCWARN, <<a_client_schema, a_source_schema>>)
+										all_schemas_item (a_client_schema).add_warning (ec_BMM_INCWARN, <<a_client_schema, a_source_schema>>)
 									end
 								end (?, err_table_csr.key, err_table_csr.item)
 						)
@@ -524,6 +524,27 @@ feature {NONE} -- Implementation
 						end
 					end
 				end
+			end
+		end
+
+	all_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
+		do
+			check attached all_schemas.item (a_schema_id) as att_item then
+				Result := att_item
+			end
+		end
+
+	candidate_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
+		do
+			check attached candidate_schemas.item (a_schema_id) as att_item then
+				Result := att_item
+			end
+		end
+
+	schema_inclusion_map_item (a_schema_id: STRING): ARRAYED_LIST [STRING]
+		do
+			check attached schema_inclusion_map.item (a_schema_id) as att_item then
+				Result := att_item
 			end
 		end
 

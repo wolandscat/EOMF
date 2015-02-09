@@ -6,7 +6,7 @@
 			<exclude>/\.git$</exclude>
 			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
+		<option warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="all" syntax="standard">
 		</option>
 		<setting name="console_application" value="true"/>
 		<setting name="dead_code_removal" value="true"/>
@@ -34,12 +34,12 @@
 		</cluster>
 		<tests name="autotest" location="C:\project\wolandscat\EOMF\apps\bmm_demo\autotest"/>
 		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
-			<option void_safety="initialization">
+			<option void_safety="all">
 				<assertions precondition="true"/>
 			</option>
 		</cluster>
 		<cluster name="eomf_bmm" location="$EOMF\library\bmm\" recursive="true">
-			<option void_safety="initialization">
+			<option void_safety="all">
 				<assertions precondition="true"/>
 			</option>
 		</cluster>

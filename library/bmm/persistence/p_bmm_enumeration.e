@@ -40,9 +40,12 @@ feature -- Factory
 
 	create_bmm_class_definition
 			-- add remaining model elements from `' to `bmm_class_definition'
+		local
+			bmm_class_def: attached like bmm_class_definition
 		do
-			create bmm_class_definition.make (name, is_abstract)
-			bmm_class_definition.set_source_schema_id (source_schema_id)
+			create bmm_class_def.make (name, is_abstract)
+			bmm_class_def.set_source_schema_id (source_schema_id)
+			bmm_class_definition := bmm_class_def
 		end
 
 	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)

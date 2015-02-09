@@ -38,11 +38,10 @@ feature -- Initialisation
 
 feature -- Access
 
-	bmm_schema: detachable BMM_SCHEMA
+	bmm_schema: BMM_SCHEMA
 			-- reverse reference to parent schema
-		note
-			option: stable
 		attribute
+			create Result.default_create
 		end
 
 	name: STRING
@@ -132,8 +131,12 @@ feature -- Access
 
 	package_path: STRING
 			-- fully qualified package name, of form: 'package.package'
+		require
+			attached package
 		do
-			Result := package.path
+			check attached package as att_pkg then
+				Result := att_pkg.path
+			end
 		end
 
 	class_path: STRING

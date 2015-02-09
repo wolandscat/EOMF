@@ -131,6 +131,7 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			-- load schema into in-memory form
 		local
 			parser: ODIN_PARSER
+			new_schema: P_BMM_SCHEMA
 		do
 			reset
 			schema := Void
@@ -138,13 +139,14 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			if not schema_file_accessor.has_errors then
 				passed := True
 				check attached schema_file_accessor.object as obj then
-					p_schema := obj
+					new_schema := obj
 				end
-				p_schema.validate_created
-				merge_errors (p_schema.errors)
+				new_schema.validate_created
+				merge_errors (new_schema.errors)
 				if passed then
-					p_schema.load_finalise
+					new_schema.load_finalise
 				end
+				p_schema := new_schema
 			else
 				merge_errors (schema_file_accessor.errors)
 			end
@@ -160,8 +162,8 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			create all_schemas.make (0)
 			all_schemas.compare_objects
 			all_schemas.make_from_array (all_schemas_list)
-			if attached p_schema.includes then
-				across p_schema.includes as supplier_schemas_csr loop
+			if attached p_schema as att_schema and then attached att_schema.includes as att_includes then
+				across att_includes as supplier_schemas_csr loop
 					if not all_schemas.has (supplier_schemas_csr.item.id) then
 						add_error (ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
 					else
@@ -173,8 +175,10 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 
 	validate
 		do
-			p_schema.validate
-			merge_errors (p_schema.errors)
+			check attached p_schema as att_schema then
+				att_schema.validate
+				merge_errors (att_schema.errors)
+			end
 		end
 
 	create_schema
@@ -182,12 +186,19 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 		require
 			passed
 		do
-			p_schema.create_bmm_schema
-			schema := p_schema.bmm_schema
+			check attached p_schema as att_p_schema then
+				att_p_schema.create_bmm_schema
+				schema := att_p_schema.bmm_schema
+			end
+		ensure
+			attached schema
 		end
 
 feature {NONE} -- Implementation
 
 	schema_file_accessor: ODIN_OBJECT_READER [P_BMM_SCHEMA]
+
+invariant
+	passed implies attached p_schema
 
 end

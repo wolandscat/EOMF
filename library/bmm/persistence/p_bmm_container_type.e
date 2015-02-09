@@ -72,7 +72,9 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			Result := container_type + Generic_left_delim.out + type_ref.as_type_string + Generic_right_delim.out
+			check attached type_ref as att_type_ref then
+				Result := container_type + Generic_left_delim.out + att_type_ref.as_type_string + Generic_right_delim.out
+			end
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
@@ -81,7 +83,9 @@ feature -- Output
 			create Result.make (0)
 			Result.compare_objects
 			Result.extend (container_type)
-			Result.append (type_ref.flattened_type_list)
+			check attached type_ref as att_type_ref then
+				Result.append (att_type_ref.flattened_type_list)
+			end
 		end
 
 end

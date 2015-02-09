@@ -93,8 +93,8 @@ feature -- Modification
 
 			-- merge the packages
 			across other.packages as pkgs_csr loop
-				if packages.has (pkgs_csr.key) then
-					packages.item (pkgs_csr.key).merge (pkgs_csr.item)
+				if packages.has (pkgs_csr.key) and then attached packages.item (pkgs_csr.key) as att_pkg then
+					att_pkg.merge (pkgs_csr.item)
 				else
 					add_package (pkgs_csr.item.deep_twin)
 				end

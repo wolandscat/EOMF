@@ -97,10 +97,18 @@ feature -- Access (Attributes from schema load post-processing)
 			end
 		end
 
-	bmm_schema: detachable BMM_SCHEMA
-		note
-			option: transient
-		attribute
+	canonical_packages_item (a_pkg_name: STRING): P_BMM_PACKAGE
+		do
+			check attached canonical_packages.item (a_pkg_name) as att_pkg then
+				Result := att_pkg
+			end
+		end
+
+	bmm_schema: BMM_SCHEMA
+		do
+			check attached bmm_schema_cache as att_bmm_schema then
+				Result := att_bmm_schema
+			end
 		end
 
 	includes_to_process: ARRAYED_LIST [STRING]
@@ -137,7 +145,7 @@ feature -- Access (Attributes from schema load post-processing)
 
 feature -- Access
 
-	class_definition (a_class_name: STRING): detachable P_BMM_CLASS
+	class_definition (a_class_name: STRING): P_BMM_CLASS
 			-- class definition corresponding to `a_class_name'
 		require
 			Class_valid: has_class_definition (a_class_name)
@@ -147,10 +155,22 @@ feature -- Access
 			fake_str_enum: P_BMM_ENUMERATION_STRING
 		do
 			a_key := a_class_name.as_upper
-			if primitive_types.has (a_key) then
-				Result := primitive_types.item (a_key)
+			if primitive_types.has (a_key) and attached primitive_types.item (a_key) as att_prim_type then
+				Result := att_prim_type
 			else
-				Result := class_definitions.item (a_key)
+				check attached class_definitions.item (a_key) as att_class_def then
+					Result := att_class_def
+				end
+			end
+		end
+
+	primitive_type (a_class_name: STRING): P_BMM_CLASS
+			-- class definition corresponding to `a_class_name'
+		require
+			Class_valid: has_primitive_type (a_class_name)
+		do
+			check attached primitive_types.item (a_class_name.as_upper) as att_type then
+				Result := att_type
 			end
 		end
 
@@ -168,6 +188,15 @@ feature -- Status Report
 			Result := primitive_types.has (a_key) or class_definitions.has (a_key)
 		end
 
+	has_primitive_type (a_class_name: STRING): BOOLEAN
+			-- True if `a_class_name' is a primitive type in the model. Note that a_type_name
+			-- could be a generic type string; only the root class is considered
+		require
+			Class_valid: not a_class_name.is_empty
+		do
+			Result := primitive_types.has (a_class_name.as_upper)
+		end
+
 	has_canonical_package_path (a_path: STRING): BOOLEAN
 			-- True if there is a package at the path `a_path' under this package
 		local
@@ -176,7 +205,7 @@ feature -- Status Report
 		do
 			pkg_names := a_path.as_upper.split (Package_name_delimiter)
 			pkg_names.start
-			if canonical_packages.has (pkg_names.item) and then attached canonical_packages.item (pkg_names.item) as pkg then
+			if canonical_packages.has (pkg_names.item) and then attached canonical_packages_item (pkg_names.item) as pkg then
 				pkg_csr := pkg
 				from pkg_names.forth until pkg_names.off or not pkg_csr.packages.has (pkg_names.item) loop
 					if attached pkg_csr.packages.item (pkg_names.item) as pkg2 then
@@ -193,12 +222,18 @@ feature -- Comparison
 	property_conforms_to (a_child_prop, a_parent_prop: P_BMM_PROPERTY): BOOLEAN
 			-- True if `a_child_prop' conforms to `a_parent_prop' such that it could be used to override it; same types are not considered conforming
 		do
-			-- check basics first
-			if attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop and then a_parent_single_prop.type_def.type.same_string (any_type) then
+			-- True if `a_parent_prop' type is Any
+			if attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop and then attached a_parent_single_prop.type_def as att_parent_td
+				and then att_parent_td.type.same_string (any_type)
+			then
 				Result := True
-			elseif a_child_prop.name.same_string (a_parent_prop.name) then -- same names
+
+			-- property names are the same
+			elseif a_child_prop.name.same_string (a_parent_prop.name) then
 				if attached {P_BMM_SINGLE_PROPERTY} a_child_prop as a_child_single_prop and attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop then
-					Result := type_strictly_conforms_to (a_child_single_prop.type_def.type, a_parent_single_prop.type_def.type)
+					if attached a_child_single_prop.type_def as att_child_td and attached a_parent_single_prop.type_def as att_parent_td then
+						Result := type_strictly_conforms_to (att_child_td.type, att_parent_td.type)
+					end
 
 				elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_parent_prop then
 					if attached {P_BMM_SINGLE_PROPERTY_OPEN} a_child_prop then
@@ -209,10 +244,14 @@ feature -- Comparison
 					end
 
 				elseif attached {P_BMM_CONTAINER_PROPERTY} a_child_prop as a_child_cont_prop and attached {P_BMM_CONTAINER_PROPERTY} a_parent_prop as a_parent_cont_prop then
-					Result := type_strictly_conforms_to (a_child_cont_prop.type_def.as_type_string, a_parent_cont_prop.type_def.as_type_string)
+					if attached a_child_cont_prop.type_def as att_child_td and attached a_parent_cont_prop.type_def as att_parent_td then
+						Result := type_strictly_conforms_to (att_child_td.as_type_string, att_parent_td.as_type_string)
+					end
 
 				elseif attached {P_BMM_GENERIC_PROPERTY} a_child_prop as a_child_gen_prop and attached {P_BMM_GENERIC_PROPERTY} a_parent_prop as a_parent_gen_prop then
-					Result := type_strictly_conforms_to (a_child_gen_prop.type_def.as_type_string, a_parent_gen_prop.type_def.as_type_string)
+					if attached a_child_gen_prop.type_def as att_child_td and attached a_parent_gen_prop.type_def as att_parent_td then
+						Result := type_strictly_conforms_to (att_child_td.as_type_string, att_parent_td.as_type_string)
+					end
 				end
 			end
 		end
@@ -231,7 +270,7 @@ feature -- Comparison
 			until
 				tlist1.off or tlist2.off or not Result or not has_class_definition (tlist1.item) or not has_class_definition (tlist2.item)
 			loop
-				Result := Result and (tlist1.item.is_equal (tlist2.item) or else ancestors_index.item (tlist1.item).has (tlist2.item))
+				Result := Result and (tlist1.item.is_equal (tlist2.item) or else (attached ancestors_index.item (tlist1.item) as att_anc_idx and then att_anc_idx.has (tlist2.item)))
 				tlist1.forth
 				tlist2.forth
 			end
@@ -403,8 +442,8 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				-- have a definition for that class name. Since higher-level schemas are processed first, any over-rides they
 				-- contain will stay, with the classes being overridden being ignored - which is the desired behaviour.
 				if primitive_types.has (other_prim_types_csr.key) then
-					if primitive_types.item (other_prim_types_csr.key).uid /= other_prim_types_csr.item.uid then
-						primitive_types.item (other_prim_types_csr.key).set_is_override
+					if primitive_type (other_prim_types_csr.key).uid /= other_prim_types_csr.item.uid then
+						primitive_type (other_prim_types_csr.key).set_is_override
 					end
 				else
 					primitive_types.put (other_prim_types_csr.item.deep_twin, other_prim_types_csr.key)
@@ -417,8 +456,8 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				-- have a definition for that class name. Since higher-level schemas are processed first, any over-rides they
 				-- contain will stay, with the classes being overridden being ignored - which is the desired behaviour.
 				if class_definitions.has (other_classes_csr.key) then
-					if class_definitions.item (other_classes_csr.key).uid /= other_classes_csr.item.uid then
-						class_definitions.item (other_classes_csr.key).set_is_override
+					if class_definition (other_classes_csr.key).uid /= other_classes_csr.item.uid then
+						class_definition (other_classes_csr.key).set_is_override
 					end
 				else
 					class_definitions.put (other_classes_csr.item.deep_twin, other_classes_csr.key)
@@ -459,7 +498,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			-- merge from other.packages, because that's where the proper hierarchically structured packages are
 			across other.canonical_packages as other_pkgs_csr loop
 				if canonical_packages.has (other_pkgs_csr.key) then
-					canonical_packages.item (other_pkgs_csr.key).merge (other_pkgs_csr.item)
+					canonical_packages_item (other_pkgs_csr.key).merge (other_pkgs_csr.item)
 				else
 					canonical_packages.put (other_pkgs_csr.item, other_pkgs_csr.key)
 				end
@@ -555,8 +594,8 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 
 			-- check that all generic parameter.conforms_to_type exist exists
 			if not has_errors then
-				if a_class_def.is_generic then
-					across a_class_def.generic_parameter_defs as gen_param_defs_csr loop
+				if a_class_def.is_generic and attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
+					across att_gen_parm_defs as gen_param_defs_csr loop
 						if attached gen_param_defs_csr.item.conforms_to_type as conf_type and then not has_class_definition (conf_type) then
 							add_validity_error (a_class_def.source_schema_id, "BMM_GPCT", <<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
 						end
@@ -585,32 +624,49 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 
 			if attached {P_BMM_SINGLE_PROPERTY} a_prop_def as a_single_prop_def then
-				if a_single_prop_def.type_def.type.is_empty or else not has_class_definition (a_single_prop_def.type_def.type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_SPT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, a_single_prop_def.type_def.type>>)
+				if attached a_single_prop_def.type_def as att_type_def then
+					if (att_type_def.type.is_empty or else not has_class_definition (att_type_def.type)) then
+						add_validity_error (a_class_def.source_schema_id, "BMM_SPT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, att_type_def.type>>)
+					end
+				else
+					-- report?
 				end
+
 			elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_prop_def as a_single_prop_def_open then
-				if not a_class_def.is_generic or else not a_class_def.generic_parameter_defs.has (a_single_prop_def_open.type_def.type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_SPOT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, a_single_prop_def_open.type_def.type>>)
+				if attached a_single_prop_def_open.type_def as att_type_def then
+					if not a_class_def.is_generic or else (attached a_class_def.generic_parameter_defs as att_gen_parm_defs and then not att_gen_parm_defs.has (att_type_def.type)) then
+						add_validity_error (a_class_def.source_schema_id, "BMM_SPOT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, att_type_def.type>>)
+					end
+				else
+					-- report?
 				end
 
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
-				if not attached a_cont_prop_def.type_def then
-					add_validity_error (a_class_def.source_schema_id, "BMM_CPT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
-				elseif not has_class_definition (a_cont_prop_def.type_def.container_type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_CPCT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_cont_prop_def.type_def.container_type>>)
-				else
-					-- loop through types inside container type
-					across a_cont_prop_def.type_def.type_ref.flattened_type_list as types_csr loop
-						if not has_class_definition (types_csr.item) then
-							if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-								if not a_class_def.generic_parameter_defs.has (types_csr.item) then
-									add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+				if attached a_cont_prop_def.type_def as att_type_def then
+					if not has_class_definition (att_type_def.container_type) then
+						add_validity_error (a_class_def.source_schema_id, "BMM_CPCT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, att_type_def.container_type>>)
+					elseif attached att_type_def.type_ref as att_type_ref then
+						-- loop through types inside container type
+						across att_type_ref.flattened_type_list as types_csr loop
+							if not has_class_definition (types_csr.item) then
+								if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
+									if attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
+										if not att_gen_parm_defs.has (types_csr.item) then
+											add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+										end
+									else
+										-- report?
+									end
+								else
+									add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 								end
-							else
-								add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 							end
 						end
+					else
+						-- Report?
 					end
+				else
+					add_validity_error (a_class_def.source_schema_id, "BMM_CPT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 				if not attached a_cont_prop_def.cardinality then
@@ -618,24 +674,30 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				end
 
 			elseif attached {P_BMM_GENERIC_PROPERTY} a_prop_def as a_gen_prop_def then
-				if not attached a_gen_prop_def.type_def then
-					add_validity_error (a_class_def.source_schema_id, "BMM_GPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
-				elseif not has_class_definition (a_gen_prop_def.type_def.root_type) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_GPRT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_gen_prop_def.type_def.root_type>>)
-				else
-					across a_gen_prop_def.type_def.generic_parameter_refs as gen_parms_csr loop
-						across gen_parms_csr.item.flattened_type_list as gen_parm_types_csr loop
-							if not has_class_definition (gen_parm_types_csr.item) then
-								if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-									if not a_class_def.generic_parameter_defs.has (gen_parm_types_csr.item) then
-										add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
+				if attached a_gen_prop_def.type_def as att_type_def then
+					if not has_class_definition (att_type_def.root_type) then
+						add_validity_error (a_class_def.source_schema_id, "BMM_GPRT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, att_type_def.root_type>>)
+					else
+						across att_type_def.generic_parameter_refs as gen_parms_csr loop
+							across gen_parms_csr.item.flattened_type_list as gen_parm_types_csr loop
+								if not has_class_definition (gen_parm_types_csr.item) then
+									if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
+										if attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
+											if not att_gen_parm_defs.has (gen_parm_types_csr.item) then
+												add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
+											end
+										else
+											-- report?
+										end
+									else
+										add_validity_error (a_class_def.source_schema_id, "BMM_GPGPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
 									end
-								else
-									add_validity_error (a_class_def.source_schema_id, "BMM_GPGPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
 								end
 							end
 						end
 					end
+				else
+					add_validity_error (a_class_def.source_schema_id, "BMM_GPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
 				end
 			end
 		end
@@ -651,7 +713,7 @@ feature -- Factory
 		do
 			--------- PASS 1 ----------
 			create new_bmm_schema.make (rm_publisher, schema_name, rm_release)
-			bmm_schema := new_bmm_schema
+			bmm_schema_cache := new_bmm_schema
 			new_bmm_schema.set_schema_author (schema_author)
 			if not schema_contributors.is_empty then
 				new_bmm_schema.set_schema_contributors (schema_contributors)
@@ -856,7 +918,9 @@ feature {NONE} -- Implementation
 				if not schema_error_table.has (source_schema_id) then
 					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
 				end
-				schema_error_table.item (source_schema_id).add_error (a_key, args, "")
+				check attached schema_error_table.item (source_schema_id) as att_schema_err then
+					att_schema_err.add_error (a_key, args, "")
+				end
 				add_error (ec_BMM_INCERR, <<schema_id, source_schema_id>>)
 			end
 		end
@@ -871,7 +935,9 @@ feature {NONE} -- Implementation
 				if not schema_error_table.has (source_schema_id) then
 					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
 				end
-				schema_error_table.item (source_schema_id).add_warning (a_key, args, "")
+				check attached schema_error_table.item (source_schema_id) as att_schema_err then
+					att_schema_err.add_warning (a_key, args, "")
+				end
 			end
 		end
 
@@ -885,7 +951,9 @@ feature {NONE} -- Implementation
 				if not schema_error_table.has (source_schema_id) then
 					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
 				end
-				schema_error_table.item (source_schema_id).add_info (a_key, args, "")
+				check attached schema_error_table.item (source_schema_id) as att_schema_err then
+					att_schema_err.add_info (a_key, args, "")
+				end
 			end
 		end
 
@@ -911,6 +979,12 @@ feature {NONE} -- Implementation
 		end
 
 	canonical_packages_cache: detachable HASH_TABLE [P_BMM_PACKAGE, STRING]
+		note
+			option: transient
+		attribute
+		end
+
+	bmm_schema_cache: detachable BMM_SCHEMA
 		note
 			option: transient
 		attribute

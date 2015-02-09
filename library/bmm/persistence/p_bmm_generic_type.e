@@ -35,22 +35,26 @@ feature -- Access (attributes from schema)
 
 feature -- Access
 
-	generic_parameter_refs: detachable ARRAYED_LIST [P_BMM_TYPE]
+	generic_parameter_refs: ARRAYED_LIST [P_BMM_TYPE]
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
 		do
-			if not attached generic_parameter_defs and attached generic_parameters as att_gen_parms_strings then
-				create generic_parameter_defs.make (0)
+			if attached generic_parameter_defs as att_gen_parm_defs then
+				Result := att_gen_parm_defs
+			elseif attached generic_parameters as att_gen_parms_strings then
+				create Result.make (0)
 				across att_gen_parms_strings as gen_parms_csr loop
 					-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
 					if gen_parms_csr.item.count = 1 then
-						generic_parameter_defs.extend (create {P_BMM_SIMPLE_TYPE_OPEN}.make_simple (gen_parms_csr.item))
+						Result.extend (create {P_BMM_SIMPLE_TYPE_OPEN}.make_simple (gen_parms_csr.item))
 					else
-						generic_parameter_defs.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
+						Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
 					end
 				end
+				generic_parameter_defs := Result
+			else
+				create Result.make (0)
 			end
-			Result := generic_parameter_defs
 		end
 
 	bmm_type: detachable BMM_GENERIC_TYPE
@@ -67,12 +71,11 @@ feature -- Factory
 		do
 			-- handle simple generic param types if found in schema
 			if a_bmm_schema.has_class_definition (root_type) and
-				attached {BMM_GENERIC_CLASS} a_bmm_schema.class_definition (root_type) as bmm_gen_class and
-				attached generic_parameter_refs as att_gen_parm_refs
+				attached {BMM_GENERIC_CLASS} a_bmm_schema.class_definition (root_type) as bmm_gen_class
 			then
 				create new_bmm_type.make (bmm_gen_class)
 				bmm_type := new_bmm_type
-				across att_gen_parm_refs as gen_parms_csr loop
+				across generic_parameter_refs as gen_parms_csr loop
 					gen_parms_csr.item.create_bmm_type (a_bmm_schema, a_class_def)
 					if attached gen_parms_csr.item.bmm_type as bt then
 						new_bmm_type.add_generic_parameter (bt)

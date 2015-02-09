@@ -107,13 +107,16 @@ feature -- Factory
 
 	create_bmm_class_definition
 			-- add remaining model elements from `' to `bmm_class_definition'
+		local
+			bmm_class_def: attached like bmm_class_definition
 		do
 			if attached generic_parameter_defs as gen_parm_defs then
-				create {BMM_GENERIC_CLASS} bmm_class_definition.make (name, is_abstract)
+				create {BMM_GENERIC_CLASS} bmm_class_def.make (name, is_abstract)
 			else
-				create bmm_class_definition.make (name, is_abstract)
+				create bmm_class_def.make (name, is_abstract)
 			end
-			bmm_class_definition.set_source_schema_id (source_schema_id)
+			bmm_class_def.set_source_schema_id (source_schema_id)
+			bmm_class_definition := bmm_class_def
 		end
 
 	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)

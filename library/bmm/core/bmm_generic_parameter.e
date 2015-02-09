@@ -63,8 +63,8 @@ feature -- Access
 		do
 			if attached conforms_to_type then
 				Result := conforms_to_type
-			elseif attached inheritance_precursor then
-				Result := inheritance_precursor.flattened_conforms_to_type
+			elseif attached inheritance_precursor as att_inh_prec then
+				Result := att_inh_prec.flattened_conforms_to_type
 			end
 		end
 
@@ -83,8 +83,8 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			if is_constrained then
-				Result.append (flattened_conforms_to_type.flattened_type_list)
+			if attached flattened_conforms_to_type as att_fct then
+				Result.append (att_fct.flattened_type_list)
 			else
 				Result.extend (Any_type)
 			end
@@ -130,8 +130,8 @@ feature -- Output
 			-- if constrained, then return the constrainer type, else just return Any
 		do
 			create Result.make_empty
-			if is_constrained then
-				Result.append (flattened_conforms_to_type.as_type_string)
+			if attached flattened_conforms_to_type as att_conf_type then
+				Result.append (att_conf_type.as_type_string)
 			else
 				Result.append (Any_type)
 			end
