@@ -147,6 +147,7 @@ feature {NONE} -- GUI Widgets
 	evx_table_control: detachable EVX_TABLE_CONTROL
 	evx_text_editor_control: detachable EVX_TEXT_EDITOR_CONTROL
 	evx_multiline_text_control: detachable EVX_MULTILINE_TEXT_CONTROL
+	evx_toggle_btn: detachable EVX_TOGGLE_BUTTON_CONTROL
 
 end
 
