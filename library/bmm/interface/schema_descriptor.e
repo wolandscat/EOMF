@@ -130,7 +130,6 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 	load
 			-- load schema into in-memory form
 		local
-			parser: ODIN_PARSER
 			new_schema: P_BMM_SCHEMA
 		do
 			reset

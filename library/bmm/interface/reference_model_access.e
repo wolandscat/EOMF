@@ -88,6 +88,13 @@ feature -- Access
 			-- This is the same key as BMM_SCHEMA.schema_id
 			-- Does not include schemas that failed to parse (i.e. SCHEMA_ACCESS.passed = False)
 
+	all_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
+		do
+			check attached all_schemas.item (a_schema_id) as att_item then
+				Result := att_item
+			end
+		end
+
 	candidate_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
 			-- includes only fully validated schemas
 
@@ -505,14 +512,10 @@ feature {NONE} -- Implementation
 			from errors_to_propagate := True until not errors_to_propagate loop
 				errors_to_propagate := False
 				across schema_inclusion_map as schema_inclusion_map_csr loop
-					check attached all_schemas.item (schema_inclusion_map_csr.key) as sch then
-						targ_sd := sch
-					end
+					targ_sd := all_schemas_item (schema_inclusion_map_csr.key)
 					if not targ_sd.passed or else targ_sd.errors.has_warnings then
 						across schema_inclusion_map_csr.item as client_schemas_csr loop
-							check attached all_schemas.item (client_schemas_csr.item) as sch then
-								client_sd := sch
-							end
+							client_sd := all_schemas_item (client_schemas_csr.item)
 							if client_sd.passed and not client_sd.errors.has_warnings then
 								if not targ_sd.passed then
 									client_sd.add_error (ec_BMM_INCERR, <<client_schemas_csr.item, schema_inclusion_map_csr.key>>)
@@ -524,13 +527,6 @@ feature {NONE} -- Implementation
 						end
 					end
 				end
-			end
-		end
-
-	all_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
-		do
-			check attached all_schemas.item (a_schema_id) as att_item then
-				Result := att_item
 			end
 		end
 

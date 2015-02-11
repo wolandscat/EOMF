@@ -149,6 +149,11 @@ feature {NONE} -- GUI Widgets
 	evx_multiline_text_control: detachable EVX_MULTILINE_TEXT_CONTROL
 	evx_toggle_btn: detachable EVX_TOGGLE_BUTTON_CONTROL
 
+	evx_toolbar: detachable EVX_TOOL_BAR
+	evx_toolbar_btn: detachable EVX_TOOL_BAR_BUTTON
+
+	ev_multi_col_list_editable: detachable EV_MULTI_COLUMN_LIST_EDITABLE
+
 end
 
 

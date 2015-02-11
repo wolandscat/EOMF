@@ -45,7 +45,6 @@ feature -- Initialisation
 			-- add button
 			create collapse_expand_button
 			collapse_expand_button.set_text (get_text (ec_collapse_button_text))
-			collapse_expand_button.select_actions.extend (agent do_collapse_expand)
 			hbox.extend (collapse_expand_button)
 			hbox.disable_item_expand (collapse_expand_button)
 
@@ -53,6 +52,10 @@ feature -- Initialisation
 			create ev_main_vbox
 			ev_root_container.extend (ev_main_vbox)
 			ev_root_container.disable_item_expand (ev_main_vbox)
+
+
+			-- set agents
+			collapse_expand_button.select_actions.extend (agent do_collapse_expand)
 		end
 
 feature -- Access
