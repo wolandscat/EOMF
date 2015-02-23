@@ -18,6 +18,11 @@ inherit
 			{NONE} all
 		end
 
+	EOMF_COMPILED_MESSAGE_IDS
+		export
+			{NONE} all
+		end
+
 	BASIC_DEFINITIONS
 		export
 			{NONE} all

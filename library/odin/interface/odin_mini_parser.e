@@ -18,6 +18,11 @@ inherit
 			{NONE} all
 		end
 
+	EOMF_COMPILED_MESSAGE_IDS
+		export
+			{NONE} all
+		end
+
 	KL_SHARED_FILE_SYSTEM
 
 feature -- Definitions

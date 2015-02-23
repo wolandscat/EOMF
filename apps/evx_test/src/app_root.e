@@ -11,13 +11,18 @@ note
 
 class APP_ROOT
 
+inherit
+	SHARED_MESSAGE_DB
+
 create
 	make
 
 feature -- Initialisation
 
 	make
-		once
+		do
+			-- add in EOMF error message DB to main message DB
+			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
 			initialised := True
 		end
 

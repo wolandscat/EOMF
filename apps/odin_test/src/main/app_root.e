@@ -12,6 +12,8 @@ note
 class APP_ROOT
 
 inherit
+	SHARED_MESSAGE_DB
+	
 	SHARED_APP_RESOURCES
 
 	SHARED_DT_SERIALISERS
@@ -36,6 +38,10 @@ feature -- Initialisation
 			dt_serialisers.put (create {DT_XML_SERIALISER}.make (create {XML_DT_SERIALISATION_PROFILE}.make (Syntax_type_xml)), Syntax_type_xml)
 			dt_serialisers.put (create {DT_JSON_SERIALISER}.make (create {JSON_DT_SERIALISATION_PROFILE}.make (Syntax_type_json)), Syntax_type_json)
 			dt_serialisers.put (create {DT_YAML_SERIALISER}.make (create {YAML_DT_SERIALISATION_PROFILE}.make (Syntax_type_yaml)), Syntax_type_yaml)
+
+			-- add in EOMF error message DB to main message DB
+			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
+
 			initialised := True
 		end
 

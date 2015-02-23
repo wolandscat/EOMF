@@ -68,6 +68,7 @@
 		</library>
 		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
+		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
 		<cluster name="app" location="..\src\" recursive="true"/>
 		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
 			<option>

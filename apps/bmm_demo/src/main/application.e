@@ -24,6 +24,10 @@ feature -- Initialization
 	make
 			-- Run application.
 		do
+			-- add in EOMF error message DB to main message DB
+			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
+
+			-- BMM initialisation
 			bmm_env_setup
 			if not has_errors then
 				run_demo_tests
