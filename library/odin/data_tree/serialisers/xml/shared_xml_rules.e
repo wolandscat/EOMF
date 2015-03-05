@@ -9,6 +9,13 @@ note
 
 class SHARED_XML_RULES
 
+feature -- Definitions
+
+	xsi_type_marker: IMMUTABLE_STRING_8
+		once
+			create Result.make_from_string ("xsi:type")
+		end
+
 feature -- Access
 
 	xml_rules: XML_RULES

@@ -49,10 +49,6 @@ feature -- Modification
 				checked_for_rules := True
 			end
 
-			-- clear list of attr nodes that may be serialised as XML attrs (i.e. in tag) so
-			-- as to ignore during normal descent
-			dt_attr_nodes_to_ignore.wipe_out
-
 			-- if we are on the root node, output the XML header
 			if a_node.is_root then
 				if attached serialisation_rules.doc_header then
@@ -108,6 +104,10 @@ feature -- Modification
 			elseif attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
 				last_result.append (create_indent(depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
 			end
+
+			-- clear list of attr nodes that may be serialised as XML attrs (i.e. in tag) so
+			-- as to ignore during normal descent
+			dt_attr_nodes_to_ignore.wipe_out
 		end
 
 	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
@@ -323,7 +323,7 @@ feature {NONE} -- Implementation
 				-- put the IM type name in the XML attributes
 				if type_rules.output_dt_im_type_name_as_xml_attr then
 					if a_dt_obj.is_typed then
-						Result.put (a_dt_obj.im_type_name, "im:type")
+						Result.put (a_dt_obj.im_type_name, xsi_type_marker)
 					end
 				end
 
@@ -363,7 +363,7 @@ feature {NONE} -- Implementation
 --				-- put the IM type name in the result
 --				if type_rules.output_dt_im_type_name_as_xml_attr then
 --					if a_dt_obj.is_typed then
---						Result.put (a_dt_obj.im_type_name, "im:type")
+--						Result.put (a_dt_obj.im_type_name, xsi_type_marker)
 --					end
 --				end
 			end
