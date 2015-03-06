@@ -50,7 +50,7 @@ create
 feature -- Initialisation
 
 	make (a_tree_ctl: EVX_TREE_CONTROL_I; a_collapse_expand_test_agt: like collapse_expand_test_agt;
-			a_tree_collapse_all_icon, a_tree_collapse_icon, a_tree_expand_icon, a_tree_expand_all_icon: EV_PIXMAP;
+			a_tree_expand_all_icon, a_tree_expand_icon, a_tree_collapse_icon, a_tree_collapse_all_icon: EV_PIXMAP;
 			a_resize_agt: like resize_agt)
 		local
 			ev_hbox: EV_HORIZONTAL_BOX
