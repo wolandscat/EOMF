@@ -12,6 +12,25 @@ class XML_TOOLS
 
 feature -- Access
 
+	primitive_value_to_xml_string (a_prim_val: ANY): STRING
+			-- generate a basic string
+		do
+			-- FIXME: duration.out does not exist in Eiffel, and in any case would not be ISO8601-compliant
+			if attached {DATE_TIME_DURATION} a_prim_val as a_dur then
+				Result := (create {ISO8601_DURATION}.make_date_time_duration(a_dur)).as_string
+			elseif attached {DATE_TIME} a_prim_val as a_dt then
+				Result := (create {ISO8601_DATE_TIME}.make_date_time(a_dt)).as_string
+			elseif attached {BOOLEAN} a_prim_val as a_bool then
+				Result := a_prim_val.out.as_lower
+			else
+				Result := a_prim_val.out
+				-- FIXME: REAL.out is broken (still the case in Eiffel 6.6)
+				if (attached {REAL_32} a_prim_val or attached {REAL_64} a_prim_val) and then Result.index_of ('.', 1) = 0 then
+					Result.append(".0")
+				end
+			end
+		end
+
 	xml_tag_position (a_str, tag: STRING; start: INTEGER): INTEGER
 			-- Position of "<" character of leading tag 'tag' in 'a_str'
 			-- 'a_str' must contain a matching pair of tags

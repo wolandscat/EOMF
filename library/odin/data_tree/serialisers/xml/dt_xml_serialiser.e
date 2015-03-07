@@ -161,7 +161,7 @@ feature -- Modification
 				else
 					last_result.remove_tail (format_item (FMT_NEWLINE).count)
 				end
-				last_result.append (a_node.as_serialised_string (agent primitive_value_to_simple_string, agent profile.clean))
+				last_result.append (a_node.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean))
 				last_object_primitive := True
 			end
 		end
@@ -317,21 +317,21 @@ feature {NONE} -- Implementation
 	xml_attrs_for_dt_complex_object (a_dt_obj: DT_COMPLEX_OBJECT): detachable HASH_TABLE [STRING, STRING]
 			-- generate XML attribute table for `a_dt_obj' based on XML rules, if any found
 		do
+			create Result.make (0)
+
+			-- put the DT node id in the result for ids that are not just numbers (numbers are generated in
+			-- the DT structure for any LIST structure, i.e. where there are no available keys).
+			if a_dt_obj.is_addressable and not a_dt_obj.id.is_integer then
+				Result.put (a_dt_obj.id, "id")
+			end
+
 			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as type_rules then
-				create Result.make (0)
 
 				-- put the IM type name in the XML attributes
 				if type_rules.output_dt_im_type_name_as_xml_attr then
 					if a_dt_obj.is_typed then
 						Result.put (a_dt_obj.im_type_name, xsi_type_marker)
 					end
-				end
-
-				-- put the DT node id in the result for ids that are not just numbers (numbers are generated in
-				-- the DT structure for any LIST structure, i.e. where there are no available keys).
-				-- Currently just do this if there is a rule of any kind, without checking any details.
-				if a_dt_obj.is_addressable and not a_dt_obj.id.is_integer then
-					Result.put (a_dt_obj.id, "id")
 				end
 
 				-- for each rule of type 'convert object value to XML attribute', see if the attribute exists
@@ -379,7 +379,7 @@ feature {NONE} -- Implementation
 		do
 			create Result.make_empty
 			Result.append (create_indent (an_indent) + xml_tag_start (a_tag, Void))
-			Result.append (primitive_value_to_simple_string (a_prim_val))
+			Result.append (primitive_value_to_xml_string (a_prim_val))
 			Result.append (xml_tag_end (a_tag) + format_item(FMT_NEWLINE))
 		end
 
@@ -390,34 +390,34 @@ feature {NONE} -- Implementation
 			create Result.make(0)
 			if value.lower_unbounded then
 				Result.append (xml_tag_start ("lower_unbounded", Void))
-				Result.append (primitive_value_to_simple_string (value.lower_unbounded))
+				Result.append (primitive_value_to_xml_string (value.lower_unbounded))
 				Result.append (xml_tag_end ("lower_unbounded"))
 				Result.append ("%N")
 			elseif attached value.lower as val_l then
 				Result.append (xml_tag_start ("lower", Void))
-				Result.append (primitive_value_to_simple_string (val_l))
+				Result.append (primitive_value_to_xml_string (val_l))
 				Result.append (xml_tag_end ("lower"))
 				Result.append ("%N")
 				if not value.lower_included then
 					Result.append (xml_tag_start ("lower_included", Void))
-					Result.append (primitive_value_to_simple_string (value.lower_included))
+					Result.append (primitive_value_to_xml_string (value.lower_included))
 					Result.append (xml_tag_end ("lower_included"))
 					Result.append ("%N")
 				end
 			end
 			if value.upper_unbounded then
 				Result.append (xml_tag_start ("upper_unbounded", Void))
-				Result.append (primitive_value_to_simple_string (value.upper_unbounded))
+				Result.append (primitive_value_to_xml_string (value.upper_unbounded))
 				Result.append (xml_tag_end ("upper_unbounded"))
 				Result.append ("%N")
 			elseif attached value.upper as val_u and not value.is_point then
 				Result.append (xml_tag_start ("upper", Void))
-				Result.append (primitive_value_to_simple_string (val_u))
+				Result.append (primitive_value_to_xml_string (val_u))
 				Result.append (xml_tag_end ("upper"))
 				Result.append ("%N")
 				if not value.upper_included then
 					Result.append (xml_tag_start ("upper_included", Void))
-					Result.append (primitive_value_to_simple_string (value.upper_included.to_reference))
+					Result.append (primitive_value_to_xml_string (value.upper_included.to_reference))
 					Result.append (xml_tag_end ("upper_included"))
 					Result.append ("%N")
 				end
