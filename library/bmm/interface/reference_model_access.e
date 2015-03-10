@@ -18,6 +18,11 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal, directory_exists
 		end
 
+	BMM_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 	BMM_DEFINITIONS
 		export
 			{NONE} all

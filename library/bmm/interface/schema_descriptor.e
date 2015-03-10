@@ -21,7 +21,7 @@ inherit
 			{ANY} valid_meta_data
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
+	BMM_MESSAGES_IDS
 		export
 			{NONE} all
 		end

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="bmm" uuid="501B638E-6F4D-4895-8EF9-FB1B5B7F0672" library_target="bmm">
-	<target name="bmm">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="eomf_bmm" uuid="501B638E-6F4D-4895-8EF9-FB1B5B7F0672" library_target="eomf_bmm">
+	<target name="eomf_bmm">
 		<root all_classes="true"/>
 		<file_rule>
 			<exclude>/.git$</exclude>
@@ -21,10 +21,14 @@
 		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
-		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
-		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
-		<library name="odin" location="$EOMF\library\odin\odin.ecf"/>
 
-		<cluster name="bmm" location=".\" recursive="true"/>
+		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+
+		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
+		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+
+		<cluster name="eomf_bmm" location=".\" recursive="true"/>
 	</target>
 </system>
