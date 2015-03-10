@@ -41,6 +41,11 @@ inherit
 			reset
 		end
 
+	ODIN_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 create
 	make
 

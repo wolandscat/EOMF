@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="odin" uuid="51EB638E-6F4D-9825-85F9-FB1B5C7F0672" library_target="odin">
-	<target name="odin">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="eomf_odin" uuid="51EB638E-6F4D-9825-85F9-FB1B5C7F0672" library_target="eomf_odin">
+	<target name="eomf_odin">
 		<root all_classes="true"/>
 		<file_rule>
 			<exclude>/.git$</exclude>
@@ -22,10 +22,15 @@
 		<library name="time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
-		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
 
-		<cluster name="odin" location=".\" recursive="true"/>
+		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
+		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_parsing" location="$EOMF\library\parsing\eomf_parsing.ecf"/>
+
+		<cluster name="eomf_odin" location=".\" recursive="true"/>
 	</target>
 </system>

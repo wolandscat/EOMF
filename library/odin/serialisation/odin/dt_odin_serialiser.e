@@ -20,13 +20,13 @@ inherit
 			{NONE} all
 		end
 
-	DT_STRING_UTILITIES
-		export
-			{NONE} all
-		end
-
 create
 	make
+
+feature -- Definitions
+
+	Date_time_format_string: STRING = "yyyy-[0]mm-[0]dd [0]hh:[0]mi:[0]ss"
+			-- ISO 8601 standard
 
 feature -- Initialisation
 
@@ -198,6 +198,19 @@ feature {NONE} -- Implementation
 			last_result.append (symbol (SYM_START_DBLOCK))
 		end
 
-end
+	primitive_value_to_odin_string (a_prim_val: ANY): STRING
+			-- generate a string, including ODIN delimiters, e.g. "", '' for strings and chars.
+		do
+			if attached {STRING_GENERAL} a_prim_val then
+				Result := "%"" + a_prim_val.out + "%""
+			elseif attached {CHARACTER} a_prim_val or attached {CHARACTER_32} a_prim_val then
+				Result := "%'" + a_prim_val.out + "%'"
+			elseif attached {TERMINOLOGY_CODE} a_prim_val then
+				Result := "[" + a_prim_val.out + "]"
+			else
+				Result := primitive_value_out (a_prim_val)
+			end
+		end
 
+end
 

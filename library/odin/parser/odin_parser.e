@@ -33,6 +33,11 @@ inherit
 			{NONE} all
 		end
 
+	ODIN_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 	ODIN_SCANNER
 		rename
 			make as make_scanner
@@ -546,7 +551,7 @@ debug("ODIN_parse")
 	io.put_string("Object data definition validated (non-delimited)%N")
 end
 			accept
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -562,7 +567,7 @@ debug("ODIN_parse")
 	io.put_string("Object data definition validated%N")
 end
 			accept
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -586,7 +591,7 @@ debug("ODIN_parse")
 	io.put_string("ODIN text NOT validated%N")
 end
 			abort
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -600,7 +605,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -614,7 +619,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -629,7 +634,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "attr_val complete%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -646,7 +651,7 @@ debug("ODIN_parse")
 	indent.remove_tail(1)
 end
 			attr_nodes.remove
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -675,7 +680,7 @@ end
 			create attr_node.make_single(yyvs4.item (yyvsp4))
 
 debug("ODIN_parse")
-	io.put_string(indent + "attr_id: complex_object_nodes.item(" + complex_object_nodes.item.id + 
+	io.put_string(indent + "attr_id: complex_object_nodes.item(" + complex_object_nodes.item.id +
 			").put_attribute(<<" + attr_node.im_attr_name + ">>)%N")
 end
 			if not complex_object_nodes.item.has_attribute(attr_node.im_attr_name) then
@@ -690,7 +695,7 @@ debug("ODIN_parse")
 end
 			attr_nodes.extend(attr_node)
 			create obj_key.make_empty
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -711,7 +716,7 @@ debug ("GEYACC")
 end
 
 			abort_with_error (ec_SDAT, Void)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
@@ -727,7 +732,7 @@ end
 			if complex_object_nodes.item.is_empty then
 				attr_nodes.item.remove_child (complex_object_nodes.item)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp1 := yyvsp1 + 1
@@ -791,7 +796,7 @@ end
 			if obj_key.is_empty then
 				complex_object_nodes.item.remove_attribute (attr_node.im_attr_name)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -804,7 +809,7 @@ debug ("GEYACC")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
@@ -816,7 +821,7 @@ debug ("GEYACC")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
@@ -828,7 +833,7 @@ debug ("GEYACC")
 end
 
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
@@ -839,10 +844,10 @@ debug ("GEYACC")
 	std.error.put_line ("Executing parser user-code from file 'odin_parser.y' at line 261")
 end
 
-			-- probably should set type name on owning attribute - it doesn't belong on each 
+			-- probably should set type name on owning attribute - it doesn't belong on each
 			-- object, since it is essentially a constraint
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
@@ -856,7 +861,7 @@ end
 
 			yyval13 := complex_object_nodes.item
 
-			-- if the keyed_objects were all empty, then the attribute can be thrown away 
+			-- if the keyed_objects were all empty, then the attribute can be thrown away
 			-- as well, since we don't create void object structures
 			if attr_nodes.item.is_empty and attached attr_nodes.item.parent as att_dt_obj then
 				att_dt_obj.remove_attribute (attr_nodes.item.im_attr_name)
@@ -867,20 +872,20 @@ end
 			if complex_object_nodes.item.is_addressable and attr_nodes.item.is_nested then
 				-- pop the generic attr node
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block: POP attr node (" +  
+	io.put_string(indent + "container_attr_object_block: POP attr node (" +
 		attr_nodes.item.im_attr_name+ ")%N")
 	indent.remove_tail(1)
 end
 				attr_nodes.remove
 
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block: POP Object node(" + 
+	io.put_string(indent + "container_attr_object_block: POP Object node(" +
 		complex_object_nodes.item.id + ")%N")
 	indent.remove_tail(1)
 end
 				complex_object_nodes.remove
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp13 := yyvsp13 + 1
@@ -905,8 +910,8 @@ end
 				create complex_object_node.make_identified (obj_key)
 				if not attr_nodes.item.has_child_with_id (complex_object_node.id) then
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block_head; attr_nodes(<<" + 
-		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" + 
+	io.put_string(indent + "container_attr_object_block_head; attr_nodes(<<" +
+		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" +
 		complex_object_node.id + "))%N")
 end
 					attr_nodes.item.put_child (complex_object_node)
@@ -920,7 +925,7 @@ debug("ODIN_parse")
 end
 				complex_object_nodes.extend(complex_object_node)
 
-				-- now create a generic attribute node to stand for the hidden attribute of the 
+				-- now create a generic attribute node to stand for the hidden attribute of the
 				-- generic object, e.g. it might be List<T>.items or whatever
 debug("ODIN_parse")
 	io.put_string(indent + "container_attr_object_block_head: create_attr_node.make_nested_container%N")
@@ -928,7 +933,7 @@ end
 				create attr_node.make_nested_container
 
 debug("ODIN_parse")
-	io.put_string(indent + "container_attr_object_block_head: complex_object_node(" + 
+	io.put_string(indent + "container_attr_object_block_head: complex_object_node(" +
 			complex_object_node.id + ").put_attribute(" + attr_node.im_attr_name + ")%N")
 end
 				complex_object_node.put_attribute(attr_node)
@@ -939,7 +944,7 @@ debug("ODIN_parse")
 end
 				attr_nodes.extend(attr_node)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -953,7 +958,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "one keyed object%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -967,7 +972,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "multiple keyed objects%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -982,7 +987,7 @@ end
 debug("ODIN_parse")
 	io.put_string(indent + "(keyed object)%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -997,7 +1002,7 @@ end
 			obj_key := yyvs15.item (yyvsp15).out
 
 debug("ODIN_parse")
-		io.put_string(indent + "object_key: " + obj_key + 
+		io.put_string(indent + "object_key: " + obj_key +
 			" (setting " + attr_nodes.item.im_attr_name + " to Multiple)%N")
 end
 			if obj_key.is_empty then
@@ -1009,7 +1014,7 @@ end
 					abort_with_error (ec_SGEE, <<attr_nodes.item.path>>)
 				end
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -1026,7 +1031,7 @@ debug("ODIN_parse")
 	io.put_string(indent + "untyped single_attr_object_block%N")
 end
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines13.force (yyvs13, yyval13, yyvsp13)
@@ -1042,7 +1047,7 @@ debug("ODIN_parse")
 end
 			yyvs13.item (yyvsp13).set_visible_im_type_name(yyvs4.item (yyvsp4))
 			yyval13 := yyvs13.item (yyvsp13)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
@@ -1055,13 +1060,13 @@ debug ("GEYACC")
 end
 
 debug("ODIN_parse")
-	io.put_string(indent + "single_attr_object_complex_block: POP Object node(" + 
+	io.put_string(indent + "single_attr_object_complex_block: POP Object node(" +
 		complex_object_nodes.item.id + ")%N")
 	indent.remove_tail(1)
 end
 			yyval13 := complex_object_nodes.item
 			complex_object_nodes.remove
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp13 := yyvsp13 + 1
@@ -1099,8 +1104,8 @@ end
 			if not attr_nodes.is_empty then
 				if not attr_nodes.item.has_child_with_id (complex_object_node.id) then
 debug("ODIN_parse")
-	io.put_string(indent + "single_attr_object_complex_head: attr_nodes(<<" + 
-		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" + 
+	io.put_string(indent + "single_attr_object_complex_head: attr_nodes(<<" +
+		attr_nodes.item.im_attr_name + ">>).item.put_child(complex_object_node(" +
 		complex_object_node.id + "))%N")
 end
 					attr_nodes.item.put_child(complex_object_node)
@@ -1115,7 +1120,7 @@ debug("ODIN_parse")
 	indent.append("%T")
 end
 			complex_object_nodes.extend(complex_object_node)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines1.force (yyvs1, yyval1, yyvsp1)
@@ -1130,7 +1135,7 @@ debug("ODIN_parse")
 	io.put_string(indent + "untyped primitive_object_block%N")
 end
 			yyval14 := yyvs14.item (yyvsp14)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines14.force (yyvs14, yyval14, yyvsp14)
@@ -1146,7 +1151,7 @@ debug("ODIN_parse")
 end
 			yyvs14.item (yyvsp14).set_visible_im_type_name (yyvs4.item (yyvsp4))
 			yyval14 := yyvs14.item (yyvsp14)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp4 := yyvsp4 -1
@@ -1161,8 +1166,8 @@ end
 			yyval14 := yyvs14.item (yyvsp14)
 			create obj_key.make_empty
 debug("ODIN_parse")
-	io.put_string(indent + "untyped_primitive_object_block; attr_nodes(<<" + 
-			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
+	io.put_string(indent + "untyped_primitive_object_block; attr_nodes(<<" +
+			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" +
 			yyval14.as_string + ">>)%N")
 end
 			if not attr_nodes.item.has_child_with_id (yyval14.id) then
@@ -1170,7 +1175,7 @@ end
 			else
 				abort_with_error (ec_VOKU, <<yyval14.id, attr_nodes.item.im_attr_name >>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -1187,7 +1192,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT} yyval14.make_anonymous (yyvs15.item (yyvsp15))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1212,7 +1217,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_LIST} yyval14.make_anonymous (yyvs29.item (yyvsp29))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1237,7 +1242,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_INTERVAL} yyval14.make_anonymous (yyvs36.item (yyvsp36))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1262,7 +1267,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} yyval14.make_anonymous (yyvs43.item (yyvsp43))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1287,7 +1292,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT} yyval14.make_anonymous (yyvs11.item (yyvsp11))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1312,7 +1317,7 @@ end
 			else
 				create {DT_PRIMITIVE_OBJECT_LIST} yyval14.make_anonymous (yyvs28.item (yyvsp28))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -1333,7 +1338,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1354,7 +1359,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs2.item (yyvsp2)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1375,7 +1380,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs3.item (yyvsp3)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1396,7 +1401,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs6.item (yyvsp6)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1417,7 +1422,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs5.item (yyvsp5)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1438,7 +1443,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs7.item (yyvsp7)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1459,7 +1464,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs9.item (yyvsp9)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1480,7 +1485,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs8.item (yyvsp8)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1501,7 +1506,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs10.item (yyvsp10)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1522,7 +1527,7 @@ debug ("GEYACC")
 end
 
 			yyval15 := yyvs12.item (yyvsp12)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp15 := yyvsp15 + 1
@@ -1543,7 +1548,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs19.item (yyvsp19)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1564,7 +1569,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs20.item (yyvsp20)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1585,7 +1590,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs21.item (yyvsp21)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1606,7 +1611,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs23.item (yyvsp23)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1627,7 +1632,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs22.item (yyvsp22)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1648,7 +1653,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs24.item (yyvsp24)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1669,7 +1674,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs25.item (yyvsp25)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1690,7 +1695,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs26.item (yyvsp26)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1711,7 +1716,7 @@ debug ("GEYACC")
 end
 
 			yyval29 := yyvs27.item (yyvsp27)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp29 := yyvsp29 + 1
@@ -1732,7 +1737,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs30.item (yyvsp30)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1753,7 +1758,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs31.item (yyvsp31)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1774,7 +1779,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs33.item (yyvsp33)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1795,7 +1800,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs32.item (yyvsp32)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1816,7 +1821,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs34.item (yyvsp34)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1837,7 +1842,7 @@ debug ("GEYACC")
 end
 
 			yyval36 := yyvs35.item (yyvsp35)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp36 := yyvsp36 + 1
@@ -1858,7 +1863,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs37.item (yyvsp37)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1879,7 +1884,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs38.item (yyvsp38)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1900,7 +1905,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs40.item (yyvsp40)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1921,7 +1926,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs39.item (yyvsp39)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1942,7 +1947,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs41.item (yyvsp41)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1963,7 +1968,7 @@ debug ("GEYACC")
 end
 
 			yyval43 := yyvs42.item (yyvsp42)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp43 := yyvsp43 + 1
@@ -1984,7 +1989,7 @@ debug ("GEYACC")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -1997,7 +2002,7 @@ debug ("GEYACC")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -2010,7 +2015,7 @@ debug ("GEYACC")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
@@ -2022,7 +2027,7 @@ debug ("GEYACC")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
@@ -2034,7 +2039,7 @@ debug ("GEYACC")
 end
 
 			yyval4 := yyvs4.item (yyvsp4)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines4.force (yyvs4, yyval4, yyvsp4)
@@ -2048,7 +2053,7 @@ end
 			create yyval19.make(0)
 			yyval19.extend(yyvs4.item (yyvsp4 - 1))
 			yyval19.extend(yyvs4.item (yyvsp4))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp19 := yyvsp19 + 1
@@ -2071,7 +2076,7 @@ end
 
 			yyvs19.item (yyvsp19).extend(yyvs4.item (yyvsp4))
 			yyval19 := yyvs19.item (yyvsp19)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2085,7 +2090,7 @@ debug ("GEYACC")
 end
 
 			yyval19 := yyvs19.item (yyvsp19)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -2099,7 +2104,7 @@ end
 
 			create yyval19.make (0)
 			yyval19.extend (yyvs4.item (yyvsp4))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp19 := yyvsp19 + 1
@@ -2121,7 +2126,7 @@ debug ("GEYACC")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines2.force (yyvs2, yyval2, yyvsp2)
@@ -2133,7 +2138,7 @@ debug ("GEYACC")
 end
 
 			yyval2 := yyvs2.item (yyvsp2)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -2146,7 +2151,7 @@ debug ("GEYACC")
 end
 
 			yyval2 := - yyvs2.item (yyvsp2)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -2161,7 +2166,7 @@ end
 			create yyval20.make(0)
 			yyval20.extend(yyvs2.item (yyvsp2 - 1))
 			yyval20.extend(yyvs2.item (yyvsp2))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp20 := yyvsp20 + 1
@@ -2184,7 +2189,7 @@ end
 
 			yyvs20.item (yyvsp20).extend(yyvs2.item (yyvsp2))
 			yyval20 := yyvs20.item (yyvsp20)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2199,7 +2204,7 @@ end
 
 			create yyval20.make(0)
 			yyval20.extend(yyvs2.item (yyvsp2))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp20 := yyvsp20 + 1
@@ -2225,7 +2230,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp30 := yyvsp30 + 1
@@ -2251,7 +2256,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp30 := yyvsp30 + 1
@@ -2277,7 +2282,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp30 := yyvsp30 + 1
@@ -2303,7 +2308,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs2.item (yyvsp2 - 1).out, yyvs2.item (yyvsp2).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp30 := yyvsp30 + 1
@@ -2325,7 +2330,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2347,7 +2352,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_lower_unbounded (yyvs2.item (yyvsp2), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2369,7 +2374,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2391,7 +2396,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [INTEGER]} yyval30.make_upper_unbounded (yyvs2.item (yyvsp2), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp30 := yyvsp30 + 1
@@ -2413,7 +2418,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [INTEGER]} yyval30.make (yyvs2.item (yyvsp2))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp30 := yyvsp30 + 1
@@ -2437,7 +2442,7 @@ end
 			create yyval37.make(0)
 			yyval37.extend(yyvs30.item (yyvsp30 - 1))
 			yyval37.extend(yyvs30.item (yyvsp30))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp37 := yyvsp37 + 1
@@ -2460,7 +2465,7 @@ end
 
 			yyvs37.item (yyvsp37).extend(yyvs30.item (yyvsp30))
 			yyval37 := yyvs37.item (yyvsp37)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2475,7 +2480,7 @@ end
 
 			create yyval37.make(0)
 			yyval37.extend(yyvs30.item (yyvsp30))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp37 := yyvsp37 + 1
@@ -2497,7 +2502,7 @@ debug ("GEYACC")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines3.force (yyvs3, yyval3, yyvsp3)
@@ -2509,7 +2514,7 @@ debug ("GEYACC")
 end
 
 			yyval3 := yyvs3.item (yyvsp3)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -2522,7 +2527,7 @@ debug ("GEYACC")
 end
 
 			yyval3 := - yyvs3.item (yyvsp3)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -2537,7 +2542,7 @@ end
 			create yyval21.make(0)
 			yyval21.extend(yyvs3.item (yyvsp3 - 1))
 			yyval21.extend(yyvs3.item (yyvsp3))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp21 := yyvsp21 + 1
@@ -2560,7 +2565,7 @@ end
 
 			yyvs21.item (yyvsp21).extend(yyvs3.item (yyvsp3))
 			yyval21 := yyvs21.item (yyvsp21)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2575,7 +2580,7 @@ end
 
 			create yyval21.make(0)
 			yyval21.extend(yyvs3.item (yyvsp3))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp21 := yyvsp21 + 1
@@ -2601,7 +2606,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp31 := yyvsp31 + 1
@@ -2627,7 +2632,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp31 := yyvsp31 + 1
@@ -2653,7 +2658,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp31 := yyvsp31 + 1
@@ -2679,7 +2684,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs3.item (yyvsp3 - 1).out, yyvs3.item (yyvsp3).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp31 := yyvsp31 + 1
@@ -2701,7 +2706,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2723,7 +2728,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_lower_unbounded(yyvs3.item (yyvsp3), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2745,7 +2750,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2767,7 +2772,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [REAL]} yyval31.make_upper_unbounded(yyvs3.item (yyvsp3), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp31 := yyvsp31 + 1
@@ -2789,7 +2794,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [REAL]} yyval31.make(yyvs3.item (yyvsp3))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp31 := yyvsp31 + 1
@@ -2813,7 +2818,7 @@ end
 			create yyval38.make(0)
 			yyval38.extend(yyvs31.item (yyvsp31 - 1))
 			yyval38.extend(yyvs31.item (yyvsp31))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp38 := yyvsp38 + 1
@@ -2836,7 +2841,7 @@ end
 
 			yyvs38.item (yyvsp38).extend(yyvs31.item (yyvsp31))
 			yyval38 := yyvs38.item (yyvsp38)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2851,7 +2856,7 @@ end
 
 			create yyval38.make(0)
 			yyval38.extend(yyvs31.item (yyvsp31))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp38 := yyvsp38 + 1
@@ -2873,7 +2878,7 @@ debug ("GEYACC")
 end
 
 			yyval6 := True
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp6 := yyvsp6 + 1
@@ -2894,7 +2899,7 @@ debug ("GEYACC")
 end
 
 			yyval6 := False
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp6 := yyvsp6 + 1
@@ -2917,7 +2922,7 @@ end
 			create yyval23.make(0)
 			yyval23.extend(yyvs6.item (yyvsp6 - 1))
 			yyval23.extend(yyvs6.item (yyvsp6))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp23 := yyvsp23 + 1
@@ -2940,7 +2945,7 @@ end
 
 			yyvs23.item (yyvsp23).extend(yyvs6.item (yyvsp6))
 			yyval23 := yyvs23.item (yyvsp23)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -2955,7 +2960,7 @@ end
 
 			create yyval23.make(0)
 			yyval23.extend(yyvs6.item (yyvsp6))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp23 := yyvsp23 + 1
@@ -2977,7 +2982,7 @@ debug ("GEYACC")
 end
 
 			yyval5 := yyvs5.item (yyvsp5)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyspecial_routines5.force (yyvs5, yyval5, yyvsp5)
@@ -2991,7 +2996,7 @@ end
 			create yyval22.make(0)
 			yyval22.extend(yyvs5.item (yyvsp5 - 1))
 			yyval22.extend(yyvs5.item (yyvsp5))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp22 := yyvsp22 + 1
@@ -3014,7 +3019,7 @@ end
 
 			yyvs22.item (yyvsp22).extend(yyvs5.item (yyvsp5))
 			yyval22 := yyvs22.item (yyvsp22)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3029,7 +3034,7 @@ end
 
 			create yyval22.make(0)
 			yyval22.extend(yyvs5.item (yyvsp5))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp22 := yyvsp22 + 1
@@ -3055,7 +3060,7 @@ end
 			else
 				abort_with_error (ec_VIDV, <<yyvs4.item (yyvsp4)>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp7 := yyvsp7 + 1
@@ -3078,7 +3083,7 @@ end
 			create yyval24.make(0)
 			yyval24.extend (yyvs7.item (yyvsp7 - 1))
 			yyval24.extend (yyvs7.item (yyvsp7))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp24 := yyvsp24 + 1
@@ -3101,7 +3106,7 @@ end
 
 			yyvs24.item (yyvsp24).extend (yyvs7.item (yyvsp7))
 			yyval24 := yyvs24.item (yyvsp24)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3116,7 +3121,7 @@ end
 
 			create yyval24.make(0)
 			yyval24.extend (yyvs7.item (yyvsp7))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp24 := yyvsp24 + 1
@@ -3142,7 +3147,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp33 := yyvsp33 + 1
@@ -3168,7 +3173,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp33 := yyvsp33 + 1
@@ -3194,7 +3199,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp33 := yyvsp33 + 1
@@ -3220,7 +3225,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs7.item (yyvsp7 - 1).out, yyvs7.item (yyvsp7).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp33 := yyvsp33 + 1
@@ -3242,7 +3247,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3264,7 +3269,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_lower_unbounded(yyvs7.item (yyvsp7), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3286,7 +3291,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3308,7 +3313,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE]} yyval33.make_upper_unbounded(yyvs7.item (yyvsp7), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp33 := yyvsp33 + 1
@@ -3330,7 +3335,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [ISO8601_DATE]} yyval33.make (yyvs7.item (yyvsp7))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp33 := yyvsp33 + 1
@@ -3354,7 +3359,7 @@ end
 			create yyval40.make(0)
 			yyval40.extend(yyvs33.item (yyvsp33 - 1))
 			yyval40.extend(yyvs33.item (yyvsp33))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp40 := yyvsp40 + 1
@@ -3377,7 +3382,7 @@ end
 
 			yyvs40.item (yyvsp40).extend(yyvs33.item (yyvsp33))
 			yyval40 := yyvs40.item (yyvsp40)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3392,7 +3397,7 @@ end
 
 			create yyval40.make(0)
 			yyval40.extend(yyvs33.item (yyvsp33))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp40 := yyvsp40 + 1
@@ -3418,7 +3423,7 @@ end
 			else
 				abort_with_error (ec_VITV, <<yyvs4.item (yyvsp4)>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp9 := yyvsp9 + 1
@@ -3441,7 +3446,7 @@ end
 			create yyval25.make(0)
 			yyval25.extend(yyvs9.item (yyvsp9 - 1))
 			yyval25.extend(yyvs9.item (yyvsp9))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp25 := yyvsp25 + 1
@@ -3464,7 +3469,7 @@ end
 
 			yyvs25.item (yyvsp25).extend(yyvs9.item (yyvsp9))
 			yyval25 := yyvs25.item (yyvsp25)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3479,7 +3484,7 @@ end
 
 			create yyval25.make(0)
 			yyval25.extend(yyvs9.item (yyvsp9))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp25 := yyvsp25 + 1
@@ -3505,7 +3510,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp32 := yyvsp32 + 1
@@ -3531,7 +3536,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp32 := yyvsp32 + 1
@@ -3557,7 +3562,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp32 := yyvsp32 + 1
@@ -3583,7 +3588,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs9.item (yyvsp9 - 1).out, yyvs9.item (yyvsp9).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp32 := yyvsp32 + 1
@@ -3605,7 +3610,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3627,7 +3632,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_lower_unbounded(yyvs9.item (yyvsp9), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3649,7 +3654,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3671,7 +3676,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_TIME]} yyval32.make_upper_unbounded(yyvs9.item (yyvsp9), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp32 := yyvsp32 + 1
@@ -3693,7 +3698,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [ISO8601_TIME]} yyval32.make (yyvs9.item (yyvsp9))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp32 := yyvsp32 + 1
@@ -3717,7 +3722,7 @@ end
 			create yyval39.make(0)
 			yyval39.extend(yyvs32.item (yyvsp32 - 1))
 			yyval39.extend(yyvs32.item (yyvsp32))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp39 := yyvsp39 + 1
@@ -3740,7 +3745,7 @@ end
 
 			yyvs39.item (yyvsp39).extend(yyvs32.item (yyvsp32))
 			yyval39 := yyvs39.item (yyvsp39)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3755,7 +3760,7 @@ end
 
 			create yyval39.make(0)
 			yyval39.extend(yyvs32.item (yyvsp32))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp39 := yyvsp39 + 1
@@ -3781,7 +3786,7 @@ end
 			else
 				abort_with_error (ec_VIDTV, <<yyvs4.item (yyvsp4)>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp8 := yyvsp8 + 1
@@ -3804,7 +3809,7 @@ end
 			create yyval26.make(0)
 			yyval26.extend(yyvs8.item (yyvsp8 - 1))
 			yyval26.extend(yyvs8.item (yyvsp8))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp26 := yyvsp26 + 1
@@ -3827,7 +3832,7 @@ end
 
 			yyvs26.item (yyvsp26).extend(yyvs8.item (yyvsp8))
 			yyval26 := yyvs26.item (yyvsp26)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -3842,7 +3847,7 @@ end
 
 			create yyval26.make(0)
 			yyval26.extend(yyvs8.item (yyvsp8))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp26 := yyvsp26 + 1
@@ -3868,7 +3873,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp34 := yyvsp34 + 1
@@ -3894,7 +3899,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp34 := yyvsp34 + 1
@@ -3920,7 +3925,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp34 := yyvsp34 + 1
@@ -3946,7 +3951,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs8.item (yyvsp8 - 1).out, yyvs8.item (yyvsp8).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp34 := yyvsp34 + 1
@@ -3968,7 +3973,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -3990,7 +3995,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_lower_unbounded(yyvs8.item (yyvsp8), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4012,7 +4017,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4034,7 +4039,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DATE_TIME]} yyval34.make_upper_unbounded(yyvs8.item (yyvsp8), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp34 := yyvsp34 + 1
@@ -4056,7 +4061,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [ISO8601_DATE_TIME]} yyval34.make (yyvs8.item (yyvsp8))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp34 := yyvsp34 + 1
@@ -4080,7 +4085,7 @@ end
 			create yyval41.make(0)
 			yyval41.extend(yyvs34.item (yyvsp34 - 1))
 			yyval41.extend(yyvs34.item (yyvsp34))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp41 := yyvsp41 + 1
@@ -4103,7 +4108,7 @@ end
 
 			yyvs41.item (yyvsp41).extend(yyvs34.item (yyvsp34))
 			yyval41 := yyvs41.item (yyvsp41)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4118,7 +4123,7 @@ end
 
 			create yyval41.make(0)
 			yyval41.extend(yyvs34.item (yyvsp34))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp41 := yyvsp41 + 1
@@ -4144,7 +4149,7 @@ end
 			else
 				abort_with_error (ec_VIDUV, <<yyvs4.item (yyvsp4)>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp10 := yyvsp10 + 1
@@ -4167,7 +4172,7 @@ end
 			create yyval27.make(0)
 			yyval27.extend(yyvs10.item (yyvsp10 - 1))
 			yyval27.extend(yyvs10.item (yyvsp10))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp27 := yyvsp27 + 1
@@ -4190,7 +4195,7 @@ end
 
 			yyvs27.item (yyvsp27).extend(yyvs10.item (yyvsp10))
 			yyval27 := yyvs27.item (yyvsp27)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4205,7 +4210,7 @@ end
 
 			create yyval27.make(0)
 			yyval27.extend(yyvs10.item (yyvsp10))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp27 := yyvsp27 + 1
@@ -4231,7 +4236,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 5
 	yyvsp35 := yyvsp35 + 1
@@ -4257,7 +4262,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp35 := yyvsp35 + 1
@@ -4283,7 +4288,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 6
 	yyvsp35 := yyvsp35 + 1
@@ -4309,7 +4314,7 @@ end
 			else
 				abort_with_error (ec_VIVLO, <<yyvs10.item (yyvsp10 - 1).out, yyvs10.item (yyvsp10).out>>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 7
 	yyvsp35 := yyvsp35 + 1
@@ -4331,7 +4336,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4353,7 +4358,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_lower_unbounded(yyvs10.item (yyvsp10), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4375,7 +4380,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), False)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4397,7 +4402,7 @@ debug ("GEYACC")
 end
 
 			create {PROPER_INTERVAL [ISO8601_DURATION]} yyval35.make_upper_unbounded(yyvs10.item (yyvsp10), True)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp35 := yyvsp35 + 1
@@ -4419,7 +4424,7 @@ debug ("GEYACC")
 end
 
 			create {POINT_INTERVAL [ISO8601_DURATION]} yyval35.make (yyvs10.item (yyvsp10))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp35 := yyvsp35 + 1
@@ -4443,7 +4448,7 @@ end
 			create yyval42.make(0)
 			yyval42.extend(yyvs35.item (yyvsp35 - 1))
 			yyval42.extend(yyvs35.item (yyvsp35))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp42 := yyvsp42 + 1
@@ -4466,7 +4471,7 @@ end
 
 			yyvs42.item (yyvsp42).extend(yyvs35.item (yyvsp35))
 			yyval42 := yyvs42.item (yyvsp42)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4481,7 +4486,7 @@ end
 
 			create yyval42.make(0)
 			yyval42.extend(yyvs35.item (yyvsp35))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp42 := yyvsp42 + 1
@@ -4503,7 +4508,7 @@ debug ("GEYACC")
 end
 
 			create yyval11.make_from_string (yyvs4.item (yyvsp4))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4524,7 +4529,7 @@ debug ("GEYACC")
 end
 
 			abort_with_error (ec_STNC, <<yyvs4.item (yyvsp4)>>)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4545,7 +4550,7 @@ debug ("GEYACC")
 end
 
 			abort_with_error (ec_STCV, <<yyvs4.item (yyvsp4)>>)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp11 := yyvsp11 + 1
@@ -4568,7 +4573,7 @@ end
 			create yyval28.make(0)
 			yyval28.extend(yyvs11.item (yyvsp11 - 1))
 			yyval28.extend(yyvs11.item (yyvsp11))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp28 := yyvsp28 + 1
@@ -4591,7 +4596,7 @@ end
 
 			yyvs28.item (yyvsp28).extend(yyvs11.item (yyvsp11))
 			yyval28 := yyvs28.item (yyvsp28)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4606,7 +4611,7 @@ end
 
 			create yyval28.make(0)
 			yyval28.extend(yyvs11.item (yyvsp11))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp28 := yyvsp28 + 1
@@ -4628,7 +4633,7 @@ debug ("GEYACC")
 end
 
 			create yyval12.make_from_string(yyvs4.item (yyvsp4))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp12 := yyvsp12 + 1
@@ -4649,8 +4654,8 @@ debug ("GEYACC")
 end
 
 debug("ODIN_parse")
-	io.put_string(indent + "object_reference_block; attr_nodes(<<" + 
-			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
+	io.put_string(indent + "object_reference_block; attr_nodes(<<" +
+			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" +
 			yyvs14.item (yyvsp14).as_string + ">>)%N")
 end
 			if not attr_nodes.item.has_child_with_id(yyvs14.item (yyvsp14).id) then
@@ -4659,7 +4664,7 @@ end
 			else
 				abort_with_error (ec_VOKU, <<yyvs14.item (yyvsp14).id, attr_nodes.item.im_attr_name >>)
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -2
@@ -4677,7 +4682,7 @@ end
 			else
 				create {DT_OBJECT_REFERENCE} yyval14.make_anonymous(yyvs16.item (yyvsp16))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -4703,7 +4708,7 @@ end
 			else
 				create {DT_OBJECT_REFERENCE_LIST} yyval14.make_anonymous(yyvs18.item (yyvsp18))
 			end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp14 := yyvsp14 + 1
@@ -4726,7 +4731,7 @@ end
 			create yyval18.make(0)
 			yyval18.extend(yyvs16.item (yyvsp16 - 1))
 			yyval18.extend(yyvs16.item (yyvsp16))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp18 := yyvsp18 + 1
@@ -4749,7 +4754,7 @@ end
 
 			yyvs18.item (yyvsp18).extend(yyvs16.item (yyvsp16))
 			yyval18 := yyvs18.item (yyvsp18)
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4764,7 +4769,7 @@ end
 
 			create yyval18.make(0)
 			yyval18.extend(yyvs16.item (yyvsp16))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp18 := yyvsp18 + 1
@@ -4789,7 +4794,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path (root); %N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp16 := yyvsp16 + 1
@@ -4814,7 +4819,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path; %N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 2
 	yyvsp1 := yyvsp1 -1
@@ -4831,7 +4836,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("....absolute_path (appended relative path); %N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp16 := yyvsp16 -1
@@ -4845,7 +4850,7 @@ debug ("GEYACC")
 end
 
 			create yyval16.make_relative(yyvs17.item (yyvsp17))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp16 := yyvsp16 + 1
@@ -4867,7 +4872,7 @@ end
 
 			yyval16 := yyvs16.item (yyvsp16)
 			yyval16.append_segment(yyvs17.item (yyvsp17))
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 3
 	yyvsp1 := yyvsp1 -1
@@ -4884,7 +4889,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("...path_segment: " + yyvs4.item (yyvsp4 - 1) + "[" + yyvs4.item (yyvsp4) + "]%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 4
 	yyvsp17 := yyvsp17 + 1
@@ -4909,7 +4914,7 @@ end
 debug("OG_PATH_parse")
 	io.put_string("...path_segment: " + yyvs4.item (yyvsp4) + "%N")
 end
-		
+
 if yy_parsing_status >= yyContinue then
 	yyssp := yyssp - 1
 	yyvsp17 := yyvsp17 + 1
@@ -5911,7 +5916,7 @@ feature -- Commands
 
 			create time_vc
 			create date_vc
-	
+
 			set_input_buffer (new_string_buffer (in_text))
 			parse
 		end
@@ -5948,8 +5953,8 @@ feature {NONE} -- Parse Tree
 	time_vc: TIME_VALIDITY_CHECKER
 	date_vc: DATE_VALIDITY_CHECKER
 
-feature {NONE} -- Implementation 
-	
+feature {NONE} -- Implementation
+
 	indent: STRING
 
 end

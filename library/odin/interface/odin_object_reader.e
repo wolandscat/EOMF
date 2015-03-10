@@ -25,6 +25,11 @@ inherit
 			{NONE} all
 		end
 
+	EOMF_COMPILED_MESSAGE_IDS
+		export
+			{NONE} all
+		end
+
 create
 	make, make_load
 
