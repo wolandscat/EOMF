@@ -27,7 +27,7 @@ inherit
 			{NONE} all
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
+	DT_MESSAGES_IDS
 
 feature -- Definitions
 

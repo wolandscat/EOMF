@@ -40,11 +40,6 @@ feature -- Modification
 
 feature -- Conversion
 
-	as_string: STRING
-		do
-			Result := primitive_value_to_odin_string (value)
-		end
-
 	as_serialised_string (string_converter: FUNCTION [ANY, TUPLE [ANY], STRING]; cleaner: detachable FUNCTION [ANY, TUPLE [STRING], STRING]): STRING
 			-- generate a cleaned form of this object as a string, using `cleaner' to do the work
 		local

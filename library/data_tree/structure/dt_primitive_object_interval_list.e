@@ -33,20 +33,6 @@ feature -- Modification
 
 feature -- Conversion
 
-	as_string: STRING
-		do
-			create Result.make_empty
-			across value as ivl_csr loop
-				Result.append_character ('|')
-				Result.append (ivl_csr.item.as_string)
-				Result.append_character ('|')
-
-				if not ivl_csr.is_last then
-					Result.append (", ")
-				end
-			end
-		end
-
 	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING];
 			attr_name_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];
 			ivl_value_string_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];

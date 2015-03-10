@@ -33,14 +33,6 @@ feature -- Modification
 
 feature -- Conversion
 
-	as_string: STRING
-		do
-			create Result.make_empty
-			Result.append_character ('|')
-			Result.append (value.as_string)
-			Result.append_character ('|')
-		end
-
 	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING];
 			attr_name_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];
 			value_string_formatter: FUNCTION [ANY, TUPLE [STRING], STRING];

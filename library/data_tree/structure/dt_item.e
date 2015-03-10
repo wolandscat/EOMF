@@ -10,7 +10,7 @@ note
 deferred class DT_ITEM
 
 inherit
-	VISITABLE
+	OG_VISITABLE
 		export
 			{NONE} all;
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal

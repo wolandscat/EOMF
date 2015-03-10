@@ -240,7 +240,12 @@ feature -- Modification
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE
 		do
-			start_object_leaf (a_node, depth)
+			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
+				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
+			else
+				last_result.remove_tail (format_item (FMT_NEWLINE).count)
+			end
+			last_result.append (a_node.value.as_string)
 			last_object_primitive := True
 		end
 
@@ -254,17 +259,31 @@ feature -- Modification
 
 	start_object_reference_list (a_node: DT_OBJECT_REFERENCE_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE_LIST
+		local
+			a_seq: SEQUENCE[OG_PATH]
 		do
-			start_object_leaf (a_node, depth)
-			last_object_primitive := True
+			-- generate an XML tag if object in a container
+			if attached a_node.parent as att_dt_attr then
+				a_seq := a_node.value
+				from a_seq.start until a_seq.off loop
+					-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
+					if not a_seq.is_first then
+						last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
+					end
+					last_result.append (a_seq.item.as_string)
+
+					-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
+					if not a_seq.is_last then
+						last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
+					end
+					a_seq.forth
+				end
+			end
 		end
 
 	end_object_reference_list (a_node: DT_OBJECT_REFERENCE_LIST; depth: INTEGER)
 			-- end serialising a DT_OBJECT_REFERENCE_LIST
 		do
-			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
-			end
 		end
 
 feature -- Commands
@@ -300,18 +319,6 @@ feature {NONE} -- Implementation
 			-- document level tag string
 		attribute
 			create Result.make_empty
-		end
-
-	start_object_leaf (a_node: DT_OBJECT_LEAF; depth: INTEGER)
-			-- start serialising a DT_OBJECT_LEAF
-		do
-			-- generate an XML tag if object in a container
-			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
-			else
-				last_result.remove_tail (format_item (FMT_NEWLINE).count)
-			end
-			last_result.append (a_node.as_string)
 		end
 
 	xml_attrs_for_dt_complex_object (a_dt_obj: DT_COMPLEX_OBJECT): detachable HASH_TABLE [STRING, STRING]

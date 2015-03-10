@@ -103,21 +103,6 @@ feature -- Modification
 
 feature -- Conversion
 
-	as_string: STRING
-		do
-			create Result.make (0)
-			from value.start until value.off loop
-				if value.index > 1 then
-					Result.append (", ")
-				end
-				Result.append (primitive_value_to_odin_string(value.item))
-				value.forth
-			end
-			if value.count = 1 then -- append syntactic indication of list continuation
-				Result.append (", ...")
-			end
-		end
-
 	as_serialised_string (value_serialiser: FUNCTION [ANY, TUPLE [ANY], STRING];
 			delimiter, end_delimiter: detachable STRING;
 			cleaner: detachable FUNCTION [ANY, TUPLE [STRING], STRING]): STRING

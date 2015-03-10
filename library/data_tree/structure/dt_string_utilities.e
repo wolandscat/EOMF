@@ -14,20 +14,6 @@ inherit
 
 feature -- Conversion
 
-	primitive_value_to_odin_string (a_prim_val: ANY): STRING
-			-- generate a string, including ODIN delimiters, e.g. "", '' for strings and chars.
-		do
-			if attached {STRING_GENERAL} a_prim_val then
-				Result := "%"" + a_prim_val.out + "%""
-			elseif attached {CHARACTER} a_prim_val or attached {CHARACTER_32} a_prim_val then
-				Result := "%'" + a_prim_val.out + "%'"
-			elseif attached {TERMINOLOGY_CODE} a_prim_val then
-				Result := "[" + a_prim_val.out + "]"
-			else
-				Result := serialise_primitive_value (a_prim_val)
-			end
-		end
-
 	primitive_value_to_simple_string (a_prim_val: ANY): STRING
 			-- generate a basic string
 		do
