@@ -2,15 +2,10 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Type conversion routines to help Eiffel's type system"
 	keywords:    "type conversion"
-
 	author:      "Thomas Beale"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2004 Ocean Informatics Pty Ltd"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
-
-	file:        "$URL$"
-	revision:    "$LastChangedRevision$"
-	last_change: "$LastChangedDate$"
 
 class TYPE_UTILITIES
 

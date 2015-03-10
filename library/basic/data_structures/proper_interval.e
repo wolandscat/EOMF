@@ -249,28 +249,28 @@ feature -- Output
 			create Result.make(0)
 			if lower_unbounded and attached upper as u then
 				if upper_included then
-					Result.append("<=" + serialise_primitive_value (u))
+					Result.append("<=" + primitive_value_out (u))
 				else
-					Result.append("<" + serialise_primitive_value (u))
+					Result.append("<" + primitive_value_out (u))
 				end
 			elseif upper_unbounded and attached lower as l then
 				if lower_included then
-					Result.append(">=" + serialise_primitive_value (l))
+					Result.append(">=" + primitive_value_out (l))
 				else
-					Result.append(">" + serialise_primitive_value (l))
+					Result.append(">" + primitive_value_out (l))
 				end
 				elseif not is_point and attached lower as l and then attached upper as u then
 				if lower_included and upper_included then
-					Result.append(serialise_primitive_value (l) + ".." + serialise_primitive_value (u))
+					Result.append(primitive_value_out (l) + ".." + primitive_value_out (u))
 				elseif lower_included then
-					Result.append(serialise_primitive_value (l) + "..<" + serialise_primitive_value (u))
+					Result.append(primitive_value_out (l) + "..<" + primitive_value_out (u))
 				elseif upper_included then
-					Result.append(">" + serialise_primitive_value (l) + ".." + serialise_primitive_value (u))
+					Result.append(">" + primitive_value_out (l) + ".." + primitive_value_out (u))
 				else
-					Result.append(">" + serialise_primitive_value (l) + "..<" + serialise_primitive_value (u))
+					Result.append(">" + primitive_value_out (l) + "..<" + primitive_value_out (u))
 				end
 			elseif attached lower as l then
-				Result.append (serialise_primitive_value (l))
+				Result.append (primitive_value_out (l))
 			end
 		end
 

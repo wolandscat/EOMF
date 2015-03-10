@@ -118,7 +118,7 @@ feature -- Output
 
 	as_string: STRING
 		do
-			Result := serialise_primitive_value (lower)
+			Result := primitive_value_out (lower)
 		end
 
 end
