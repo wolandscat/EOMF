@@ -125,6 +125,23 @@ feature -- Conversion
 			end
 		end
 
+feature -- Output
+
+	as_string: STRING
+		do
+			create Result.make (0)
+			from value.start until value.off loop
+				if value.index > 1 then
+					Result.append (", ")
+				end
+				Result.append (primitive_value_out (value.item))
+				value.forth
+			end
+			if value.count = 1 then -- append syntactic indication of list continuation
+				Result.append (", ...")
+			end
+		end
+
 feature -- Serialisation
 
 	enter_subtree (serialiser: DT_SERIALISER; depth: INTEGER)

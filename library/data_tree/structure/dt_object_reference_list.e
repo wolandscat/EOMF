@@ -24,7 +24,7 @@ create
 
 feature -- Access
 
-	value: SEQUENCE [OG_PATH]
+	value: ARRAYED_LIST [OG_PATH]
 			-- list of path references
 
 feature -- Modification

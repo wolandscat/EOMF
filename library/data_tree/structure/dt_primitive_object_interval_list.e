@@ -125,6 +125,22 @@ feature -- Conversion
 			end
 		end
 
+feature -- Output
+
+	as_string: STRING
+		do
+			create Result.make_empty
+			across value as ivl_csr loop
+				Result.append_character ('|')
+				Result.append (ivl_csr.item.as_string)
+				Result.append_character ('|')
+
+				if not ivl_csr.is_last then
+					Result.append (", ")
+				end
+			end
+		end
+
 feature -- Serialisation
 
 	enter_subtree (serialiser: DT_SERIALISER; depth: INTEGER)

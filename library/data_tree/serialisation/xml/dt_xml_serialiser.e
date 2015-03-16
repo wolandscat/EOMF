@@ -259,24 +259,20 @@ feature -- Modification
 
 	start_object_reference_list (a_node: DT_OBJECT_REFERENCE_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE_LIST
-		local
-			a_seq: SEQUENCE[OG_PATH]
 		do
 			-- generate an XML tag if object in a container
 			if attached a_node.parent as att_dt_attr then
-				a_seq := a_node.value
-				from a_seq.start until a_seq.off loop
+				across a_node.value as refs_csr loop
 					-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
-					if not a_seq.is_first then
+					if not refs_csr.is_first then
 						last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
 					end
-					last_result.append (a_seq.item.as_string)
+					last_result.append (refs_csr.item.as_string)
 
 					-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
-					if not a_seq.is_last then
+					if not refs_csr.is_last then
 						last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
 					end
-					a_seq.forth
 				end
 			end
 		end

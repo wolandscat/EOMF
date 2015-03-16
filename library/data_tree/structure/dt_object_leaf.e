@@ -64,6 +64,12 @@ feature -- Modification
 		deferred
 		end
 
+feature -- Output
+
+	as_string: STRING
+		deferred
+		end
+
 end
 
 

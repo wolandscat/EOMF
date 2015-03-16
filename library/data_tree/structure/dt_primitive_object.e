@@ -54,6 +54,13 @@ feature -- Conversion
 			Result := string_converter.item ([v])
 		end
 
+feature -- Output
+
+	as_string: STRING
+		do
+			Result := primitive_value_out (value)
+		end
+
 feature -- Serialisation
 
 	enter_subtree (serialiser: DT_SERIALISER; depth: INTEGER)

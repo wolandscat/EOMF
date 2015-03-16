@@ -82,6 +82,16 @@ feature -- Conversion
 			end
 		end
 
+feature -- Output
+
+	as_string: STRING
+		do
+			create Result.make_empty
+			Result.append_character ('|')
+			Result.append (value.as_string)
+			Result.append_character ('|')
+		end
+
 feature -- Serialisation
 
 	enter_subtree (serialiser: DT_SERIALISER; depth: INTEGER)
