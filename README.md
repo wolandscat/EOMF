@@ -12,7 +12,7 @@ EOMF is a library project for various generic facilities for Eiffel applications
 
 * [Data Tree](library/data_tree) - intermediate hierarchical tree representation of complex objects, like an XML DOM tree. Enables objects serialised as ODIN and other formats to be parsed to DT form, then converted to real objects.
 
-* [Object Graph](library/object_graph) - library providing generic tree structure behind more specific tree concepts like Data Tree. Provides built-in pathing and generic visitor capability.
+* [Object Graph](library/object_graph) - library providing generic object/attribute tree structure behind more specific object-based tree concepts like Data Tree. Provides built-in pathing and generic visitor capability.
 
 * [External VCS tools](library/external_tools) - library for interfacing to Git and SVN tools (only Git implemented) via PROCESS classes.
 
