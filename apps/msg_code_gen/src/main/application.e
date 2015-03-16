@@ -188,6 +188,7 @@ feature {NONE} -- Implementation
 			--  invalid message directories
 		local
 			msg_file: PLAIN_TEXT_FILE
+			dir_path: PATH
 			dir: DIRECTORY
 			fp: STRING
 			file_names: HASH_TABLE [STRING, STRING]
@@ -196,7 +197,8 @@ feature {NONE} -- Implementation
 			create Result.make (0)
 			Result.compare_objects
 			across a_msg_db_dirs as a_msg_db_dirs_csr loop
-				create dir.make (a_msg_db_dirs_csr.item)
+				create dir_path.make_from_string (a_msg_db_dirs_csr.item)
+				create dir.make_with_path (dir_path.absolute_path)
 				if dir.exists then
 					dir.open_read
 					across dir.linear_representation as file_names_csr loop
@@ -223,7 +225,7 @@ feature {NONE} -- Implementation
 						end
 					end
 				else
-					add_warning (ec_msg_files_dir_not_found, <<a_msg_db_dirs_csr.item>>)
+					add_warning (ec_msg_files_dir_not_found, <<dir.path.out>>)
 				end
 			end
 			if Result.is_empty then

@@ -16,7 +16,7 @@ templates = <
 		["skip_class_text"] = <"skipping class $1 (file already exists)%N">
 		["generate_class_text"] = <"generated class $1%N">
 		["output_directory_info"] = <"output directory: $1%N">
-		["no_icons_found"] = <"no icons found in source directory $1%N">
+		["no_icons_found"] = <"no new icons found in source directory $1%N">
 	>
 >
 

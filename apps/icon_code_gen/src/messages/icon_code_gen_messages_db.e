@@ -30,6 +30,6 @@ feature -- Initialisation
 			message_table.put ("skipping class $1 (file already exists)%N", ec_skip_class_text)
 			message_table.put ("generated class $1%N", ec_generate_class_text)
 			message_table.put ("output directory: $1%N", ec_output_directory_info)
-			message_table.put ("no icons found in source directory $1%N", ec_no_icons_found)
+			message_table.put ("no new icons found in source directory $1%N", ec_no_icons_found)
 end	
 end

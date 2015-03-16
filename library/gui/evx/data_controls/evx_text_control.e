@@ -140,18 +140,21 @@ feature {NONE} -- Implementation
 					end
 					populate
 					ev_data_control.focus_out_actions.resume
-				elseif attached data_source_setter_agent as att_setter_agt and attached data_source_remove_agent as att_rmeove_agt then
-					-- if user is removing value then use the remove agent, else use the setting agent
-					if old_val.is_empty then
-						undo_agt := att_rmeove_agt
-					else
-						undo_agt := agent att_setter_agt.call ([old_val])
-					end
 
-					if new_val.is_empty then
-						redo_agt := att_rmeove_agt
-					else
-						redo_agt := agent att_setter_agt.call ([new_val])
+				elseif attached data_source_setter_agent as att_setter_agt then
+					-- if user is removing value then use the remove agent, else use the setting agent
+					if attached undo_redo_chain then
+						if old_val.is_empty and attached data_source_remove_agent as att_remove_agt then
+							undo_agt := att_remove_agt
+						else
+							undo_agt := agent att_setter_agt.call ([old_val])
+						end
+
+						if new_val.is_empty and attached data_source_remove_agent as att_remove_agt then
+							redo_agt := att_remove_agt
+						else
+							redo_agt := agent att_setter_agt.call ([new_val])
+						end
 					end
 
 					att_setter_agt.call ([new_val])
