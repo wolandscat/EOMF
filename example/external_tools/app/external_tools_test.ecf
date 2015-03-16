@@ -35,75 +35,10 @@
 		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
+
+		<library name="eomf_external_tools" location="$EOMF\library\external_tools\eomf_external_tools.ecf"/>
+
 		<cluster name="app" location="..\src\" recursive="true"/>
-		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\" recursive="true">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<cluster name="eomf_external_tools" location="$EOMF\library\external_tools\" recursive="true">
-			<option void_safety="all">
-				<assertions precondition="true"/>
-			</option>
-			<file_rule>
-				<exclude>/other$</exclude>
-				<include>/windows$</include>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/windows$</exclude>
-				<include>/other$</include>
-				<condition>
-					<platform excluded_value="windows"/>
-				</condition>
-			</file_rule>
-		</cluster>
-		<cluster name="eomf_gui" location="$EOMF\library\gui\" recursive="true">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<cluster name="eomf_gui_app_resources" location="$EOMF\library\gui_app_resources\" recursive="true">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<cluster name="eomf_icons" location="$EOMF\resources\icons\compiled\">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<cluster name="eomf_messages" location="$EOMF\resources\messages\compiled\">
-			<option>
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\" recursive="true">
-			<file_rule>
-				<exclude>/base_net$</exclude>
-			</file_rule>
-			<file_rule>
-				<exclude>/implementation_gtk$</exclude>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/other$</exclude>
-				<include>/windows$</include>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/windows$</exclude>
-				<include>/other$</include>
-				<condition>
-					<platform excluded_value="windows"/>
-				</condition>
-			</file_rule>
-		</override>
+
 	</target>
 </system>
