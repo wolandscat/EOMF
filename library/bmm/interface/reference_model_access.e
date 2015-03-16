@@ -12,10 +12,10 @@ class REFERENCE_MODEL_ACCESS
 inherit
 	ANY_VALIDATOR
 
-	SHARED_RESOURCES
+	KL_SHARED_FILE_SYSTEM
 		export
 			{NONE} all;
-			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal, directory_exists
+			{ANY} file_system
 		end
 
 	BMM_MESSAGES_IDS
@@ -64,7 +64,7 @@ feature -- Initialisation
 			-- initialise with a specific schema load list, usually a sub-set of schemas that will be
 			-- found in the directory `an_absolute_dir'
 		require
-			Rm_dir_valid: directory_exists (an_absolute_dir)
+			Rm_dir_valid: file_system.directory_exists (an_absolute_dir)
 		do
 			make
 			schema_directory := an_absolute_dir
