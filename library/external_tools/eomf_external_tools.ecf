@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="external_tools" uuid="B2B54FE1-4FFA-472B-B56F-1F5C91FB6E38" library_target="external_tools">
-	<target name="external_tools">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="eomf_external_tools" uuid="B2B54FE1-4FFA-472B-B56F-1F5C91FB6E38" library_target="eomf_external_tools">
+	<target name="eomf_external_tools">
 		<root all_classes="true"/>
 		<file_rule>
 			<exclude>/.git$</exclude>
@@ -16,7 +16,7 @@
 		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 
-		<cluster name="external_tools" location=".\" recursive="true">
+		<cluster name="eomf_external_tools" location=".\" recursive="true">
 			<file_rule>
 				<exclude>/other$</exclude>
 				<include>/windows$</include>
