@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class COMPILED_MESSAGE_IDS
+class BMM_MESSAGES_IDS
 
 feature -- Definitions
 		ec_bmm_schemas_config_not_valid: STRING = "bmm_schemas_config_not_valid"

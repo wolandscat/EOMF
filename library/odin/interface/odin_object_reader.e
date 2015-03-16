@@ -25,7 +25,7 @@ inherit
 			{NONE} all
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
+	ODIN_MESSAGES_IDS
 		export
 			{NONE} all
 		end

@@ -25,7 +25,10 @@ feature -- Initialization
 			-- Run application.
 		do
 			-- add in EOMF error message DB to main message DB
-			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
+			message_db.add_table (create {DT_MESSAGES_DB}.make)
+			message_db.add_table (create {ODIN_MESSAGES_DB}.make)
+			message_db.add_table (create {BMM_MESSAGES_DB}.make)
+			message_db.add_table (create {GENERAL_MESSAGES_DB}.make)
 
 			-- BMM initialisation
 			bmm_env_setup

@@ -29,6 +29,7 @@
 		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
 		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
 		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_file_system" location="$EOMF\library\file_system\eomf_file_system.ecf"/>
 		<library name="eomf_parsing" location="$EOMF\library\parsing\eomf_parsing.ecf"/>
 
 		<cluster name="eomf_odin" location=".\" recursive="true"/>

@@ -27,7 +27,10 @@
 		<library name="testing" location="$ISE_LIBRARY\library\testing\testing-safe.ecf"/>
 
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+
+		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
 		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
 		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
 		<library name="eomf_bmm" location="$EOMF\library\bmm\eomf_bmm.ecf"/>
 

@@ -15,6 +15,11 @@ class ODIN_CONFIG_FILE_ACCESS
 inherit
 	CONFIG_FILE_ACCESS_I
 
+	GENERAL_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 create
 	make
 

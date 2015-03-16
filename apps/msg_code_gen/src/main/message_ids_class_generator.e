@@ -30,7 +30,7 @@ create
 
 feature -- Definitions
 
-	default_class_name: STRING = "COMPILED_MESSAGE_IDS"
+	default_class_name: STRING = "IDS"
 
 feature -- Initialization
 

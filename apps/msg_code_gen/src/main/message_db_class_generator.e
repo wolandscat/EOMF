@@ -30,7 +30,7 @@ create
 
 feature -- Definitions
 
-	default_class_name: STRING = "COMPILED_MESSAGE_DB"
+	default_class_name: STRING = "DB"
 
 feature -- Initialization
 

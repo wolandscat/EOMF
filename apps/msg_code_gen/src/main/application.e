@@ -23,7 +23,7 @@ note
 				    If valid, generate an Eiffel class containing all messages for chosen language, that can be included in any app,
 				    which looks as follows (the 'XXX' is an optional class name leader, available with -c option):
 				    
-				    class XXX_COMPILED_MESSAGE_DB
+				    class XXX_MESSAGES_DB
 						feature -- Access
 				    		messages: [HASH_TABLE [STRING, STRING]]
 				    			once
@@ -34,27 +34,26 @@ note
 					    		end
 					    end
 				    
-				    A second class XXX_COMPILED_MESSAGE_IDS is also generated, containing the keys for the above hash, defined
+				    A second class XXX_MESSAGES_IDS is also generated, containing the keys for the above hash, defined
 				    as constants. This means normal code that wants to report an error using the MESSAGE_DB facilities, normally 
 				    does something like this:
 				    
 				   		add_error (ec_msg_files_dirs_empty, <<>>)
 
-				    where the 'ec_msg_files_dirs_empty' is one of the constants from XXX_COMPILED_MESSAGE_IDS. This scheme treats
-				    all error and interface text 'codes' as constants, and therefore guarantees that the app won't compile unless
+				    where the 'ec_msg_files_dirs_empty' is one of the constants from XXX_MESSAGES_IDS. This scheme treats
+				    all error and interface text codes as constants, and therefore guarantees that the app won't compile unless
 				    the constants in the generated file match the constants used in the main code.
 
-				    The XXX_COMPILED_MESSAGE_IDS class should be inherited along with SHARED_MESSAGE_DB in every class that wants
+				    The XXX_MESSAGES_IDS class should be inherited along with SHARED_MESSAGE_DB in every class that wants
 				    to report errors.
 
 				    For an app consisting of multiple libraries containing their own message code database, this generator utility
-				    should be used to generate distinct sets of classes. In each part of the app, the correct XXX_COMPILED_MESSAGE_IDS
-				    needs to be used. The various XXX_COMPILED_MESSAGE_DB classes can be added to the message_table in SHARED_MESSAGE_DB
+				    should be used to generate distinct sets of classes. In each part of the app, the correct XXX_MESSAGES_IDS
+				    needs to be used. The various XXX_MESSAGES_DB classes can be added to the message_table in SHARED_MESSAGE_DB
 				    by a line of code in an app initialisation phase like:
 
-						message_db.add_table (create {XXX_COMPILED_MESSAGE_DB}.make)
+						message_db.add_table (create {XXX_MESSAGES_DB}.make)
 
-					Note that SHARED_MESSAGE_DB already includes by default the EOMF_COMPILED_MESSAGE_DB
 				 ]"
 
 	usage:		 "[
@@ -86,7 +85,7 @@ class
 inherit
 	SHARED_MESSAGE_DB
 
-	EOMF_COMPILED_MESSAGE_IDS
+	MSG_CODE_GEN_MESSAGES_IDS
 
 	ANY_VALIDATOR
 
@@ -106,7 +105,7 @@ feature -- Initialization
 	make
 		do
 			-- add in EOMF error message DB to main message DB
-			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
+			message_db.add_table (create {MSG_CODE_GEN_MESSAGES_DB}.make)
 
 			create message_defs.make (1000)
 
@@ -121,6 +120,7 @@ feature -- Commands
 			fd: PLAIN_TEXT_FILE
 			file_path: STRING
 			msg_file_paths: LIST [STRING]
+			class_name_leader: STRING
 		do
 			msg_file_paths := build_msg_file_list (options_processor.msg_source_dirs)
 			if passed then
@@ -128,16 +128,23 @@ feature -- Commands
 
 				populate_msg_table (msg_file_paths, options_processor.locale_lang)
 				if passed then
-					-- write out COMPILED_MESSAGE_IDS class
-					message_ids_class_generator.generate (message_defs, options_processor.classname_leader)
+					-- determine class name leader, based on -c option or else on first messages.txt file name found
+					if not options_processor.classname_leader.is_empty then
+						class_name_leader := options_processor.classname_leader
+					else
+						class_name_leader := class_name_root
+					end
+
+					-- write out XXXX_IDS class
+					message_ids_class_generator.generate (message_defs, class_name_leader)
 					file_path := file_system.pathname (options_processor.output_file_dir, message_ids_class_generator.class_name.as_lower + ".e")
 					create fd.make_create_read_write (file_path)
 					fd.put_string (message_ids_class_generator.output)
 					std_out.put_string (get_msg (ec_wrote_file_info, <<file_path>>))
 					fd.close
 
-					-- write out COMPILED_MESSAGE_DB class
-					message_db_class_generator.generate (message_defs, options_processor.classname_leader, message_ids_class_generator.class_name)
+					-- write out XXXX_DB class
+					message_db_class_generator.generate (message_defs, class_name_leader, message_ids_class_generator.class_name)
 					file_path := file_system.pathname (options_processor.output_file_dir, message_db_class_generator.class_name.as_lower + ".e")
 					create fd.make_create_read_write (file_path)
 					fd.put_string (message_db_class_generator.output)
@@ -162,6 +169,13 @@ feature {NONE} -- Implementation
 		once
 			create Result.make (locale_language_short)
 			Result.set_is_usage_displayed_on_error (True)
+		end
+
+	class_name_root: STRING
+			-- name of first message file found, used as class name root for output files. For example if the file
+			-- 'dt_messages.txt' is found, this value is 'DT_MESSAGES'
+		attribute
+			create Result.make_empty
 		end
 
 	build_msg_file_list (a_msg_db_dirs: LIST [STRING]): ARRAYED_LIST[STRING]
@@ -195,6 +209,11 @@ feature {NONE} -- Implementation
 								else
 									Result.extend (fp)
 									file_names.put (fp, file_names_csr.item)
+
+									-- use the first valid filename found as the class_name root
+									if class_name_root.is_empty then
+										class_name_root := extension_removed (file_names_csr.item).as_upper
+									end
 								end
 							else
 								check attached file_names.item (file_names_csr.item) as prev_fp then

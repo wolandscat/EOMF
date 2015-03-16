@@ -28,6 +28,7 @@
 		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
 		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
 		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+		<library name="eomf_file_system" location="$EOMF\library\file_system\eomf_file_system.ecf"/>
 
 		<cluster name="eomf_bmm" location=".\" recursive="true"/>
 	</target>

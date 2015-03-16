@@ -87,7 +87,7 @@ create
 %type <DT_COMPLEX_OBJECT> container_attr_object_block, untyped_container_attr_object_block
 %type <DT_COMPLEX_OBJECT> complex_object_block
 %type <DT_OBJECT_LEAF> untyped_primitive_object_block, primitive_object_block object_reference_block
-%type <DT_OBJECT_LEAF> primitive_object absolute_path_object_value
+%type <DT_OBJECT_LEAF> absolute_path_object_value primitive_object
 %type <ANY> primitive_value
 
 %type <OG_PATH> absolute_path relative_path
@@ -1482,8 +1482,8 @@ debug("ODIN_parse")
 			attr_nodes.item.im_attr_name + ">>).item.put_child(<<" + 
 			$2.as_string + ">>)%N")
 end
-			if not attr_nodes.item.has_child_with_id($2.id) then
-				attr_nodes.item.put_child($2)
+			if not attr_nodes.item.has_child_with_id ($2.id) then
+				attr_nodes.item.put_child ($2)
 				$$ := $2
 			else
 				abort_with_error (ec_VOKU, <<$2.id, attr_nodes.item.im_attr_name >>)

@@ -28,8 +28,10 @@
 		</library>
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+
 		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
 		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
 
 		<cluster name="app_support" location=".\" recursive="true">
 			<file_rule>
@@ -47,6 +49,5 @@
 				</condition>
 			</file_rule>
 		</cluster>
-		<cluster name="eomf_messages" location="$EOMF\resources\messages\compiled"/>
 	</target>
 </system>

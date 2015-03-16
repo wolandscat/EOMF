@@ -24,6 +24,11 @@ inherit
 			ready_to_validate
 		end
 
+	BMM_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 feature -- Definitions
 
 	State_created: INTEGER = 1

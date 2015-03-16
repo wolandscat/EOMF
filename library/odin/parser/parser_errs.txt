@@ -285,8 +285,8 @@ complex_object_block (15) on left: 14 15, on right: 2 10
 untyped_primitive_object_block (16) on left: 30, on right: 28 29
 primitive_object_block (17) on left: 28 29, on right: 11
 object_reference_block (18) on left: 193, on right: 12
-primitive_object (19) on left: 31 32 33 34 35 36, on right: 30
-absolute_path_object_value (20) on left: 194 195, on right: 193
+absolute_path_object_value (19) on left: 194 195, on right: 193
+primitive_object (20) on left: 31 32 33 34 35 36, on right: 30
 primitive_value (21) on left: 37 38 39 40 41 42 43 44 45 46, on right: 23 31
 absolute_path (22) on left: 199 200 201, on right: 194 196 197 198 201
 relative_path (23) on left: 202 203, on right: 200 201 203
@@ -1004,8 +1004,8 @@ state 34
 	duration_value	go to state 83
 	term_code	go to state 84
 	uri_value	go to state 62
-	primitive_object	go to state 85
-	absolute_path_object_value	go to state 86
+	absolute_path_object_value	go to state 85
+	primitive_object	go to state 86
 	primitive_value	go to state 87
 	absolute_path	go to state 88
 	absolute_path_list	go to state 89
@@ -1626,7 +1626,7 @@ state 84
 
 state 85
 
-	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object . SYM_END_DBLOCK   (rule 30)
+	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value . SYM_END_DBLOCK   (rule 193)
 
 	SYM_END_DBLOCK	shift, and go to state 146
 
@@ -1634,7 +1634,7 @@ state 85
 
 state 86
 
-	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value . SYM_END_DBLOCK   (rule 193)
+	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object . SYM_END_DBLOCK   (rule 30)
 
 	SYM_END_DBLOCK	shift, and go to state 147
 
@@ -2141,7 +2141,7 @@ state 115
 	duration_value	go to state 83
 	term_code	go to state 84
 	uri_value	go to state 62
-	primitive_object	go to state 85
+	primitive_object	go to state 86
 	primitive_value	go to state 87
 	string_value	go to state 64
 	string_list	go to state 90
@@ -2628,17 +2628,17 @@ state 145
 
 state 146
 
-	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object SYM_END_DBLOCK .   (rule 30)
+	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK .   (rule 193)
 
-	$default	reduce using rule 30 (untyped_primitive_object_block)
+	$default	reduce using rule 193 (object_reference_block)
 
 
 
 state 147
 
-	object_reference_block  ->  SYM_START_DBLOCK absolute_path_object_value SYM_END_DBLOCK .   (rule 193)
+	untyped_primitive_object_block  ->  SYM_START_DBLOCK primitive_object SYM_END_DBLOCK .   (rule 30)
 
-	$default	reduce using rule 193 (object_reference_block)
+	$default	reduce using rule 30 (untyped_primitive_object_block)
 
 
 

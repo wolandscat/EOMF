@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-12-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-12-0 http://www.eiffel.com/developers/xml/configuration-1-12-0.xsd" name="eomf_messages" uuid="46B560E1-4AFA-ABAB-B56F-1F5C8F2B6E39" library_target="eomf_messages">
+	<target name="eomf_messages">
+		<root all_classes="true"/>
+		<file_rule>
+			<exclude>/.git$</exclude>
+			<exclude>/EIFGENs$</exclude>
+			<exclude>/CVS$</exclude>
+			<exclude>/.svn$</exclude>
+		</file_rule>
+		<option warning="true" void_safety="all" full_class_checking="true" is_attached_by_default="true"/>
+
+		<library name="base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
+		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+		<cluster name="eomf_messages" location="$EOMF\library\messages\"/>
+	</target>
+</system>

@@ -12,8 +12,6 @@
 			<assertions precondition="true" postcondition="true" check="true" supplier_precondition="true"/>
 		</option>
 		<setting name="console_application" value="true"/>
-		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
-		<library name="eomf_odin" location="$EOMF\library\odin\odin.ecf"/>
 
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical-safe.ecf"/>
@@ -30,13 +28,13 @@
 		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
+
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
 
-		<cluster name="app" location="..\src\" recursive="true">
-			<option void_safety="initialization"></option>
-		</cluster>
-		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\">
-			<option void_safety="initialization"></option>
-		</cluster>
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+
+		<cluster name="app" location="..\src\" recursive="true"/>
 	</target>
 </system>

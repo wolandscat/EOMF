@@ -12,11 +12,6 @@ class BMM_DEFINITIONS
 inherit
 	BASIC_DEFINITIONS
 
-	EOMF_COMPILED_MESSAGE_IDS
-		export
-			{NONE} all
-		end
-
 feature -- Software-dependent definitions
 
 	Bmm_internal_version: STRING = "2.1"

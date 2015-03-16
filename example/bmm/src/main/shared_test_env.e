@@ -23,6 +23,16 @@ inherit
 			Application_developer_name, Default_application_name
 		end
 
+	GENERAL_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
+	BMM_MESSAGES_IDS
+		export
+			{NONE} all
+		end
+
 	BMM_DEFINITIONS
 		export
 			{NONE} all

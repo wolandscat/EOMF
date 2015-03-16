@@ -21,11 +21,6 @@ inherit
 			{ANY} deep_twin, deep_copy, is_deep_equal, standard_is_equal
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
-		export
-			{NONE} all
-		end
-
 feature -- Definitions
 
 	file_header_text: STRING
