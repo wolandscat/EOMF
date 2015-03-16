@@ -13,16 +13,20 @@
 		</option>
 		<setting name="console_application" value="true"/>
 
-		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
 		<library name="ise_argument_parser" location="$ISE_LIBRARY\library\argument_parser\argument_parser-safe.ecf"/>
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
 		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
+
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
 
+		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+
 		<cluster name="app" location="..\src\" recursive="true"/>
-		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\"/>
 	</target>
 </system>

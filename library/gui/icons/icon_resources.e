@@ -16,7 +16,10 @@ inherit
 			{ANY} deep_twin, is_deep_equal, standard_is_equal;
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
+	EVX_MESSAGES_IDS
+		export
+			{NONE} all
+		end
 
 feature {NONE} -- Initialisation
 
@@ -82,5 +85,4 @@ feature {NONE} -- Implementation
 		end
 
 end
-
 

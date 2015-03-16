@@ -1,0 +1,41 @@
+note
+	component:   "Eiffel Object Modelling Framework"
+	description: "Generated class from message text files"
+	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
+	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	support:     "Ocean Informatics <support@OceanInformatics.com>"
+	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
+
+class EVX_MESSAGES_IDS
+
+feature -- Definitions
+		ec_get_icon_pixmap: STRING = "get_icon_pixmap"
+		ec_no_pixmap_found: STRING = "no_pixmap_found"
+		ec_unknown_value: STRING = "unknown_value"
+		ec_browse_button_text: STRING = "browse_button_text"
+		ec_ok_button_text: STRING = "ok_button_text"
+		ec_cancel_button_text: STRING = "cancel_button_text"
+		ec_collapse_button_text: STRING = "collapse_button_text"
+		ec_expand_button_text: STRING = "expand_button_text"
+		ec_view_label_text: STRING = "view_label_text"
+		ec_expand_complete_button_text: STRING = "expand_complete_button_text"
+		ec_collapse_complete_button_text: STRING = "collapse_complete_button_text"
+		ec_expand_one_level_button_text: STRING = "expand_one_level_button_text"
+		ec_collapse_one_level_button_text: STRING = "collapse_one_level_button_text"
+		ec_add_mi: STRING = "add_mi"
+		ec_remove_mi: STRING = "remove_mi"
+		ec_expand_complete_tooltip: STRING = "expand_complete_tooltip"
+		ec_collapse_complete_tooltip: STRING = "collapse_complete_tooltip"
+		ec_expand_one_level_tooltip: STRING = "expand_one_level_tooltip"
+		ec_collapse_one_level_tooltip: STRING = "collapse_one_level_tooltip"
+		ec_view_controls_text: STRING = "view_controls_text"
+		ec_save_button_text: STRING = "save_button_text"
+		ec_save_button_tooltip: STRING = "save_button_tooltip"
+		ec_add_line_numbers_text: STRING = "add_line_numbers_text"
+		ec_add_line_numbers_tooltip: STRING = "add_line_numbers_tooltip"
+		ec_row_filter_frame_text: STRING = "row_filter_frame_text"
+		ec_row_filter_combo_tooltip: STRING = "row_filter_combo_tooltip"
+		ec_column_frame_text: STRING = "column_frame_text"
+	
+end

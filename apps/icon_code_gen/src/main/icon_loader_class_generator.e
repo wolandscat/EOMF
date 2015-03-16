@@ -53,9 +53,6 @@ feature {NONE} -- Implementation
 		local
 			load_feat_str: STRING
 		do
-			output.append (lazy_load_features)
-			output.append ("%N")
-
 			output.append (load_feature_top)
 			across icon_class_names as icons_csr loop
 				load_feat_str := load_feature_body_element.twin
@@ -70,40 +67,12 @@ feature {NONE} -- Boilerplate
 
 	class_inherit_clause: STRING = "[
 inherit
-	ICON_RESOURCES
-		redefine
-			can_lazy_load, lazy_load
-		end
-
+	APPLICATION_ICON_RESOURCES
 	]"
 
-	class_create_clause: STRING = "[
-create
-	make
+	class_create_clause: STRING = ""
 
-	]"
-
-	class_initialisation: STRING = "[
-	]"
-
-	lazy_load_features: STRING = "[
-feature {NONE} -- Implementation
-
-	can_lazy_load (key: STRING): BOOLEAN
-			-- True if icon resource `key' can be lazy-loaded
-		do
-			Result := load_icon_agents.has (key)
-		end
-
-	lazy_load (key: STRING)
-			-- load icon into main table
-		do
-			check attached load_icon_agents.item (key) as load_agt then
-				icon_pixmaps.put (load_agt.item ([]), key)
-			end
-		end
-
-	]"
+	class_initialisation: STRING = ""
 
 	load_feature_top: STRING = "[
 	load_icon_agents: HASH_TABLE [FUNCTION [ANY, TUPLE, EV_PIXMAP], STRING]

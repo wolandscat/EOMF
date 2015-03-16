@@ -47,7 +47,7 @@ class
 inherit
 	SHARED_MESSAGE_DB
 
-	EOMF_COMPILED_MESSAGE_IDS
+	ICON_CODE_GEN_MESSAGES_IDS
 
 	SHARED_RESOURCES
 
@@ -71,8 +71,11 @@ feature -- Initialization
 	make
 		do
 			-- add in EOMF error message DB to main message DB
-			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
-			
+			message_db.add_table (create {ICON_CODE_GEN_MESSAGES_DB}.make)
+			message_db.add_table (create {DT_MESSAGES_DB}.make)
+			message_db.add_table (create {ODIN_MESSAGES_DB}.make)
+			message_db.add_table (create {GENERAL_MESSAGES_DB}.make)
+
 			reset
 			options_processor.execute (agent start)
 		end
@@ -120,8 +123,8 @@ feature -- Commands
 				icon_loader_class_generator.add_icon_class_name (icon_class_name, pixmaps_csr.key)
 			end
 
+			-- now write the icon_loader class text
 			if icon_count > 0 then
-				-- now write the icon_loader class text
 				icon_loader_class_generator.generate
 				create fd.make_open_write (file_system.pathname (options_processor.output_file_dir, class_file_name (icon_loader_class_generator.class_name)))
 				fd.put_string (icon_loader_class_generator.output)

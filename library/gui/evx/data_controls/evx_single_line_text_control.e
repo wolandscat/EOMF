@@ -25,11 +25,6 @@ inherit
 			ev_data_control
 		end
 
-	SHARED_MESSAGE_DB
-		export
-			{NONE} all
-		end
-
 create
 	make, make_readonly, make_linked
 

@@ -27,7 +27,7 @@ inherit
 			{NONE} all
 		end
 
-	EOMF_COMPILED_MESSAGE_IDS
+	ICON_CODE_GEN_MESSAGES_IDS
 		export
 			{NONE} all
 		end

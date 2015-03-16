@@ -10,7 +10,7 @@ note
 class EVX_DEFINITIONS
 
 inherit
-	EOMF_COMPILED_MESSAGE_IDS
+	EVX_MESSAGES_IDS
 		export
 			{NONE} all;
 			{ANY} deep_copy, deep_twin, standard_is_equal, is_deep_equal

@@ -14,7 +14,7 @@ feature -- Access
 	get_icon_pixmap (key: STRING): EV_PIXMAP
 			-- obtain pixmap corresponding to `key' or else a generic pixmap
 		do
-			Result := icon_resources.get_icon_pixmap (key)
+			Result := icon_resources.item.get_icon_pixmap (key)
 		end
 
 feature -- Status Report
@@ -22,14 +22,14 @@ feature -- Status Report
 	has_icon_pixmap (key: STRING): BOOLEAN
 			-- True if pixmap corresponding to `key' exists
 		do
-			Result := icon_resources.has_icon_pixmap (key.as_lower)
+			Result := icon_resources.item.has_icon_pixmap (key.as_lower)
 		end
 
-feature {NONE} -- Shared Objects
+feature -- Shared Objects
 
-	icon_resources: ICON_RESOURCES
+	icon_resources: CELL[ICON_RESOURCES]
 		once ("PROCESS")
-			create {ICON_RESOURCES_COMPILED} Result.make
+			create Result.put (create {ICON_RESOURCES_COMPILED}.make)
 		end
 
 end
