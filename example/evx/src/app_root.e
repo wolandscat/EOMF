@@ -22,7 +22,7 @@ feature -- Initialisation
 	make
 		do
 			-- add in EOMF error message DB to main message DB
-			message_db.add_table (create {EOMF_COMPILED_MESSAGE_DB}.make)
+			message_db.add_table (create {EVX_MESSAGES_DB}.make)
 			initialised := True
 		end
 

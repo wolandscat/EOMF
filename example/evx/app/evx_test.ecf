@@ -41,6 +41,7 @@
 		<library name="ise_vision2" location="$ISE_LIBRARY\library\vision2\vision2-safe.ecf"/>
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
 		<library name="eomf_gui" location="$EOMF\library\gui\eomf_gui.ecf">
 			<option>
 				<assertions precondition="true" postcondition="true" supplier_precondition="true"/>
@@ -48,33 +49,7 @@
 		</library>
 
 		<cluster name="app" location="..\src\" recursive="true"/>
-		<cluster name="eomf_app_resources" location="$EOMF\library\app_resources\" recursive="true">
-			<option void_safety="all">
-				<assertions precondition="true"/>
-			</option>
-		</cluster>
-		<cluster name="eomf_app_support" location="$EOMF\library\app_support\" recursive="true">
-			<option void_safety="all" />
-			<file_rule>
-				<exclude>/other$</exclude>
-				<include>/windows$</include>
-				<condition>
-					<platform value="windows"/>
-				</condition>
-			</file_rule>
-			<file_rule>
-				<exclude>/windows$</exclude>
-				<include>/other$</include>
-				<condition>
-					<platform excluded_value="windows"/>
-				</condition>
-			</file_rule>
-		</cluster>
-		<cluster name="eomf_gui_app_resources" location="$EOMF\library\gui_app_resources\" recursive="true"/>
-		<cluster name="eomf_icons" location="$EOMF\resources\icons\compiled\"/>
-		<cluster name="eomf_messages" location="$EOMF\resources\messages\compiled\">
-			<option void_safety="all" />
-		</cluster>
+		<cluster name="eomf_messages" location="$EOMF\library\messages\"/>
 		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\" recursive="true">
 			<file_rule>
 				<exclude>/base_net$</exclude>
