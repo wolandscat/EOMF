@@ -12,7 +12,7 @@ class DT_XML_SERIALISER
 inherit
 	DT_SERIALISER
 		redefine
-			reset
+			make, reset
 		end
 
 	XML_TOOLS
@@ -33,12 +33,41 @@ inherit
 create
 	make
 
+feature -- Definitions
+
+	Default_doc_tag: STRING = "UNKNOWN_DOCUMENT_TYPE"
+
+	Default_doc_version: STRING = "1.0"
+
+	Default_doc_encoding: STRING = "utf-8"
+
+	Standard_doc_namespaces: HASH_TABLE [STRING, STRING]
+		once
+			create Result.make (0)
+			Result.put ("http://www.w3.org/2001/XMLSchema-instance", "xmlns:xsi")
+			Result.put ("http://www.w3.org/2001/XMLSchema", "xmlns:xsd")
+		end
+
+	Doc_type_attribute_name: STRING = "artefact_type"
+
+feature -- Initialisation
+
+	make (a_profile: SERIALISATION_PROFILE)
+			-- set profile
+		do
+			precursor (a_profile)
+			create xml_ns_list.make (0)
+			create xml_printer.make_null
+			xml_printer.set_indent ("    ")
+		end
+
 feature -- Modification
 
 	start_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- start serialising an DT_COMPLEX_OBJECT_NODE
 		local
-			doc_attr_name, doc_hdr: STRING
+			xml_ns: XML_NAMESPACE
+			xml_elem, xml_root_elem: XML_ELEMENT
 		do
 			if not checked_for_rules or xml_rules_out_of_date then
 				if xml_rules.serialisation_rules.has (a_node.im_type_name) and attached xml_rules.serialisation_rules.item (a_node.im_type_name) as att_rules then
@@ -51,83 +80,96 @@ feature -- Modification
 
 			-- if we are on the root node, output the XML header
 			if a_node.is_root then
-				if attached serialisation_rules.doc_header then
-					doc_hdr := serialisation_rules.doc_header.twin
-					if attached serialisation_rules.doc_tag then
-						if serialisation_rules.doc_tag.item (1) = '$' then
-							doc_attr_name := serialisation_rules.doc_tag.substring (2, serialisation_rules.doc_tag.count)
-							if a_node.has_attribute (doc_attr_name) and then attached a_node.attribute_node (doc_attr_name) as att_dt_attr
-								and then att_dt_attr.child_count > 0 and then attached {DT_PRIMITIVE_OBJECT} att_dt_attr.first_child as dt_p_o
-							then
-								doc_tag_value := dt_p_o.value.out
-							else
-								doc_tag_value := doc_attr_name
-							end
-						else
-							doc_tag_value := serialisation_rules.doc_tag
-						end
-					else
-						doc_tag_value := serialisation_rules.default_doc_tag
-					end
-					doc_hdr.replace_substring_all ("$doc_tag", doc_tag_value)
-					last_result.append (doc_hdr + format_item(FMT_NEWLINE))
-				else
-					last_result.append (xml_tag_start (serialisation_rules.default_doc_tag, Void) + format_item (FMT_NEWLINE))
+				create xml_ns_list.make (0)
+
+				-- standard namespaces
+				across Standard_doc_namespaces as ns_csr loop
+					create xml_ns.make (ns_csr.key, ns_csr.item)
+					xml_ns_list.put (xml_ns, ns_csr.key)
 				end
 
-			-- only output object-level tag for object inside a container
+				-- rules file namespaces
+				across serialisation_rules.doc_other_namespaces as ns_csr loop
+					create xml_ns.make (ns_csr.key, ns_csr.item)
+					xml_ns_list.force (xml_ns, ns_csr.key)
+				end
+
+				-- default namespace
+				create xml_default_ns.make ("", serialisation_rules.doc_default_namespace)
+
+				-- root element
+				if a_node.has_attribute (Doc_type_attribute_name) and then attached a_node.attribute_node (Doc_type_attribute_name) as att_dt_attr
+					and then att_dt_attr.child_count > 0 and then attached {DT_PRIMITIVE_OBJECT} att_dt_attr.first_child as dt_p_o
+				then
+					doc_tag_value := dt_p_o.value.out
+				else
+					doc_tag_value := default_doc_tag
+				end
+				create xml_root_elem.make_root (xml_document, doc_tag_value, xml_default_ns)
+				xml_nodes.extend ([xml_root_elem, create {ARRAYED_LIST [DT_ATTRIBUTE]}.make (0)])
+				-- add the other namespaces as attributes
+				across xml_ns_list as ns_csr loop
+					xml_root_elem.add_unqualified_attribute (ns_csr.key, ns_csr.item.uri)
+				end
+				if attached xml_attrs_for_dt_complex_object (a_node) as att_xml_attrs then
+					across att_xml_attrs as xml_attrs_csr loop
+						xml_root_elem.add_unqualified_attribute (xml_attrs_csr.key, xml_attrs_csr.item)
+					end
+				end
+
+			-- only output object if it's inside a container, otherwise it was output due to the attribute above
 			elseif attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
 				-- output the starting tag with attributes
-				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name,
-					xml_attrs_for_dt_complex_object (a_node)) + format_item (FMT_NEWLINE))
+				create xml_elem.make_last (xml_nodes.item.node, att_dt_attr.im_attr_name, xml_default_ns)
+				xml_nodes.extend ([xml_elem, create {ARRAYED_LIST [DT_ATTRIBUTE]}.make (0)])
+				if attached xml_attrs_for_dt_complex_object (a_node) as att_xml_attrs then
+					across att_xml_attrs as xml_attrs_csr loop
+						xml_elem.add_unqualified_attribute (xml_attrs_csr.key, xml_attrs_csr.item)
+					end
+				end
 			end
 		end
 
 	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
 			-- end serialising an DT_COMPLEX_OBJECT_NODE
 		local
-			doc_ftr: STRING
+			xmlns_generator: XML_XMLNS_GENERATOR
 		do
 			if a_node.is_root then
-				-- if we are on the root node, output the XML footer
-				if attached serialisation_rules.doc_footer then
-					doc_ftr := serialisation_rules.doc_footer.twin
-					doc_ftr.replace_substring_all ("$doc_tag", doc_tag_value)
-					last_result.append (doc_ftr)
-				else
-					last_result.append (create_indent(depth//2))
-					last_result.append (xml_tag_start (serialisation_rules.default_doc_tag, Void))
+				-- OUTPUT DOCUMENT
+				xml_printer.set_output_to_string_32
+				create xmlns_generator.set_next (xml_printer)
+				xml_document.process_to_events (xmlns_generator)
+				if attached xml_printer.last_output as att_xml_text then
+					last_result.append (att_xml_text)
 				end
-				last_result.append (format_item(FMT_NEWLINE))
-
-			-- end tag for items in a container
 			elseif attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (create_indent(depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
+				xml_nodes.remove
 			end
-
-			-- clear list of attr nodes that may be serialised as XML attrs (i.e. in tag) so
-			-- as to ignore during normal descent
-			dt_attr_nodes_to_ignore.wipe_out
 		end
 
 	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising an DT_ATTRIBUTE_NODE
 		local
 			xml_attrs: detachable HASH_TABLE [STRING, STRING]
+			xml_elem: XML_ELEMENT
 		do
-			if dt_attr_nodes_to_ignore.has (a_node) then
-				ignoring_dt_primitive_objects := True
-			else
+			if not xml_nodes.item.xml_attrs.has (a_node) then
 				-- don't output tag if a container type, since tags come out with each object rather than
 				-- the attribute in that case
-				if not a_node.is_container_type and not attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child then
+				if not a_node.is_container_type and not (attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child or
+					attached {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} a_node.first_child or
+					attached {DT_OBJECT_REFERENCE_LIST} a_node.first_child)
+				then
 					-- if we are on single-valued node, look at child, and see if there are
 					-- any rules for that type in the rule set for the overall context
-					if attached {DT_COMPLEX_OBJECT} a_node.first_child as dt_obj then
-						xml_attrs := xml_attrs_for_dt_complex_object (dt_obj)
+					create xml_elem.make_last (xml_nodes.item.node, a_node.im_attr_name, xml_default_ns)
+					xml_nodes.extend ([xml_elem, xml_nodes.item.xml_attrs])
+					if attached {DT_COMPLEX_OBJECT} a_node.first_child as dt_obj and then attached xml_attrs_for_dt_complex_object (dt_obj) as att_xml_attrs then
+						across att_xml_attrs as xml_attrs_csr loop
+							xml_elem.add_unqualified_attribute (xml_attrs_csr.key, xml_attrs_csr.item)
+						end
 					end
-					last_result.append (create_indent (depth//2) + xml_tag_start (a_node.im_attr_name, xml_attrs) +
-						format_item (FMT_NEWLINE))
 				end
 			end
 		end
@@ -135,53 +177,59 @@ feature -- Modification
 	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
-			if dt_attr_nodes_to_ignore.has (a_node) then
-				ignoring_dt_primitive_objects := False
-			else
-				if not a_node.is_container_type and not attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child then
-					-- output an indent unless a primitive type (in which case, tags are inline)
-					if not last_object_primitive then
-						last_result.append (create_indent (depth//2))
-					end
-					-- output the tag
-					last_result.append (xml_tag_end (a_node.im_attr_name) + format_item(FMT_NEWLINE))
+			if not xml_nodes.item.xml_attrs.has (a_node) then
+				if not a_node.is_container_type and not (attached {DT_PRIMITIVE_OBJECT_LIST} a_node.first_child or
+					attached {DT_PRIMITIVE_OBJECT_INTERVAL_LIST} a_node.first_child or
+					attached {DT_OBJECT_REFERENCE_LIST} a_node.first_child)
+				then
+					xml_nodes.remove
 				end
-				last_object_primitive := False
 			end
 		end
 
 	start_primitive_object (a_node: DT_PRIMITIVE_OBJECT; depth: INTEGER)
 			-- start serialising a DT_PRIMITIVE_OBJECT
+		local
+			xml_elem: XML_ELEMENT
+			xml_val: XML_CHARACTER_DATA
 		do
-			if not ignoring_dt_primitive_objects then
+			if attached a_node.parent as parent_dt_attr and then not xml_nodes.item.xml_attrs.has (parent_dt_attr) then
 				-- generate an XML tag if object in a container
-				if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-					-- output indent + tag
-					last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, xml_attrs_for_dt_primitive_object (a_node)))
+				if parent_dt_attr.is_container_type then
+					create xml_elem.make_last (xml_nodes.item.node, parent_dt_attr.im_attr_name, xml_default_ns)
+					if attached xml_attrs_for_dt_primitive_object (a_node) as att_xml_attrs then
+						across att_xml_attrs as xml_attrs_csr loop
+							xml_elem.add_unqualified_attribute (xml_attrs_csr.key, xml_attrs_csr.item)
+						end
+					end
 				else
-					last_result.remove_tail (format_item (FMT_NEWLINE).count)
+					xml_elem := xml_nodes.item.node
 				end
-				last_result.append (a_node.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean))
-				last_object_primitive := True
+				create xml_val.make_last (xml_elem, a_node.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean))
 			end
 		end
 
 	end_primitive_object (a_node: DT_PRIMITIVE_OBJECT; depth: INTEGER)
 			-- end serialising a DT_PRIMITIVE_OBJECT
 		do
-			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
-			end
 		end
 
 	start_primitive_object_list (a_node: DT_PRIMITIVE_OBJECT_LIST; depth: INTEGER)
 			-- start serialising an DT_PRIMITIVE_OBJECT_LIST
+		local
+			seq: SEQUENCE [ANY]
 		do
 			-- generate an XML tag if object in a container
 			if attached a_node.parent as att_dt_attr then
-				last_result.append (a_node.as_serialised_string (
-					agent primitive_value_to_xml_tagged_string (att_dt_attr.im_attr_name, depth//2, ?), Void, Void, agent profile.clean))
-				last_object_primitive := True
+				seq := a_node.value
+				from seq.start until seq.off loop
+					if attached {STRING} seq.item as str then
+						add_primitive_value_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, profile.clean (str))
+					else
+						add_primitive_value_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, seq.item)
+					end
+					seq.forth
+				end
 			end
 		end
 
@@ -192,42 +240,25 @@ feature -- Modification
 
 	start_primitive_object_interval (a_node: DT_PRIMITIVE_OBJECT_INTERVAL; depth: INTEGER)
 			-- start serialising a DT_PRIMITIVE_OBJECT_INTERVAL
-		local
-			str: STRING
 		do
 			-- generate an XML tag if object in a container
 			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
+				add_primitive_interval_to_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, a_node.value)
 			end
 
-			-- generate value as a multi-line text
-			str := primitive_interval_to_xml_tagged_string (a_node.value)
-			last_result.append (indented (str, create_indent (depth//2 + 1)))
 		end
 
 	end_primitive_object_interval (a_node: DT_PRIMITIVE_OBJECT_INTERVAL; depth: INTEGER)
 			-- end serialising a DT_PRIMITIVE_OBJECT_INTERVAL
 		do
-			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
-			end
 		end
 
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
-			-- start serialising a DT_OBJECT_SIMPLE
+			-- start serialising a DT_PRIMITIVE_OBJECT_INTERVAL_LIST
 		do
 			if attached a_node.parent as att_dt_attr then
 				across a_node.value as ivl_csr loop
-					-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
-					if not ivl_csr.is_first then
-						last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void) + format_item (FMT_NEWLINE))
-					end
-					last_result.append (indented (primitive_interval_to_xml_tagged_string (ivl_csr.item), create_indent (depth//2 + 1)))
-
-					-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
-					if not ivl_csr.is_last then
-						last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
-					end
+					add_primitive_interval_to_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, ivl_csr.item)
 				end
 			end
 		end
@@ -239,40 +270,36 @@ feature -- Modification
 
 	start_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE
+		local
+			xml_elem: XML_ELEMENT
+			xml_val: XML_CHARACTER_DATA
 		do
 			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
+				create xml_elem.make_last (xml_nodes.item.node, att_dt_attr.im_attr_name, xml_default_ns)
 			else
-				last_result.remove_tail (format_item (FMT_NEWLINE).count)
+				xml_elem := xml_nodes.item.node
 			end
-			last_result.append (a_node.value.as_string)
-			last_object_primitive := True
+			create xml_val.make_last (xml_elem, a_node.value.as_string)
 		end
 
 	end_object_reference (a_node: DT_OBJECT_REFERENCE; depth: INTEGER)
 			-- end serialising a DT_OBJECT_REFERENCE
 		do
-			if attached a_node.parent as att_dt_attr and then att_dt_attr.is_container_type then
-				last_result.append (xml_tag_end (att_dt_attr.im_attr_name) + format_item(FMT_NEWLINE))
-			end
 		end
 
 	start_object_reference_list (a_node: DT_OBJECT_REFERENCE_LIST; depth: INTEGER)
 			-- start serialising a DT_OBJECT_REFERENCE_LIST
+		local
+			xml_parent_node: XML_ELEMENT
+			xml_elem: XML_ELEMENT
+			xml_val: XML_CHARACTER_DATA
 		do
 			-- generate an XML tag if object in a container
 			if attached a_node.parent as att_dt_attr then
+				xml_parent_node := xml_nodes.item.node
 				across a_node.value as refs_csr loop
-					-- don't bother with the first one because it already came out due to the parent attribute (XML containers!)
-					if not refs_csr.is_first then
-						last_result.append (create_indent (depth//2) + xml_tag_start (att_dt_attr.im_attr_name, Void))
-					end
-					last_result.append (refs_csr.item.as_string)
-
-					-- don't bother with the last one because it will come out due to the parent attribute (XML containers!)
-					if not refs_csr.is_last then
-						last_result.append (create_indent (depth//2) + xml_tag_end (att_dt_attr.im_attr_name) + format_item (FMT_NEWLINE))
-					end
+					create xml_elem.make_last (xml_parent_node, att_dt_attr.im_attr_name, xml_default_ns)
+					create xml_val.make_last (xml_elem, refs_csr.item.as_string)
 				end
 			end
 		end
@@ -286,26 +313,44 @@ feature -- Commands
 
 	reset
 			-- set up serialiser
+		local
+			xml_decl: XML_DECLARATION
 		do
 			precursor
 			checked_for_rules := False
 			create serialisation_rules.make
-			ignoring_dt_primitive_objects := False
+
+			-- set up boilerplate parts of XML document
+			create xml_decl.make_in_document (xml_document, Default_doc_version, Default_doc_encoding, False)
 		end
 
 feature {NONE} -- Implementation
+
+	xml_printer: XML_INDENT_PRETTY_PRINT_FILTER
+
+	xml_default_ns: XML_NAMESPACE
+		attribute
+			create Result.make_default
+		end
+
+	xml_ns_list: HASH_TABLE [XML_NAMESPACE, STRING]
+
+	xml_document: XML_DOCUMENT
+			-- generated XML document used to create final serialised output
+		attribute
+			create Result.make
+		end
+
+	xml_nodes: ARRAYED_STACK [TUPLE [node: XML_ELEMENT; xml_attrs: ARRAYED_LIST [DT_ATTRIBUTE]]]
+		attribute
+			create Result.make (0)
+		end
 
 	serialisation_rules: XML_SERIALISATION_RULES
 			-- serialisation rules for the type of the root object being processed here
 		attribute
 			create Result.make
 		end
-
-	last_object_primitive: BOOLEAN
-			-- True if last object traversed was a DT_PRIMITIVE_XX object
-
-	ignoring_dt_primitive_objects: BOOLEAN
-			-- True if currently ignoring DT objects; only applies to primitive objects under single-value attributes
 
 	checked_for_rules: BOOLEAN
 			-- flag to indicate that a check was done for XML rules at beginning of run (i.e. at
@@ -343,8 +388,8 @@ feature {NONE} -- Implementation
 					if a_dt_obj.has_attribute (cvt_names_csr.item) and then
 						attached a_dt_obj.attribute_node (cvt_names_csr.item) as dt_attr and then attached {DT_PRIMITIVE_OBJECT} dt_attr.first_child as dt_po
 					then
-						dt_attr_nodes_to_ignore.extend (dt_attr)
-						Result.put (dt_po.value.out, cvt_names_csr.item)
+						xml_nodes.item.xml_attrs.extend (dt_attr)
+						Result.put (dt_po.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean), cvt_names_csr.item)
 					end
 				end
 			end
@@ -353,13 +398,13 @@ feature {NONE} -- Implementation
 	xml_attrs_for_dt_primitive_object (a_dt_obj: DT_PRIMITIVE_OBJECT): detachable HASH_TABLE [STRING, STRING]
 			-- generate XML attribute table for `a_dt_obj' based on XML rules, if any found
 		do
-			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as type_rules then
-				create Result.make (0)
+--			if attached serialisation_rules.rules_for_type (a_dt_obj.im_type_name) as type_rules then
 
 				-- put the DT node id in the result for ids that are not just numbers (numbers are generated in
 				-- the DT structure for any LIST structure, i.e. where there are no available keys).
 				-- Currently just do this if there is a rule of any kind, without checking any details.
 				if a_dt_obj.is_addressable and not a_dt_obj.id.is_integer then
+					create Result.make (0)
 					Result.put (a_dt_obj.id, "id")
 				end
 
@@ -369,60 +414,47 @@ feature {NONE} -- Implementation
 --						Result.put (a_dt_obj.im_type_name, xsi_type_marker)
 --					end
 --				end
-			end
+--			end
 		end
 
-	dt_attr_nodes_to_ignore: ARRAYED_LIST [DT_ATTRIBUTE]
-		once
-			create Result.make (0)
-		end
-
-	primitive_value_to_xml_tagged_string (a_tag: STRING; an_indent: INTEGER; a_prim_val: ANY): STRING
+	add_primitive_value_xml_element (a_parent_xml_elem: XML_ELEMENT; a_tag: STRING; a_prim_val: ANY)
 			-- generate a XML-tagged string containing `a_prim_val'
+		local
+			xml_elem: XML_ELEMENT
+			xml_val: XML_CHARACTER_DATA
 		do
-			create Result.make_empty
-			Result.append (create_indent (an_indent) + xml_tag_start (a_tag, Void))
-			Result.append (primitive_value_to_xml_string (a_prim_val))
-			Result.append (xml_tag_end (a_tag) + format_item(FMT_NEWLINE))
+			create xml_elem.make_last (a_parent_xml_elem, a_tag, xml_default_ns)
+			create xml_val.make_last (xml_elem, primitive_value_to_xml_string (a_prim_val))
 		end
 
-	primitive_interval_to_xml_tagged_string (value: INTERVAL[PART_COMPARABLE]): STRING
-			-- generate a structured, tagged form of this object
-			-- FIXME: the 'to_reference' in the below should not be required, but BOOLEAN does not conform to ANY when it is an agent argument!
+	add_primitive_interval_to_xml_element (a_parent_xml_elem: XML_ELEMENT; a_tag: STRING; value: INTERVAL[PART_COMPARABLE])
+			-- generate XML structure for an interval of form
+			-- <parent_elem>
+			--		<a_tag lower_unbounded="false" lower_included="true">
+			--			<lower>xxxxx<lower>
+			--		</a_tag>
+			-- </parent_elem>
+		local
+			xml_top_elem, xml_elem: XML_ELEMENT
+			xml_val: XML_CHARACTER_DATA
 		do
-			create Result.make(0)
+			create xml_top_elem.make_last (a_parent_xml_elem, a_tag, xml_default_ns)
 			if value.lower_unbounded then
-				Result.append (xml_tag_start ("lower_unbounded", Void))
-				Result.append (primitive_value_to_xml_string (value.lower_unbounded))
-				Result.append (xml_tag_end ("lower_unbounded"))
-				Result.append ("%N")
+				xml_top_elem.add_unqualified_attribute ("lower_unbounded", primitive_value_to_xml_string (value.lower_unbounded))
 			elseif attached value.lower as val_l then
-				Result.append (xml_tag_start ("lower", Void))
-				Result.append (primitive_value_to_xml_string (val_l))
-				Result.append (xml_tag_end ("lower"))
-				Result.append ("%N")
+				create xml_elem.make_last (xml_top_elem, "lower", xml_default_ns)
+				create xml_val.make_last (xml_elem, primitive_value_to_xml_string (val_l))
 				if not value.lower_included then
-					Result.append (xml_tag_start ("lower_included", Void))
-					Result.append (primitive_value_to_xml_string (value.lower_included))
-					Result.append (xml_tag_end ("lower_included"))
-					Result.append ("%N")
+					xml_top_elem.add_unqualified_attribute ("lower_included", primitive_value_to_xml_string (value.lower_included))
 				end
 			end
 			if value.upper_unbounded then
-				Result.append (xml_tag_start ("upper_unbounded", Void))
-				Result.append (primitive_value_to_xml_string (value.upper_unbounded))
-				Result.append (xml_tag_end ("upper_unbounded"))
-				Result.append ("%N")
+				a_parent_xml_elem.add_unqualified_attribute ("upper_unbounded", primitive_value_to_xml_string (value.upper_unbounded))
 			elseif attached value.upper as val_u and not value.is_point then
-				Result.append (xml_tag_start ("upper", Void))
-				Result.append (primitive_value_to_xml_string (val_u))
-				Result.append (xml_tag_end ("upper"))
-				Result.append ("%N")
+				create xml_elem.make_last (xml_top_elem, "upper", xml_default_ns)
+				create xml_val.make_last (xml_elem, primitive_value_to_xml_string (val_u))
 				if not value.upper_included then
-					Result.append (xml_tag_start ("upper_included", Void))
-					Result.append (primitive_value_to_xml_string (value.upper_included.to_reference))
-					Result.append (xml_tag_end ("upper_included"))
-					Result.append ("%N")
+					xml_top_elem.add_unqualified_attribute ("upper_included", primitive_value_to_xml_string (value.upper_included))
 				end
 			end
 		end

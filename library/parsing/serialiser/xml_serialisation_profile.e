@@ -1,4 +1,4 @@
-note
+﻿note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Common routines for XML ADL serialisation"
 	keywords:    "test, ADL"
@@ -34,6 +34,8 @@ feature {ANY_SERIALISER} -- Access
 			create Result.make(0)
 			Result.put("&lt;",			'<')
 			Result.put("&gt;",			'>')
+	--		Result.put("&le;",			'%/8804/')
+	--		Result.put("&ge;",			'%/8805/')
 			Result.put("&amp;",			'&')
 		end
 

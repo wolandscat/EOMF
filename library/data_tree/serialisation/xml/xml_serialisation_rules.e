@@ -26,21 +26,32 @@ feature -- Definitions
 
 	Default_doc_tag: STRING = "UNKNOWN_DOCUMENT_TYPE"
 
+	Default_doc_version: STRING = "1.0"
+
+	Default_doc_encoding: STRING = "utf-8"
+
 	Default_doc_header: STRING = "[
 <?xml version="1.0" encoding="utf-8"?>
 <$doc_tag xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://schemas.openehr.org/v1">
 	]"
 
-	Default_doc_footer: STRING = "</$doc_tag>"
+	Default_doc_namespaces: HASH_TABLE [STRING, STRING]
+		once
+			create Result.make (0)
+			Result.put ("http://www.w3.org/2001/XMLSchema-instance", "xmlns:xsi")
+			Result.put ("http://www.w3.org/2001/XMLSchema", "xmlns:xsd")
+			Result.put ("http://openehr.org/schemas/v1", "xmlns")
+		end
 
 feature -- Initialisation
 
 	make
 		do
 			create im_class_rules.make (0)
-			doc_tag := Default_doc_tag.twin
-			doc_header := Default_doc_header.twin
-			doc_footer := Default_doc_footer.twin
+			doc_version := Default_doc_version.twin
+			doc_encoding := Default_doc_encoding.twin
+			create doc_default_namespace.make_empty
+			create doc_other_namespaces.make (0)
 		end
 
 feature -- Access (persistent features from .cfg file)
@@ -50,17 +61,17 @@ feature -- Access (persistent features from .cfg file)
 			-- could include rules for more than one ancestor of a given class, so to get the
 			-- full set of rules for type T, a 'flat' set has to be generated - done in `im_class_rules_by_type'
 
-	doc_header: STRING
-			-- docment level XML header; if '$doc_tag' found in this string, it will be substituted with the
-			-- value of the evaluation of 'doc_tag'
+	doc_version: STRING
+			-- version of XML
 
-	doc_footer: STRING
-			-- document level XML footer; if '$doc_tag' found in this string, it will be substituted with the
-			-- value of the evaluation of 'doc_tag'
+	doc_encoding: STRING
+			-- encoding of XML
 
-	doc_tag: STRING
-			-- literal name of a tag, or '$xxx' meaning the name of a top-level attribute from the serialised
-			-- object whose value should be used as the tag. If nothing found, the default doc_tag is used
+	doc_default_namespace: STRING
+			-- default namespace declarations
+
+	doc_other_namespaces: HASH_TABLE [STRING, STRING]
+			-- root node namespace declarations
 
 feature -- Access
 
