@@ -388,8 +388,11 @@ feature {NONE} -- Implementation
 					if a_dt_obj.has_attribute (cvt_names_csr.item) and then
 						attached a_dt_obj.attribute_node (cvt_names_csr.item) as dt_attr and then attached {DT_PRIMITIVE_OBJECT} dt_attr.first_child as dt_po
 					then
+						-- however, don't output booleans with value 'false'
+						if not (attached {BOOLEAN} dt_po.value as att_bool and then not att_bool) then
+							Result.put (dt_po.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean), cvt_names_csr.item)
+						end
 						xml_nodes.item.xml_attrs.extend (dt_attr)
-						Result.put (dt_po.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean), cvt_names_csr.item)
 					end
 				end
 			end
