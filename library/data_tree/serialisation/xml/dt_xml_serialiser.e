@@ -452,7 +452,7 @@ feature {NONE} -- Implementation
 				end
 			end
 			if value.upper_unbounded then
-				a_parent_xml_elem.add_unqualified_attribute ("upper_unbounded", primitive_value_to_xml_string (value.upper_unbounded))
+				xml_top_elem.add_unqualified_attribute ("upper_unbounded", primitive_value_to_xml_string (value.upper_unbounded))
 			elseif attached value.upper as val_u and not value.is_point then
 				create xml_elem.make_last (xml_top_elem, "upper", xml_default_ns)
 				create xml_val.make_last (xml_elem, primitive_value_to_xml_string (val_u))
