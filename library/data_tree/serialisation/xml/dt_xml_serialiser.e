@@ -205,7 +205,7 @@ feature -- Modification
 				else
 					xml_elem := xml_nodes.item.node
 				end
-				create xml_val.make_last (xml_elem, a_node.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean))
+				create xml_val.make_last (xml_elem, a_node.as_serialised_string (agent primitive_value_to_xml_string, Void))
 			end
 		end
 
@@ -223,11 +223,7 @@ feature -- Modification
 			if attached a_node.parent as att_dt_attr then
 				seq := a_node.value
 				from seq.start until seq.off loop
-					if attached {STRING} seq.item as str then
-						add_primitive_value_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, profile.clean (str))
-					else
-						add_primitive_value_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, seq.item)
-					end
+					add_primitive_value_xml_element (xml_nodes.item.node, att_dt_attr.im_attr_name, seq.item)
 					seq.forth
 				end
 			end
@@ -390,7 +386,7 @@ feature {NONE} -- Implementation
 					then
 						-- however, don't output booleans with value 'false'
 						if not (attached {BOOLEAN} dt_po.value as att_bool and then not att_bool) then
-							Result.put (dt_po.as_serialised_string (agent primitive_value_to_xml_string, agent profile.clean), cvt_names_csr.item)
+							Result.put (dt_po.as_serialised_string (agent primitive_value_to_xml_string, Void), cvt_names_csr.item)
 						end
 						xml_nodes.item.xml_attrs.extend (dt_attr)
 					end
