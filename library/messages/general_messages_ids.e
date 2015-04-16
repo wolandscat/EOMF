@@ -28,6 +28,7 @@ feature -- Definitions
 		ec_regex_invalid: STRING = "regex_invalid"
 		ec_path_parser_no_error_available: STRING = "path_parser_no_error_available"
 		ec_could_not_create_file_text: STRING = "could_not_create_file_text"
+		ec_could_not_write_to_file: STRING = "could_not_write_to_file"
 		ec_write_failed_file_does_not_exist: STRING = "write_failed_file_does_not_exist"
 		ec_file_saved_as_in_format: STRING = "file_saved_as_in_format"
 		ec_directory_does_not_exist: STRING = "directory_does_not_exist"

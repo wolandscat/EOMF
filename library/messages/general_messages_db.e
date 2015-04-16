@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (29)
+			create message_table.make (30)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -43,6 +43,7 @@ feature -- Initialisation
 			message_table.put ("Invalid regular expression $1", ec_regex_invalid)
 			message_table.put ("No error available from path parser", ec_path_parser_no_error_available)
 			message_table.put ("Could not create file or directory $1", ec_could_not_create_file_text)
+			message_table.put ("Could not write to file $1; check file system permissions", ec_could_not_write_to_file)
 			message_table.put ("Write failed; file $1 does not exist", ec_write_failed_file_does_not_exist)
 			message_table.put ("Saved file $1 in format $2", ec_file_saved_as_in_format)
 			message_table.put ("Directory $1 does not exist.", ec_directory_does_not_exist)

@@ -35,6 +35,7 @@ templates = <
 
 		-- file system
 		["could_not_create_file_text"] = <"Could not create file or directory $1">
+		["could_not_write_to_file"] = <"Could not write to file $1; check file system permissions">
 		["write_failed_file_does_not_exist"] = <"Write failed; file $1 does not exist">
 		["file_saved_as_in_format"] = <"Saved file $1 in format $2">
 		["directory_does_not_exist"] = <"Directory $1 does not exist.">
