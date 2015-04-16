@@ -15,11 +15,6 @@ inherit
 			make, reset
 		end
 
-	XML_TOOLS
-		export
-			{NONE} all
-		end
-
 	DT_STRING_UTILITIES
 		export
 			{NONE} all
@@ -455,6 +450,17 @@ feature {NONE} -- Implementation
 				if not value.upper_included then
 					xml_top_elem.add_unqualified_attribute ("upper_included", primitive_value_to_xml_string (value.upper_included))
 				end
+			end
+		end
+
+	primitive_value_to_xml_string (a_prim_val: ANY): STRING
+			-- generate a basic string
+		do
+			-- FIXME: duration.out does not exist in Eiffel, and in any case would not be ISO8601-compliant
+			if attached {BOOLEAN} a_prim_val as a_bool then
+				Result := a_prim_val.out.as_lower
+			else
+				Result := primitive_value_out (a_prim_val)
 			end
 		end
 
