@@ -43,6 +43,8 @@ feature -- Initialisation
 			message_db.add_table (create {GENERAL_MESSAGES_DB}.make)
 		end
 
+feature -- Access
+
 feature -- Status Report
 
 end
