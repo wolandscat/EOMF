@@ -108,7 +108,7 @@ feature -- Access
 			fake_int_enum_def: BMM_ENUMERATION_INTEGER
 			fake_str_enum_def: BMM_ENUMERATION_STRING
 		do
-			check attached {BMM_ENUMERATION [COMPARABLE]} class_definitions.item (a_type_name) as enum_def then
+			check attached {BMM_ENUMERATION [COMPARABLE]} class_definition (a_type_name) as enum_def then
 				Result := enum_def
 			end
 		end
@@ -194,7 +194,7 @@ feature -- Status Report
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := class_definitions.has (a_type_name) and then attached {BMM_ENUMERATION [COMPARABLE]} class_definitions.item (a_type_name)
+			Result := has_class_definition (a_type_name) and then attached {BMM_ENUMERATION [COMPARABLE]} class_definition (a_type_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN
