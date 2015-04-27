@@ -46,7 +46,7 @@ feature {NONE} -- Initialisation
 	make
 		do
 			reset
-			create schema_directory.make_empty
+			create {ARRAYED_LIST[STRING]} schema_directories.make (0)
 			exception_encountered := False
 			create all_schemas.make(0)
 			create candidate_schemas.make(0)
@@ -60,29 +60,29 @@ feature {NONE} -- Initialisation
 
 feature -- Initialisation
 
-	initialise_with_load_list (an_absolute_dir: STRING; a_schemas_load_list: LIST [STRING])
+	initialise_with_load_list (schema_dirs: LIST [STRING]; a_schemas_load_list: LIST [STRING])
 			-- initialise with a specific schema load list, usually a sub-set of schemas that will be
 			-- found in the directory `an_absolute_dir'
 		require
-			Rm_dir_valid: file_system.directory_exists (an_absolute_dir)
+			Rm_dir_valid: across schema_dirs as sch_csr all file_system.directory_exists (sch_csr.item) end
 		do
 			make
-			schema_directory := an_absolute_dir
+			schema_directories := schema_dirs
 			schemas_load_list.append (a_schemas_load_list)
 			reload_schemas
 		ensure
-			Schemas_dir_set: schema_directory = an_absolute_dir
+			Schemas_dir_set: schema_directories = schema_dirs
 		end
 
-	initialise_all (an_absolute_dir: STRING)
-			-- initialise with all schemas found in the directory `an_absolute_dir'
+	initialise_all (schema_dirs: LIST [STRING])
+			-- initialise with all schemas found in the directory `schema_dirs'
 		do
-			initialise_with_load_list (an_absolute_dir, create {ARRAYED_LIST [STRING]}.make(0))
+			initialise_with_load_list (schema_dirs, create {ARRAYED_LIST [STRING]}.make(0))
 		end
 
 feature -- Access
 
-	schema_directory: STRING
+	schema_directories: LIST [STRING]
 			-- directory where all the schemas loaded here are found
 
 	all_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
@@ -147,7 +147,7 @@ feature -- Status Report
 	has_schema_directory: BOOLEAN
 			-- true if there is a valid schema directory set
 		do
-			Result := not schema_directory.is_empty
+			Result := not schema_directories.is_empty
 		end
 
 	has_schema_for_rm_closure (a_qualified_rm_closure_name: STRING): BOOLEAN
@@ -159,7 +159,7 @@ feature -- Status Report
 	found_valid_schemas: BOOLEAN
 			-- True if any Reference Model schemas were found
 		do
-			Result := not exception_encountered and not valid_top_level_schemas.is_empty
+			Result := not valid_top_level_schemas.is_empty
 		end
 
 	load_attempted: BOOLEAN
@@ -218,18 +218,20 @@ feature {NONE} -- Implementation
 		do
 			if not exception_encountered then
 				all_schemas.wipe_out
-				create dir.make (schema_directory)
-				if not (dir.exists and dir.is_readable) then
-					add_error (ec_bmm_schema_dir_not_valid, <<schema_directory>>)
-				elseif dir.is_empty then
-					add_error (ec_bmm_schema_dir_contains_no_schemas, <<schema_directory>>)
-				else
-					create file_repo.make (schema_directory, Bmm_schema_file_match_regex)
-					across file_repo.matching_paths as paths_csr loop
-						process_schema_file (paths_csr.item)
-					end
-					if all_schemas.is_empty then
-						add_error (ec_bmm_schema_dir_contains_no_schemas, <<schema_directory>>)
+				across schema_directories as sch_dir_csr loop
+					create dir.make (sch_dir_csr.item)
+					if not (dir.exists and dir.is_readable) then
+						add_error (ec_bmm_schema_dir_not_valid, <<sch_dir_csr.item>>)
+					elseif dir.is_empty then
+						add_error (ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
+					else
+						create file_repo.make (sch_dir_csr.item, Bmm_schema_file_match_regex)
+						across file_repo.matching_paths as paths_csr loop
+							process_schema_file (paths_csr.item)
+						end
+						if all_schemas.is_empty then
+							add_error (ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
+						end
 					end
 				end
 			end
@@ -272,7 +274,7 @@ feature {NONE} -- Implementation
 			qualified_rm_closure_name: STRING
 			rm_closures: ARRAYED_LIST [STRING]
 			i: INTEGER
-			finished, incompatible_schema_detected: BOOLEAN
+			finished: BOOLEAN
 			tl_schema: BMM_SCHEMA
 			schema_desc: SCHEMA_DESCRIPTOR
 			publisher_schemas: ARRAYED_LIST [SCHEMA_DESCRIPTOR]
@@ -316,12 +318,9 @@ feature {NONE} -- Implementation
 						else
 							add_error (ec_bmm_schema_basic_validation_failed, <<all_schemas_csr.key, all_schemas_csr.item.errors.as_string>>)
 							if not all_schemas_csr.item.is_bmm_compatible then
-								incompatible_schema_detected := True
+								add_error (ec_bmm_schema_version_incompatible_with_tool, <<all_schemas_csr.key, Bmm_internal_version>>)
 							end
 						end
-					end
-					if incompatible_schema_detected then
-						add_error (ec_bmm_schema_version_incompatible_with_tool, <<schema_directory>>)
 					end
 
 					-- propagate errors found so far

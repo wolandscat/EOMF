@@ -31,7 +31,7 @@ feature -- Application Switches
 			Result.compare_objects
 		ensure
 			value_comparison: Result.object_comparison
-			no_empty_items: Result.for_all (agent (s: STRING): BOOLEAN do Result := attached s and then not s.is_empty end)
+			no_empty_items: not across Result as sch_csr some sch_csr.item.is_empty end
 		end
 
 	set_rm_schemas_load_list (a_schema_list: ARRAYED_LIST [STRING])
@@ -42,21 +42,44 @@ feature -- Application Switches
 			app_cfg.put_string_list_value ("/rm_schemas/load_list", a_schema_list)
 		end
 
-	rm_schema_directory: STRING
-			-- Path of directory where RM schemas are found - note: this should be writable.
+	rm_schema_directories: ARRAYED_LIST [STRING]
+			-- Locations where RM schemas are found - note: this should be writable.
+		local
+			old_path: STRING
 		do
-			Result := app_cfg.string_value_env_var_sub ("/file_system/rm_schema_directory")
+			Result := app_cfg.string_list_value ("/rm_schema_directories")
+			Result.compare_objects
+
+			-- FIXME: for a few versions starting at 2.0.6.2813, scrape up the old single path variable 
+			old_path := app_cfg.string_value ("/file_system/rm_schema_directory")
+			if Result.is_empty and not old_path.is_empty then
+				Result.extend (old_path)
+				app_cfg.remove_resource ("/file_system/rm_schema_directory")
+			end
+		ensure
+			value_comparison: Result.object_comparison
+			no_empty_items: not across Result as sch_csr some sch_csr.item.is_empty end
 		end
 
-	set_rm_schema_directory (a_path: STRING)
-			-- Set the path of directory where RM schemas are found
+	set_rm_schema_directories (a_paths: ARRAYED_LIST [STRING])
+			-- Set locations where RM schemas are found
 		require
-			path_not_empty: not a_path.is_empty
+			paths_not_empty: not across a_paths as path_csr some path_csr.item.is_empty end
 		do
-			app_cfg.put_string_value ("/file_system/rm_schema_directory", a_path)
+			app_cfg.put_string_list_value ("/rm_schema_directories", a_paths)
+		end
+
+	add_rm_schema_directory (a_path: STRING)
+			-- Add location where RM schemas are found
+		require
+			path_not_empty: not a_path.is_empty and not rm_schema_directories.has (a_path)
+		local
+			dir_list: ARRAYED_LIST [STRING]
+		do
+			dir_list := rm_schema_directories
+			dir_list.extend (a_path)
+			set_rm_schema_directories (dir_list)
 		end
 
 end
-
-
 

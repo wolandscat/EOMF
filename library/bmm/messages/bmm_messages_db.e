@@ -25,7 +25,7 @@ feature -- Initialisation
 	make
 		do
 			create message_table.make (60)
-			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in directory $2", ec_bmm_schemas_config_not_valid)
+			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
 			message_table.put ("Reference Model schema file $1 does not exist or not readable", ec_bmm_schema_file_not_valid)
 			message_table.put ("Reference Model schema $1 load failure; reason: $2", ec_bmm_schema_load_failure)
 			message_table.put ("Reference Model schema contains unknown type $1 (object add failed)", ec_model_access_e3)

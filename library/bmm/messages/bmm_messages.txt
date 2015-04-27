@@ -11,7 +11,7 @@
 templates = <
 	["en"] = <
 		-- SCHEMA_ACCESS (RM model checker)
-		["bmm_schemas_config_not_valid"] = <"Reference model schema(s) $1 specified in options not valid or not found in directory $2">
+		["bmm_schemas_config_not_valid"] = <"Reference model schema(s) $1 specified in options not valid or not found in schema directories">
 		["bmm_schema_file_not_valid"] = <"Reference Model schema file $1 does not exist or not readable">
 		["bmm_schema_load_failure"] = <"Reference Model schema $1 load failure; reason: $2">
 		["model_access_e3"] = <"Reference Model schema contains unknown type $1 (object add failed)">
@@ -27,7 +27,7 @@ templates = <
 		["bmm_schema_unknown_exception"] = <"Unknown exception processing RM schemas">
 		["bmm_schema_assertion_violation"] = <"Assertion violation processing RM schemas; original recipient: $1">
 		["bmm_schema_includes_valiidation_failed"] = <"Reference Model schema $1 includes validation failed: %N$2">
-		["bmm_schema_version_incompatible_with_tool"] = <"Reference Model schemas at $1 incompatible with current release of the tool; obtain up to date schemas">
+		["bmm_schema_version_incompatible_with_tool"] = <"Reference Model BMM schema $1 incompatible with current release $2 of the tool; obtain up to date schemas">
 		["bmm_schema_conv_fail_err"] = <"Reference Model schema $1 load data conversion failure; reason: $2">
 
 		["bmm_schema_info_loaded"] = <"Reference Model schema $1 loaded: $2 primitive types, $3 class definitions">
