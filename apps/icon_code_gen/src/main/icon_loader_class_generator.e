@@ -75,7 +75,9 @@ inherit
 	class_initialisation: STRING = ""
 
 	load_feature_top: STRING = "[
-	load_icon_agents: HASH_TABLE [FUNCTION [ANY, TUPLE, EV_PIXMAP], STRING]
+feature -- Access
+
+	icon_load_agents: HASH_TABLE [FUNCTION [ANY, TUPLE, EV_PIXMAP], STRING]
 			-- create pixmap table from pixmap classes
 		once
 			create Result.make (0)
