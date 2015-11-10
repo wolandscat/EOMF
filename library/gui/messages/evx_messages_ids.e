@@ -14,6 +14,8 @@ feature -- Definitions
 		ec_no_pixmap_found: STRING = "no_pixmap_found"
 		ec_unknown_value: STRING = "unknown_value"
 		ec_browse_button_text: STRING = "browse_button_text"
+		ec_add_button_text: STRING = "add_button_text"
+		ec_remove_button_text: STRING = "remove_button_text"
 		ec_ok_button_text: STRING = "ok_button_text"
 		ec_cancel_button_text: STRING = "cancel_button_text"
 		ec_collapse_button_text: STRING = "collapse_button_text"

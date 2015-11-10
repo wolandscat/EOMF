@@ -17,6 +17,8 @@ templates = <
 		-- basic buttons / texts
 		["unknown_value"] = <"(unknown)">
 		["browse_button_text"] = <"Browse...">
+		["add_button_text"] = <"Add...">
+		["remove_button_text"] = <"Remove...">
 		["ok_button_text"] = <"OK">
 		["cancel_button_text"] = <"Cancel">
 

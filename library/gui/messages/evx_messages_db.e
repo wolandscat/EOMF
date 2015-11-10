@@ -24,11 +24,13 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (27)
+			create message_table.make (29)
 			message_table.put ("No pixmap found for $1", ec_get_icon_pixmap)
 			message_table.put ("No pixmap found for $1", ec_no_pixmap_found)
 			message_table.put ("(unknown)", ec_unknown_value)
 			message_table.put ("Browse...", ec_browse_button_text)
+			message_table.put ("Add...", ec_add_button_text)
+			message_table.put ("Remove...", ec_remove_button_text)
 			message_table.put ("OK", ec_ok_button_text)
 			message_table.put ("Cancel", ec_cancel_button_text)
 			message_table.put (">>", ec_collapse_button_text)
