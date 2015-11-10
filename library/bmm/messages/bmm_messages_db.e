@@ -41,7 +41,7 @@ feature -- Initialisation
 			message_table.put ("Unknown exception processing RM schemas", ec_bmm_schema_unknown_exception)
 			message_table.put ("Assertion violation processing RM schemas; original recipient: $1", ec_bmm_schema_assertion_violation)
 			message_table.put ("Reference Model schema $1 includes validation failed: %N$2", ec_bmm_schema_includes_valiidation_failed)
-			message_table.put ("Reference Model schemas at $1 incompatible with current release of the tool; obtain up to date schemas", ec_bmm_schema_version_incompatible_with_tool)
+			message_table.put ("Reference Model BMM schema $1 incompatible with current release $2 of the tool; obtain up to date schemas", ec_bmm_schema_version_incompatible_with_tool)
 			message_table.put ("Reference Model schema $1 load data conversion failure; reason: $2", ec_bmm_schema_conv_fail_err)
 			message_table.put ("Reference Model schema $1 loaded: $2 primitive types, $3 class definitions", ec_bmm_schema_info_loaded)
 			message_table.put ("Merged schema $1 into schema $2", ec_bmm_schema_merged_schema)
