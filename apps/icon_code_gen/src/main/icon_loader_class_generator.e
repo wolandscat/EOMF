@@ -25,7 +25,7 @@ create
 
 feature -- Definitions
 
-	default_class_name: STRING = "ICON_RESOURCES_COMPILED"
+	default_class_name: STRING = "APP_ICON_RESOURCES"
 
 feature -- Initialisation
 
