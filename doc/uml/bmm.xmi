@@ -113,7 +113,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x1f602_1" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x1f602_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="type" xmi:id="BOUML_0x1ff82_0" visibility="public" association="BOUML_ASSOC_0x1ff82_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="type" xmi:id="BOUML_0x1ff82_0" visibility="public" association="BOUML_ASSOC_0x1ff82_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f402_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x1ff82_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x1ff82_0" value="1"/>
@@ -150,7 +150,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x1fc02_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x1fc02_0" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="base_type" xmi:id="BOUML_0x1fc82_0" visibility="public" association="BOUML_ASSOC_0x1fc82_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="base_type" xmi:id="BOUML_0x1fc82_0" visibility="public" association="BOUML_ASSOC_0x1fc82_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f402_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x1fc82_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x1fc82_0" value="1"/>
@@ -158,7 +158,7 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="BMM_GENERIC_TYPE" xmi:id="BOUML_0x1f602_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x1f482_0" general="BOUML_0x1f402_4"/>
-					<ownedAttribute xmi:type="uml:Property" name="generic_parameters" xmi:id="BOUML_0x1fd82_0" visibility="public" association="BOUML_ASSOC_0x1fd82_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="generic_parameters" xmi:id="BOUML_0x1fd82_0" visibility="public" association="BOUML_ASSOC_0x1fd82_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f402_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x1fd82_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x1fd82_0" value="*"/>
@@ -328,7 +328,7 @@
 					</ownedOperation>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="BMM_SCHEMA" xmi:id="BOUML_0x1fe82_4" visibility="package">
-					<ownedAttribute xmi:type="uml:Property" name="class_definitions" xmi:id="BOUML_0x20482_0" visibility="public" association="BOUML_ASSOC_0x20482_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="class_definitions" xmi:id="BOUML_0x20482_0" visibility="public" association="BOUML_ASSOC_0x20482_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f482_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20482_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20482_0" value="*"/>
@@ -486,7 +486,7 @@
 					</ownedAttribute>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="BMM_PACKAGE_CONTAINER" xmi:id="BOUML_0x1ff82_4" visibility="package">
-					<ownedAttribute xmi:type="uml:Property" name="packages" xmi:id="BOUML_0x20782_0" visibility="public" association="BOUML_ASSOC_0x20782_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="packages" xmi:id="BOUML_0x20782_0" visibility="public" association="BOUML_ASSOC_0x20782_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f902_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20782_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20782_0" value="*"/>
@@ -505,7 +505,7 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="BMM_GENERIC_CLASS" xmi:id="BOUML_0x22002_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x22f02_0" general="BOUML_0x1f482_4"/>
-					<ownedAttribute xmi:type="uml:Property" name="generic_parameters" xmi:id="BOUML_0x22f82_0" visibility="public" association="BOUML_ASSOC_0x22f82_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="generic_parameters" xmi:id="BOUML_0x22f82_0" visibility="public" association="BOUML_ASSOC_0x22f82_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1f982_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x22f82_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x22f82_0" value="*"/>
@@ -528,7 +528,7 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x1ff82_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x1ff82_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1ff82_0" association="BOUML_ASSOC_0x1ff82_0" visibility="private" type="BOUML_0x1f502_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1ff82_0" association="BOUML_ASSOC_0x1ff82_0" visibility="private" type="BOUML_0x1f502_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x1ff82_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x1fc02_0" visibility="public">
@@ -538,12 +538,12 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x1fc82_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x1fc82_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1fc82_0" association="BOUML_ASSOC_0x1fc82_0" visibility="private" type="BOUML_0x1f582_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1fc82_0" association="BOUML_ASSOC_0x1fc82_0" visibility="private" type="BOUML_0x1f582_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x1fc82_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x1fd82_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x1fd82_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1fd82_0" association="BOUML_ASSOC_0x1fd82_0" visibility="private" type="BOUML_0x1f602_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x1fd82_0" association="BOUML_ASSOC_0x1fd82_0" visibility="private" type="BOUML_0x1f602_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x1fd82_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x23002_0" visibility="public">
@@ -588,17 +588,17 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x20482_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x20482_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20482_0" association="BOUML_ASSOC_0x20482_0" visibility="private" type="BOUML_0x1fe82_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20482_0" association="BOUML_ASSOC_0x20482_0" visibility="private" type="BOUML_0x1fe82_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x20482_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x20782_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x20782_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20782_0" association="BOUML_ASSOC_0x20782_0" visibility="private" type="BOUML_0x1ff82_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20782_0" association="BOUML_ASSOC_0x20782_0" visibility="private" type="BOUML_0x1ff82_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x20782_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x22f82_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x22f82_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x22f82_0" association="BOUML_ASSOC_0x22f82_0" visibility="private" type="BOUML_0x22002_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x22f82_0" association="BOUML_ASSOC_0x22f82_0" visibility="private" type="BOUML_0x22002_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x22f82_0"/>
 				</packagedElement>
 			</packagedElement>
@@ -619,7 +619,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20002_1" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20002_1" value="*"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="properties" xmi:id="BOUML_0x20902_0" visibility="public" association="BOUML_ASSOC_0x20902_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="properties" xmi:id="BOUML_0x20902_0" visibility="public" association="BOUML_ASSOC_0x20902_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20082_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20902_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20902_0" value="*"/>
@@ -644,7 +644,7 @@
 					<ownedOperation xmi:type="uml:Operation" name="populate_bmm_class_definition" xmi:id="BOUML_0x20382_2" visibility="public" isAbstract="false">
 					</ownedOperation>
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x20a02_0" general="BOUML_0x20002_4"/>
-					<ownedAttribute xmi:type="uml:Property" name="generic_parameter_defs" xmi:id="BOUML_0x21382_0" visibility="public" association="BOUML_ASSOC_0x21382_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="generic_parameter_defs" xmi:id="BOUML_0x21382_0" visibility="public" association="BOUML_ASSOC_0x21382_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20102_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21382_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21382_0" value="*"/>
@@ -681,12 +681,12 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20a82_1" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20a82_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="primitive_types" xmi:id="BOUML_0x21482_0" visibility="public" association="BOUML_ASSOC_0x21482_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="primitive_types" xmi:id="BOUML_0x21482_0" visibility="public" association="BOUML_ASSOC_0x21482_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1fd02_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21482_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21482_0" value="*"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="class_definitions" xmi:id="BOUML_0x21502_0" visibility="public" association="BOUML_ASSOC_0x21502_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="class_definitions" xmi:id="BOUML_0x21502_0" visibility="public" association="BOUML_ASSOC_0x21502_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x1fd02_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21502_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21502_0" value="*"/>
@@ -701,7 +701,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20b82_1" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20b82_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="canonical_packages" xmi:id="BOUML_0x21582_0" visibility="public" association="BOUML_ASSOC_0x21582_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="canonical_packages" xmi:id="BOUML_0x21582_0" visibility="public" association="BOUML_ASSOC_0x21582_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20402_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21582_0" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21582_0" value="*"/>
@@ -795,7 +795,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20282_1" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20282_1" value="1"/>
 					</ownedAttribute>
-					<ownedOperation xmi:type="uml:Operation" name="create_bmm_type" xmi:id="BOUML_0x20482_2" visibility="public" isAbstract="false">
+					<ownedOperation xmi:type="uml:Operation" name="create_bmm_type" xmi:id="BOUML_0x20482_2" visibility="public" isAbstract="true">
 						<ownedParameter xmi:type="uml:Parameter" name="a_schema" xmi:id="BOUML_op_param_8" direction="in">
 							<type xmi:type="uml:Class" xmi:idref="BOUML_0x1fe82_4"/>
 						</ownedParameter>
@@ -811,7 +811,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20302_1" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20302_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x20e02_0" visibility="public" association="BOUML_ASSOC_0x20e02_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x20e02_0" visibility="public" association="BOUML_ASSOC_0x20e02_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20182_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20e02_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20e02_0" value="1"/>
@@ -821,6 +821,13 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20d82_1" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20d82_1" value="1"/>
 					</ownedAttribute>
+					<ownedOperation xmi:type="uml:Operation" name="type_ref" xmi:id="BOUML_0x25682_2" visibility="public" isAbstract="false">
+						<ownedParameter name="return" xmi:id="BOUML_return_33" direction="return">
+							<type xmi:type="uml:Class" xmi:idref="BOUML_0x20182_4"/>
+							<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0_0x25682_2" value="1"/>
+							<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0_0x25682_2" value="1"/>
+						</ownedParameter>
+					</ownedOperation>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="P_BMM_SIMPLE_TYPE" xmi:id="BOUML_0x20282_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x20b82_0" general="BOUML_0x20182_4"/>
@@ -845,7 +852,7 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20482_1" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20482_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="generic_parameter_defs" xmi:id="BOUML_0x20e82_0" visibility="public" association="BOUML_ASSOC_0x20e82_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="generic_parameter_defs" xmi:id="BOUML_0x20e82_0" visibility="public" association="BOUML_ASSOC_0x20e82_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20182_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20e82_0" value="1"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20e82_0" value="*"/>
@@ -855,6 +862,8 @@
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20e02_1" value="*"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20e02_1" value="*"/>
 					</ownedAttribute>
+					<ownedOperation xmi:type="uml:Operation" name="generic_parameter_refs" xmi:id="BOUML_0x25602_2" visibility="public" isAbstract="false">
+					</ownedOperation>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="P_BMM_PACKAGE" xmi:id="BOUML_0x20402_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x20d82_0" general="BOUML_0x20482_4"/>
@@ -879,11 +888,10 @@
 				<packagedElement xmi:type="uml:Class" name="P_BMM_CONTAINER_PROPERTY" xmi:id="BOUML_0x20502_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x21102_0" general="BOUML_0x20082_4"/>
 					<ownedAttribute xmi:type="uml:Property" name="cardinality" xmi:id="BOUML_0x20702_1" visibility="public">
-						<type xmi:type="uml:Class" xmi:idref="BOUML_0x23982_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x20702_1" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20702_1" value="1"/>
 					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21182_0" visibility="public" association="BOUML_ASSOC_0x21182_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21182_0" visibility="public" association="BOUML_ASSOC_0x21182_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20202_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21182_0" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21182_0" value="1"/>
@@ -897,14 +905,14 @@
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20c82_1" value="1"/>
 					</ownedAttribute>
 					<ownedOperation xmi:type="uml:Operation" name="type_def" xmi:id="BOUML_0x23b82_2" visibility="public" isAbstract="false">
-						<ownedParameter name="return" xmi:id="BOUML_return_33" direction="return">
+						<ownedParameter name="return" xmi:id="BOUML_return_34" direction="return">
 							<type xmi:type="uml:Class" xmi:idref="BOUML_0x20282_4"/>
 						</ownedParameter>
 					</ownedOperation>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="P_BMM_SINGLE_PROPERTY_OPEN" xmi:id="BOUML_0x20602_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x21082_0" general="BOUML_0x20082_4"/>
-					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21202_0" visibility="public" association="BOUML_ASSOC_0x21202_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21202_0" visibility="public" association="BOUML_ASSOC_0x21202_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20302_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21202_0" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21202_0" value="1"/>
@@ -915,14 +923,14 @@
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x20c02_1" value="1"/>
 					</ownedAttribute>
 					<ownedOperation xmi:type="uml:Operation" name="type_def" xmi:id="BOUML_0x23c02_2" visibility="public" isAbstract="false">
-						<ownedParameter name="return" xmi:id="BOUML_return_34" direction="return">
+						<ownedParameter name="return" xmi:id="BOUML_return_35" direction="return">
 							<type xmi:type="uml:Class" xmi:idref="BOUML_0x20302_4"/>
 						</ownedParameter>
 					</ownedOperation>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Class" name="P_BMM_GENERIC_PROPERTY" xmi:id="BOUML_0x20682_4" visibility="package">
 					<generalization xmi:type="uml:Generalization" xmi:id="BOUML_0x20f82_0" general="BOUML_0x20082_4"/>
-					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21302_0" visibility="public" association="BOUML_ASSOC_0x21302_0" aggregation="none">
+					<ownedAttribute xmi:type="uml:Property" name="type_def" xmi:id="BOUML_0x21302_0" visibility="public" association="BOUML_ASSOC_0x21302_0" aggregation="composite">
 						<type xmi:type="uml:Class" xmi:idref="BOUML_0x20382_4"/>
 						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x21302_0" value="0"/>
 						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x21302_0" value="1"/>
@@ -952,83 +960,63 @@
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x20902_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x20902_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20902_0" association="BOUML_ASSOC_0x20902_0" visibility="private" type="BOUML_0x1fd02_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20902_0" association="BOUML_ASSOC_0x20902_0" visibility="private" type="BOUML_0x1fd02_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x20902_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21382_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21382_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21382_0" association="BOUML_ASSOC_0x21382_0" visibility="private" type="BOUML_0x1fd02_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21382_0" association="BOUML_ASSOC_0x21382_0" visibility="private" type="BOUML_0x1fd02_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21382_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21482_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21482_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21482_0" association="BOUML_ASSOC_0x21482_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21482_0" association="BOUML_ASSOC_0x21482_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21482_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21502_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21502_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21502_0" association="BOUML_ASSOC_0x21502_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21502_0" association="BOUML_ASSOC_0x21502_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21502_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21582_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21582_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21582_0" association="BOUML_ASSOC_0x21582_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21582_0" association="BOUML_ASSOC_0x21582_0" visibility="private" type="BOUML_0x1fe02_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21582_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x20e02_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x20e02_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20e02_0" association="BOUML_ASSOC_0x20e02_0" visibility="private" type="BOUML_0x20202_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20e02_0" association="BOUML_ASSOC_0x20e02_0" visibility="private" type="BOUML_0x20202_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x20e02_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Dependency" xmi:id="BOUML_0x24a02_0" client="BOUML_0x20282_4" supplier="BOUML_0x20582_4">
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x20e82_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x20e82_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20e82_0" association="BOUML_ASSOC_0x20e82_0" visibility="private" type="BOUML_0x20382_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x20e82_0" association="BOUML_ASSOC_0x20e82_0" visibility="private" type="BOUML_0x20382_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x20e82_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21182_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21182_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21182_0" association="BOUML_ASSOC_0x21182_0" visibility="private" type="BOUML_0x20502_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21182_0" association="BOUML_ASSOC_0x21182_0" visibility="private" type="BOUML_0x20502_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21182_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Dependency" xmi:id="BOUML_0x24a82_0" client="BOUML_0x20582_4" supplier="BOUML_0x20282_4">
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21202_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21202_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21202_0" association="BOUML_ASSOC_0x21202_0" visibility="private" type="BOUML_0x20602_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21202_0" association="BOUML_ASSOC_0x21202_0" visibility="private" type="BOUML_0x20602_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21202_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Dependency" xmi:id="BOUML_0x24b02_0" client="BOUML_0x20602_4" supplier="BOUML_0x20302_4">
 				</packagedElement>
 				<packagedElement xmi:type="uml:Association" xmi:id="BOUML_ASSOC_0x21302_0" visibility="public">
 					<memberEnd xmi:idref="BOUML_0x21302_0"/>
-					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21302_0" association="BOUML_ASSOC_0x21302_0" visibility="private" type="BOUML_0x20682_4" aggregation="composite" isNavigable="false"/>
+					<ownedEnd xmi:type="uml:Property" xmi:id="BOUML_REVERSE_0x21302_0" association="BOUML_ASSOC_0x21302_0" visibility="private" type="BOUML_0x20682_4" aggregation="none" isNavigable="false"/>
 					<memberEnd  xmi:idref="BOUML_REVERSE_0x21302_0"/>
 				</packagedElement>
 				<packagedElement xmi:type="uml:Realization" xmi:id="BOUML_0x24b82_0" client="BOUML_0x23a02_4" supplier="BOUML_0x1fd82_4" realizingClassifier="BOUML_0x1fd82_4">
 				</packagedElement>
 				<packagedElement xmi:type="uml:Realization" xmi:id="BOUML_0x24c02_0" client="BOUML_0x23a82_4" supplier="BOUML_0x1fd82_4" realizingClassifier="BOUML_0x1fd82_4">
-				</packagedElement>
-			</packagedElement>
-			<packagedElement xmi:type="uml:Package" xmi:id="BOUML_0x20e02_22" name ="Support">
-				<packagedElement xmi:type="uml:Class" name="Interval" xmi:id="BOUML_0x23982_4" visibility="package">
-					<ownedTemplateSignature xmi:type="uml:RedefinableTemplateSignature" xmi:id="BOUML_FORMALS_0x23982_4">
-						<parameter xmi:idref="BOUML_TEMPLPARAM0_0x23982_4"/>
-						<ownedParameter xmi:type="uml:ClassifierTemplateParameter" xmi:id="BOUML_TEMPLPARAM0_0x23982_4">
-							<ownedParameteredElement xmi:type="uml:Class" xmi:id="BOUML_TEMPLELEM0_0x23982_4" name="T" templateParameter="BOUML_TEMPLPARAM0_0x23982_4"/>
-						</ownedParameter>
-					</ownedTemplateSignature>
-					<ownedAttribute xmi:type="uml:Property" name="lower" xmi:id="BOUML_0x22782_1" visibility="public">
-						<type xmi:type="uml:Class" xmi:idref="BOUML_datatype_0"/>
-						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x22782_1" value="0"/>
-						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x22782_1" value="1"/>
-					</ownedAttribute>
-					<ownedAttribute xmi:type="uml:Property" name="upper" xmi:id="BOUML_0x22802_1" visibility="public">
-						<type xmi:type="uml:Class" xmi:idref="BOUML_datatype_0"/>
-						<lowerValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_L_0x22802_1" value="0"/>
-						<upperValue xmi:type="uml:LiteralString" xmi:id="BOUML_MULTIPLICITY_U_0x22802_1" value="1"/>
-					</ownedAttribute>
 				</packagedElement>
 			</packagedElement>
 			<packagedElement xmi:type="uml:DataType" xmi:id="BOUML_datatype_1" name="P_BMM_SCHEMA"/>

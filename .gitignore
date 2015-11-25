@@ -7,3 +7,6 @@ EIFGENs/
 *.exe
 *.rc
 *.log
+
+*.bak
+*.session
