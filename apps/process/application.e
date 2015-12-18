@@ -62,18 +62,16 @@ feature {NONE} -- Initialization
 
 feature -- Commands
 
-	test_command (a_cmd_name, a_cmd_ags: STRING)
+	test_command (a_cmd_name, a_cmd_args: STRING)
 			-- run tests for `a_cmd_name'
-		local
-			res: PROCESS_RESULT
 		do
-			res := system_run_command (a_cmd_name, a_cmd_ags, Void)
-			print ("------------- Run: " + a_cmd_name + " " + a_cmd_ags + "---------------%N")
-			print ("Cmd exit_code: " + res.exit_code.out + "%N")
-			if attached res.stdout as att_std_out then
+			system_run_command_query (a_cmd_name, a_cmd_args, Void)
+			print ("------------- Run: " + a_cmd_name + " " + a_cmd_args + "---------------%N")
+			print ("Cmd exit_code: " + last_command_result.exit_code.out + "%N")
+			if attached last_command_result.stdout as att_std_out then
 				print ("Cmd stdout: " + att_std_out + "%N")
 			end
-			if attached res.stderr as att_stderr then
+			if attached last_command_result.stderr as att_stderr then
 				print ("Cmd stderr: " + att_stderr + "%N")
 			end
 		end
