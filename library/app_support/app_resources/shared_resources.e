@@ -314,7 +314,9 @@ feature -- External Commands
 			proc: PROCESS
             cmd_line: STRING
 		do
-			if command_template_cache.has (a_cmd_name) then
+			if failed_command_template_cache.has (a_cmd_name) then
+				Result := False
+			elseif command_template_cache.has (a_cmd_name) then
 				Result := True
 			else
                 cmd_line := standard_command_line (System_which_command_template, a_cmd_name)
@@ -345,7 +347,13 @@ feature -- External Commands
 							end
 						end (a_cmd_name, ?)
 				)
-                proc.redirect_error_to_agent (agent (s: STRING) do last_command_check_result.append_stderr (s) end)
+                proc.redirect_error_to_agent (
+					agent (cmd_name, s: STRING)
+                		do
+                			last_command_check_result.append_stderr (s)
+							failed_command_template_cache.extend (cmd_name)
+						end (a_cmd_name, ?)
+                )
 				proc.launch
 				proc.wait_for_exit
                 last_command_check_result.set_exit_code (proc.exit_code)
@@ -573,6 +581,12 @@ end
 			create Result.make (0)
 		end
 
+	failed_command_template_cache: ARRAYED_SET [STRING]
+		once ("PROCESS")
+			create Result.make (0)
+			Result.compare_objects
+		end
+
 	standard_put_system_command (a_command_line, a_command_name: STRING)
 			-- for ay platform except cygwin:
 			-- manually add a command with its command line to the command table, usually to compensate for the command
@@ -694,7 +708,9 @@ feature -- Cygwin
 			proc: PROCESS
 		do
 			if is_cygwin then
-				if cygwin_command_template_list.has (a_cmd_name) then
+				if failed_cygwin_command_template_list.has (a_cmd_name) then
+					Result := False
+				elseif cygwin_command_template_list.has (a_cmd_name) then
 					Result := True
 				else
 					create pf
@@ -710,7 +726,12 @@ feature -- Cygwin
 								end
 							end (a_cmd_name, ?)
 					)
-					proc.redirect_error_to_agent (agent (s: STRING) do end)
+					proc.redirect_error_to_agent (
+						agent (cmd_name, s: STRING)
+							do
+								failed_cygwin_command_template_list.extend (cmd_name)
+							end (a_cmd_name, ?)
+					)
 					proc.launch
 					proc.wait_for_exit
 					Result := proc.exit_code = 0
@@ -722,6 +743,13 @@ feature -- Cygwin
 			-- list of command names known in cygwin. We record just names, because all cygwin
 			-- commands have to be executed from within a cygwin bash shell, which will work out
 			-- paths of commands from the environment.
+		once ("PROCESS")
+			create Result.make (0)
+			Result.compare_objects
+		end
+
+	failed_cygwin_command_template_list: ARRAYED_SET [STRING]
+			-- list of command names known to have been tested and found not present in cygwin.
 		once ("PROCESS")
 			create Result.make (0)
 			Result.compare_objects
