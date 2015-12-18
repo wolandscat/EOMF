@@ -146,7 +146,7 @@ feature -- External Commands
 			elseif is_mac_os_x then
 				Result := "open"
 			else
-   				Result := standard_command ("xterm") 
+   				Result := standard_command ("xterm")
 				if not Result.is_empty then
                     Result.replace_substring_all (Arguments_pos_param, "-e vi")
                 else
@@ -159,11 +159,11 @@ feature -- External Commands
 			-- A reasonable name of a text editor based on operating system.
 		once ("PROCESS")
    			if is_windows then
-   				Result := standard_command ("Notepad") 
+   				Result := standard_command ("Notepad")
 			elseif is_mac_os_x then
 				Result := "open -t"
 			else
-   				Result := standard_command ("xterm") 
+   				Result := standard_command ("xterm")
 				if not Result.is_empty then
                     Result.replace_substring_all (Arguments_pos_param, "-e vi")
                 else
@@ -379,6 +379,8 @@ feature -- External Commands
 				-- if directory is specified, then insert a "cd dir;" before the command
 				if attached in_directory as att_dir then
 					cmd_line.replace_substring_all (Command_name_pos_param, "cd `cygpath -u '" + in_directory + "'`; " + a_cmd_name)
+				else
+					cmd_line.replace_substring_all (Command_name_pos_param, a_cmd_name)
 				end
 				cmd_line.replace_substring_all (Arguments_pos_param, a_cmd_switches_args)
 				do_system_run_command_query (cmd_line, Void)
@@ -607,12 +609,12 @@ end
         do
             Result := last_command_result.succeeded
         end
- 
+
     last_command_check_succeeded: BOOLEAN
         do
             Result := last_command_check_result.succeeded
         end
- 
+
     last_command_result_cache: CELL [PROCESS_RESULT]
 			-- cached object for last run command
         once ("PROCESS")
@@ -626,8 +628,8 @@ end
         end
 
     last_command_check_result_cache: CELL [PROCESS_RESULT]
-			-- cached object for last run command check; we separate this from 
-			-- `last_command_result_cache' because otherwise in workbench mode, 
+			-- cached object for last run command check; we separate this from
+			-- `last_command_result_cache' because otherwise in workbench mode,
 			-- pre-condition calls to `standard_has_command' pollute the main
 			-- command result cache
         once ("PROCESS")
@@ -717,7 +719,7 @@ feature -- Cygwin
 		end
 
 	cygwin_command_template_list: ARRAYED_SET [STRING]
-			-- list of command names known in cygwin. We record just names, because all cygwin 
+			-- list of command names known in cygwin. We record just names, because all cygwin
 			-- commands have to be executed from within a cygwin bash shell, which will work out
 			-- paths of commands from the environment.
 		once ("PROCESS")
