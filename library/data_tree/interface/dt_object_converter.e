@@ -291,11 +291,17 @@ end
 						fld_att_dyn_tid := attached_type (dynamic_type (eif_fld_val))
 						fld_static_tid := field_static_type_of_type (i, dynamic_type (an_obj))
 
-						-- the Eiffel object field is an INTERVAL[PART_COMPARABLE]; convert to DT_PRIMITIVE_OBJECT_INTERVAL
-						if is_dt_primitive_interval_conforming_type (fld_att_dyn_tid) then
-							if attached {INTERVAL[PART_COMPARABLE]} eif_fld_val as eif_prim_ivl then
+						-- the Eiffel object field is a DT primitive type then
+						if is_dt_primitive_atomic_type (fld_att_dyn_tid) then
+							create a_dt_attr.make_single (eif_fld_name)
+							a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_anonymous (eif_fld_val))
+							a_dt_co.put_attribute (a_dt_attr)
+
+						-- the Eiffel object field is a SEQUENCE of some DT primitive type
+						elseif is_dt_primitive_sequence_conforming_type (fld_att_dyn_tid) then
+							if attached {SEQUENCE[ANY]} eif_fld_val as eif_prim_seq and then not eif_prim_seq.is_empty then -- only include it if non-empty
 								create a_dt_attr.make_single (eif_fld_name)
-								a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_INTERVAL}.make_anonymous (eif_prim_ivl))
+								a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_LIST}.make_anonymous (eif_prim_seq))
 								a_dt_co.put_attribute (a_dt_attr)
 							end
 
@@ -313,19 +319,13 @@ end
 								a_dt_co.put_attribute (a_dt_attr)
 							end
 
-						-- the Eiffel object field is a SEQUENCE of some DT primitive type
-						elseif is_dt_primitive_sequence_conforming_type (fld_att_dyn_tid) then
-							if attached {SEQUENCE[ANY]} eif_fld_val as eif_prim_seq and then not eif_prim_seq.is_empty then -- only include it if non-empty
+						-- the Eiffel object field is an INTERVAL[PART_COMPARABLE]; convert to DT_PRIMITIVE_OBJECT_INTERVAL
+						elseif is_dt_primitive_interval_conforming_type (fld_att_dyn_tid) then
+							if attached {INTERVAL[PART_COMPARABLE]} eif_fld_val as eif_prim_ivl then
 								create a_dt_attr.make_single (eif_fld_name)
-								a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_LIST}.make_anonymous (eif_prim_seq))
+								a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_INTERVAL}.make_anonymous (eif_prim_ivl))
 								a_dt_co.put_attribute (a_dt_attr)
 							end
-
-						-- the Eiffel object field is a DT primitive type then
-						elseif is_dt_primitive_atomic_type (fld_att_dyn_tid) then
-							create a_dt_attr.make_single (eif_fld_name)
-							a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_anonymous (eif_fld_val))
-							a_dt_co.put_attribute (a_dt_attr)
 
 						-- the Eiffel object field is a complex object, or else a SEQUENCE or HASH_TABLE of a complex object
 						else
