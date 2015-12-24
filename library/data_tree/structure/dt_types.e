@@ -23,30 +23,24 @@ feature {NONE} -- Definitions
 		once
 			create Result.make (0)
 
-			Result.extend (({NATURAL}).type_id)
 			Result.extend (({NATURAL_8}).type_id)
 			Result.extend (({NATURAL_16}).type_id)
 			Result.extend (({NATURAL_32}).type_id)
 			Result.extend (({NATURAL_64}).type_id)
 
-			Result.extend (({INTEGER}).type_id)
 			Result.extend (({INTEGER_8}).type_id)
 			Result.extend (({INTEGER_16}).type_id)
 			Result.extend (({INTEGER_32}).type_id)
 			Result.extend (({INTEGER_64}).type_id)
 
-			Result.extend (({REAL}).type_id)
 			Result.extend (({REAL_32}).type_id)
 			Result.extend (({REAL_64}).type_id)
-			Result.extend (({DOUBLE}).type_id)
 
 			Result.extend (({BOOLEAN}).type_id)
 
-			Result.extend (({CHARACTER}).type_id)
 			Result.extend (({CHARACTER_8}).type_id)
 			Result.extend (({CHARACTER_32}).type_id)
 
-			Result.extend (({STRING}).type_id)
 			Result.extend (({STRING_8}).type_id)
 			Result.extend (({STRING_32}).type_id)
 
@@ -70,30 +64,24 @@ feature {NONE} -- Definitions
 		once
 			Create Result.make (0)
 
-			Result.extend (({SEQUENCE [NATURAL]}).type_id)
 			Result.extend (({SEQUENCE [NATURAL_8]}).type_id)
 			Result.extend (({SEQUENCE [NATURAL_16]}).type_id)
 			Result.extend (({SEQUENCE [NATURAL_32]}).type_id)
 			Result.extend (({SEQUENCE [NATURAL_64]}).type_id)
 
-			Result.extend (({SEQUENCE [INTEGER]}).type_id)
 			Result.extend (({SEQUENCE [INTEGER_8]}).type_id)
 			Result.extend (({SEQUENCE [INTEGER_16]}).type_id)
 			Result.extend (({SEQUENCE [INTEGER_32]}).type_id)
 			Result.extend (({SEQUENCE [INTEGER_64]}).type_id)
 
-			Result.extend (({SEQUENCE [REAL]}).type_id)
 			Result.extend (({SEQUENCE [REAL_32]}).type_id)
 			Result.extend (({SEQUENCE [REAL_64]}).type_id)
-			Result.extend (({SEQUENCE [DOUBLE]}).type_id)
 
 			Result.extend (({SEQUENCE [BOOLEAN]}).type_id)
 
-			Result.extend (({SEQUENCE [CHARACTER]}).type_id)
 			Result.extend (({SEQUENCE [CHARACTER_8]}).type_id)
 			Result.extend (({SEQUENCE [CHARACTER_32]}).type_id)
 
-			Result.extend (({SEQUENCE [STRING]}).type_id)
 			Result.extend (({SEQUENCE [STRING_8]}).type_id)
 			Result.extend (({SEQUENCE [STRING_32]}).type_id)
 
@@ -116,22 +104,18 @@ feature {NONE} -- Definitions
 		once
 			Create Result.make (0)
 
-			Result.extend (({INTERVAL [NATURAL]}).type_id)
 			Result.extend (({INTERVAL [NATURAL_8]}).type_id)
 			Result.extend (({INTERVAL [NATURAL_16]}).type_id)
 			Result.extend (({INTERVAL [NATURAL_32]}).type_id)
 			Result.extend (({INTERVAL [NATURAL_64]}).type_id)
 
-			Result.extend (({INTERVAL [INTEGER]}).type_id)
 			Result.extend (({INTERVAL [INTEGER_8]}).type_id)
 			Result.extend (({INTERVAL [INTEGER_16]}).type_id)
 			Result.extend (({INTERVAL [INTEGER_32]}).type_id)
 			Result.extend (({INTERVAL [INTEGER_64]}).type_id)
 
-			Result.extend (({INTERVAL [REAL]}).type_id)
 			Result.extend (({INTERVAL [REAL_32]}).type_id)
 			Result.extend (({INTERVAL [REAL_64]}).type_id)
-			Result.extend (({INTERVAL [DOUBLE]}).type_id)
 
 			Result.extend (({INTERVAL [DATE]}).type_id)
 			Result.extend (({INTERVAL [DATE_TIME]}).type_id)
@@ -149,22 +133,18 @@ feature {NONE} -- Definitions
 		once
 			Create Result.make (0)
 
-			Result.extend (({SEQUENCE [INTERVAL [NATURAL]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [NATURAL_8]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [NATURAL_16]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [NATURAL_32]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [NATURAL_64]]}).type_id)
 
-			Result.extend (({SEQUENCE [INTERVAL [INTEGER]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [INTEGER_8]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [INTEGER_16]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [INTEGER_32]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [INTEGER_64]]}).type_id)
 
-			Result.extend (({SEQUENCE [INTERVAL [REAL]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [REAL_32]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [REAL_64]]}).type_id)
-			Result.extend (({SEQUENCE [INTERVAL [DOUBLE]]}).type_id)
 
 			Result.extend (({SEQUENCE [INTERVAL [DATE]]}).type_id)
 			Result.extend (({SEQUENCE [INTERVAL [DATE_TIME]]}).type_id)
