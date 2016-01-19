@@ -310,6 +310,8 @@ feature -- Commands
 			precursor
 			checked_for_rules := False
 			create serialisation_rules.make
+			xml_nodes.wipe_out
+			create xml_document.make
 
 			-- set up boilerplate parts of XML document
 			create xml_decl.make_in_document (xml_document, Default_doc_version, Default_doc_encoding, False)
