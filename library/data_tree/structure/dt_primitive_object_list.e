@@ -49,54 +49,47 @@ feature -- Modification
 			al_code_phrase: ARRAYED_LIST [TERMINOLOGY_CODE]
 			al_path: ARRAYED_LIST [OG_PATH]
 		do
-			if attached {ARRAYED_LIST [STRING]} a_value as att_al then
+			-- If `a_value' is of an attached generic type, use as is
+			if attached {ARRAYED_LIST [ANY]} a_value then
 				value := a_value
-			elseif attached {ARRAYED_LIST [detachable STRING]} a_value as det_al then
-				create al_string.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_string.extend (v) end end
-				value := al_string
-			elseif attached {ARRAYED_LIST [ISO8601_DATE]} a_value as att_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [detachable ISO8601_DATE]} a_value as det_al then
-				create al_date.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_date.extend (v) end end
-				value := al_date
-			elseif attached {ARRAYED_LIST [ISO8601_TIME]} a_value as att_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [ISO8601_DATE_TIME]} a_value as att_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [ISO8601_DURATION]} a_value as att_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [TERMINOLOGY_CODE]} a_value as att_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [detachable TERMINOLOGY_CODE]} a_value as det_al then
-				create al_code_phrase.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_code_phrase.extend (v) end end
-				value := al_code_phrase
-			elseif attached {ARRAYED_LIST [OG_PATH]} a_value as det_al then
-				value := a_value
-			elseif attached {ARRAYED_LIST [detachable OG_PATH]} a_value as det_al then
-				create al_path.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_path.extend (v) end end
-				value := al_path
-			--
-			-- VOID-SAFETY: this is a hack required to convert non-void safe objects whose types are
-			-- assumed to be detachable in the ODIN parser code
-			--
-			elseif attached {ARRAYED_LIST [detachable ISO8601_TIME]} a_value as det_al then
-				create al_time.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_time.extend (v) end end
-				value := al_time
-			elseif attached {ARRAYED_LIST [detachable ISO8601_DATE_TIME]} a_value as det_al then
-				create al_date_time.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_date_time.extend (v) end end
-				value := al_date_time
-			elseif attached {ARRAYED_LIST [detachable ISO8601_DURATION]} a_value as det_al then
-				create al_duration.make (0)
-				across det_al as al_csr loop if attached al_csr.item as v then al_duration.extend (v) end end
-				value := al_duration
 			else
-				value := a_value
+				if attached {ARRAYED_LIST [detachable STRING]} a_value as det_al then
+					create al_string.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_string.extend (v) end end
+					value := al_string
+				elseif attached {ARRAYED_LIST [detachable ISO8601_DATE]} a_value as det_al then
+					create al_date.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_date.extend (v) end end
+					value := al_date
+				elseif attached {ARRAYED_LIST [detachable TERMINOLOGY_CODE]} a_value as det_al then
+					create al_code_phrase.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_code_phrase.extend (v) end end
+					value := al_code_phrase
+				elseif attached {ARRAYED_LIST [detachable OG_PATH]} a_value as det_al then
+					create al_path.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_path.extend (v) end end
+					value := al_path
+				elseif attached {ARRAYED_LIST [detachable ISO8601_TIME]} a_value as det_al then
+					create al_time.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_time.extend (v) end end
+					value := al_time
+				elseif attached {ARRAYED_LIST [detachable ISO8601_DATE_TIME]} a_value as det_al then
+					create al_date_time.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_date_time.extend (v) end end
+					value := al_date_time
+				elseif attached {ARRAYED_LIST [detachable ISO8601_DURATION]} a_value as det_al then
+					create al_duration.make (0)
+					across det_al as al_csr loop if attached al_csr.item as v then al_duration.extend (v) end end
+					value := al_duration
+				else
+					create {ARRAYED_LIST[ANY]} value.make (0)
+					from a_value.start until a_value.off loop
+						if attached a_value.item as v then
+							value.extend (v)
+						end
+						a_value.forth
+					end
+				end
 			end
 			im_type_name := a_value.generating_type
 		end
