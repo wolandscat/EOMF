@@ -26,18 +26,6 @@ inherit
 create
 	make_identified, make_anonymous
 
-feature -- Access
-
-	value: ANY
-
-feature -- Modification
-
-	set_value (a_value: ANY)
-		do
-			value := a_value
-			im_type_name := a_value.generating_type
-		end
-
 feature -- Conversion
 
 	as_serialised_string (string_converter: FUNCTION [ANY, TUPLE [ANY], STRING]; cleaner: detachable FUNCTION [ANY, TUPLE [STRING], STRING]): STRING

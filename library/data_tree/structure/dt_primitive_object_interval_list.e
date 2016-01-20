@@ -15,6 +15,9 @@ class DT_PRIMITIVE_OBJECT_INTERVAL_LIST
 
 inherit
 	DT_OBJECT_LEAF
+		redefine
+			value
+		end
 
 create
 	make_identified, make_anonymous
@@ -22,14 +25,6 @@ create
 feature -- Access
 
 	value: ARRAYED_LIST [INTERVAL [PART_COMPARABLE]]
-
-feature -- Modification
-
-	set_value (a_value: like value)
-		do
-			value := a_value
-			im_type_name := a_value.generating_type
-		end
 
 feature -- Conversion
 

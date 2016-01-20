@@ -17,6 +17,8 @@ inherit
 			{NONE} as_object
 		undefine
 			default_create
+		redefine
+			value
 		end
 
 create
@@ -26,13 +28,6 @@ feature -- Access
 
 	value: OG_PATH
 			-- path reference
-
-feature -- Modification
-
-	set_value (a_value: like value)
-		do
-			value := a_value
-		end
 
 feature -- Output
 

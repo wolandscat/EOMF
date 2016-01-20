@@ -41,8 +41,6 @@ feature -- Access
 
 	value: ANY
 			-- data item of this node
-		deferred
-		end
 
 feature -- Representation
 
@@ -61,7 +59,9 @@ feature -- Conversion
 feature -- Modification
 
 	set_value (a_value: like value)
-		deferred
+		do
+			value := a_value
+			im_type_name := a_value.generating_type
 		end
 
 feature -- Output
