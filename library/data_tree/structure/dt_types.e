@@ -14,6 +14,30 @@ inherit
 		export
 			{NONE} all;
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
+		redefine
+			is_attached_type, attached_type
+		end
+
+feature {NONE} -- INTERNAL overrides
+
+	is_attached_type (a_type_id: INTEGER): BOOLEAN
+				-- Is `a_type_id' an attached type?
+		do
+			if type_of_type (a_type_id).is_expanded then
+				Result := True
+			else
+				Result := {ISE_RUNTIME}.is_attached_type (a_type_id)
+			end
+		end
+
+	attached_type (type_id: INTEGER): INTEGER
+				-- Attached version of `type_id'.
+		do
+			if type_of_type (type_id).is_expanded then
+				Result := type_id
+			else
+				Result := {ISE_RUNTIME}.attached_type (type_id)
+			end
 		end
 
 feature {NONE} -- Definitions
