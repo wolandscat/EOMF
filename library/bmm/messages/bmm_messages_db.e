@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (60)
+			create message_table.make (61)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
 			message_table.put ("Reference Model schema file $1 does not exist or not readable", ec_bmm_schema_file_not_valid)
 			message_table.put ("Reference Model schema $1 load failure; reason: $2", ec_bmm_schema_load_failure)
@@ -36,6 +36,7 @@ feature -- Initialisation
 			message_table.put ("No Reference Model schema found for package '$1'", ec_model_access_e7)
 			message_table.put ("Reference Model schema $1 failed post-merge validation; errors:%N$2", ec_bmm_schema_post_merge_validate_fail)
 			message_table.put ("Reference Model included schema $1 not found or failed to load", ec_bmm_schema_included_schema_not_found)
+			message_table.put ("Reference Model including schema $1 not valid", ec_bmm_schema_including_schema_not_valid)
 			message_table.put ("Reference Model schema $1 includes a schema that failed to load", ec_bmm_schema_include_failed_to_load)
 			message_table.put ("Reference Model schema $1 failed basic validation; errors:%N$2", ec_bmm_schema_basic_validation_failed)
 			message_table.put ("Unknown exception processing RM schemas", ec_bmm_schema_unknown_exception)

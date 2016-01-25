@@ -21,6 +21,7 @@ feature -- Definitions
 		ec_model_access_e7: STRING = "model_access_e7"
 		ec_bmm_schema_post_merge_validate_fail: STRING = "bmm_schema_post_merge_validate_fail"
 		ec_bmm_schema_included_schema_not_found: STRING = "bmm_schema_included_schema_not_found"
+		ec_bmm_schema_including_schema_not_valid: STRING = "bmm_schema_including_schema_not_valid"
 		ec_bmm_schema_include_failed_to_load: STRING = "bmm_schema_include_failed_to_load"
 		ec_bmm_schema_basic_validation_failed: STRING = "bmm_schema_basic_validation_failed"
 		ec_bmm_schema_unknown_exception: STRING = "bmm_schema_unknown_exception"

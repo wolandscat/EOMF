@@ -22,6 +22,7 @@ templates = <
 		["model_access_e7"] = <"No Reference Model schema found for package '$1'">
 		["bmm_schema_post_merge_validate_fail"] = <"Reference Model schema $1 failed post-merge validation; errors:%N$2">
 		["bmm_schema_included_schema_not_found"] = <"Reference Model included schema $1 not found or failed to load">
+		["bmm_schema_including_schema_not_valid"] = <"Reference Model including schema $1 not valid">
 		["bmm_schema_include_failed_to_load"] = <"Reference Model schema $1 includes a schema that failed to load">
 		["bmm_schema_basic_validation_failed"] = <"Reference Model schema $1 failed basic validation; errors:%N$2">
 		["bmm_schema_unknown_exception"] = <"Unknown exception processing RM schemas">
