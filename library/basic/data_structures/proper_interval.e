@@ -198,47 +198,55 @@ feature -- Comparison
 		end
 
 	intersects (other: INTERVAL [G]): BOOLEAN
-			-- True if there is any overlap between intervals represented by Current and other
+			-- True if there is any overlap between intervals represented by Current and `other'. True if at least one limit
+			-- of other is strictly inside the limits of this interval
 		do
-			Result := unbounded or other.unbounded or
-				(lower_unbounded and (other.lower_unbounded or
-					(attached other.lower as other_l and then attached upper as u and then u >= other_l))) or
-				(upper_unbounded and (other.upper_unbounded or
-					(attached other.upper as other_u and then attached lower as l and then l <= other_u))) or
-				((attached other.lower as other_l and then attached upper as u and then u >= other_l) or
-					 (attached other.upper as other_u and then attached lower as l and then l <= other_u))
+			Result :=
+				-- either unbounded
+				unbounded or other.unbounded or
+				-- at least one interval with lower unbounded
+				lower_unbounded and (other.lower_unbounded or (attached other.lower as other_l and then has (other_l))) or
+				-- at least one interval with upper unbounded
+				upper_unbounded and (other.upper_unbounded or (attached other.upper as other_u and then has (other_u))) or
+				-- both intervals bounded
+				((other.lower_included and attached other.lower as other_l and then has (other_l)) or
+				 (other.upper_included and attached other.upper as other_u and then has (other_u)) or
+				 (lower_included and attached lower as l and then other.has (l)) or
+				 (upper_included and attached upper as u and then other.has (u)) or
+					-- currently undecidable case due to lack of way of computing 'is_empty' for an interval
+					-- otherwise we would see if |lower..other.upper| was not empty or else |upper..other.lower| is not empty
+					False
+				)
+
 		end
 
 	contains (other: INTERVAL [G]): BOOLEAN
-			-- Does current interval properly contain `other'? True if at least one limit of other
-			-- is stricly inside the limits of this interval
+			-- Does current interval properly contain `other'?
 		do
-			if other.lower_unbounded then
-				if other.upper_unbounded then
-					Result := lower_unbounded and upper_unbounded
-				else
-					Result := lower_unbounded and then attached other.upper as other_u and then attached upper as u and then other_u < u
-				end
-			elseif other.upper_unbounded then
-				Result := upper_unbounded and then attached other.lower as other_l and then attached lower as l and then l < other_l
+			-- unbouned contains any interval other than unbounded
+			if unbounded then
+				Result := not other.unbounded
+
+			-- if lower unbounded, then other's upper has to be inside Current
 			elseif lower_unbounded then
-				if upper_unbounded then
-					Result := True
-				else
-					Result := attached other.upper as other_u and then attached upper as u and then other_u <= u
-				end
+				Result := not other.upper_unbounded and attached other.upper as other_u and then has (other_u)
+
+			-- if upper unbounded, then other's lower has to fit inside Current
 			elseif upper_unbounded then
-				Result := attached other.lower as other_l and then attached lower as l and then l <= other_l
-			elseif attached other.lower as other_l and then attached lower as l and then
-				attached other.upper as other_u and then attached upper as u
-			then
-				if l = other_l then
-					Result := other_u < u
-				elseif u = other_u then
-					Result := l < other_l
-				else
-					Result :=  l < other_l and other_u < u
-				end
+				Result := not other.lower_unbounded and attached other.lower as other_l and then has (other_l)
+
+			-- if other.lower unbounded, then upper has to be inside other
+			elseif other.lower_unbounded then
+				Result := not upper_unbounded and attached upper as u and then other.has (u)
+
+			-- if other.upper unbounded, then lower has to fit inside other
+			elseif other.upper_unbounded then
+				Result := not lower_unbounded and attached lower as l and then other.has (l)
+
+			-- both intervals are bounded
+			else
+				Result := attached lower as l and then attached upper as u and then (other.has (l) and other.has (u)) or
+				attached other.lower as other_l and then attached other.upper as other_u and then (has (other_l) and has (other_u))
 			end
 		end
 

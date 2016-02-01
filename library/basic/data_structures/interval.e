@@ -91,7 +91,7 @@ feature -- Comparison
 			-- True if current object's interval is semantically same as `other'
 			-- even if the concrete types are different
 		do
-			Result := 
+			Result :=
 				lower ~ other.lower and
 				upper ~ other.upper and
 				upper_included = other.upper_included and
