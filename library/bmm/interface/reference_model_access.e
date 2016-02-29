@@ -83,7 +83,7 @@ feature -- Initialisation
 feature -- Access
 
 	schema_directories: LIST [STRING]
-			-- directory where all the schemas loaded here are found
+			-- List of directories where all the schemas loaded here are found
 
 	all_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
 			-- all schemas found and loaded from `schema_directory'
