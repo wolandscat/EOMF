@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Abstraction of a model component that contains packages"
+	description: "Persisted form of a model component that contains packages"
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

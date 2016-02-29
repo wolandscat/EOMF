@@ -20,17 +20,19 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; any_class: BMM_CLASS)
+	make (a_name: STRING; a_doc: detachable STRING; any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
+			documentation := a_doc
 			any_class_definition := any_class
 		end
 
-	make_constrained (a_name: STRING; a_conforms_to_type, any_class: BMM_CLASS)
+	make_constrained (a_name: STRING; a_doc: detachable STRING; a_conforms_to_type, any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
+			documentation := a_doc
 			conforms_to_type := a_conforms_to_type
 			any_class_definition := any_class
 		end
@@ -40,8 +42,10 @@ feature -- Access (attributes from schema)
 	name: STRING
 			-- name of the parameter, e.g. 'T' etc
 
+	documentation: detachable STRING
+
 	conforms_to_type: detachable BMM_CLASS
-			-- optional conformance constraint derived from `conforms_to_type'
+			-- optional conformance constraint that must be another valid class name.
 
 	inheritance_precursor: detachable BMM_GENERIC_PARAMETER
 			-- if set, is the corresponding generic parameter definition in an ancestor class

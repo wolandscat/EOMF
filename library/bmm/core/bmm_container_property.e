@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "[
-				 Subtype of BMM_PROPERTY_DEFINITION that represents a container type based on one of the 
+				 Subtype of BMM_PROPERTY that represents a container type based on one of the 
 				 inbuilt types List <>, Set <>, Array <>.
 				 ]"
 	keywords:    "model, UML"
@@ -23,9 +23,9 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
+	make (a_name: STRING; a_doc: detachable STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
-			precursor (a_name, a_type, is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag)
+			precursor (a_name, a_doc, a_type, is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag)
 			create cardinality.make_open
 		end
 

@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Basic Meta-model model abstraction"
+	description: "Model of a BMM schema (along with what is inherited from BMM_SCHEMA_CORE)."
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -67,7 +67,7 @@ feature -- Access
 		end
 
 	enumeration_types: ARRAYED_SET [STRING]
-			-- list of keys in `class_definitions' of items that are enumeartion types, as defined in input schema
+			-- list of keys in `class_definitions' of items that are enumeration types, as defined in input schema
 		do
 			create Result.make (0)
 			Result.compare_objects
@@ -86,7 +86,7 @@ feature -- Access
 			if attached class_definition (any_type) as class_def then
 				Result := class_def
 			else
-				create Result.make (any_type, True)
+				create Result.make (any_type, "Root class of type system", True)
 			end
 		end
 

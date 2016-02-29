@@ -18,7 +18,7 @@ inherit
 feature -- Access (persisted)
 
 	type: detachable STRING
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
+			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
 	type_def: detachable P_BMM_TYPE
@@ -26,7 +26,7 @@ feature -- Access (persisted)
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
 	container_type: STRING
-			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE_SPECIFIER
+			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
 			create Result.make_from_string (unknown_type_name)
@@ -35,7 +35,7 @@ feature -- Access (persisted)
 feature -- Access
 
 	type_ref: detachable P_BMM_TYPE
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
+			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		do
 			if not attached type_def and attached type as att_type then

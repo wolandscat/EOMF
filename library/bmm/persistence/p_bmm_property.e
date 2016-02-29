@@ -9,6 +9,9 @@ note
 
 deferred class P_BMM_PROPERTY
 
+inherit
+	P_BMM_MODEL_ELEMENT
+
 feature -- Access (persisted)
 
 	name: STRING
@@ -55,7 +58,7 @@ feature -- Factory
 			if attached type_def as td then
 				td.create_bmm_type (a_bmm_schema, a_class_def)
 				if attached td.bmm_type as bt then
-					create bmm_property_definition.make (name, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
+					create bmm_property_definition.make (name, documentation, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
 				end
 			end
 		end

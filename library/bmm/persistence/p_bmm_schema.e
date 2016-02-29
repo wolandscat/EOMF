@@ -92,7 +92,7 @@ feature -- Access (Attributes from schema load post-processing)
 
 	canonical_packages: HASH_TABLE [P_BMM_PACKAGE, STRING]
 			-- package structure in which all top-level qualified package names like xx.yy.zz have been
-			-- expanded out to a hierarchy of BMM_PACKAGE_DEFINITION objects
+			-- expanded out to a hierarchy of BMM_PACKAGE objects
 		do
 			if attached canonical_packages_cache as cpc then
 				Result := cpc
@@ -757,7 +757,7 @@ feature -- Factory
 			new_bmm_schema.set_archetype_rm_closure_packages (archetype_rm_closure_packages.deep_twin)
 
 			--------- PASS 2 ----------
-			-- populate BMM_CLASS_DEFINITION objects
+			-- populate BMM_CLASS objects
 			do_all_classes_in_order (
 				agent (a_class_def: P_BMM_CLASS; a_bmm_schema: BMM_SCHEMA)
 					do
@@ -766,7 +766,7 @@ feature -- Factory
 		end
 
 	add_bmm_schema_class_definition (a_pkg: P_BMM_PACKAGE; a_class_name: STRING)
-			-- create the BMM_CLASS_DEFINITION object, add it to the BMM_SCHEMA;
+			-- create the BMM_CLASS object, add it to the BMM_SCHEMA;
 			-- set its source_schema_id; set its primitive_type flag; its BMM_SCHEMA link will also be set
 		do
 			if attached class_definition (a_class_name) as p_class_def then

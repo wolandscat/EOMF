@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Abstraction of a package as a tree structure whose nodes can contain "
+	description: "Persisted form of a package as a tree structure whose nodes can contain more packages and/or classes."
 	keywords:    "basic meta-model, BMM, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -16,6 +16,8 @@ inherit
 		export
 			{NONE} all
 		end
+
+	P_BMM_MODEL_ELEMENT
 
 	DT_CONVERTIBLE
 		redefine
@@ -108,7 +110,7 @@ feature -- Factory
 		local
 			new_bmm_package_definition: BMM_PACKAGE
 		do
-			create new_bmm_package_definition.make (name)
+			create new_bmm_package_definition.make (name, documentation)
 			bmm_package_definition := new_bmm_package_definition
 			across packages as pkgs_csr loop
 				pkgs_csr.item.create_bmm_package_definition

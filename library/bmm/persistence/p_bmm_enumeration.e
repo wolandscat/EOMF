@@ -43,7 +43,7 @@ feature -- Factory
 		local
 			bmm_class_def: attached like bmm_class_definition
 		do
-			create bmm_class_def.make (name, is_abstract)
+			create bmm_class_def.make (name, documentation, is_abstract)
 			bmm_class_def.set_source_schema_id (source_schema_id)
 			bmm_class_definition := bmm_class_def
 		end

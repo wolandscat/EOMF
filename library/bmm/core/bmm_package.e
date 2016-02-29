@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Abstraction of a package as a tree structure whose nodes can contain "
+	description: "Abstraction of a package as a tree structure whose nodes can contain other packages and classes."
 	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -12,14 +12,17 @@ class BMM_PACKAGE
 inherit
 	BMM_PACKAGE_CONTAINER
 
+	BMM_MODEL_ELEMENT
+
 create
 	make
 
 feature -- Initialisation
 
-	make (a_name: STRING)
+	make (a_name: STRING; a_doc: detachable STRING)
 		do
 			name := a_name
+			documentation := a_doc
 		end
 
 feature -- Access
@@ -30,6 +33,8 @@ feature -- Access
 	name: STRING
 			-- name of the package FROM SCHEMA; this name may be qualified if it is a top-level
 			-- package within the schema, or unqualified.
+
+	documentation: detachable STRING
 
 	classes: ARRAYED_SET [BMM_CLASS]
 		attribute

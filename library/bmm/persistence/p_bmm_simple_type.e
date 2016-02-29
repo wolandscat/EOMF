@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Persistent form of BMM_SIMPLE_TYPE_REFERENCE"
+	description: "Persistent form of BMM_SIMPLE_TYPE"
 	keywords:    "Basic meta-model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

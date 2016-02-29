@@ -25,7 +25,7 @@ feature -- Initialisation
 feature -- Access
 
 	base_class: BMM_CLASS
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE_SPECIFIER
+			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters

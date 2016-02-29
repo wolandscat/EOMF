@@ -17,9 +17,10 @@ create
 
 feature {NONE} -- Initialisation
 
-	make (a_name: STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
+	make (a_name: STRING; a_doc: detachable STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
+			documentation := a_doc
 			is_mandatory := is_mandatory_flag
 			is_computed := is_computed_flag
 			is_im_infrastructure := is_im_infrastructure_flag
@@ -32,6 +33,8 @@ feature -- Access
 	name: STRING
 			-- name of this attribute
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+
+	documentation: detachable STRING
 
 	display_name: STRING
 			-- name of this attribute to display in screen form, grid etc

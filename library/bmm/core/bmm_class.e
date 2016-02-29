@@ -28,11 +28,12 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; abstract_flag: BOOLEAN)
+	make (a_name: STRING; a_doc: detachable STRING; abstract_flag: BOOLEAN)
 		require
 			Name_valid: not a_name.is_empty
 		do
 			name := a_name
+			documentation := a_doc
 			is_abstract := abstract_flag
 		end
 
@@ -46,6 +47,8 @@ feature -- Access
 
 	name: STRING
 			-- name of the class FROM SCHEMA
+
+	documentation: detachable STRING
 
 	base_class: BMM_CLASS
 			-- the 'design' class of this type, ignoring containers, multiplicity etc.

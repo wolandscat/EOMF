@@ -10,6 +10,10 @@
 
 templates = <
 	["en"] = <
+
+		-- displyable text items
+		["bmm_documentation_text"] = <"Documentation">
+
 		-- SCHEMA_ACCESS (RM model checker)
 		["bmm_schemas_config_not_valid"] = <"Reference model schema(s) $1 specified in options not valid or not found in schema directories">
 		["bmm_schema_file_not_valid"] = <"Reference Model schema file $1 does not exist or not readable">

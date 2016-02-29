@@ -10,6 +10,7 @@ note
 class BMM_MESSAGES_IDS
 
 feature -- Definitions
+		ec_bmm_documentation_text: STRING = "bmm_documentation_text"
 		ec_bmm_schemas_config_not_valid: STRING = "bmm_schemas_config_not_valid"
 		ec_bmm_schema_file_not_valid: STRING = "bmm_schema_file_not_valid"
 		ec_bmm_schema_load_failure: STRING = "bmm_schema_load_failure"

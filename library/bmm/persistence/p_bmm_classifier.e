@@ -12,6 +12,8 @@ deferred class P_BMM_CLASSIFIER
 inherit
 	BMM_DEFINITIONS
 
+	P_BMM_MODEL_ELEMENT
+
 end
 
 
