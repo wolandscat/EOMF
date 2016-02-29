@@ -37,6 +37,7 @@ feature -- Access
 			-- OPTIONAL list of item integer values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
+			Result.compare_objects
 		end
 
 	type_category: STRING
