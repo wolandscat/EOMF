@@ -124,6 +124,23 @@ feature -- Access
 			end
 		end
 
+	property_object_multiplicity (a_type_name, a_prop_name: STRING): MULTIPLICITY_INTERVAL
+			-- return the effective child object multiplicity of the property definition for `a_prop_name' in flattened class
+			-- corresponding to `a_type_name'.
+			-- Multiplicity is computed as the possible numeric range of child instances under this property at run time, i.e.
+			--  if the property is a container:
+			--		0 .. cardinality.upper
+			--  elseif the property is single-valued:
+			--		existence
+		require
+			Type_name_valid: has_class_definition (a_type_name)
+			Property_valid: has_property (a_type_name, a_prop_name)
+		do
+			check attached class_definition (type_name_to_class_key (a_type_name)).flat_properties.item (a_prop_name) as prop_def then
+				Result := prop_def.object_multiplicity
+			end
+		end
+
 	effective_property_type (a_type_name, a_prop_name: STRING): STRING
 			-- determine the effective property type for `a_prop_name' in flattened class corresponding to `a_type_name'
 			-- same as property_definition.type, except if a_type_name is generic

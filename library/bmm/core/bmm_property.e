@@ -71,6 +71,13 @@ feature -- Access
 			end
 		end
 
+	object_multiplicity: MULTIPLICITY_INTERVAL
+			-- return the effective child object multiplicity of the property definition for `a_prop_name' in flattened class
+			-- corresponding to `a_type_name'. By default, the same as `existence'; override in descendants.
+		do
+			Result := existence.deep_twin
+		end
+
 feature -- Status Report
 
 	is_mandatory: BOOLEAN

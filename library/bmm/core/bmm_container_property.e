@@ -15,7 +15,7 @@ class BMM_CONTAINER_PROPERTY
 inherit
 	BMM_PROPERTY [BMM_CONTAINER_TYPE]
 		redefine
-			make, display_name
+			make, display_name, object_multiplicity
 		end
 
 create
@@ -39,6 +39,19 @@ feature -- Access
 		end
 
 	cardinality: MULTIPLICITY_INTERVAL
+
+	object_multiplicity: MULTIPLICITY_INTERVAL
+			-- return the effective child object multiplicity of the property definition for `a_prop_name' in flattened class
+			-- corresponding to `a_type_name'.
+			-- Multiplicity is computed as the possible numeric range of child instances under this property at run time, i.e.
+			-- 0 .. cardinality.upper
+		do
+			if cardinality.upper_unbounded then
+				create Result.make_upper_unbounded (0)
+			else
+				create Result.make_bounded (0, cardinality.upper)
+			end
+		end
 
 feature -- Modification
 
