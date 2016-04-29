@@ -69,13 +69,14 @@ feature -- Visitor
 			-- then '['
 			if a_node.is_container_type then
 				multiple_attr_count := multiple_attr_count + 1
-				last_result.append (symbol (SYM_JSON_START_ARRAY))
 
 				-- look into the objects in the container; if it turns out to be a HASH_TABLE,
 				-- i.e. with real hash keys (not just numbers) we need to put out another SYM_JSON_START_OBJECT
 				-- token (JSON is very dumb about hash maps)
 				if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
 					last_result.append (symbol (SYM_JSON_START_OBJECT))
+				else
+					last_result.append (symbol (SYM_JSON_START_ARRAY))
 				end
 				last_result.append (format_item (FMT_NEWLINE))
 			end
@@ -95,8 +96,9 @@ feature -- Visitor
 				-- token (JSON is very dumb about hash maps)
 				if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
 					last_result.append (symbol (SYM_JSON_END_OBJECT))
+				else
+					last_result.append (symbol (SYM_JSON_END_ARRAY))
 				end
-				last_result.append (symbol (SYM_JSON_END_ARRAY))
 				if attached a_node.parent as att_dt_obj and then att_dt_obj.last /= a_node then
 					last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
 				end
