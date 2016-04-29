@@ -761,7 +761,7 @@ feature -- Factory
 			do_all_classes_in_order (
 				agent (a_class_def: P_BMM_CLASS; a_bmm_schema: BMM_SCHEMA)
 					do
-						a_class_def.populate_bmm_class_definition (a_bmm_schema)
+						a_class_def.populate_bmm_class (a_bmm_schema)
 					end (?, new_bmm_schema))
 		end
 
@@ -770,8 +770,8 @@ feature -- Factory
 			-- set its source_schema_id; set its primitive_type flag; its BMM_SCHEMA link will also be set
 		do
 			if attached class_definition (a_class_name) as p_class_def then
-				p_class_def.create_bmm_class_definition
-				if attached p_class_def.bmm_class_definition as bmm_class_def and attached a_pkg.bmm_package_definition as pkg_def then
+				p_class_def.create_bmm_class
+				if attached p_class_def.bmm_class as bmm_class_def and attached a_pkg.bmm_package_definition as pkg_def then
 					if primitive_types.has (a_class_name.as_upper) then
 						bmm_class_def.set_primitive_type
 					end

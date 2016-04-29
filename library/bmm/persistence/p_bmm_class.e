@@ -63,7 +63,7 @@ feature -- Access
 			create Result.make_from_string (Unknown_schema_id)
 		end
 
-	bmm_class_definition: detachable BMM_CLASS
+	bmm_class: detachable BMM_CLASS
 		note
 			option: transient
 		attribute
@@ -105,35 +105,35 @@ feature -- Modification
 
 feature -- Factory
 
-	create_bmm_class_definition
-			-- add BMM model elements to `bmm_class_definition'
+	create_bmm_class
+			-- add BMM model elements to `bmm_class'
 		local
-			bmm_class_def: attached like bmm_class_definition
+			att_bmm_class: attached like bmm_class
 		do
 			if attached generic_parameter_defs as gen_parm_defs then
-				create {BMM_GENERIC_CLASS} bmm_class_def.make (name, documentation, is_abstract)
+				create {BMM_GENERIC_CLASS} att_bmm_class.make (name, documentation, is_abstract)
 			else
-				create bmm_class_def.make (name, documentation, is_abstract)
+				create att_bmm_class.make (name, documentation, is_abstract)
 			end
-			bmm_class_def.set_source_schema_id (source_schema_id)
-			bmm_class_definition := bmm_class_def
+			att_bmm_class.set_source_schema_id (source_schema_id)
+			bmm_class := att_bmm_class
 		end
 
-	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)
-			-- add remaining model elements from Current to `bmm_class_definition'
+	populate_bmm_class (a_bmm_schema: BMM_SCHEMA)
+			-- add remaining model elements from Current to `bmm_class'
 		do
-			if attached bmm_class_definition as bmm_class_def then
+			if attached bmm_class as att_bmm_class then
 				-- populate references to ancestor classes; should be every class except Any
 				if attached ancestors then
 					across ancestors as ancs_csr loop
 						if attached a_bmm_schema.class_definition (ancs_csr.item) as class_def then
-							bmm_class_def.add_ancestor (class_def)
+							att_bmm_class.add_ancestor (class_def)
 						end
 					end
 				end
 
 				-- create generic parameters
-				if attached generic_parameter_defs as gen_parm_defs and then attached {BMM_GENERIC_CLASS} bmm_class_definition as bmm_gen_class_def then
+				if attached generic_parameter_defs as gen_parm_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
 					across gen_parm_defs as gen_parm_defs_csr loop
 						gen_parm_defs_csr.item.create_bmm_generic_parameter_definition (a_bmm_schema)
 						if attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
@@ -144,9 +144,9 @@ feature -- Factory
 
 				-- populate properties
 				across properties as props_csr loop
-					props_csr.item.create_bmm_property_definition (a_bmm_schema, bmm_class_def)
-					if attached props_csr.item.bmm_property_definition as bmm_prop_def then
-						bmm_class_def.add_property (bmm_prop_def)
+					props_csr.item.create_bmm_property (a_bmm_schema, att_bmm_class)
+					if attached props_csr.item.bmm_property as bmm_prop_def then
+						att_bmm_class.add_property (bmm_prop_def)
 					end
 				end
 			end

@@ -45,7 +45,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	bmm_property_definition: detachable BMM_PROPERTY [BMM_TYPE]
+	bmm_property: detachable BMM_PROPERTY [BMM_TYPE]
 		note
 			option: transient
 		attribute
@@ -53,12 +53,12 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_property (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
 		do
 			if attached type_def as td then
 				td.create_bmm_type (a_bmm_schema, a_class_def)
 				if attached td.bmm_type as bt then
-					create bmm_property_definition.make (name, documentation, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
+					create bmm_property.make (name, documentation, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
 				end
 			end
 		end

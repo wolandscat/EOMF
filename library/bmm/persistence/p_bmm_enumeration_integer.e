@@ -12,12 +12,12 @@ class P_BMM_ENUMERATION_INTEGER
 inherit
 	P_BMM_ENUMERATION [INTEGER]
 		redefine
-			bmm_class_definition
+			bmm_class
 		end
 
 feature -- Access
 
-	bmm_class_definition: detachable BMM_ENUMERATION_INTEGER
+	bmm_class: detachable BMM_ENUMERATION_INTEGER
 		note
 			option: transient
 		attribute

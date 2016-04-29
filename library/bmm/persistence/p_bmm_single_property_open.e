@@ -12,7 +12,7 @@ class P_BMM_SINGLE_PROPERTY_OPEN
 inherit
 	P_BMM_PROPERTY
 		redefine
-			bmm_property_definition
+			bmm_property
 		end
 
 feature -- Access (persisted)
@@ -42,7 +42,7 @@ feature -- Access
 
 feature -- Access
 
-	bmm_property_definition: detachable BMM_PROPERTY [BMM_SIMPLE_TYPE_OPEN]
+	bmm_property: detachable BMM_PROPERTY [BMM_SIMPLE_TYPE_OPEN]
 		note
 			option: transient
 		attribute

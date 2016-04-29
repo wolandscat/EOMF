@@ -12,7 +12,7 @@ class P_BMM_CONTAINER_PROPERTY
 inherit
 	P_BMM_PROPERTY
 		redefine
-			bmm_property_definition, create_bmm_property_definition
+			bmm_property, create_bmm_property
 		end
 
 feature -- Access (persisted)
@@ -28,7 +28,7 @@ feature -- Access
 			-- have used MULTIPLICITY_INTERVAL
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	bmm_property_definition: detachable BMM_CONTAINER_PROPERTY
+	bmm_property: detachable BMM_CONTAINER_PROPERTY
 		note
 			option: transient
 		attribute
@@ -36,10 +36,10 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_property_definition (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_property (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
 		do
 			precursor (a_bmm_schema, a_class_def)
-			if attached bmm_property_definition as att_pb and attached cardinality as att_card then
+			if attached bmm_property as att_pb and attached cardinality as att_card then
 				att_pb.set_cardinality (att_card)
 			end
 		end

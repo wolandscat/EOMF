@@ -17,7 +17,7 @@ inherit
 
 	P_BMM_PROPERTY
 		redefine
-			bmm_property_definition
+			bmm_property
 		end
 
 feature -- Access (persisted)
@@ -28,7 +28,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	bmm_property_definition: detachable BMM_PROPERTY [BMM_GENERIC_TYPE]
+	bmm_property: detachable BMM_PROPERTY [BMM_GENERIC_TYPE]
 		note
 			option: transient
 		attribute

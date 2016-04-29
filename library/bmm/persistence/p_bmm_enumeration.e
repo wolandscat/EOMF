@@ -12,7 +12,7 @@ class P_BMM_ENUMERATION[G->COMPARABLE]
 inherit
 	P_BMM_CLASS
 		redefine
-			bmm_class_definition, create_bmm_class_definition, populate_bmm_class_definition
+			bmm_class, create_bmm_class, populate_bmm_class
 		end
 
 feature -- Access (persisted)
@@ -30,7 +30,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	bmm_class_definition: detachable BMM_ENUMERATION[G]
+	bmm_class: detachable BMM_ENUMERATION[G]
 		note
 			option: transient
 		attribute
@@ -38,21 +38,21 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_class_definition
-			-- add remaining model elements from `' to `bmm_class_definition'
+	create_bmm_class
+			-- add remaining model elements from `' to `bmm_class'
 		local
-			bmm_class_def: attached like bmm_class_definition
+			bmm_class_def: attached like bmm_class
 		do
 			create bmm_class_def.make (name, documentation, is_abstract)
 			bmm_class_def.set_source_schema_id (source_schema_id)
-			bmm_class_definition := bmm_class_def
+			bmm_class := bmm_class_def
 		end
 
-	populate_bmm_class_definition (a_bmm_schema: BMM_SCHEMA)
-			-- add remaining model elements to `bmm_enumeration_definition'
+	populate_bmm_class (a_bmm_schema: BMM_SCHEMA)
+			-- add remaining model elements to `bmm_class'
 		do
 			precursor (a_bmm_schema)
-			if attached bmm_class_definition as bmm_enum_def then
+			if attached bmm_class as bmm_enum_def then
 				bmm_enum_def.set_item_names (item_names)
 				if attached item_values as iv then
 					bmm_enum_def.set_item_values (iv)
