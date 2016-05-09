@@ -42,6 +42,8 @@ feature -- Access
 		do
 			if base_class.is_abstract then
 				Result := Type_cat_abstract_class
+			elseif base_class.is_primitive_type then
+				Result := Type_cat_primitive_class
 			elseif has_type_substitutions then
 				Result := Type_cat_concrete_class_supertype
 			else
