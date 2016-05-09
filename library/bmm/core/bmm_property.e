@@ -59,16 +59,11 @@ feature -- Access
 			-- string name of pixmap for attribute rm_attr
 		do
 			create Result.make_empty
-			Result.append ("c_attribute")
+			Result.append ("property")
 			if is_computed then
 				Result.append ("_computed")
 			end
-			if is_container then
-				Result.append (".multiple")
-			end
-			if not is_mandatory then
-				Result.append (".optional")
-			end
+			Result.append ("." + object_multiplicity.as_quantifier_text)
 		end
 
 	object_multiplicity: MULTIPLICITY_INTERVAL
