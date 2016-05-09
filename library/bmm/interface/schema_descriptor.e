@@ -197,7 +197,4 @@ feature {NONE} -- Implementation
 
 	schema_file_accessor: ODIN_OBJECT_READER [P_BMM_SCHEMA]
 
-invariant
-	passed implies attached p_schema
-
 end

@@ -55,6 +55,7 @@ feature -- Application Switches
 			if Result.is_empty and not old_path.is_empty then
 				Result.extend (old_path)
 				app_cfg.remove_resource ("/file_system/rm_schema_directory")
+				app_cfg.put_string_list_value ("/rm_schema_directories", Result)
 			end
 		ensure
 			value_comparison: Result.object_comparison

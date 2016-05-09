@@ -59,9 +59,9 @@ feature -- Initialization
 			-- Run application.
 		do
 			if ready_to_initialise_app then
-				Initialise_app
+				initialise_app
 				if not has_errors then
-					-- now dmonstrate some usage of the schemas
+					-- now demonstrate some usage of the schemas
 					rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
 				else
 					io.put_string (error_strings)
@@ -80,7 +80,7 @@ feature -- Initialization
 			schema_id: STRING
 			schema_meta_data: HASH_TABLE [STRING, STRING]
 		do
-			-- create row containinng widgets for: check column, name column, status column, edit button column
+			-- create row containing widgets for: check column, name column, status column, edit button column
 			across rm_schemas_access.all_schemas as rm_schemas_csr loop
 				schema_id := rm_schemas_csr.key
 				schema_meta_data := rm_schemas_csr.item.meta_data
@@ -146,7 +146,8 @@ feature -- Initialization
 				rm_schema_directories.prune_all (dead_sch_csr.item)
 			end
 
-			rm_schemas_access.initialise_all (rm_schema_directories)
+			rm_schemas_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
+			-- rm_schemas_access.initialise_all (rm_schema_directories)
 			output_schema_info
 
 			if Rm_schemas_access.has_errors then

@@ -1,0 +1,297 @@
+-- 
+-- 	component:   Wolandscat libraries
+-- 	description: openEHR Reference Model Support package formal expression. 
+-- 				 This file is an ODIN serialisation of the BMM object meta-model classes found at 
+--               http://www.openehr.org/svn/ref_impl_eiffel/BRANCHES/specialisation/libraries/common_libs/src/basic_meta_model
+-- 	keywords:    reference model, meta-model, archetypes
+-- 	author:      Thomas Beale
+-- 	support:     Ocean Informatics <support@OceanInformatics.com>
+-- 	copyright:   Copyright (c) 2015- openEHR Foundation
+-- 	license:     Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
+-- 
+
+
+------------------------------------------------------
+-- BMM version on which these schemas are based.
+-- Current BMM version can be found as value of 'Bmm_internal_version' in 
+--     https://github.com/openEHR/adl-tools/blob/master/libraries/common_libs/src/basic_meta_model/bmm_definitions.e
+--
+------------------------------------------------------
+bmm_version = <"2.0">
+
+------------------------------------------------------
+-- schema identification
+-- (schema_id computed as <rm_publisher>_<schema_name>_<rm_release>)
+------------------------------------------------------
+rm_publisher = <"wolandscat">
+schema_name = <"primitive_types">
+rm_release = <"0.8.0">
+
+------------------------------------------------------
+-- schema documentation
+------------------------------------------------------
+schema_revision = <"0.5.0">
+schema_lifecycle_state = <"stable">
+schema_description = <"Woland's Cat primitive types"> 
+
+------------------------------------------------------
+-- packages
+------------------------------------------------------
+packages = <
+	["net.wolandscat.rm.support"] = <
+		name = <"net.wolandscat.rm.support">
+		packages = <
+			["builtin"] = <
+				name = <"builtin">
+				classes = <"Any", "Ordered", "Numeric", "OrderedNumeric", "Octet", "Byte", "Boolean", "Integer", "Real", "Double", "Character", "String">
+			>
+			["dateTime"] = <
+				name = <"dateTime">
+				classes = <"ISO8601_TYPE", "ISO8601_DATE", "ISO8601_TIME", "ISO8601_DATE_TIME", "ISO8601_DURATION">
+			>
+			["structures"] = <
+				name = <"structures">
+				classes = <"List", "Array", "Set", "Interval", "Hash", "Aggregate">
+			>
+			["identifiers"] = <
+				name = <"identifiers">
+				classes = <"Uid", "DomainName", "Guid", "IsoOid", "Uri", "TerminologyCode">
+			>
+		>
+	>
+>
+
+
+primitive_types = <
+	------------------------------------------------------
+	-- builtin types
+	------------------------------------------------------
+
+	["Any"] = <
+		name = <"Any">
+		is_abstract = <True>
+	>
+	["Ordered"] = <
+		name = <"Ordered">
+		is_abstract = <True>
+		ancestors = <"Any", ...>
+	>
+	["Numeric"] = <
+		name = <"Numeric">
+		is_abstract = <True>
+		ancestors = <"Any", ...>
+	>
+	["OrderedNumeric"] = <
+		name = <"OrderedNumeric">
+		is_abstract = <True>
+		ancestors = <"Numeric", "Ordered">
+	>
+	["Byte"] = <
+		name = <"Byte">
+		ancestors = <"Any", ...>
+	>
+	["Octet"] = <
+		name = <"Octet">
+		ancestors = <"Any", ...>
+	>
+	["Boolean"] = <
+		name = <"Boolean">
+		ancestors = <"Any", ...>
+	>
+	["Integer"] = <
+		name = <"Integer">
+		ancestors = <"OrderedNumeric", ...>
+	>
+	["Real"] = <
+		name = <"Real">
+		ancestors = <"OrderedNumeric", ...>
+	>
+	["Double"] = <
+		name = <"Double">
+		ancestors = <"OrderedNumeric", ...>
+	>
+	["Character"] = <
+		name = <"Character">
+		ancestors = <"Any", ...>
+	>
+	["String"] = <
+		name = <"String">
+		ancestors = <"Any", ...>
+	>
+
+
+	------------------------------------------------------
+	-- Structure types
+	------------------------------------------------------
+
+	["List"] = <
+		name = <"List">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+			>
+		>
+	>
+	["Array"] = <
+		name = <"Array">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+			>
+		>
+	>
+	["Set"] = <
+		name = <"Set">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+			>
+		>
+	>
+	["Interval"] = <
+		name = <"Interval">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+				conforms_to_type = <"Ordered">
+			>
+		>
+		properties = <
+			["lower"] = (P_BMM_SINGLE_PROPERTY_OPEN) <
+				name = <"lower">
+				type = <"T">
+			>
+			["upper"] = (P_BMM_SINGLE_PROPERTY_OPEN) <
+				name = <"upper">
+				type = <"T">
+			>
+			["lower_unbounded"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"lower_unbounded">
+				type = <"Boolean">
+			>
+			["upper_unbounded"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"upper_unbounded">
+				type = <"Boolean">
+			>
+			["lower_included"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"lower_included">
+				type = <"Boolean">
+			>
+			["upper_included"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"upper_included">
+				type = <"Boolean">
+			>
+		>
+	>
+	["Hash"] = <
+		name = <"Hash">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+			>
+			["U"] = <
+				name = <"U">
+				conforms_to_type = <"Ordered">
+			>
+		>
+	>
+
+	["Aggregate"] = <
+		name = <"Aggregate">
+		ancestors = <"Any", ...>
+		generic_parameter_defs = <
+			["T"] = <
+				name = <"T">
+			>
+		>
+	>
+
+	------------------------------------------------------
+	-- DateTime types
+	------------------------------------------------------
+
+	["ISO8601_TYPE"] = <
+		name = <"ISO8601_TYPE">
+		ancestors = <"Ordered", "String">
+		is_abstract = <True>
+	>
+
+	["ISO8601_DATE"] = <
+		name = <"ISO8601_DATE">
+		ancestors = <"ISO8601_TYPE", ...>
+	>
+
+	["ISO8601_TIME"] = <
+		name = <"ISO8601_TIME">
+		ancestors = <"ISO8601_TYPE", ...>
+	>
+
+	["ISO8601_DATE_TIME"] = <
+		name = <"ISO8601_DATE_TIME">
+		ancestors = <"ISO8601_TYPE", ...>
+	>
+
+	["ISO8601_DURATION"] = <
+		name = <"ISO8601_DURATION">
+		ancestors = <"ISO8601_TYPE", ...>
+	>
+
+	------------------------------------------------------
+	-- Identifier types
+	------------------------------------------------------
+
+	["Uid"] = <
+		name = <"Uid">
+		is_abstract = <True>
+		ancestors = <"Any", ...>
+	>
+	["Uri"] = <
+		name = <"Uri">
+		is_abstract = <True>
+		ancestors = <"Any", ...>
+	>
+	
+	["DomainName"] = <
+		name = <"DomainName">
+		ancestors = <"Uid", ...>
+	>
+	
+	["Guid"] = <
+		name = <"Guid">
+		ancestors = <"Uid", ...>
+	>
+	
+	["IsoOid"] = <
+		name = <"IsoOid">
+		ancestors = <"Uid", ...>
+	>
+	
+	["TerminologyCode"] = <
+		name = <"TerminologyCode">
+		ancestors = <"Any", ...>
+		properties = <
+			["conceptId"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"conceptId">
+				type = <"Uid">
+				is_mandatory = <True>
+			>
+			["namespace"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"namespace">
+				type = <"Uid">
+				is_mandatory = <True>
+			>
+			["uri"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"uri">
+				type = <"Uri">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+>
+

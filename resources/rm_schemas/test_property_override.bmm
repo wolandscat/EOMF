@@ -1,0 +1,270 @@
+-- 
+-- 	component:   openEHR Archetype Project
+-- 	description: Reference Model for Maritime Charts notices
+--               the BMM object meta-model classes found at https://github.com/wolandscat/EOMF/tree/master/library/bmm
+--               http://www.openehr.org/svn/ref_impl_eiffel/BRANCHES/specialisation/libraries/common_libs/src/basic_meta_model
+-- 	keywords:    reference model, meta-model, archetypes
+-- 	author:      Thomas Beale <thomas.beale@oceaninformatics.com>
+-- 	support:     xxxxxxxxx
+-- 	copyright:   Copyright (c) xxxxxxx
+-- 	license:     xxxxxxx
+-- 
+
+
+------------------------------------------------------
+-- BMM version on which these schemas are based.
+-- Current BMM version can be found as value of 'Bmm_internal_version' in 
+--     https://github.com/openEHR/adl-tools/blob/master/libraries/common_libs/src/basic_meta_model/bmm_definitions.e
+--
+------------------------------------------------------
+bmm_version = <"2.1">
+
+------------------------------------------------------
+-- schema identification
+-- (schema_id computed as <rm_publisher>_<schema_name>_<rm_release>)
+------------------------------------------------------
+rm_publisher = <"acme">
+schema_name = <"maritime">
+rm_release = <"1.0.0">
+
+------------------------------------------------------
+-- schema documentation
+------------------------------------------------------
+schema_revision = <"0.8.0">
+schema_lifecycle_state = <"dstu">
+schema_description = <"Maritime Reference Model (MRM)"> 
+
+------------------------------------------------------
+-- inclusions
+------------------------------------------------------
+includes = <
+	["1"] = <
+		id = <"wolandscat_structures_0.9.0">
+	>
+>
+
+------------------------------------
+-- archetyping
+------------------------------------
+archetype_rm_closure_packages = <"com.acme.maritime", ...>
+
+------------------------------------------------------
+-- packages
+------------------------------------------------------
+packages = <
+	["com.acme.maritime"] = <
+		name = <"com.acme.maritime">
+		packages = <
+			["MaritimeEnvironment"] = <
+				name = <"MaritimeEnvironment">
+				packages = <
+					["Core"] = <
+						name = <"Core">
+						classes = <"Entity", "IndependentEntity", "Area">
+					>
+				>
+			>
+			["DataTypes"] = <
+				name = <"DataTypes">
+				packages = <
+					["Physical"] = <
+						name = <"Physical">
+						classes = <"PhysicalExtentSpec", "LinearExtentSpec", "BoundarySpec", "IrregularBoundarySpec", "RegularBoundarySpec">
+					>
+					["Cartographic"] = <
+						name = <"Cartographic">
+						classes = <
+							"WorldAngle", "GeographicPosition", "Latitude", "Longitude", "LatitudeHemisphere", "LongitudeHemisphere"
+						>
+					>
+				>
+			>
+		>
+	>
+>
+
+------------------------------------------------------
+-- Structures
+------------------------------------------------------
+
+class_definitions = <
+
+	------------------------------------------------------------
+	------------------ Maritime Objects ---------------
+	------------------------------------------------------------
+
+	["Entity"] = <
+		name = <"Entity">
+		ancestors = <"Locatable", ...>
+		is_abstract = <True>
+		properties = <
+			["entityType"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"entityType">
+				type = <"String">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+	["IndependentEntity"] = <
+		name = <"IndependentEntity">
+		ancestors = <"Entity", ...>
+		is_abstract = <True>
+		properties = <
+			["location"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"location">
+				type = <"GeographicPosition">
+			>
+			["physicalExtent"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"physicalExtent">
+				type = <"PhysicalExtentSpec">
+			>
+        >
+	>
+
+	["Area"] = <
+		name = <"Area">
+		is_abstract = <True>
+		ancestors = <"IndependentEntity", ...>
+		properties = <
+			["physicalExtent"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"physicalExtent">
+				type = <"BoundarySpec">
+			>
+        >
+	>
+
+	--
+	--------------------- navigation ------------------
+	--
+
+	["GeographicPosition"] = <
+		name = <"GeographicPosition">
+		ancestors = <"Any", ...>
+		properties = <
+			["latitude"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"latitude">
+				type = <"Latitude">
+				is_mandatory = <True>
+			>
+			["longitude"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"longitude">
+				type = <"Longitude">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+	["Latitude"] = <
+		name = <"Latitude">
+		ancestors = <"Any", ...>
+		properties = <
+			["angle"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"angle">
+				type = <"WorldAngle">
+				is_mandatory = <True>
+			>
+			["hemisphere"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"hemisphere">
+				type = <"LatitudeHemisphere">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+	["Longitude"] = <
+		name = <"Longitude">
+		ancestors = <"Any", ...>
+		properties = <
+			["angle"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"angle">
+				type = <"WorldAngle">
+				is_mandatory = <True>
+			>
+			["hemisphere"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"hemisphere">
+				type = <"LongitudeHemisphere">
+				is_mandatory = <True>
+			>
+		>
+	>
+
+	["WorldAngle"] = <
+		name = <"WorldAngle">
+		ancestors = <"Any", ...>
+		properties = <
+			["degrees"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"degrees">
+				type = <"Integer">
+				is_mandatory = <True>
+			>
+			["minutes"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"minutes">
+				type = <"Integer">
+				is_mandatory = <True>
+			>
+			["secondsValue"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"secondsValue">
+				type = <"Integer">
+			>
+		>
+	>
+
+    ["LatitudeHemisphere"] = (P_BMM_ENUMERATION_STRING) <
+		name = <"LatitudeHemisphere">
+		ancestors = <"String", ...>
+		item_names = <"N", "S">
+	>
+
+    ["LongitudeHemisphere"] = (P_BMM_ENUMERATION_STRING) <
+		name = <"LongitudeHemisphere">
+		ancestors = <"String", ...>
+		item_names = <"E", "W">
+	>
+
+	["PhysicalExtentSpec"] = <
+		name = <"PhysicalExtentSpec">
+		is_abstract = <True>
+		ancestors = <"Any", ...>
+    >
+
+	["LinearExtentSpec"] = <
+		name = <"LinearExtentSpec">
+		ancestors = <"PhysicalExtentSpec", ...>
+		properties = <
+			["points"] = (P_BMM_CONTAINER_PROPERTY) <
+				name = <"points">
+				type_def = <
+					container_type = <"List">
+					type = <"GeographicPosition">
+				>
+			>
+		>
+    >
+    
+	["BoundarySpec"] = <
+		name = <"BoundarySpec">
+		is_abstract = <True>
+		ancestors = <"PhysicalExtentSpec", ...>
+    >
+    
+    ["IrregularBoundarySpec"] = <
+		name = <"IrregularBoundarySpec">
+		ancestors = <"BoundarySpec", ...>
+		properties = <
+			["points"] = (P_BMM_CONTAINER_PROPERTY) <
+				name = <"points">
+				type_def = <
+					container_type = <"List">
+					type = <"GeographicPosition">
+				>
+			>
+		>
+    >
+
+    ["RegularBoundarySpec"] = <
+		name = <"RegularBoundarySpec">
+		ancestors = <"BoundarySpec", ...>
+    >
+
+>

@@ -2,7 +2,17 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "[
 				 This application demonstrates loading a set of BMM (basic meta-model) schemas into memory and
-				 accessing them using the BMM classes.
+				 accessing them using the BMM classes. 
+				 
+				 NB: check the contents of the .cfg file, they should look something like the following:
+				 
+					rm_schemas = <
+						load_list = <"acme_maritime_1.0.0", ...>
+					>
+					rm_schema_directories = <"C:\\dev\\wolandscat\\EOMF\\resources\\rm_schemas", ...>
+					
+				 Add other schema names to the load_list to load more schemas, or remove it, and all schemas
+				 in the resources/rm_schemas directory will be loaded.
 				 ]"
 	keywords:    "BMM, reflection, meta-model"
 	author:      "Thomas Beale"
@@ -22,7 +32,6 @@ create
 feature -- Initialization
 
 	make
-			-- Run application.
 		do
 			-- add in EOMF error message DB to main message DB
 			message_db.add_table (create {DT_MESSAGES_DB}.make)
@@ -32,14 +41,22 @@ feature -- Initialization
 
 			-- BMM initialisation
 			bmm_env_setup
+			app_cfg.save
 			if not has_errors then
-				run_demo_tests
+				run_bmm_tests
+			--	run_openehr_tests
 			end
 		end
 
-	run_demo_tests
-			-- Run application.
+	run_bmm_tests
 		do
+			rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("acme-maritime"))
+		end
+
+	run_openehr_tests
+		do
+			rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
+
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
 			io.put_string ("CARE_ENTRY has /data/events/data: " + rm_schema.has_property_path ("CARE_ENTRY", "/data/events/data").out + "%N")

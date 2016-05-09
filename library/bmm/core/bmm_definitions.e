@@ -68,7 +68,9 @@ feature -- Definitions
 			create Result.make (0)
 			Result.compare_objects
 			Result.extend (Type_cat_primitive_class)
+			Result.extend (Type_cat_enumeration)
 			Result.extend (Type_cat_concrete_class)
+			Result.extend (Type_cat_concrete_class_supertype)
 			Result.extend (Type_cat_abstract_class)
 			Result.extend (Type_cat_generic_parameter)
 			Result.extend (Type_cat_constrained_generic_parameter)
@@ -277,7 +279,7 @@ feature -- Conversion
 		end
 
 	type_name_to_class_key (a_type_name: STRING): STRING
-			-- convert a type name which might have a generic part to a simple class name
+			-- convert a type name which might have a generic part to a simple class name; Result will be upper case
 		require
 			Type_valid: not a_type_name.is_empty
 		local

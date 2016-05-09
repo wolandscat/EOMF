@@ -139,6 +139,7 @@ feature -- Access (Attributes from schema load post-processing)
 
 	ancestors_index: HASH_TABLE [ARRAYED_SET [STRING], STRING]
 			-- index of all ancestors of each class
+			-- key is UPPER case
 		do
 			if attached ancestors_index_cache as aic then
 				Result := aic
@@ -275,7 +276,8 @@ feature -- Comparison
 			until
 				tlist1.off or tlist2.off or not Result or not has_class_definition (tlist1.item) or not has_class_definition (tlist2.item)
 			loop
-				Result := Result and (tlist1.item.is_equal (tlist2.item) or else (attached ancestors_index.item (tlist1.item) as att_anc_idx and then att_anc_idx.has (tlist2.item)))
+				Result := Result and (tlist1.item.is_equal (tlist2.item) or else (ancestors_index.has (tlist1.item.as_upper) and then
+					attached ancestors_index.item (tlist1.item.as_upper) as att_anc_idx and then att_anc_idx.has (tlist2.item)))
 				tlist1.forth
 				tlist2.forth
 			end
