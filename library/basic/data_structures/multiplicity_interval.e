@@ -221,6 +221,7 @@ feature -- Operations
 feature -- Output
 
 	as_string: STRING
+			-- output a UML-style stting of the form 0..1, 0..*, 1..3 etc
 		do
 			create Result.make(0)
 			if upper_unbounded then
@@ -229,6 +230,46 @@ feature -- Output
 				Result.append (primitive_value_out (lower) + Multiplicity_range_delimiter + primitive_value_out (upper))
 			else
 				Result.append (primitive_value_out (lower))
+			end
+		end
+
+	as_regex_quantifier: STRING
+			-- output a simplified PERL regex style quantifier of the form:
+			--  1..1 -> (nothing)
+			--  0..1 -> ?
+			--  0..* -> *
+			--  1..* -> +
+			--  n..m -> +
+		do
+			create Result.make(0)
+			if is_mandatory then
+				-- nothing needed
+			elseif is_optional then
+				Result.append_character ('?')
+			elseif lower = 0 then
+				Result.append_character ('*')
+			else
+				Result.append_character ('+')
+			end
+		end
+
+	as_quantifier_text: STRING
+			-- output a simplified PERL regex style quantifier of the form:
+			--  1..1 -> single_mandatory
+			--  0..1 -> single_optional
+			--  0..* -> multiple_optional
+			--  1..* -> multiple_mandatory
+			--  n..m -> multiple_mandatory
+		do
+			create Result.make(0)
+			if is_mandatory then
+				Result.append ("single_mandatory")
+			elseif is_optional then
+				Result.append ("single_optional")
+			elseif lower = 0 then
+				Result.append ("multiple_optional")
+			else
+				Result.append ("multiple_mandatory")
 			end
 		end
 

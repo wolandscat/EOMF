@@ -17,6 +17,8 @@ feature -- Initialisation
 	make
 		local
 			ivl: PROPER_INTERVAL [INTEGER]
+			pt_ivl: POINT_INTERVAL[INTEGER]
+			mult_ivl: MULTIPLICITY_INTERVAL
 		do
 		end
 
