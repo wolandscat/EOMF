@@ -124,8 +124,8 @@ feature -- Access
 			end
 		end
 
-	property_object_multiplicity (a_type_name, a_prop_name: STRING): MULTIPLICITY_INTERVAL
-			-- return the effective child object multiplicity of the property definition for `a_prop_name' in flattened class
+	property_object_multiplicity (a_type_name, a_prop_path: STRING): MULTIPLICITY_INTERVAL
+			-- return the effective child object multiplicity of the property definition at `a_prop_path' in flattened class
 			-- corresponding to `a_type_name'.
 			-- Multiplicity is computed as the possible numeric range of child instances under this property at run time, i.e.
 			--  if the property is a container:
@@ -134,9 +134,9 @@ feature -- Access
 			--		existence
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-			Property_valid: has_property (a_type_name, a_prop_name)
+			Property_valid: has_property (a_type_name, a_prop_path)
 		do
-			check attached class_definition (type_name_to_class_key (a_type_name)).flat_properties.item (a_prop_name) as prop_def then
+			check attached property_definition_at_path (a_type_name, a_prop_path) as prop_def then
 				Result := prop_def.object_multiplicity
 			end
 		end
@@ -151,29 +151,29 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).effective_property_type (a_type_name, a_prop_name)
 		end
 
-	property_definition_at_path (a_type_name, a_property_path: STRING): BMM_PROPERTY [BMM_TYPE]
-			-- retrieve the property definition for `a_property_path' in flattened class corresponding to `a_type_name'
+	property_definition_at_path (a_type_name, a_prop_path: STRING): BMM_PROPERTY [BMM_TYPE]
+			-- retrieve the property definition for `a_prop_path' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-			Property_path_valid: has_property_path (a_type_name, a_property_path)
+			Property_path_valid: has_property_path (a_type_name, a_prop_path)
 		local
 			an_og_path: OG_PATH
 		do
-			create an_og_path.make_pure_from_string (a_property_path)
+			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
 			Result := class_definition (type_name_to_class_key (a_type_name)).property_definition_at_path (an_og_path)
 		end
 
-	class_definition_at_path (a_type_name, a_property_path: STRING): BMM_CLASS
-			-- retrieve the class definition for the class that owns the terminal attribute in `a_property_path'
+	class_definition_at_path (a_type_name, a_prop_path: STRING): BMM_CLASS
+			-- retrieve the class definition for the class that owns the terminal attribute in `a_prop_path'
 			-- in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-			Property_path_valid: has_property_path (a_type_name, a_property_path)
+			Property_path_valid: has_property_path (a_type_name, a_prop_path)
 		local
 			an_og_path: OG_PATH
 		do
-			create an_og_path.make_pure_from_string (a_property_path)
+			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
 			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
 		end
@@ -240,13 +240,13 @@ feature -- Status Report
 			Result := class_definition (a_class).all_ancestors.has (a_parent_class.as_upper)
 		end
 
-	has_property_path (an_obj_type, a_property_path: STRING): BOOLEAN
-			-- is `a_property_path' possible based on this reference model? Path format must be standard forward-slash
+	has_property_path (an_obj_type, a_prop_path: STRING): BOOLEAN
+			-- is `a_prop_path' possible based on this reference model? Path format must be standard forward-slash
 			-- delimited path, or Xpath. Any predicates (i.e. [] sections) in an Xpath will be ignored.
 		local
 			an_og_path: OG_PATH
 		do
-			create an_og_path.make_pure_from_string(a_property_path)
+			create an_og_path.make_pure_from_string(a_prop_path)
 			an_og_path.start
 			if has_class_definition (an_obj_type) then
 				Result := class_definition (an_obj_type).has_property_path (an_og_path)
