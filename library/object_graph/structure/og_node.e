@@ -88,7 +88,8 @@ feature -- Modification
 			a_node.set_parent (Current)
 			children_ordered.extend (a_node)
 		ensure
-			has_child (a_node)
+			Child_set: has_child (a_node)
+			Parent_set: a_node.parent = Current
 		end
 
 	put_child_left (a_node, before_node: like child_type)
@@ -102,7 +103,8 @@ feature -- Modification
 			children_ordered.go_i_th (children_ordered.index_of (before_node, 1))
 			children_ordered.put_left (a_node)
 		ensure
-			has_child (a_node)
+			Child_set: has_child (a_node)
+			Parent_set: a_node.parent = Current
 		end
 
 	put_child_right (a_node, after_node: like child_type)
@@ -116,7 +118,8 @@ feature -- Modification
 			children_ordered.go_i_th (children_ordered.index_of (after_node, 1))
 			children_ordered.put_right (a_node)
 		ensure
-			has_child (a_node)
+			Child_set: has_child (a_node)
+			Parent_set: a_node.parent = Current
 		end
 
 	replace_child_by_id (a_node: like child_type; an_old_id: STRING)
@@ -134,6 +137,7 @@ feature -- Modification
 			a_node.set_parent (Current)
 		ensure
 			Replacement_made: child_with_id (a_node.node_id) = a_node
+			Parent_set: a_node.parent = Current
 		end
 
 	remove_child (a_node: like child_type)
@@ -202,6 +206,7 @@ feature {OG_NODE} -- Implementation
 
 invariant
 	Child_lists_valid: children.count = children_ordered.count
+	Parent_validity: across children as child_csr all attached child_csr.item.parent as att_p and then att_p = Current end
 
 end
 
