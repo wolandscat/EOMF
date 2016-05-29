@@ -102,6 +102,8 @@ feature -- Access
 		end
 
 	all_descendants: ARRAYED_SET [STRING]
+			-- obtain names of all descendant classes of this class. If there are none,
+			-- the result is empty.
 		do
 			if attached all_descendants_cache as adc then
 				Result := adc

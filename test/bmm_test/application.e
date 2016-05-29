@@ -43,19 +43,19 @@ feature -- Initialization
 			bmm_env_setup
 			app_cfg.save
 			if not has_errors then
-				run_bmm_tests
-			--	run_openehr_tests
+			--	run_mso_tests
+				run_openehr_tests
 			end
 		end
 
-	run_bmm_tests
+	run_mso_tests
 		do
 			rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("acme-maritime"))
 		end
 
 	run_openehr_tests
 		do
-			rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
+		--	rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
 
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
