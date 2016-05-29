@@ -36,7 +36,7 @@ convert
 
 feature -- Definitions
 
-	Multiplicity_range_delimiter: STRING = ".."
+	multiplicity_range_marker: STRING = ".."
 
 	Multiplicity_unbounded_marker: CHARACTER = '*'
 
@@ -130,14 +130,14 @@ feature -- Initialisation
 			a_mult_str.prune_all (' ')
 
 			-- make the interval
-			delim_pos := a_mult_str.substring_index (Multiplicity_range_delimiter, 1)
+			delim_pos := a_mult_str.substring_index (multiplicity_range_marker, 1)
 			-- n..m case
 			if delim_pos > 0 then
 				a_lower := a_mult_str.substring (1, delim_pos-1).to_integer
 				if a_mult_str.item (a_mult_str.count) = Multiplicity_unbounded_marker then
 					make_upper_unbounded (a_lower)
 				else
-					an_upper := a_mult_str.substring (a_mult_str.substring_index (Multiplicity_range_delimiter, 1) + Multiplicity_range_delimiter.count, a_mult_str.count).to_integer
+					an_upper := a_mult_str.substring (a_mult_str.substring_index (multiplicity_range_marker, 1) + multiplicity_range_marker.count, a_mult_str.count).to_integer
 					make_bounded (a_lower, an_upper)
 				end
 			-- * case
@@ -225,9 +225,9 @@ feature -- Output
 		do
 			create Result.make(0)
 			if upper_unbounded then
-				Result.append (primitive_value_out (lower) + Multiplicity_range_delimiter + Multiplicity_unbounded_marker.out)
+				Result.append (primitive_value_out (lower) + multiplicity_range_marker + Multiplicity_unbounded_marker.out)
 			elseif not is_point then
-				Result.append (primitive_value_out (lower) + Multiplicity_range_delimiter + primitive_value_out (upper))
+				Result.append (primitive_value_out (lower) + multiplicity_range_marker + primitive_value_out (upper))
 			else
 				Result.append (primitive_value_out (lower))
 			end

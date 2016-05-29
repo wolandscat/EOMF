@@ -81,7 +81,7 @@ feature -- Comparison
 
 	contains (other: INTERVAL [G]): BOOLEAN
 			-- Does current interval properly contain `other'? True if at least one limit of other
-			-- is stricly inside the limits of this interval
+			-- is strictly inside the limits of this interval
 		deferred
 		end
 
