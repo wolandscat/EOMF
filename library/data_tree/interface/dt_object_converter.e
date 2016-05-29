@@ -88,8 +88,16 @@ feature -- Conversion
 	dt_to_object_from_string (a_dt_co: DT_COMPLEX_OBJECT; a_type_name: STRING; make_args: detachable ARRAY[ANY]): detachable ANY
 			-- make an object whose classes and attributes correspond to the structure
 			-- of this DT_OBJECT
+		local
+			a_tn: STRING
 		do
-			Result := dt_to_object (a_dt_co, dt_dynamic_type_from_string (a_type_name), make_args)
+			-- get rid of attached type mark if any
+			if a_type_name.item (1) = '!' then
+				a_tn := a_type_name.substring (2, a_type_name.count)
+			else
+				a_tn := a_type_name
+			end
+			Result := dt_to_object (a_dt_co, dt_dynamic_type_from_string (a_tn), make_args)
 		end
 
 	dt_to_object (a_dt_co: DT_COMPLEX_OBJECT; a_type_id: INTEGER; make_args: detachable ARRAY[ANY]): detachable ANY
