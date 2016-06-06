@@ -330,10 +330,9 @@ feature -- External Commands
 						local
 							lf_loc: INTEGER
 						do
+							-- remove any trailing whitespace first
+							s.right_adjust
 							if not s.is_empty then
-								-- remove any trailing whitespace first
-								s.right_adjust
-
 								-- in the case of Windows 'where', it can return more than one result, so we just take the
 								-- first one and use it.
 								lf_loc := s.index_of ('%N', 1)
@@ -343,17 +342,21 @@ feature -- External Commands
 									s.right_adjust
 								end
 								command_template_cache.put (standard_new_command_template (s), cmd_name)
-                                last_command_check_result.append_stdout (s)
+						        last_command_check_result.append_stdout (s)
 							end
 						end (a_cmd_name, ?)
 				)
-                proc.redirect_error_to_agent (
+				proc.redirect_error_to_agent (
 					agent (cmd_name, s: STRING)
-                		do
-                			last_command_check_result.append_stderr (s)
-							failed_command_template_cache.extend (cmd_name)
+						do
+							-- remove any trailing whitespace first
+							s.right_adjust
+							if not s.is_empty then
+								last_command_check_result.append_stderr (s)
+								failed_command_template_cache.extend (cmd_name)
+							end
 						end (a_cmd_name, ?)
-                )
+				)
 				proc.launch
 				proc.wait_for_exit
                 last_command_check_result.set_exit_code (proc.exit_code)
@@ -720,8 +723,9 @@ feature -- Cygwin
 					proc.redirect_output_to_agent (
 						agent (cmd_name, s: STRING)
 							do
+								-- remove any trailing whitespace first
+								s.right_adjust
 								if not s.is_empty then
-									s.right_adjust
 									cygwin_command_template_list.put (cmd_name)
 								end
 							end (a_cmd_name, ?)
@@ -729,7 +733,11 @@ feature -- Cygwin
 					proc.redirect_error_to_agent (
 						agent (cmd_name, s: STRING)
 							do
-								failed_cygwin_command_template_list.extend (cmd_name)
+								-- remove any trailing whitespace first
+								s.right_adjust
+								if not s.is_empty then
+									failed_cygwin_command_template_list.extend (cmd_name)
+								end
 							end (a_cmd_name, ?)
 					)
 					proc.launch
