@@ -247,7 +247,7 @@ feature -- Access
 
 				-- now merge the current properties - merging afterward will correctly replace ancestor properties of same name
 				Result.merge (properties)
-
+				
 				flat_properties_cache := Result
 			end
 		end
@@ -534,6 +534,8 @@ feature -- Modification
 		end
 
 	add_property (a_prop_def: BMM_PROPERTY [BMM_TYPE])
+			-- add a property to the class definition
+			-- Properties should be added after all Ancestors have been added.
 		require
 			Valid_property: valid_candidate_property (a_prop_def)
 		do

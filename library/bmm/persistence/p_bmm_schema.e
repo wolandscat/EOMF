@@ -1,6 +1,9 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "ODIN Persistent form of BMM_SCHEMA"
+	description: "[
+				 Persistent form of BMM_SCHEMA, normally materialised from ODIN file format. Multiple P_BMM_SCHEMAs may include each other, 
+				 consequently, a single BMM_SCHEMA is in general the result multiple P_BMM_SCHEMAs that have been merged together.
+				 ]"
 	keywords:    "Basic meta-model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

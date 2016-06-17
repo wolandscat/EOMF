@@ -383,6 +383,7 @@ feature {NONE} -- Implementation
 								schema_desc.validate
 								merge_validation_errors (schema_desc)
 								if schema_desc.passed then
+									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
 									schema_desc.create_schema
 									check attached schema_desc.schema as sch then
 										tl_schema := sch

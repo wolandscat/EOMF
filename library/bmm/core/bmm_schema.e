@@ -1,6 +1,9 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Model of a BMM schema (along with what is inherited from BMM_SCHEMA_CORE)."
+	description: "[
+				 Model of a BMM schema (along with what is inherited from BMM_SCHEMA_CORE). A single BMM_SCHEMA represents one class model.
+				 It may be assembled from multiple schema files, represented in some syntax or persistent format.
+				 ]"
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

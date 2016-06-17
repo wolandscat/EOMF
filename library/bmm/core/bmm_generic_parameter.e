@@ -51,7 +51,7 @@ feature -- Access (attributes from schema)
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
 	base_class: BMM_CLASS
-			-- the 'design' class of this type, ignoring containers, multiplicity etc.
+			-- the effective conformance type of this parameter, 'Any' if none other
 		do
 			if attached flattened_conforms_to_type as fctt then
 				Result := fctt
@@ -63,7 +63,7 @@ feature -- Access (attributes from schema)
 feature -- Access
 
 	flattened_conforms_to_type: detachable BMM_CLASS
-			-- get any ultimate type conformance constraint on this generic parameter due to inheritance
+			-- ultimate type conformance constraint on this generic parameter due to inheritance
 		do
 			if attached conforms_to_type then
 				Result := conforms_to_type
@@ -73,6 +73,7 @@ feature -- Access
 		end
 
 	effective_conforms_to_type: BMM_CLASS
+			-- Effective conformance type: either defined in model, or 'Any' if none from the model.
 		do
 			if attached flattened_conforms_to_type as att_fct then
 				Result := att_fct
