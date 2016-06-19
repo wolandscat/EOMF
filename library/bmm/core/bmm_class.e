@@ -37,6 +37,17 @@ feature -- Initialisation
 			is_abstract := abstract_flag
 		end
 
+feature -- Identification
+
+	name: STRING
+			-- name of the class FROM SCHEMA
+
+	type_name: STRING
+			-- name of the type
+		do
+			create Result.make_from_string (name)
+		end
+
 feature -- Access
 
 	bmm_schema: BMM_SCHEMA
@@ -44,9 +55,6 @@ feature -- Access
 		attribute
 			create Result.default_create
 		end
-
-	name: STRING
-			-- name of the class FROM SCHEMA
 
 	documentation: detachable STRING
 
@@ -247,7 +255,7 @@ feature -- Access
 
 				-- now merge the current properties - merging afterward will correctly replace ancestor properties of same name
 				Result.merge (properties)
-				
+
 				flat_properties_cache := Result
 			end
 		end
@@ -341,7 +349,7 @@ feature -- Access
 			Property_valid: has_property (a_prop_name)
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
-				Result := prop_def.type.as_type_string
+				Result := prop_def.type.type_name
 			else
 				Result := unknown_type_name
 			end
@@ -468,13 +476,6 @@ feature -- Traversal
 		end
 
 feature -- Output
-
-	as_type_string: STRING
-			-- name of the type
-		do
-			create Result.make_empty
-			Result.append (name)
-		end
 
 	description: STRING
 			-- output a description of this class for use in e.g. tooltips, other places in the UI

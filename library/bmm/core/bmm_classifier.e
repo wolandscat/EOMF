@@ -12,6 +12,29 @@ deferred class BMM_CLASSIFIER
 inherit
 	BMM_MODEL_ELEMENT
 
+feature -- Identification
+
+	type_name: STRING
+			-- formal string form of the type as per UML
+		deferred
+		end
+
+	conformance_type_name: STRING
+			-- name of the this type in form allowing other type to be RT-conformance tested against it;
+			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
+			-- i.e. regardless of whether there is single or multiple containment
+		do
+			create Result.make_from_string (type_name)
+		end
+
+	type_signature: STRING
+			-- Signature form of the type, which for generics includes generic parameter constrainer types
+			-- E.g. Interval<T:Ordered>
+		do
+			create Result.make_from_string (type_name)
+		end
+
 feature -- Access
 
 	base_class: BMM_CLASS
@@ -27,22 +50,6 @@ feature -- Access
 	type_category: STRING
 			-- generate a type category of main target type from Type_category_xx values
 		deferred
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- formal string form of the type as per UML
-		deferred
-		end
-
-	as_conformance_type_string: STRING
-			-- name of the this type in form allowing other type to be RT-conformance tested against it;
-			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
-			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
-			-- i.e. regardless of whether there is single or multiple containment
-		do
-			Result := as_type_string
 		end
 
 invariant

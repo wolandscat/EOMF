@@ -23,6 +23,13 @@ inherit
 create
 	make
 
+feature -- Identification
+
+	underlying_type_name: STRING
+		do
+			Result := ({G}).name
+		end
+
 feature -- Access
 
 	item_names: ARRAYED_LIST [STRING]
@@ -44,11 +51,6 @@ feature -- Access
 			-- generate a type category of main target type from Type_cat_xx values
 		do
 			Result := Type_cat_enumeration
-		end
-
-	underlying_type_name: STRING
-		do
-			Result := ({G}).name
 		end
 
 	name_map: HASH_TABLE [STRING, STRING]

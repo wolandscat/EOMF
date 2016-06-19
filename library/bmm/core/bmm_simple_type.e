@@ -22,6 +22,14 @@ feature -- Initialisation
 			base_class := a_class
 		end
 
+feature -- Identification
+
+	type_name: STRING
+			-- formal name of the type
+		do
+			Result := base_class.type_name
+		end
+
 feature -- Access
 
 	base_class: BMM_CLASS
@@ -61,14 +69,6 @@ feature -- Status Report
 	has_type_substitutions: BOOLEAN
 		do
 			Result := base_class.has_descendants
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- formal name of the type
-		do
-			Result := base_class.as_type_string
 		end
 
 end

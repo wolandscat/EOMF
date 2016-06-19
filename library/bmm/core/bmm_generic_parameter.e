@@ -12,7 +12,7 @@ class BMM_GENERIC_PARAMETER
 inherit
 	BMM_CLASSIFIER
 		redefine
-			as_conformance_type_string
+			conformance_type_name, type_signature
 		end
 
 create
@@ -37,15 +37,43 @@ feature -- Initialisation
 			any_class_definition := any_class
 		end
 
-feature -- Access (attributes from schema)
+feature -- Identification
 
 	name: STRING
 			-- name of the parameter, e.g. 'T' etc
 
-	documentation: detachable STRING
+	type_name: STRING
+			-- name of the type; if constrained, in the form "T"
+		do
+			create Result.make_from_string (name)
+		end
 
-	conforms_to_type: detachable BMM_CLASS
-			-- optional conformance constraint that must be another valid class name.
+	conformance_type_name: STRING
+			-- name of the this type in form allowing other type to be conformance tested against it;
+			-- if constrained, then return the constrainer type, else just return Any
+		do
+			create Result.make_empty
+			if attached flattened_conforms_to_type as att_conf_type then
+				Result.append (att_conf_type.type_name)
+			else
+				Result.append (Any_type)
+			end
+		end
+
+	type_signature: STRING
+			-- Signature form of the type, which for generics includes generic parameter constrainer types
+			-- E.g. Interval<T:Ordered>
+		do
+			create Result.make_from_string (name)
+			if attached flattened_conforms_to_type as att_conf_type then
+				Result.append_character (Generic_constraint_delimiter)
+				Result.append (att_conf_type.type_name)
+			end
+		end
+
+feature -- Access
+
+	documentation: detachable STRING
 
 	inheritance_precursor: detachable BMM_GENERIC_PARAMETER
 			-- if set, is the corresponding generic parameter definition in an ancestor class
@@ -60,7 +88,8 @@ feature -- Access (attributes from schema)
 			end
 		end
 
-feature -- Access
+	conforms_to_type: detachable BMM_CLASS
+			-- optional conformance constraint that must be another valid class name.
 
 	flattened_conforms_to_type: detachable BMM_CLASS
 			-- ultimate type conformance constraint on this generic parameter due to inheritance
@@ -119,27 +148,6 @@ feature -- Modification
 			-- set `inheritance_precursor'
 		do
 			inheritance_precursor := a_gen_parm_def
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- name of the type; if constrained, in the form "T"
-		do
-			create Result.make_empty
-			Result.append (name)
-		end
-
-	as_conformance_type_string: STRING
-			-- name of the this type in form allowing other type to be conformance tested against it;
-			-- if constrained, then return the constrainer type, else just return Any
-		do
-			create Result.make_empty
-			if attached flattened_conforms_to_type as att_conf_type then
-				Result.append (att_conf_type.as_type_string)
-			else
-				Result.append (Any_type)
-			end
 		end
 
 feature {NONE} -- Implementation

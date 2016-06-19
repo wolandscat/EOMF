@@ -216,6 +216,7 @@ feature {NONE} -- Implementation
 			fld_static_tid, fld_att_dyn_tid, i: INTEGER
 			eif_fld_name: STRING
 			fld_lst: detachable ARRAYED_LIST[STRING]
+			dt_prim_obj: DT_PRIMITIVE_OBJECT
 			dt_prim_ivl_list: DT_PRIMITIVE_OBJECT_INTERVAL_LIST
 		do
 debug ("DT")
@@ -302,7 +303,9 @@ end
 						-- the Eiffel object field is a DT primitive type then
 						if is_dt_primitive_atomic_type (fld_att_dyn_tid) then
 							create a_dt_attr.make_single (eif_fld_name)
-							a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_anonymous (eif_fld_val))
+							create dt_prim_obj.make_anonymous (eif_fld_val)
+							check attached dt_prim_obj.value end
+							a_dt_attr.put_child (dt_prim_obj)
 							a_dt_co.put_attribute (a_dt_attr)
 
 						-- the Eiffel object field is a SEQUENCE of some DT primitive type

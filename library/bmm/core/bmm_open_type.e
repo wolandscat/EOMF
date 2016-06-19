@@ -7,12 +7,12 @@ note
 	copyright:   "Copyright (c) 2014- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_SIMPLE_TYPE_OPEN
+class BMM_OPEN_TYPE
 
 inherit
 	BMM_TYPE
 		redefine
-			as_conformance_type_string
+			conformance_type_name
 		end
 
 create
@@ -23,6 +23,23 @@ feature -- Initialisation
 	make (a_type: BMM_GENERIC_PARAMETER)
 		do
 			generic_constraint := a_type
+		end
+
+feature -- Identification
+
+	type_name: STRING
+			-- formal name of the type
+		do
+			Result := generic_constraint.type_name
+		end
+
+	conformance_type_name: STRING
+			-- name of the this type in form allowing other type to be RT-conformance tested against it;
+			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
+			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
+			-- i.e. regardless of whether there is single or multiple containment
+		do
+			Result := generic_constraint.conformance_type_name
 		end
 
 feature -- Access
@@ -60,23 +77,6 @@ feature -- Status Report
 	has_type_substitutions: BOOLEAN
 		do
 			Result := generic_constraint.effective_conforms_to_type.has_descendants
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- formal name of the type
-		do
-			Result := generic_constraint.as_type_string
-		end
-
-	as_conformance_type_string: STRING
-			-- name of the this type in form allowing other type to be RT-conformance tested against it;
-			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
-			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
-			-- i.e. regardless of whether there is single or multiple containment
-		do
-			Result := generic_constraint.as_conformance_type_string
 		end
 
 end

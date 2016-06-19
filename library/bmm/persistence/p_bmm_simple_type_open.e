@@ -35,7 +35,7 @@ feature -- Access (persistence)
 
 feature -- Access
 
-	bmm_type: detachable BMM_SIMPLE_TYPE_OPEN
+	bmm_type: detachable BMM_OPEN_TYPE
 		note
 			option: transient
 		attribute

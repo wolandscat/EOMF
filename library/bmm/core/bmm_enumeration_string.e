@@ -18,11 +18,11 @@ inherit
 create
 	make
 
-feature -- Access
+feature -- Identification
 
 	underlying_type_name: STRING
 			-- redefined to remove _8, _16, _32 from Eiffel internal types
-		do
+		once
 			Result := "STRING"
 		end
 

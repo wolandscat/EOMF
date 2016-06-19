@@ -14,11 +14,42 @@ class BMM_GENERIC_CLASS
 inherit
 	BMM_CLASS
 		redefine
-			effective_property_type, suppliers, as_type_string, flattened_type_list
+			effective_property_type, suppliers, type_name, type_signature, flattened_type_list
 		end
 
 create
 	make
+
+feature -- Identification
+
+	type_name: STRING
+			-- name of the type
+		do
+			create Result.make_from_string (name)
+			Result.append_character (generic_left_delim)
+			across generic_parameters as gen_parms_csr loop
+				Result.append (gen_parms_csr.item.type_name)
+				if not gen_parms_csr.is_last then
+					Result.append_character (generic_separator)
+				end
+			end
+			Result.append_character (generic_right_delim)
+		end
+
+	type_signature: STRING
+			-- Signature form of the type, which for generics includes generic parameter constrainer types
+			-- E.g. Interval<T:Ordered>
+		do
+			create Result.make_from_string (name)
+			Result.append_character (generic_left_delim)
+			across generic_parameters as gen_parms_csr loop
+				Result.append (gen_parms_csr.item.type_signature)
+				if not gen_parms_csr.is_last then
+					Result.append_character (generic_separator)
+				end
+			end
+			Result.append_character (generic_right_delim)
+		end
 
 feature -- Access
 
@@ -67,7 +98,7 @@ feature -- Access
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
 				prop_type := prop_def.type
-				if attached {BMM_SIMPLE_TYPE_OPEN} prop_type as simple_type_open then
+				if attached {BMM_OPEN_TYPE} prop_type as simple_type_open then
 					i := 1
 					-- we traverse the generic parameters Hash instead of just keying into it so as
 					-- to get the index in order of the required parameter
@@ -75,7 +106,7 @@ feature -- Access
 						if gen_parms_csr.item.name.is_equal (simple_type_open.generic_constraint.name) then
 							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was
 							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
-							gen_param_type := gen_parms_csr.item.as_conformance_type_string
+							gen_param_type := gen_parms_csr.item.conformance_type_name
 							gen_param_count := i
 						end
 						i := i + 1
@@ -90,7 +121,7 @@ feature -- Access
 						end
 					end
 				else
-					Result := prop_type.as_type_string
+					Result := prop_type.type_name
 				end
 			else
 				Result := unknown_type_name
@@ -131,22 +162,6 @@ feature -- Status Report
 			Result := generic_parameters.has (a_gen_parm_name.as_upper)
 		end
 
-feature -- Output
-
-	as_type_string: STRING
-			-- name of the type
-		do
-			Result := precursor
-			Result.append_character (generic_left_delim)
-			across generic_parameters as gen_parms_csr loop
-				Result.append (gen_parms_csr.item.as_type_string)
-				if not gen_parms_csr.is_last then
-					Result.append_character (generic_separator)
-				end
-			end
-			Result.append_character (generic_right_delim)
-		end
-
 feature -- Modification
 
 	add_generic_parameter (a_gen_parm_def: BMM_GENERIC_PARAMETER)
@@ -154,8 +169,8 @@ feature -- Modification
 		require
 			New_gen_parm_def: not has_generic_parameter (a_gen_parm_def.name)
 		local
-			new_prop: BMM_PROPERTY[BMM_SIMPLE_TYPE_OPEN]
-			new_type: BMM_SIMPLE_TYPE_OPEN
+			new_prop: BMM_PROPERTY[BMM_OPEN_TYPE]
+			new_type: BMM_OPEN_TYPE
 			doc: detachable STRING
 		do
 			generic_parameters.put (a_gen_parm_def, a_gen_parm_def.name.as_upper)
@@ -187,13 +202,13 @@ feature -- Modification
 							and then a_gen_parm_def.effective_conforms_to_type /= gp_inh_parent.effective_conforms_to_type
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
-								if attached {BMM_PROPERTY[BMM_SIMPLE_TYPE_OPEN]} parent_props_csr.item as parent_prop_type and then
+								if attached {BMM_PROPERTY[BMM_OPEN_TYPE]} parent_props_csr.item as parent_prop_type and then
 									parent_prop_type.type.generic_constraint = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
-										io.put_string ("Schema: " + bmm_schema.schema_id + " found in class " + as_type_string +
-											"; parent type = " + parent_gen_class.as_type_string + " constrainer " + gp_inh_parent.base_class.name +
-											" gen parm " + a_gen_parm_def.as_type_string + "->" + a_gen_parm_def.effective_conforms_to_type.name +
+										io.put_string ("Schema: " + bmm_schema.schema_id + " found in class " + type_signature +
+											"; parent type = " + parent_gen_class.type_name +
+											" gen parm " + a_gen_parm_def.type_signature +
 											"; redefined in property " + parent_prop_type.display_name + "%N")
 									end
 									create new_type.make (a_gen_parm_def)
@@ -219,59 +234,6 @@ feature -- Modification
 		ensure
 			generic_parameters.item (a_gen_parm_def.name.as_upper) = a_gen_parm_def
 		end
-
-feature {NONE} -- Implementation
-
---	compute_flat_properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
-			-- list of all properties due to current and ancestor classes, keyed by property name
-			-- Add synthesised properties for any open type properties whose constrainer types redefine
-			-- the constrainer types of the corresponding parent. For example if this class is DV_INTERVAL <T:DV_ORDERED>
-			-- and it has a parent Interval <T: Ordered>, where DV_ORDERED further constraints Ordered, then any
-			-- properties from Interval of type T should be recreated in DV_INTERVAL.
---		local
---			new_prop: BMM_PROPERTY[BMM_SIMPLE_TYPE_OPEN]
---			new_type: BMM_SIMPLE_TYPE_OPEN
---			doc: detachable STRING
---		do
---			Result := precursor
-
-			-- check for constraint type override
---			across ancestors as anc_class_csr loop
---				if attached {BMM_GENERIC_CLASS} anc_class_csr.item as parent_gen_class then
-	--				across generic_parameters as gen_parms_csr loop
---						across parent_gen_class.generic_parameters as parent_gen_class_gen_parms loop
---							if parent_gen_class_gen_parms.item.name.same_string (a_gen_parm_def.name) and
---								a_gen_parm_def.is_constrained and then attached a_gen_parm_def.inheritance_precursor as gp_inh_parent
---								and then a_gen_parm_def.effective_conforms_to_type /= gp_inh_parent.effective_conforms_to_type
---							then
---								across parent_gen_class.flat_properties as parent_props_csr loop
---									if attached {BMM_PROPERTY[BMM_SIMPLE_TYPE_OPEN]} parent_props_csr.item as parent_prop_type and then
---										parent_prop_type.type.generic_constraint = a_gen_parm_def.inheritance_precursor
---									then
---									--	debug ("bmm")
---											io.put_string ("Schema: " + bmm_schema.schema_id + " found in class " + as_type_string +
---												"; parent type = " + parent_gen_class.as_type_string + " constrainer " + gp_inh_parent.base_class.name +
---												" gen parm " + a_gen_parm_def.as_type_string + "->" + a_gen_parm_def.effective_conforms_to_type.name +
---												"; redefined in property " + parent_prop_type.display_name + "%N")
---									--	end
---										create new_type.make (a_gen_parm_def)
---										if attached parent_prop_type.documentation as att_doc then doc := att_doc.twin end
---										create new_prop.make (parent_prop_type.name.twin,
---											doc,
---											new_type,
---											parent_prop_type.is_mandatory,
---											parent_prop_type.is_computed,
---											parent_prop_type.is_im_infrastructure,
---											parent_prop_type.is_im_runtime)
---										properties.force (new_prop, new_prop.name)
---									end
---								end
---							end
---						end
-		--			end
---				end
---			end
---		end
 
 end
 

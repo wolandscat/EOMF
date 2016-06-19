@@ -28,19 +28,21 @@ feature {NONE} -- Initialisation
 			type := a_type
 		end
 
-feature -- Access
+feature -- Identification
 
 	name: STRING
 			-- name of this attribute
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
-	documentation: detachable STRING
 
 	display_name: STRING
 			-- name of this attribute to display in screen form, grid etc
 		do
 			Result := name
 		end
+
+feature -- Access
+
+	documentation: detachable STRING
 
 	type: G
 			-- formal type of this attribute

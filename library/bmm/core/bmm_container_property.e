@@ -29,7 +29,7 @@ feature -- Initialisation
 			create cardinality.make_open
 		end
 
-feature -- Access
+feature -- Identification
 
 	display_name: STRING
 			-- name of this attribute to display in screen form, grid etc
@@ -37,6 +37,8 @@ feature -- Access
 			Result := name.twin
 			Result.append (": " + type.container_type.name + Generic_left_delim.out + Generic_right_delim.out)
 		end
+
+feature -- Access
 
 	cardinality: MULTIPLICITY_INTERVAL
 

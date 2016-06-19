@@ -23,6 +23,23 @@ feature -- Initialisation
 			create generic_parameters.make (0)
 		end
 
+feature -- Identification
+
+	type_name: STRING
+			-- full name of the type including generic parameters
+		do
+			create Result.make_empty
+			Result.append (base_class.name)
+			Result.append_character (Generic_left_delim)
+			across generic_parameters as gen_parms_csr loop
+				Result.append (gen_parms_csr.item.type_name)
+				if not gen_parms_csr.is_last then
+					Result.append_character (generic_separator)
+				end
+			end
+			Result.append_character (Generic_right_delim)
+		end
+
 feature -- Access
 
 	generic_parameters: ARRAYED_LIST [BMM_TYPE]
@@ -80,7 +97,7 @@ feature -- Access
 			across generic_parameters as gen_parms_csr loop
 				sub_type_lists.extend (gen_parms_csr.item.type_substitutions)
 				if sub_type_lists.last.is_empty then
-					sub_type_lists.last.extend (gen_parms_csr.item.as_type_string)
+					sub_type_lists.last.extend (gen_parms_csr.item.type_name)
 				end
 				perm_count := perm_count * sub_type_lists.last.count
 			end
@@ -142,23 +159,6 @@ feature -- Modification
 	add_generic_parameter (a_gen_parm: BMM_TYPE)
 		do
 			generic_parameters.extend (a_gen_parm)
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- full name of the type including generic parameters
-		do
-			create Result.make_empty
-			Result.append (base_class.name)
-			Result.append_character (Generic_left_delim)
-			across generic_parameters as gen_parms_csr loop
-				Result.append (gen_parms_csr.item.as_type_string)
-				if not gen_parms_csr.is_last then
-					Result.append_character (generic_separator)
-				end
-			end
-			Result.append_character (Generic_right_delim)
 		end
 
 end

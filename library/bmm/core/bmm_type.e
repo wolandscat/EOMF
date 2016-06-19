@@ -36,15 +36,6 @@ feature -- Status Report
 		deferred
 		end
 
-feature -- Output
-
-	as_display_type_string: STRING
-			-- same as `as_type_string' except if a constrained generic,
-			-- in the form "T: CONSTRAINER_TYPE"
-		do
-			Result := as_type_string
-		end
-
 end
 
 

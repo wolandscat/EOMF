@@ -12,7 +12,7 @@ class BMM_CONTAINER_TYPE
 inherit
 	BMM_TYPE
 		redefine
-			as_conformance_type_string
+			conformance_type_name
 		end
 
 create
@@ -24,6 +24,22 @@ feature -- Initialisation
 		do
 			base_type := a_type
 			container_type := a_container_type
+		end
+
+feature -- Identification
+
+	type_name: STRING
+			-- formal name of the type
+		do
+			create Result.make_empty
+			Result.append (container_type.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
+		end
+
+	conformance_type_name: STRING
+			-- name of the this type in form allowing other type to be conformance tested against it;
+			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
+		do
+			Result := base_type.conformance_type_name
 		end
 
 feature -- Access
@@ -86,22 +102,6 @@ feature -- Status Report
 	has_type_substitutions: BOOLEAN
 		do
 			Result := container_type.has_descendants or base_type.has_type_substitutions
-		end
-
-feature -- Output
-
-	as_type_string: STRING
-			-- formal name of the type
-		do
-			create Result.make_empty
-			Result.append (container_type.name + Generic_left_delim.out + base_type.as_type_string + Generic_right_delim.out)
-		end
-
-	as_conformance_type_string: STRING
-			-- name of the this type in form allowing other type to be conformance tested against it;
-			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
-		do
-			Result := base_type.as_conformance_type_string
 		end
 
 end
