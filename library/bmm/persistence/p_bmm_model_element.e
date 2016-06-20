@@ -9,6 +9,9 @@ note
 
 class P_BMM_MODEL_ELEMENT
 
+inherit
+	BMM_DEFINITIONS
+
 feature -- Access
 
 	documentation: detachable STRING

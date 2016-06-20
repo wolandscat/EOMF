@@ -10,7 +10,7 @@ note
 class P_BMM_GENERIC_PARAMETER
 
 inherit
-	P_BMM_CLASSIFIER
+	P_BMM_MODEL_ELEMENT
 
 feature -- Access (attributes from schema)
 

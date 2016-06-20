@@ -62,7 +62,7 @@ feature -- Identification
 
 	type_signature: STRING
 			-- Signature form of the type, which for generics includes generic parameter constrainer types
-			-- E.g. Interval<T:Ordered>
+			-- E.g. "T:Ordered"
 		do
 			create Result.make_from_string (name)
 			if attached flattened_conforms_to_type as att_conf_type then

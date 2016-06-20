@@ -10,7 +10,7 @@ note
 deferred class P_BMM_TYPE
 
 inherit
-	P_BMM_CLASSIFIER
+	P_BMM_MODEL_ELEMENT
 
 feature -- Access
 
