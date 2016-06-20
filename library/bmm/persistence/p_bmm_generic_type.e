@@ -65,18 +65,18 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_type (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		local
 			new_bmm_type: BMM_GENERIC_TYPE
 		do
 			-- handle simple generic param types if found in schema
-			if a_bmm_schema.has_class_definition (root_type) and
-				attached {BMM_GENERIC_CLASS} a_bmm_schema.class_definition (root_type) as bmm_gen_class
+			if a_bmm_model.has_class_definition (root_type) and
+				attached {BMM_GENERIC_CLASS} a_bmm_model.class_definition (root_type) as bmm_gen_class
 			then
 				create new_bmm_type.make (bmm_gen_class)
 				bmm_type := new_bmm_type
 				across generic_parameter_refs as gen_parms_csr loop
-					gen_parms_csr.item.create_bmm_type (a_bmm_schema, a_class_def)
+					gen_parms_csr.item.create_bmm_type (a_bmm_model, a_class_def)
 					if attached gen_parms_csr.item.bmm_type as bt then
 						new_bmm_type.add_generic_parameter (bt)
 					end

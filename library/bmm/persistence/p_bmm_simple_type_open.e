@@ -43,7 +43,7 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_type (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
 			if attached {BMM_GENERIC_CLASS} a_class_def as bmm_gen_class  and then attached bmm_gen_class.generic_parameters.item (type) as bmm_gen_parm then
 				create bmm_type.make (bmm_gen_parm)

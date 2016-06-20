@@ -206,7 +206,7 @@ feature -- Modification
 									parent_prop_type.type.generic_constraint = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
-										io.put_string ("Schema: " + bmm_schema.schema_id + " found in class " + type_signature +
+										io.put_string ("Schema: " + bmm_model.schema_id + " found in class " + type_signature +
 											"; parent type = " + parent_gen_class.type_name +
 											" gen parm " + a_gen_parm_def.type_signature +
 											"; redefined in property " + parent_prop_type.display_name + "%N")

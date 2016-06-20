@@ -119,14 +119,14 @@ feature -- Factory
 			bmm_class := att_bmm_class
 		end
 
-	populate_bmm_class (a_bmm_schema: BMM_SCHEMA)
+	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements from Current to `bmm_class'
 		do
 			if attached bmm_class as att_bmm_class then
 				-- populate references to ancestor classes; should be every class except Any
 				if attached ancestors then
 					across ancestors as ancs_csr loop
-						if attached a_bmm_schema.class_definition (ancs_csr.item) as class_def then
+						if attached a_bmm_model.class_definition (ancs_csr.item) as class_def then
 							att_bmm_class.add_ancestor (class_def)
 						end
 					end
@@ -135,7 +135,7 @@ feature -- Factory
 				-- create generic parameters
 				if attached generic_parameter_defs as gen_parm_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
 					across gen_parm_defs as gen_parm_defs_csr loop
-						gen_parm_defs_csr.item.create_bmm_generic_parameter_definition (a_bmm_schema)
+						gen_parm_defs_csr.item.create_bmm_generic_parameter_definition (a_bmm_model)
 						if attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
 							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
 						end
@@ -144,7 +144,7 @@ feature -- Factory
 
 				-- populate properties
 				across properties as props_csr loop
-					props_csr.item.create_bmm_property (a_bmm_schema, att_bmm_class)
+					props_csr.item.create_bmm_property (a_bmm_model, att_bmm_class)
 					if attached props_csr.item.bmm_property as bmm_prop_def then
 						att_bmm_class.add_property (bmm_prop_def)
 					end

@@ -50,7 +50,7 @@ feature -- Initialization
 
 	run_mso_tests
 		do
-			rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("acme-maritime"))
+			bmm_model_cache.put (ref_models_access.rm_for_closure ("acme-maritime"))
 		end
 
 	run_openehr_tests

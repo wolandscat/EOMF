@@ -41,10 +41,10 @@ feature -- Access (attributes from schema)
 
 feature -- Factory
 
-	create_bmm_type (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
-			if a_bmm_schema.has_class_definition (type) then
-				create bmm_type.make (a_bmm_schema.class_definition (type))
+			if a_bmm_model.has_class_definition (type) then
+				create bmm_type.make (a_bmm_model.class_definition (type))
 			end
 		end
 

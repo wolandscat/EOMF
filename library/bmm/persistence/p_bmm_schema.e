@@ -112,10 +112,10 @@ feature -- Access (Attributes from schema load post-processing)
 			end
 		end
 
-	bmm_schema: BMM_SCHEMA
+	bmm_model: BMM_MODEL
 		do
-			check attached bmm_schema_cache as att_bmm_schema then
-				Result := att_bmm_schema
+			check attached bmm_model_cache as att_mod then
+				Result := att_mod
 			end
 		end
 
@@ -719,24 +719,24 @@ feature -- Factory
 		require
 			state = State_includes_processed
 		local
-			new_bmm_schema: BMM_SCHEMA
+			new_rm: BMM_MODEL
 		do
 			--------- PASS 1 ----------
-			create new_bmm_schema.make (rm_publisher, schema_name, rm_release)
-			bmm_schema_cache := new_bmm_schema
-			new_bmm_schema.set_schema_author (schema_author)
+			create new_rm.make (rm_publisher, schema_name, rm_release)
+			bmm_model_cache := new_rm
+			new_rm.set_schema_author (schema_author)
 			if not schema_contributors.is_empty then
-				new_bmm_schema.set_schema_contributors (schema_contributors)
+				new_rm.set_schema_contributors (schema_contributors)
 			end
-			new_bmm_schema.set_schema_lifecycle_state (schema_lifecycle_state)
-			new_bmm_schema.set_schema_revision (schema_revision)
-			new_bmm_schema.set_schema_description (schema_description)
+			new_rm.set_schema_lifecycle_state (schema_lifecycle_state)
+			new_rm.set_schema_revision (schema_revision)
+			new_rm.set_schema_description (schema_description)
 
 			-- packages - add package structure only, no classes yet
 			across canonical_packages as pkgs_csr loop
 				pkgs_csr.item.create_bmm_package_definition
 				if attached pkgs_csr.item.bmm_package_definition as pkg_def then
-					new_bmm_schema.add_package (pkg_def)
+					new_rm.add_package (pkg_def)
 				end
 			end
 
@@ -748,26 +748,26 @@ feature -- Factory
 
 			-- set the archetype root class
 			if attached archetype_parent_class as apc then
-				new_bmm_schema.set_archetype_parent_class (apc)
+				new_rm.set_archetype_parent_class (apc)
 			end
 			-- set the archetype data value root class
 			if attached archetype_data_value_parent_class as advp then
-				new_bmm_schema.set_archetype_data_value_parent_class (advp)
+				new_rm.set_archetype_data_value_parent_class (advp)
 			end
 			-- set the archetype data value root class
 			if attached archetype_visualise_descendants_of as avd then
-				new_bmm_schema.set_archetype_visualise_descendants_of (avd)
+				new_rm.set_archetype_visualise_descendants_of (avd)
 			end
 			-- add RM closure packages - clone because merging will change the structure in the BMM_SCHEMA
-			new_bmm_schema.set_archetype_rm_closure_packages (archetype_rm_closure_packages.deep_twin)
+			new_rm.set_archetype_rm_closure_packages (archetype_rm_closure_packages.deep_twin)
 
 			--------- PASS 2 ----------
 			-- populate BMM_CLASS objects
 			do_all_classes_in_order (
-				agent (a_class_def: P_BMM_CLASS; a_bmm_schema: BMM_SCHEMA)
+				agent (a_class_def: P_BMM_CLASS; an_rm: BMM_MODEL)
 					do
-						a_class_def.populate_bmm_class (a_bmm_schema)
-					end (?, new_bmm_schema))
+						a_class_def.populate_bmm_class (an_rm)
+					end (?, new_rm))
 		end
 
 	add_bmm_schema_class_definition (a_pkg: P_BMM_PACKAGE; a_class_name: STRING)
@@ -783,7 +783,7 @@ feature -- Factory
 					if p_class_def.is_override then
 						bmm_class_def.set_is_override
 					end
-					bmm_schema.add_class_definition (bmm_class_def, pkg_def)
+					bmm_model.add_class_definition (bmm_class_def, pkg_def)
 				end
 			end
 		end
@@ -994,7 +994,7 @@ feature {NONE} -- Implementation
 		attribute
 		end
 
-	bmm_schema_cache: detachable BMM_SCHEMA
+	bmm_model_cache: detachable BMM_MODEL
 		note
 			option: transient
 		attribute

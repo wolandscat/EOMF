@@ -50,7 +50,7 @@ feature -- Identification
 
 feature -- Access
 
-	bmm_schema: BMM_SCHEMA
+	bmm_model: BMM_MODEL
 			-- reverse reference to parent schema
 		attribute
 			create Result.default_create
@@ -166,7 +166,7 @@ feature -- Access
 			-- 'schema_id::package.package.CLASS' to enable identification in situation when a given class/package
 			-- has been imported into more than one schema.
 		do
-			Result := bmm_schema.schema_id + Schema_name_delimiter + class_path
+			Result := bmm_model.schema_id + Schema_name_delimiter + class_path
 		end
 
 	suppliers: ARRAYED_SET [STRING]
@@ -191,7 +191,7 @@ feature -- Access
 					Result.merge (ftl)
 					-- now get the descendant types, since these could be bound at runtime
 					across ftl as gen_types_csr loop
-						across bmm_schema.class_definition (gen_types_csr.item).immediate_descendants as imm_descs_csr loop
+						across bmm_model.class_definition (gen_types_csr.item).immediate_descendants as imm_descs_csr loop
 							Result.extend (imm_descs_csr.item.name)
 						end
 					end
@@ -210,7 +210,7 @@ feature -- Access
 				create Result.make (0)
 				Result.compare_objects
 				Result.merge (suppliers)
-				Result.subtract (bmm_schema.primitive_types)
+				Result.subtract (bmm_model.primitive_types)
 				suppliers_non_primitive_cache := Result
 			end
 		end
@@ -232,7 +232,7 @@ feature -- Access
 				Result.merge (suppliers)
 				across suppliers as suppliers_csr loop
 					if not closure_types_done.has (suppliers_csr.item) then
-						Result.merge (bmm_schema.class_definition (suppliers_csr.item).supplier_closure)
+						Result.merge (bmm_model.class_definition (suppliers_csr.item).supplier_closure)
 						closure_types_done.extend (suppliers_csr.item)
 					end
 				end
@@ -286,7 +286,7 @@ feature -- Access
 					Result := fp
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_schema.class_definition (Result.type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (Result.type.base_class.name) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -324,7 +324,7 @@ feature -- Access
 					Result := Current
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_schema.class_definition (bmm_prop.type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.type.base_class.name) as class_def then
 					Result := class_def.class_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -418,7 +418,7 @@ feature -- Status Report
 		do
 			a_path_pos := a_path.items.index
 			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				if attached bmm_schema.class_definition (flat_prop.type.base_class.name) as class_def then
+				if attached bmm_model.class_definition (flat_prop.type.base_class.name) as class_def then
 					a_path.forth
 					if not a_path.off then
 						Result := class_def.has_property_path (a_path)
@@ -490,9 +490,9 @@ feature -- Output
 
 feature -- Modification
 
-	set_bmm_schema (a_bmm_schema: BMM_SCHEMA)
+	set_bmm_schema (a_bmm_schema: BMM_MODEL)
 		do
-			bmm_schema := a_bmm_schema
+			bmm_model := a_bmm_schema
 		end
 
 	set_package (a_package: BMM_PACKAGE)
@@ -613,9 +613,9 @@ feature {NONE} -- Implementation
 		--			supplier_closure_class_record.extend (a_prop.type.base_class.name)
 					if continue_action.item ([a_prop, depth]) then
 						if flat_flag then
-							props := bmm_schema.class_definition (a_prop.type.base_class.name).flat_properties
+							props := bmm_model.class_definition (a_prop.type.base_class.name).flat_properties
 						else
-							props := bmm_schema.class_definition (a_prop.type.base_class.name).properties
+							props := bmm_model.class_definition (a_prop.type.base_class.name).properties
 						end
 
 						across props as props_csr loop

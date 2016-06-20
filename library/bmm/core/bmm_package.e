@@ -27,7 +27,7 @@ feature -- Initialisation
 
 feature -- Access
 
-	bmm_schema: detachable BMM_SCHEMA
+	bmm_model: detachable BMM_MODEL
 			-- reverse reference to parent schema
 
 	name: STRING
@@ -47,7 +47,7 @@ feature -- Access
 			-- one schema.
 		do
 			create Result.make_empty
-			if attached bmm_schema as sch then
+			if attached bmm_model as sch then
 				Result.append (sch.schema_id + schema_name_delimiter + path)
 			end
 		end
@@ -117,9 +117,9 @@ feature {BMM_PACKAGE_CONTAINER} -- Modification
 			parent_set: parent = a_pkg
 		end
 
-	set_bmm_schema (a_bmm_schema: BMM_SCHEMA)
+	set_bmm_schema (a_bmm_schema: BMM_MODEL)
 		do
-			bmm_schema := a_bmm_schema
+			bmm_model := a_bmm_schema
 		end
 
 feature -- Iteration

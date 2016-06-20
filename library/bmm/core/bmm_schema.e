@@ -10,7 +10,7 @@ note
 	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_SCHEMA
+class BMM_MODEL
 
 inherit
 	BMM_PACKAGE_CONTAINER
@@ -402,7 +402,7 @@ feature -- Modification
 			a_class_def.set_bmm_schema (Current)
 		ensure
 			Class_added: class_definition (a_class_def.name) = a_class_def
-			Schema_set_in_class: a_class_def.bmm_schema = Current
+			Schema_set_in_class: a_class_def.bmm_model = Current
 		end
 
 	add_package (a_pkg: BMM_PACKAGE)
@@ -411,7 +411,7 @@ feature -- Modification
 			a_pkg.set_bmm_schema (Current)
 			a_pkg.do_recursive_packages (agent (a_bmm_pkg: BMM_PACKAGE) do a_bmm_pkg.set_bmm_schema (Current) end)
 		ensure then
-			Schema_set_in_package: a_pkg.bmm_schema = Current
+			Schema_set_in_package: a_pkg.bmm_model = Current
 		end
 
 	set_archetype_parent_class (a_class_name: STRING)

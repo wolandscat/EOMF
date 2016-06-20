@@ -57,12 +57,12 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_type (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
-			if a_bmm_schema.has_class_definition (container_type) and attached type_ref as att_type_ref then
-				att_type_ref.create_bmm_type (a_bmm_schema, a_class_def)
+			if a_bmm_model.has_class_definition (container_type) and attached type_ref as att_type_ref then
+				att_type_ref.create_bmm_type (a_bmm_model, a_class_def)
 				if attached att_type_ref.bmm_type as bt then
-					create bmm_type.make (bt, a_bmm_schema.class_definition (container_type))
+					create bmm_type.make (bt, a_bmm_model.class_definition (container_type))
 				end
 			end
 		end

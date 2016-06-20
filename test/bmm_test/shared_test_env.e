@@ -62,7 +62,7 @@ feature -- Initialization
 				initialise_app
 				if not has_errors then
 					-- now demonstrate some usage of the schemas
-					rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
+					bmm_model_cache.put (ref_models_access.rm_for_closure ("openehr-ehr"))
 				else
 					io.put_string (error_strings)
 					io.put_string ("Check .cfg gile " + app_cfg.file_path + "%N")
@@ -70,9 +70,9 @@ feature -- Initialization
 			end
 		end
 
-	rm_schema: BMM_SCHEMA
+	rm_schema: BMM_MODEL
 		do
-			Result := rm_schema_cache.item
+			Result := bmm_model_cache.item
 		end
 
 	output_schema_info
@@ -81,7 +81,7 @@ feature -- Initialization
 			schema_meta_data: HASH_TABLE [STRING, STRING]
 		do
 			-- create row containing widgets for: check column, name column, status column, edit button column
-			across rm_schemas_access.all_schemas as rm_schemas_csr loop
+			across ref_models_access.all_schemas as rm_schemas_csr loop
 				schema_id := rm_schemas_csr.key
 				schema_meta_data := rm_schemas_csr.item.meta_data
 
@@ -146,14 +146,14 @@ feature -- Initialization
 				rm_schema_directories.prune_all (dead_sch_csr.item)
 			end
 
-			rm_schemas_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
+			ref_models_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
 			-- rm_schemas_access.initialise_all (rm_schema_directories)
 			output_schema_info
 
-			if Rm_schemas_access.has_errors then
-				add_error (Ec_general_error, <<Rm_schemas_access.error_strings>>)
-			elseif not rm_schemas_access.found_valid_schemas then
-				add_error (ec_bmm_schemas_config_not_valid, <<rm_schemas_access.schemas_load_list_string>>)
+			if ref_models_access.has_errors then
+				add_error (Ec_general_error, <<ref_models_access.error_strings>>)
+			elseif not ref_models_access.found_valid_models then
+				add_error (ec_bmm_schemas_config_not_valid, <<ref_models_access.schemas_load_list_string>>)
 			end
 
 		end
@@ -167,9 +167,9 @@ feature -- Status Report
 
 feature {NONE} -- Implementation
 
-	rm_schema_cache: CELL [BMM_SCHEMA]
+	bmm_model_cache: CELL [BMM_MODEL]
 		once
-			create Result.put (create {BMM_SCHEMA}.default_create)
+			create Result.put (create {BMM_MODEL}.default_create)
 		end
 
 end

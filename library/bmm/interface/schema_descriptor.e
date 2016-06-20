@@ -71,7 +71,7 @@ feature -- Access
 	p_schema: detachable P_BMM_SCHEMA
 			-- persistent form of model
 
-	schema: detachable BMM_SCHEMA
+	model: detachable BMM_MODEL
 			-- computable form of model
 
 	schema_id: STRING
@@ -133,7 +133,7 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			new_schema: P_BMM_SCHEMA
 		do
 			reset
-			schema := Void
+			model := Void
 			schema_file_accessor.load
 			if not schema_file_accessor.has_errors then
 				passed := True
@@ -181,16 +181,16 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 		end
 
 	create_schema
-			-- create `schema'
+			-- create `model'
 		require
 			passed
 		do
 			check attached p_schema as att_p_schema then
 				att_p_schema.create_bmm_schema
-				schema := att_p_schema.bmm_schema
+				model := att_p_schema.bmm_model
 			end
 		ensure
-			attached schema
+			attached model
 		end
 
 feature {NONE} -- Implementation

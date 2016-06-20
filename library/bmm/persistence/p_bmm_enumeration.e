@@ -48,10 +48,10 @@ feature -- Factory
 			bmm_class := bmm_class_def
 		end
 
-	populate_bmm_class (a_bmm_schema: BMM_SCHEMA)
+	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements to `bmm_class'
 		do
-			precursor (a_bmm_schema)
+			precursor (a_bmm_model)
 			if attached bmm_class as bmm_enum_def then
 				bmm_enum_def.set_item_names (item_names)
 				if attached item_values as iv then

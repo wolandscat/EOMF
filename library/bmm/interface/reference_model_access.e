@@ -50,10 +50,10 @@ feature {NONE} -- Initialisation
 			exception_encountered := False
 			create all_schemas.make(0)
 			create candidate_schemas.make(0)
-			create valid_top_level_schemas.make(0)
+			create valid_models.make(0)
 			create top_level_schemas_by_publisher.make (0)
 			create schema_inclusion_map.make(0)
-			create schemas_by_rm_closure.make(0)
+			create models_by_closure.make(0)
 			create {ARRAYED_LIST[STRING]} schemas_load_list.make(0)
 			schemas_load_list.compare_objects
 		end
@@ -103,19 +103,20 @@ feature -- Access
 	candidate_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
 			-- includes only fully validated schemas
 
-	valid_top_level_schemas: HASH_TABLE [BMM_SCHEMA, STRING]
-			-- top-level (root) schemas in use. Table is keyed by logical schema_name, i.e. model_publisher '_' model_name, e.g. "openehr_rm"
+	valid_models: HASH_TABLE [BMM_MODEL, STRING]
+			-- Fully models, generated from fully merged source schemas. Table is keyed by logical schema_name,
+			-- i.e. model_publisher '_' model_name, e.g. "openehr_rm"
 			-- Schemas containing different variants of same model (i.e. model_publisher + model_name) are considered duplicates
 
 	top_level_schemas_by_publisher: HASH_TABLE [ARRAYED_LIST [SCHEMA_DESCRIPTOR], STRING]
 			-- all top-level schemas keyed by issuer
 
-	schema_for_rm_closure (a_qualified_rm_closure_name: STRING): BMM_SCHEMA
-			-- Return schema containing the model-class key `a_qualified_rm_closure_name', e.g. "openEHR-EHR"
+	rm_for_closure (a_qualified_rm_closure_name: STRING): BMM_MODEL
+			-- Return ref model containing the model-class key `a_qualified_rm_closure_name', e.g. "openEHR-EHR"
 		require
-			has_schema_for_rm_closure (a_qualified_rm_closure_name)
+			has_rm_for_closure (a_qualified_rm_closure_name)
 		do
-			check attached schemas_by_rm_closure.item (a_qualified_rm_closure_name.as_lower) as sch then
+			check attached models_by_closure.item (a_qualified_rm_closure_name.as_lower) as sch then
 				Result := sch
 			end
 		end
@@ -150,16 +151,16 @@ feature -- Status Report
 			Result := not schema_directories.is_empty
 		end
 
-	has_schema_for_rm_closure (a_qualified_rm_closure_name: STRING): BOOLEAN
+	has_rm_for_closure (a_qualified_rm_closure_name: STRING): BOOLEAN
 			-- True if there is a schema containing the qualified package key `a_qualified_rm_closure_name', e.g. "openEHR-EHR"
 		do
-			Result := schemas_by_rm_closure.has (a_qualified_rm_closure_name.as_lower)
+			Result := models_by_closure.has (a_qualified_rm_closure_name.as_lower)
 		end
 
-	found_valid_schemas: BOOLEAN
+	found_valid_models: BOOLEAN
 			-- True if any Reference Model schemas were found
 		do
-			Result := not valid_top_level_schemas.is_empty
+			Result := not valid_models.is_empty
 		end
 
 	load_attempted: BOOLEAN
@@ -203,7 +204,7 @@ feature {NONE} -- Implementation
 			-- Schemas not included by other schemas have NO ENTRY in this list
 			-- this is detected and used to populate `top_level_schemas'
 
-	schemas_by_rm_closure: HASH_TABLE [BMM_SCHEMA, STRING]
+	models_by_closure: HASH_TABLE [BMM_MODEL, STRING]
 			-- schemas keyed by lower-case qualified package name, i.e. model_publisher '-' package_name, e.g. "openehr-ehr";
 			-- this matches the qualifide package name part of an ARCHETYPE_ID
 
@@ -275,13 +276,13 @@ feature {NONE} -- Implementation
 			rm_closures: ARRAYED_LIST [STRING]
 			i: INTEGER
 			finished: BOOLEAN
-			tl_schema: BMM_SCHEMA
+			tl_schema: BMM_MODEL
 			schema_desc: SCHEMA_DESCRIPTOR
 			publisher_schemas: ARRAYED_LIST [SCHEMA_DESCRIPTOR]
 		do
 			if not exception_encountered then
 				-- populate the rm_schemas table first
-				valid_top_level_schemas.wipe_out
+				valid_models.wipe_out
 				top_level_schemas_by_publisher.wipe_out
 				schema_inclusion_map.wipe_out
 				candidate_schemas.wipe_out
@@ -385,10 +386,10 @@ feature {NONE} -- Implementation
 								if schema_desc.passed then
 									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
 									schema_desc.create_schema
-									check attached schema_desc.schema as sch then
+									check attached schema_desc.model as sch then
 										tl_schema := sch
 									end
-									valid_top_level_schemas.extend (tl_schema, schema_desc.schema_id)
+									valid_models.extend (tl_schema, schema_desc.schema_id)
 									if schema_desc.errors.has_warnings then
 										add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 									end
@@ -400,19 +401,19 @@ feature {NONE} -- Implementation
 					end
 				end
 
-				-- now populate the `schemas_by_rm_closure' table
-				schemas_by_rm_closure.wipe_out
-				across valid_top_level_schemas as schemas_csr loop
-					model_publisher := schemas_csr.item.rm_publisher
+				-- now populate the `models_by_closure' table
+				models_by_closure.wipe_out
+				across valid_models as models_csr loop
+					model_publisher := models_csr.item.rm_publisher
 
 					-- put a ref to schema, keyed by the model_publisher-package_name key (lower-case) for later lookup by compiler
-					rm_closures := schemas_csr.item.archetype_rm_closure_packages
+					rm_closures := models_csr.item.archetype_rm_closure_packages
 					across rm_closures as rm_closures_csr loop
 						qualified_rm_closure_name := publisher_qualified_rm_closure_key (model_publisher, rm_closures_csr.item)
-						if schemas_by_rm_closure.has (qualified_rm_closure_name) and then attached schemas_by_rm_closure.item (qualified_rm_closure_name) as att_schema then
-							add_info (ec_bmm_schema_duplicate_found, <<qualified_rm_closure_name, att_schema.schema_id, schemas_csr.key>>)
+						if models_by_closure.has (qualified_rm_closure_name) and then attached models_by_closure.item (qualified_rm_closure_name) as att_schema then
+							add_info (ec_bmm_schema_duplicate_found, <<qualified_rm_closure_name, att_schema.schema_id, models_csr.key>>)
 						else
-							schemas_by_rm_closure.put (schemas_csr.item, qualified_rm_closure_name.as_lower)
+							models_by_closure.put (models_csr.item, qualified_rm_closure_name.as_lower)
 						end
 					end
 				end

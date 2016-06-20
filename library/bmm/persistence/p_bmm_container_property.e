@@ -36,9 +36,9 @@ feature -- Access
 
 feature -- Factory
 
-	create_bmm_property (a_bmm_schema: BMM_SCHEMA; a_class_def: BMM_CLASS)
+	create_bmm_property (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
-			precursor (a_bmm_schema, a_class_def)
+			precursor (a_bmm_model, a_class_def)
 			if attached bmm_property as att_pb and attached cardinality as att_card then
 				att_pb.set_cardinality (att_card)
 			end
