@@ -474,6 +474,35 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 				end
 			end
 
+			-- packages
+			-- merge from other.packages, because that's where the proper hierarchically structured packages are
+			across other.canonical_packages as other_pkgs_csr loop
+				if canonical_packages.has (other_pkgs_csr.key) then
+					canonical_packages_item (other_pkgs_csr.key).merge (other_pkgs_csr.item)
+				else
+					canonical_packages.put (other_pkgs_csr.item, other_pkgs_csr.key)
+				end
+			end
+
+			-- remove other schema from remaining list of included schemas to process
+			includes_to_process.prune_all (other.schema_id)
+			if includes_to_process.is_empty then
+				state := State_includes_processed
+			end
+		end
+
+	ready_to_validate: BOOLEAN
+		do
+			Result := state = State_includes_processed
+		end
+
+	validate
+			-- main validation prior to generation of BMM_SCHEMA; access to `all_schemas' allows errors to be allocated to
+			-- correct schema
+		local
+			package_classes: HASH_TABLE [STRING, STRING]
+			class_names: ARRAYED_LIST [STRING]
+		do
 			-- compute ancestors index:
 			-- pass 1: add class direct ancestors
 			do_all_classes (
@@ -504,35 +533,6 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 					end
 			)
 
-			-- packages
-			-- merge from other.packages, because that's where the proper hierarchically structured packages are
-			across other.canonical_packages as other_pkgs_csr loop
-				if canonical_packages.has (other_pkgs_csr.key) then
-					canonical_packages_item (other_pkgs_csr.key).merge (other_pkgs_csr.item)
-				else
-					canonical_packages.put (other_pkgs_csr.item, other_pkgs_csr.key)
-				end
-			end
-
-			-- remove other schema from remaining list of included schemas to process
-			includes_to_process.prune_all (other.schema_id)
-			if includes_to_process.is_empty then
-				state := State_includes_processed
-			end
-		end
-
-	ready_to_validate: BOOLEAN
-		do
-			Result := state = State_includes_processed
-		end
-
-	validate
-			-- main validation prior to generation of BMM_SCHEMA; access to `all_schemas' allows errors to be allocated to
-			-- correct schema
-		local
-			package_classes: HASH_TABLE [STRING, STRING]
-			class_names: ARRAYED_LIST [STRING]
-		do
 			-- check that RM shema release is valid
 			if not valid_standard_version (rm_release) then
 				add_error (ec_BMM_RMREL, <<schema_id, rm_release>>)
