@@ -11,9 +11,6 @@ class BMM_OPEN_TYPE
 
 inherit
 	BMM_TYPE
-		redefine
-			conformance_type_name
-		end
 
 create
 	make
@@ -31,15 +28,6 @@ feature -- Identification
 			-- formal name of the type
 		do
 			Result := generic_constraint.type_name
-		end
-
-	conformance_type_name: STRING
-			-- name of the this type in form allowing other type to be RT-conformance tested against it;
-			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
-			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
-			-- i.e. regardless of whether there is single or multiple containment
-		do
-			Result := generic_constraint.conformance_type_name
 		end
 
 feature -- Access

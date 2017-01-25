@@ -10,9 +10,9 @@ note
 class BMM_GENERIC_PARAMETER
 
 inherit
-	BMM_CLASSIFIER
+	BMM_TYPE_ELEMENT
 		redefine
-			conformance_type_name, type_signature
+			type_signature
 		end
 
 create
@@ -48,18 +48,6 @@ feature -- Identification
 			create Result.make_from_string (name)
 		end
 
-	conformance_type_name: STRING
-			-- name of the this type in form allowing other type to be conformance tested against it;
-			-- if constrained, then return the constrainer type, else just return Any
-		do
-			create Result.make_empty
-			if attached flattened_conforms_to_type as att_conf_type then
-				Result.append (att_conf_type.type_name)
-			else
-				Result.append (Any_type)
-			end
-		end
-
 	type_signature: STRING
 			-- Signature form of the type, which for generics includes generic parameter constrainer types
 			-- E.g. "T:Ordered"
@@ -92,7 +80,8 @@ feature -- Access
 			-- optional conformance constraint that must be another valid class name.
 
 	flattened_conforms_to_type: detachable BMM_CLASS
-			-- ultimate type conformance constraint on this generic parameter due to inheritance
+			-- ultimate type conformance constraint on this generic parameter due to inheritance;
+			-- Void if no constraint type.
 		do
 			if attached conforms_to_type then
 				Result := conforms_to_type

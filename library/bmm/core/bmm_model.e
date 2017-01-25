@@ -269,7 +269,7 @@ feature -- Conformance
 			prop_conf_type: STRING
 		do
 			if has_class_definition (a_ms_property_type) then
-				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).type.conformance_type_name
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).type.base_class.type_name
 
 				-- adjust for case where candidate type is not generic, but bmm_property type is - just test on non-generic version
 				if is_generic_type_name (prop_conf_type) and not is_generic_type_name (a_ms_property_type) then

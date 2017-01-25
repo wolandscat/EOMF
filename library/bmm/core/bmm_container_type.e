@@ -11,9 +11,6 @@ class BMM_CONTAINER_TYPE
 
 inherit
 	BMM_TYPE
-		redefine
-			conformance_type_name
-		end
 
 create
 	make
@@ -33,13 +30,6 @@ feature -- Identification
 		do
 			create Result.make_empty
 			Result.append (container_type.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
-		end
-
-	conformance_type_name: STRING
-			-- name of the this type in form allowing other type to be conformance tested against it;
-			-- Remove generic container type, i.e. 'List <ELEMENT>' becomes 'ELEMENT'
-		do
-			Result := base_type.conformance_type_name
 		end
 
 feature -- Access

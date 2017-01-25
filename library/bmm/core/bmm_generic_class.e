@@ -106,7 +106,7 @@ feature -- Access
 						if gen_parms_csr.item.name.is_equal (simple_type_open.generic_constraint.name) then
 							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was
 							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
-							gen_param_type := gen_parms_csr.item.conformance_type_name
+							gen_param_type := gen_parms_csr.item.base_class.type_name
 							gen_param_count := i
 						end
 						i := i + 1

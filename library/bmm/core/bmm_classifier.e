@@ -19,15 +19,6 @@ feature -- Identification
 		deferred
 		end
 
-	conformance_type_name: STRING
-			-- name of the this type in form allowing other type to be RT-conformance tested against it;
-			-- 'RT' conformance means 'relation-target' conformance, which abstracts away container types like
-			-- List<>, Set<> etc and compares the dynamic type with the relation target type in the UML sense,
-			-- i.e. regardless of whether there is single or multiple containment
-		do
-			create Result.make_from_string (type_name)
-		end
-
 	type_signature: STRING
 			-- Signature form of the type, which for generics includes generic parameter constrainer types
 			-- E.g. Interval<T:Ordered>
