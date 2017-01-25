@@ -24,14 +24,14 @@ feature -- Access (persisted)
 			-- schema more wordy and less clear. So we use this persisted String value, and
 			-- compute the `type_def' on the fly.
 
-	type_ref: detachable P_BMM_SIMPLE_TYPE_OPEN
+	type_ref: detachable P_BMM_OPEN_TYPE
 			-- type definition of this property, if not a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 			-- Can be used in schema instead of `type', but less readable
 
 feature -- Access
 
-	type_def: detachable P_BMM_SIMPLE_TYPE_OPEN
+	type_def: detachable P_BMM_OPEN_TYPE
 			-- generate `type_ref' from `type' and save
 		do
 			if not attached type_ref and attached type as att_type then

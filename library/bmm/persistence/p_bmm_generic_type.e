@@ -46,7 +46,7 @@ feature -- Access
 				across att_gen_parms_strings as gen_parms_csr loop
 					-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
 					if gen_parms_csr.item.count = 1 then
-						Result.extend (create {P_BMM_SIMPLE_TYPE_OPEN}.make_simple (gen_parms_csr.item))
+						Result.extend (create {P_BMM_OPEN_TYPE}.make_simple (gen_parms_csr.item))
 					else
 						Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
 					end

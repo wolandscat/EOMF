@@ -1,13 +1,13 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Persistent form of BMM_SIMPLE_TYPE_OPEN."
+	description: "Persistent form of BMM_OPEN_TYPE."
 	keywords:    "Basic meta-model"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2014- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_SIMPLE_TYPE_OPEN
+class P_BMM_OPEN_TYPE
 
 inherit
 	P_BMM_TYPE

@@ -135,7 +135,7 @@ feature -- Factory
 				-- create generic parameters
 				if attached generic_parameter_defs as gen_parm_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
 					across gen_parm_defs as gen_parm_defs_csr loop
-						gen_parm_defs_csr.item.create_bmm_generic_parameter_definition (a_bmm_model)
+						gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
 						if attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
 							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
 						end

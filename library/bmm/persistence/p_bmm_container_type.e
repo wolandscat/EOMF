@@ -41,7 +41,7 @@ feature -- Access
 			if not attached type_def and attached type as att_type then
 				-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
 				if att_type.count = 1 then
-					create {P_BMM_SIMPLE_TYPE_OPEN} type_def.make_simple (att_type)
+					create {P_BMM_OPEN_TYPE} type_def.make_simple (att_type)
 				else
 					create {P_BMM_SIMPLE_TYPE} type_def.make_simple (att_type)
 				end
