@@ -17,12 +17,6 @@ feature -- Access
             create Result.make_empty
         end
 
-	namespace: STRING
-			-- namespace under which types of included schema will be known in this schema
-        attribute
-            create Result.make_empty
-        end
-
 end
 
 
