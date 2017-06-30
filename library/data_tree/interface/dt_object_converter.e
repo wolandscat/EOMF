@@ -110,7 +110,7 @@ feature -- Conversion
 		do
 debug ("DT")
 	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.dt_to_object: populating from a " +
-		a_dt_co.generating_type + "%N")
+		a_dt_co.generating_type.name + "%N")
 	inc_indent
 end
 			errors.wipe_out
@@ -184,7 +184,7 @@ end
 			end
 debug ("DT")
 	io.put_string (indent_str + "<--- DT_OBJECT_CONVERTER.dt_to_object: populating from a " +
-		a_dt_co.generating_type + "%N")
+		a_dt_co.generating_type.name + "%N")
 	dec_indent
 end
 		rescue
@@ -221,7 +221,7 @@ feature {NONE} -- Implementation
 		do
 debug ("DT")
 	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_dt_from_object: populating from a " +
-		an_obj.generating_type)
+		an_obj.generating_type.name)
 	if a_static_tid = No_type then
 		io.put_string ("; static type not specified (ROOT OBJECT) ")
 	else
@@ -231,7 +231,7 @@ debug ("DT")
 end
 
 			-- complex objects, including of container types, get their type names written in to the DT node here
-			a_dt_co.set_im_type_name (an_obj.generating_type)
+			a_dt_co.set_im_type_name (an_obj.generating_type.name)
 
 			-- if the static type is known, and different from the dynamic type of the object, set the visible flag
 			if a_static_tid /= No_type and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
@@ -253,7 +253,7 @@ debug ("DT")
 end
 				if not eif_hash_obj.is_empty  then
 					create a_dt_attr.make_nested_container
-					a_dt_attr.set_im_type_name (an_obj.generating_type)
+					a_dt_attr.set_im_type_name (an_obj.generating_type.name)
 					if a_static_tid /= 0 and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
 						a_dt_attr.set_type_visible
 					end
@@ -269,7 +269,7 @@ debug ("DT")
 end
 				if not eif_seq_obj.is_empty then
 					create a_dt_attr.make_nested_container
-					a_dt_attr.set_im_type_name (an_obj.generating_type)
+					a_dt_attr.set_im_type_name (an_obj.generating_type.name)
 					if a_static_tid /= 0 and attached_type (a_static_tid) /= attached_type (dynamic_type (an_obj)) then
 						a_dt_attr.set_type_visible
 					end
@@ -349,7 +349,7 @@ debug ("DT")
 end
 								if not eif_hash_fld_val.is_empty  then
 									create a_dt_attr.make_container (eif_fld_name)
-									a_dt_attr.set_im_type_name (eif_fld_val.generating_type)
+									a_dt_attr.set_im_type_name (eif_fld_val.generating_type.name)
 									if attached_type (fld_static_tid) /= attached_type (fld_att_dyn_tid) then
 										a_dt_attr.set_type_visible
 									end
@@ -365,7 +365,7 @@ debug ("DT")
 end
 								if not eif_seq_fld_val.is_empty then
 									create a_dt_attr.make_container (eif_fld_name)
-									a_dt_attr.set_im_type_name (eif_fld_val.generating_type)
+									a_dt_attr.set_im_type_name (eif_fld_val.generating_type.name)
 									if attached_type (fld_static_tid) /= attached_type (fld_att_dyn_tid) then
 										a_dt_attr.set_type_visible
 									end
@@ -456,7 +456,7 @@ end
 							else
 								-- should never get here: it means that the DT data parsed as a
 								-- nested generic, but that the corresponding object types are not
-								errors.add_error (ec_dt_nested_type_mismatch, <<Result.generating_type, a_dt_attr.im_attr_name>>, "create_object_from_dt")
+								errors.add_error (ec_dt_nested_type_mismatch, <<Result.generating_type.name, a_dt_attr.im_attr_name>>, "create_object_from_dt")
 							end
 						else
 							raise ("create_object_from_dt software exception LOC #1")
@@ -1063,8 +1063,8 @@ end
 									a_hash_table.extend (val, a_dt_attr_csr.item.id)
 								else
 									errors.add_error (ec_dt_container_gen_param_type_mismatch,
-										<<(1).out, a_hash_table.generating_type, type_name_of_type (att_static_cont_item_tid),
-											val.generating_type>>, "populate_eif_container_from_dt")
+										<<(1).out, a_hash_table.generating_type.name, type_name_of_type (att_static_cont_item_tid),
+											val.generating_type.name>>, "populate_eif_container_from_dt")
 								end
 							end
 						end
@@ -1106,8 +1106,8 @@ end
 									eif_seq.extend (val)
 								else
 									errors.add_error (ec_dt_container_gen_param_type_mismatch,
-										<<(1).out, eif_seq.generating_type, type_name_of_type (att_static_cont_item_tid),
-											val.generating_type>>, "populate_eif_container_from_dt")
+										<<(1).out, eif_seq.generating_type.name, type_name_of_type (att_static_cont_item_tid),
+											val.generating_type.name>>, "populate_eif_container_from_dt")
 								end
 							end
 						end
@@ -1140,7 +1140,7 @@ end
 				across a_hash_table as ht_csr loop
 debug ("DT")
 	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of INTERVAL[DT primitive type]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
-		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type + ", " + ht_csr.key.out + ")%N")
+		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type.name + ", " + ht_csr.key.out + ")%N")
 	inc_indent
 end
 					if attached {INTERVAL[PART_COMPARABLE]} ht_csr.item as eif_prim_ivl then
@@ -1153,7 +1153,7 @@ end
 				across a_hash_table as ht_csr loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of SEQUENCE): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
-		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type + ", " + ht_csr.key.out + ")%N")
+		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type.name + ", " + ht_csr.key.out + ")%N")
 end
 					if attached {SEQUENCE[ANY]} ht_csr.item as eif_prim_seq then
 						a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_LIST}.make_identified (eif_prim_seq, ht_csr.key.out))
@@ -1165,7 +1165,7 @@ end
 				across a_hash_table as ht_csr loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (hash of DT primitive type): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
-		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type +
+		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type.name +
 		", " + ht_csr.key.out + ")%N")
 end
 					a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_identified (ht_csr.item, ht_csr.key.out))
@@ -1177,7 +1177,7 @@ end
 				across a_hash_table as ht_csr loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_hash (Hash of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
-		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type +
+		a_dt_attr.im_attr_name + "), " + ht_csr.item.generating_type.name +
 		", " + ht_csr.key.out + ")%N")
 end
 					populate_dt_from_object (ht_csr.item,
@@ -1212,7 +1212,7 @@ end
 --				from an_eif_seq.start until an_eif_seq.off loop
 --debug ("DT")
 --	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of INTERVAL [DT primitive]): from_obj_proc.call ([DT_ATTRIBUTE_NODE (" +
---		a_dt_attr.im_attr_name + "), " + an_eif_seq.item.generating_type + ", " + an_eif_seq.index.out + ")%N")
+--		a_dt_attr.im_attr_name + "), " + an_eif_seq.item.generating_type.name + ", " + an_eif_seq.index.out + ")%N")
 --	inc_indent
 --end
 --					if attached {INTERVAL[PART_COMPARABLE]} an_eif_seq.item as v_typed then
@@ -1226,7 +1226,7 @@ end
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
-		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
+		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type.name + "', " + an_eif_seq.index.out + ")%N")
 end
 					if attached {SEQUENCE[ANY]} an_eif_seq.item as v_typed then
 						a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT_LIST}.make_identified (v_typed, an_eif_seq.index.out))
@@ -1239,7 +1239,7 @@ end
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of DT primitive): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
-		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
+		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type.name + "', " + an_eif_seq.index.out + ")%N")
 end
 					a_dt_attr.put_child (create {DT_PRIMITIVE_OBJECT}.make_identified (an_eif_seq.item, an_eif_seq.index.out))
 					an_eif_seq.forth
@@ -1251,7 +1251,7 @@ end
 				from an_eif_seq.start until an_eif_seq.off loop
 debug ("DT")
 	io.put_string (indent_str + "DT_OBJECT_CONVERTER.populate_dt_attr_from_eif_sequence (SEQUENCE of complex objects): from_obj_proc.call ([DT_ATTRIBUTE_NODE ('" +
-		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type + "', " + an_eif_seq.index.out + ")%N")
+		a_dt_attr.im_attr_name + "'), '" + an_eif_seq.item.generating_type.name + "', " + an_eif_seq.index.out + ")%N")
 end
 					populate_dt_from_object (an_eif_seq.item, create_complex_object_node (a_dt_attr, an_eif_seq.index.out), static_seq_item_tid)
 					an_eif_seq.forth

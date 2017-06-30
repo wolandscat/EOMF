@@ -250,7 +250,7 @@ feature -- Modification
 						att_dt_tree.put_object_at_path (obj_dt_tree, a_path)
 					end
 				else
-					raise ("put_object_conversion_failure for type " + a_value.generating_type + " to Data Tree form")
+					raise ("put_object_conversion_failure for type " + a_value.generating_type.name + " to Data Tree form")
 				end
 				is_dirty := True
 				object_value_cache.force (a_value, a_path)
