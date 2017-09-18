@@ -472,7 +472,7 @@ feature -- External Commands
             last_command_result_cache.put (create {PROCESS_RESULT}.make (a_cmd_line, in_directory))
 			create pf
 			proc := pf.process_launcher_with_command_line (a_cmd_line, in_directory)
-			proc.set_hidden (True)
+			-- proc.set_hidden (True)
 			proc.redirect_input_to_stream
 
 			-- let the output go to console if there is no agent taking it
