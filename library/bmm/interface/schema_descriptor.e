@@ -131,26 +131,39 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			-- load schema into in-memory form
 		local
 			new_schema: P_BMM_SCHEMA
+			exception_encountered: BOOLEAN
 		do
-			reset
-			model := Void
-			schema_file_accessor.load
-			if not schema_file_accessor.has_errors then
-				passed := True
-				check attached schema_file_accessor.object as obj then
-					new_schema := obj
+			if not exception_encountered then
+				reset
+				model := Void
+				schema_file_accessor.load
+				if not schema_file_accessor.has_errors then
+					passed := True
+					check attached schema_file_accessor.object as obj then
+						new_schema := obj
+					end
+					new_schema.validate_created
+					merge_errors (new_schema.errors)
+					if passed then
+						new_schema.load_finalise
+					end
+					p_schema := new_schema
+				else
+					merge_errors (schema_file_accessor.errors)
 				end
-				new_schema.validate_created
-				merge_errors (new_schema.errors)
-				if passed then
-					new_schema.load_finalise
-				end
-				p_schema := new_schema
 			else
-				merge_errors (schema_file_accessor.errors)
+				if passed then
+					merge_errors (new_schema.errors)
+				else
+					merge_errors (schema_file_accessor.errors)
+				end
+				passed := False
 			end
 		ensure
 			attached p_schema or else errors.has_errors
+		rescue
+			exception_encountered := True
+			retry
 		end
 
 	validate_includes (all_schemas_list: ARRAY [STRING])
