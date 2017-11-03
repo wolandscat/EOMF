@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (62)
+			create message_table.make (64)
 			message_table.put ("Documentation", ec_bmm_documentation_text)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
 			message_table.put ("Reference Model schema file $1 does not exist or not readable", ec_bmm_schema_file_not_valid)
@@ -36,6 +36,7 @@ feature -- Initialisation
 			message_table.put ("Reference Model schema directory $1 does not contain any valid schemas", ec_bmm_schema_dir_contains_no_valid_schemas)
 			message_table.put ("No Reference Model schema found for package '$1'", ec_model_access_e7)
 			message_table.put ("Reference Model schema $1 failed post-merge validation; errors:%N$2", ec_bmm_schema_post_merge_validate_fail)
+			message_table.put ("Reference Model schema $1 failed post-merge creation; errors:%N$2", ec_bmm_schema_post_merge_create_fail)
 			message_table.put ("Reference Model included schema $1 not found or failed to load", ec_bmm_schema_included_schema_not_found)
 			message_table.put ("Reference Model including schema $1 not valid", ec_bmm_schema_including_schema_not_valid)
 			message_table.put ("Reference Model schema $1 includes a schema that failed to load", ec_bmm_schema_include_failed_to_load)
@@ -56,6 +57,7 @@ feature -- Initialisation
 			message_table.put ("'rm_schemas_load_list' config setting mentions non-existent schema $1", ec_bmm_schema_invalid_load_list)
 			message_table.put ("Reference Model schema $1 passed basic validation with warnings:%N$2", ec_bmm_schema_passed_with_warnings)
 			message_table.put ("Reference Model schema $1 includes schema $2 that does not exist", ec_BMM_INC)
+			message_table.put ("Reference Model schema $1 creation failure", ec_BMM_CRF)
 			message_table.put ("Schema $1 BMM version $2 incompatible with software version $3", ec_BMM_VER)
 			message_table.put ("Schema $1 BMM version $2 (assumed) incompatible with software version $3", ec_BMM_VERASS)
 			message_table.put ("Schema $1 class definition $2 property $3 type $4 not defined in schema", ec_BMM_PTV)

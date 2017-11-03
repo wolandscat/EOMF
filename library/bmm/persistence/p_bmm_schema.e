@@ -428,26 +428,26 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 		end
 
-	merge (other: P_BMM_SCHEMA)
-			-- merge in class and package definitions from `other', except where the current schema already has
+	merge (included_schema: P_BMM_SCHEMA)
+			-- merge in class and package definitions from `included_schema', except where the current schema already has
 			-- a definition for the given type or package
 		require
 			Loaded: state = State_includes_pending
-			Other_valid: includes_to_process.has (other.schema_id)
+			Other_valid: includes_to_process.has (included_schema.schema_id)
 		do
 			-- archetype parent class: only merge if nothing already in the higher-level schema
-			if attached other.archetype_parent_class and not attached archetype_parent_class then
-				archetype_parent_class := other.archetype_parent_class
+			if attached included_schema.archetype_parent_class and not attached archetype_parent_class then
+				archetype_parent_class := included_schema.archetype_parent_class
 			end
 			-- archetype data value parent class: only merge if nothing already in the higher-level schema
-			if attached other.archetype_data_value_parent_class and not attached archetype_data_value_parent_class then
-				archetype_data_value_parent_class := other.archetype_data_value_parent_class
+			if attached included_schema.archetype_data_value_parent_class and not attached archetype_data_value_parent_class then
+				archetype_data_value_parent_class := included_schema.archetype_data_value_parent_class
 			end
 			-- archetype closures
-			archetype_rm_closure_packages.merge (other.archetype_rm_closure_packages)
+			archetype_rm_closure_packages.merge (included_schema.archetype_rm_closure_packages)
 
 			-- primitive types
-			across other.primitive_types as other_prim_types_csr loop
+			across included_schema.primitive_types as other_prim_types_csr loop
 				-- note that `put' only puts the class defintion from the included schema only if the current one does not already
 				-- have a definition for that class name. Since higher-level schemas are processed first, any over-rides they
 				-- contain will stay, with the classes being overridden being ignored - which is the desired behaviour.
@@ -461,7 +461,7 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 
 			-- classes
-			across other.class_definitions as other_classes_csr loop
+			across included_schema.class_definitions as other_classes_csr loop
 				-- note that `put' only puts the class definition from the included schema only if the current one does not already
 				-- have a definition for that class name. Since higher-level schemas are processed first, any over-rides they
 				-- contain will stay, with the classes being overridden being ignored - which is the desired behaviour.
@@ -475,17 +475,17 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			end
 
 			-- packages
-			-- merge from other.packages, because that's where the proper hierarchically structured packages are
-			across other.canonical_packages as other_pkgs_csr loop
-				if canonical_packages.has (other_pkgs_csr.key) then
-					canonical_packages_item (other_pkgs_csr.key).merge (other_pkgs_csr.item)
+			-- merge from included_schema.packages, because that's where the proper hierarchically structured packages are
+			across included_schema.canonical_packages as included_pkgs_csr loop
+				if canonical_packages.has (included_pkgs_csr.key) then
+					canonical_packages_item (included_pkgs_csr.key).merge (included_pkgs_csr.item)
 				else
-					canonical_packages.put (other_pkgs_csr.item, other_pkgs_csr.key)
+					canonical_packages.put (included_pkgs_csr.item.deep_twin, included_pkgs_csr.key)
 				end
 			end
 
-			-- remove other schema from remaining list of included schemas to process
-			includes_to_process.prune_all (other.schema_id)
+			-- remove included_schema schema from remaining list of included schemas to process
+			includes_to_process.prune_all (included_schema.schema_id)
 			if includes_to_process.is_empty then
 				state := State_includes_processed
 			end

@@ -160,7 +160,8 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 				passed := False
 			end
 		ensure
-			attached p_schema or else errors.has_errors
+			P_schema_set: attached p_schema or else errors.has_errors
+			Passed_valid: passed implies attached p_schema
 		rescue
 			exception_encountered := True
 			retry
@@ -197,13 +198,22 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 			-- create `model'
 		require
 			passed
+		local
+			exception_encountered: BOOLEAN
 		do
 			check attached p_schema as att_p_schema then
-				att_p_schema.create_bmm_schema
-				model := att_p_schema.bmm_model
+				if not exception_encountered then
+					att_p_schema.create_bmm_schema
+					model := att_p_schema.bmm_model
+				else
+					add_error (ec_BMM_CRF, <<att_p_schema.schema_id>>)
+				end
 			end
 		ensure
-			attached model
+			attached model or else errors.has_errors
+		rescue
+			exception_encountered := True
+			retry
 		end
 
 feature {NONE} -- Implementation

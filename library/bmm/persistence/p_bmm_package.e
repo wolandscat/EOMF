@@ -88,17 +88,17 @@ feature -- Modification
 			end
 		end
 
-	merge (other: attached like Current)
+	merge (included_pkg: attached like Current)
 		do
 			-- merge the classes at this level
-			classes.merge (other.classes)
+			classes.merge (included_pkg.classes)
 
 			-- merge the packages
-			across other.packages as pkgs_csr loop
-				if packages.has (pkgs_csr.key) and then attached packages.item (pkgs_csr.key) as att_pkg then
-					att_pkg.merge (pkgs_csr.item)
+			across included_pkg.packages as included_pkg_pkgs_csr loop
+				if packages.has (included_pkg_pkgs_csr.key) and then attached packages.item (included_pkg_pkgs_csr.key) as att_pkg then
+					att_pkg.merge (included_pkg_pkgs_csr.item)
 				else
-					add_package (pkgs_csr.item.deep_twin)
+					add_package (included_pkg_pkgs_csr.item.deep_twin)
 				end
 			end
 		end

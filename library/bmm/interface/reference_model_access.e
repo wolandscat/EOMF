@@ -386,12 +386,14 @@ feature {NONE} -- Implementation
 								if schema_desc.passed then
 									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
 									schema_desc.create_schema
-									check attached schema_desc.model as sch then
+									if attached schema_desc.model as sch then
 										tl_schema := sch
-									end
-									valid_models.extend (tl_schema, schema_desc.schema_id)
-									if schema_desc.errors.has_warnings then
-										add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
+										valid_models.extend (tl_schema, schema_desc.schema_id)
+										if schema_desc.errors.has_warnings then
+											add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
+										end
+									else
+										add_error (ec_bmm_schema_post_merge_create_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 									end
 								else
 									add_error (ec_bmm_schema_post_merge_validate_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
