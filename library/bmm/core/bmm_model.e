@@ -5,9 +5,9 @@ note
 				 It may be assembled from multiple schema files, represented in some syntax or persistent format.
 				 ]"
 	keywords:    "model, UML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_MODEL
@@ -50,7 +50,7 @@ feature -- Initialisation
 feature -- Access
 
 	class_definitions: HASH_TABLE [BMM_CLASS, STRING]
-			-- all classes in this schema
+			-- all classes in this model keyed by class name (upper case)
 		attribute
 			create Result.make (0)
 		end
@@ -269,7 +269,7 @@ feature -- Conformance
 			prop_conf_type: STRING
 		do
 			if has_class_definition (a_ms_property_type) then
-				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).type.base_class.type_name
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.base_class.type_name
 
 				-- adjust for case where candidate type is not generic, but bmm_property type is - just test on non-generic version
 				if is_generic_type_name (prop_conf_type) and not is_generic_type_name (a_ms_property_type) then

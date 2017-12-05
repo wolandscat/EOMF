@@ -15,9 +15,9 @@ note
 				 in the resources/rm_schemas directory will be loaded.
 				 ]"
 	keywords:    "BMM, reflection, meta-model"
-	author:      "Thomas Beale"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2011 Ocean Informatics Pty Ltd"
+	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class

@@ -2,8 +2,8 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Type reference that specifies containers with one generic parameter."
 	keywords:    "model, UML, BMM"
-	author:      "Thomas Beale"
-	support:     "Ocean Informatics <support@OceanInformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
+	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 

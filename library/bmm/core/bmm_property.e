@@ -3,7 +3,7 @@ note
 	description: "Abstract idea of a property definition within a class definition"
 	keywords:    "model, UML"
 	author:      "Thomas Beale"
-	support:     "Ocean Informatics <support@OceanInformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
@@ -17,7 +17,7 @@ create
 
 feature {NONE} -- Initialisation
 
-	make (a_name: STRING; a_doc: detachable STRING; a_type: like type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
+	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
 			documentation := a_doc
@@ -25,7 +25,7 @@ feature {NONE} -- Initialisation
 			is_computed := is_computed_flag
 			is_im_infrastructure := is_im_infrastructure_flag
 			is_im_runtime := is_im_runtime_flag
-			type := a_type
+			bmm_type := a_bmm_type
 		end
 
 feature -- Identification
@@ -44,8 +44,8 @@ feature -- Access
 
 	documentation: detachable STRING
 
-	type: G
-			-- formal type of this attribute
+	bmm_type: G
+			-- formal meta-type of this attribute
 
 	existence: MULTIPLICITY_INTERVAL
 			-- interval form of 0..1, 1..1 etc, generated from is_mandatory
@@ -92,7 +92,7 @@ feature -- Status Report
 	is_container: BOOLEAN
 			-- True if type is a container type
 		do
-			Result := attached {BMM_CONTAINER_TYPE} type
+			Result := attached {BMM_CONTAINER_TYPE} bmm_type
 		end
 
 feature -- Comparison

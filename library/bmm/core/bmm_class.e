@@ -5,7 +5,7 @@ note
 				 or closed in terms of other types mentioned within.
 				 ]"
 	keywords:    "model, Basic meta-model"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
@@ -187,7 +187,7 @@ feature -- Access
 				-- get the types of all the properties (including inherited)
 				across flat_properties as props_csr loop
 					-- get the statically defined type(s) of the property (could be >1 due to generics)
-					ftl := props_csr.item.type.flattened_type_list
+					ftl := props_csr.item.bmm_type.flattened_type_list
 					Result.merge (ftl)
 					-- now get the descendant types, since these could be bound at runtime
 					across ftl as gen_types_csr loop
@@ -286,7 +286,7 @@ feature -- Access
 					Result := fp
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (Result.type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.base_class.name) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -324,7 +324,7 @@ feature -- Access
 					Result := Current
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.base_class.name) as class_def then
 					Result := class_def.class_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -349,7 +349,7 @@ feature -- Access
 			Property_valid: has_property (a_prop_name)
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
-				Result := prop_def.type.type_name
+				Result := prop_def.bmm_type.type_name
 			else
 				Result := unknown_type_name
 			end
@@ -418,7 +418,7 @@ feature -- Status Report
 		do
 			a_path_pos := a_path.items.index
 			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				if attached bmm_model.class_definition (flat_prop.type.base_class.name) as class_def then
+				if attached bmm_model.class_definition (flat_prop.bmm_type.base_class.name) as class_def then
 					a_path.forth
 					if not a_path.off then
 						Result := class_def.has_property_path (a_path)
@@ -603,9 +603,11 @@ feature {NONE} -- Implementation
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
 			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+			prop_type_name: STRING
 		do
-			if not supplier_closure_stack.has (a_prop.type.base_class.name) then
-				supplier_closure_stack.extend (a_prop.type.base_class.name)
+			prop_type_name := a_prop.bmm_type.base_class.name
+			if not supplier_closure_stack.has (prop_type_name) then
+				supplier_closure_stack.extend (prop_type_name)
 
 				enter_action.call ([a_prop, depth])
 
@@ -613,9 +615,9 @@ feature {NONE} -- Implementation
 		--			supplier_closure_class_record.extend (a_prop.type.base_class.name)
 					if continue_action.item ([a_prop, depth]) then
 						if flat_flag then
-							props := bmm_model.class_definition (a_prop.type.base_class.name).flat_properties
+							props := bmm_model.class_definition (prop_type_name).flat_properties
 						else
-							props := bmm_model.class_definition (a_prop.type.base_class.name).properties
+							props := bmm_model.class_definition (prop_type_name).properties
 						end
 
 						across props as props_csr loop

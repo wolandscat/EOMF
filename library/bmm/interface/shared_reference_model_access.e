@@ -28,7 +28,7 @@ feature -- Access
 
 	rm_schema_all_ids: ARRAYED_LIST [STRING]
 		do
-			create Result.make_from_array (ref_models_access.all_schemas.current_keys)
+			create Result.make_from_array (ref_models_access.valid_models.current_keys)
 		end
 
 feature -- Status Report

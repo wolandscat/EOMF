@@ -77,6 +77,8 @@ feature -- Factory
 				bmm_type := new_bmm_type
 				across generic_parameter_refs as gen_parms_csr loop
 					gen_parms_csr.item.create_bmm_type (a_bmm_model, a_class_def)
+
+					-- add a BMM_TYPE to the BMM_GENERIC_TYPE.generic_parameters list
 					if attached gen_parms_csr.item.bmm_type as bt then
 						new_bmm_type.add_generic_parameter (bt)
 					end

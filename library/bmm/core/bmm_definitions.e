@@ -2,7 +2,7 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Definition concepts for the basic meta-model"
 	keywords:    "basic meta-model"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"

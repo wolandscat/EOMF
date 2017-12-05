@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Access to service interface to object model"
 	keywords:    "ADL, archetype, reference model"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2010-2011 Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class REFERENCE_MODEL_ACCESS
@@ -104,7 +104,7 @@ feature -- Access
 			-- includes only fully validated schemas
 
 	valid_models: HASH_TABLE [BMM_MODEL, STRING]
-			-- Fully models, generated from fully merged source schemas. Table is keyed by logical schema_name,
+			-- Full models, generated from fully merged source schemas. Table is keyed by logical schema_name,
 			-- i.e. model_publisher '_' model_name, e.g. "openehr_rm"
 			-- Schemas containing different variants of same model (i.e. model_publisher + model_name) are considered duplicates
 

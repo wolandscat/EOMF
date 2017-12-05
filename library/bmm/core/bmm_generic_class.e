@@ -4,7 +4,7 @@ note
 				 Definition of a generic class in an object model.
 				 ]"
 	keywords:    "model, Basic meta-model"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
@@ -23,7 +23,9 @@ create
 feature -- Identification
 
 	type_name: STRING
-			-- name of the type
+			-- name of the type, in form:
+			--    name < generic_param_name, .... >
+			-- e.g. Interval<T>
 		do
 			create Result.make_from_string (name)
 			Result.append_character (generic_left_delim)
@@ -97,7 +99,7 @@ feature -- Access
 			gen_param_type: detachable STRING
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then
-				prop_type := prop_def.type
+				prop_type := prop_def.bmm_type
 				if attached {BMM_OPEN_TYPE} prop_type as simple_type_open then
 					i := 1
 					-- we traverse the generic parameters Hash instead of just keying into it so as
@@ -203,7 +205,7 @@ feature -- Modification
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
 								if attached {BMM_PROPERTY[BMM_OPEN_TYPE]} parent_props_csr.item as parent_prop_type and then
-									parent_prop_type.type.generic_constraint = a_gen_parm_def.inheritance_precursor
+									parent_prop_type.bmm_type.generic_constraint = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
 										io.put_string ("Schema: " + bmm_model.schema_id + " found in class " + type_signature +
