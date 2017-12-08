@@ -13,7 +13,7 @@ inherit
 	BMM_MODEL_ELEMENT
 
 create
-	make
+	make, make_from_other
 
 feature {NONE} -- Initialisation
 
@@ -25,6 +25,18 @@ feature {NONE} -- Initialisation
 			is_computed := is_computed_flag
 			is_im_infrastructure := is_im_infrastructure_flag
 			is_im_runtime := is_im_runtime_flag
+			bmm_type := a_bmm_type
+		end
+
+	make_from_other (other: BMM_PROPERTY[BMM_TYPE]; a_bmm_type: G)
+			-- make from a BMM_PROPERTY of any generic flavour
+		do
+			name := other.name.twin
+			documentation := clone (other.documentation)
+			is_mandatory := other.is_mandatory
+			is_computed := other.is_computed
+			is_im_infrastructure := other.is_im_infrastructure
+			is_im_runtime := other.is_im_runtime
 			bmm_type := a_bmm_type
 		end
 

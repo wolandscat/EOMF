@@ -43,7 +43,7 @@ feature -- Identification
 			-- name of the class FROM SCHEMA
 
 	type_name: STRING
-			-- name of the type
+			-- name of the type corresponding to the class
 		do
 			create Result.make_from_string (name)
 		end
@@ -219,7 +219,7 @@ feature -- Access
 			-- list of names of all classes in full supplier closure, including concrete generic parameters;
 			-- (where generics are unconstrained, no class name is added, since logically it would be
 			-- 'ANY' and this can always be assumed anyway)
-			-- This list includes primitive types
+			-- This list includes primitive types.
 		do
 			if attached supplier_closure_cache as scc then
 				Result := scc
@@ -235,6 +235,17 @@ feature -- Access
 						Result.merge (bmm_model.class_definition (suppliers_csr.item).supplier_closure)
 						closure_types_done.extend (suppliers_csr.item)
 					end
+				end
+			end
+		end
+
+	generic_properties: ARRAYED_LIST [BMM_PROPERTY [BMM_GENERIC_TYPE]]
+			-- list of all generic properties in this class
+		do
+			create Result.make (0)
+			across properties as prop_csr loop
+				if attached {BMM_PROPERTY [BMM_GENERIC_TYPE]} prop_csr.item as gen_prop then
+					Result.extend (gen_prop)
 				end
 			end
 		end
@@ -461,9 +472,6 @@ feature -- Traversal
 			supplier_closure_stack.wipe_out
 			supplier_closure_stack.extend (name)
 
-			supplier_closure_class_record.wipe_out
-			supplier_closure_class_record.extend (name)
-
 			if flat_flag then
 				props := flat_properties
 			else
@@ -490,9 +498,9 @@ feature -- Output
 
 feature -- Modification
 
-	set_bmm_schema (a_bmm_schema: BMM_MODEL)
+	set_bmm_model (a_bmm_model: BMM_MODEL)
 		do
-			bmm_model := a_bmm_schema
+			bmm_model := a_bmm_model
 		end
 
 	set_package (a_package: BMM_PACKAGE)
@@ -541,6 +549,20 @@ feature -- Modification
 			Valid_property: valid_candidate_property (a_prop_def)
 		do
 			properties.put (a_prop_def, a_prop_def.name)
+
+			suppliers_cache := Void
+			supplier_closure_cache := Void
+			suppliers_non_primitive_cache := Void
+			reset_flat_properties_cache
+		end
+
+	overwrite_property (a_prop_def: BMM_PROPERTY [BMM_TYPE])
+			-- overwrite a property in the class definition, i.e. replace or add,
+			-- in the case of overwriting an inherited property
+		require
+			Valid_property: valid_candidate_property (a_prop_def)
+		do
+			properties.force (a_prop_def, a_prop_def.name)
 
 			suppliers_cache := Void
 			supplier_closure_cache := Void
@@ -598,7 +620,8 @@ feature {NONE} -- Implementation
 				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE], INTEGER]];
 				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]]];
 				depth: INTEGER)
-			-- On all nodes in supplier closure of `a_prop', execute `enter_action', then recurse into its subnodes, then execute `exit_action'.
+			-- On all nodes in supplier closure of `a_prop', execute `enter_action', then recurse into
+			-- its subnodes, then execute `exit_action'.
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
@@ -609,25 +632,24 @@ feature {NONE} -- Implementation
 			if not supplier_closure_stack.has (prop_type_name) then
 				supplier_closure_stack.extend (prop_type_name)
 
-				enter_action.call ([a_prop, depth])
+				enter_action(a_prop, depth)
 
-		--		if not supplier_closure_class_record.has (a_prop.type.base_class.name) then
-		--			supplier_closure_class_record.extend (a_prop.type.base_class.name)
-					if continue_action.item ([a_prop, depth]) then
-						if flat_flag then
-							props := bmm_model.class_definition (prop_type_name).flat_properties
-						else
-							props := bmm_model.class_definition (prop_type_name).properties
-						end
-
-						across props as props_csr loop
-							do_property_supplier_closure (props_csr.item, flat_flag, continue_action, enter_action, exit_action, depth + 1)
-						end
+				if continue_action.item ([a_prop, depth]) then
+					if flat_flag then
+						-- props := bmm_model.class_definition (prop_type_name).flat_properties
+						props := a_prop.bmm_type.base_class.flat_properties
+					else
+						-- props := bmm_model.class_definition (prop_type_name).properties
+						props := a_prop.bmm_type.base_class.properties
 					end
-		--		end
+
+					across props as props_csr loop
+						do_property_supplier_closure (props_csr.item, flat_flag, continue_action, enter_action, exit_action, depth + 1)
+					end
+				end
 
 				if attached exit_action then
-					exit_action.call ([a_prop])
+					exit_action(a_prop)
 				end
 				supplier_closure_stack.remove
 			end
@@ -635,13 +657,6 @@ feature {NONE} -- Implementation
 
 	supplier_closure_stack: ARRAYED_STACK [STRING]
 			-- list of classes on this tree branch, to prevent cycling
-		attribute
-			create Result.make (0)
-			Result.compare_objects
-		end
-
-	supplier_closure_class_record: ARRAYED_LIST [STRING]
-			-- list of classes already done, to prevent fully expanded form of each class being generated after its first occurrence
 		attribute
 			create Result.make (0)
 			Result.compare_objects

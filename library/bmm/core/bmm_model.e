@@ -137,7 +137,7 @@ feature -- Access
 			--		existence
 		require
 			Type_name_valid: has_class_definition (a_type_name)
-			Property_valid: has_property (a_type_name, a_prop_path)
+			Property_valid: has_property_path (a_type_name, a_prop_path)
 		do
 			check attached property_definition_at_path (a_type_name, a_prop_path) as prop_def then
 				Result := prop_def.object_multiplicity
@@ -399,7 +399,7 @@ feature -- Modification
 		do
 			class_definitions.put (a_class_def, a_class_def.name.as_upper)
 			a_package_def.add_class (a_class_def)
-			a_class_def.set_bmm_schema (Current)
+			a_class_def.set_bmm_model (Current)
 		ensure
 			Class_added: class_definition (a_class_def.name) = a_class_def
 			Schema_set_in_class: a_class_def.bmm_model = Current
@@ -433,6 +433,52 @@ feature -- Modification
 			has_class_definition (a_class_name)
 		do
 			archetype_visualise_descendants_of := a_class_name
+		end
+
+	post_process
+			-- post-processing
+		do
+			compute_generic_types
+		end
+
+	compute_generic_types
+			-- compute BMM_GENERIC_CLASS_EFFECTIVE instances from open BMM_GENERIC_CLASS instances
+		local
+			gen_bmm_type: BMM_GENERIC_TYPE
+			gen_class_eff: BMM_GENERIC_CLASS_EFFECTIVE
+			gen_prop: BMM_PROPERTY[BMM_GENERIC_TYPE]
+			generic_type_properties: HASH_TABLE [ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]], STRING]
+		do
+			-- Record any generic types found among properties; this creates the
+			-- Hash table `generic_type_properties', which contains BMM_PROPERTY instances
+			-- that point to BMM_GENERIC_TYPEs that have as their base_class a BMM_GENERIC_CLASS
+			create generic_type_properties.make (0)
+			across class_definitions as class_def_csr loop
+				across class_def_csr.item.generic_properties as gen_props_csr loop
+					gen_bmm_type := gen_props_csr.item.bmm_type
+					if not generic_type_properties.has (gen_bmm_type.type_name) then
+						generic_type_properties.put (create {ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]]}.make (0), gen_bmm_type.type_name)
+					end
+					generic_type_properties.item (gen_bmm_type.type_name).extend (gen_props_csr.item)
+				end
+			end
+
+			-- Now cycle through these properties and generate new BMM_GENERIC_CLASS_EFFECTIVE instances
+			-- that reuse all the elements of the BMM_GENERIC_CLASS parent, except with open properties
+			-- replaced with the relevant closed form
+			across generic_type_properties as gen_type_prop_lists_csr loop
+				-- process the first item in the list at this key, i.e. some type like "DV_INTERVAL<TIME>"
+				gen_prop := gen_type_prop_lists_csr.item.first
+				create gen_class_eff.make (gen_prop.bmm_type)
+
+				-- Add new effective generic BMM_CLASS to main class list
+				class_definitions.put (gen_class_eff, gen_class_eff.type_name)
+
+				-- Now replace the bmm_type.base_class of all properties in the list
+				across gen_type_prop_lists_csr.item as bmm_props_csr loop
+					bmm_props_csr.item.bmm_type.set_base_class (gen_class_eff)
+				end
+			end
 		end
 
 feature -- Statistics

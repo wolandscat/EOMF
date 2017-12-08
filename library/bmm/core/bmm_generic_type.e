@@ -161,6 +161,13 @@ feature -- Modification
 			generic_parameters.extend (a_gen_parm)
 		end
 
+	set_base_class (an_eff_gen_class: BMM_GENERIC_CLASS_EFFECTIVE)
+			-- overwrite `base_class' with the effective version that has substituted
+			-- properties according to type parameter substitutions
+		do
+			base_class := an_eff_gen_class
+		end
+
 end
 
 

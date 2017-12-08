@@ -75,14 +75,22 @@ feature -- Initialization
 			io.put_string ("LOCATABLE is not subclass of COMPOSITION" + (not rm_schema.is_descendant_of ("LOCATABLE", "COMPOSITION")).out + "%N")
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.rm_schema.suppliers --------------%N")
+			io.put_string ("---------------- rm_schema.class_definition.properties --------------%N")
+			io.put_string ("Generic class and properties, showing generic type substitutions %N")
+			io.put_string ("CONTACT %N")
+			across rm_schema.class_definition ("CONTACT").properties as props_csr loop
+				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.base_class.type_name + "%N")
+			end
+			io.new_line
+
+			io.put_string ("---------------- rm_schema.class_definition.suppliers --------------%N")
 			io.put_string ("All supplier classes of COMPOSITION: %N")
 			across rm_schema.class_definition ("COMPOSITION").suppliers as supps_csr loop
 				io.put_string (supps_csr.item + "%N")
 			end
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.enumeration types --------------%N")
+			io.put_string ("---------------- rm_schema.enumeration_definition types --------------%N")
 			io.put_string ("Enumeration types: %N")
 			across rm_schema.enumeration_types as enum_csr loop
 				io.put_string (enum_csr.item)
