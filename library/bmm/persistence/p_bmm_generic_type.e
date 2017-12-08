@@ -69,7 +69,7 @@ feature -- Factory
 		local
 			new_bmm_type: BMM_GENERIC_TYPE
 		do
-			-- handle simple generic param types if found in schema
+			-- Handle simple generic param types if found in model.
 			if a_bmm_model.has_class_definition (root_type) and
 				attached {BMM_GENERIC_CLASS} a_bmm_model.class_definition (root_type) as bmm_gen_class
 			then

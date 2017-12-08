@@ -58,7 +58,8 @@ feature -- Access
 	generic_parameters: HASH_TABLE [BMM_GENERIC_PARAMETER, STRING]
 			-- list of generic parameter definitions, keyed by name of generic parameter;
 			-- these are defined either directly on this class or by the addition of an
-			-- ancestor class which is generic
+			-- ancestor class which is generic. Chronological order of insertion
+			-- is maintained for iteration.
 		attribute
 			create Result.make (0)
 		end

@@ -203,7 +203,7 @@ feature {REFERENCE_MODEL_ACCESS} -- Commands
 		do
 			check attached p_schema as att_p_schema then
 				if not exception_encountered then
-					att_p_schema.create_bmm_schema
+					att_p_schema.create_bmm_model
 					model := att_p_schema.bmm_model
 				else
 					add_error (ec_BMM_CRF, <<att_p_schema.schema_id>>)

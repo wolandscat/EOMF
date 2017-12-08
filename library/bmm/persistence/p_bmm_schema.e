@@ -714,8 +714,8 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 
 feature -- Factory
 
-	create_bmm_schema
-			-- generate a BMM_SCHEMA object
+	create_bmm_model
+			-- generate a BMM_MODEL object
 		require
 			state = State_includes_processed
 		local

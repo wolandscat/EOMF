@@ -5,9 +5,9 @@ note
 				 of indexing in GUI history list, or any other generic situation where artefacts need to be tracked.
 				 ]"
 	keywords:    "identification"
-	author:      "Thomas Beale"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2011 Ocean Informatics Pty Ltd"
+	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 deferred class IDENTIFIED_TOOL_ARTEFACT

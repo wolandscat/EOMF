@@ -276,7 +276,6 @@ feature {NONE} -- Implementation
 			rm_closures: ARRAYED_LIST [STRING]
 			i: INTEGER
 			finished: BOOLEAN
-			tl_schema: BMM_MODEL
 			schema_desc: SCHEMA_DESCRIPTOR
 			publisher_schemas: ARRAYED_LIST [SCHEMA_DESCRIPTOR]
 		do
@@ -386,9 +385,9 @@ feature {NONE} -- Implementation
 								if schema_desc.passed then
 									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
 									schema_desc.create_schema
-									if attached schema_desc.model as sch then
-										tl_schema := sch
-										valid_models.extend (tl_schema, schema_desc.schema_id)
+									if attached schema_desc.model as att_model then
+										att_model.post_process
+										valid_models.extend (att_model, schema_desc.schema_id)
 										if schema_desc.errors.has_warnings then
 											add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 										end
@@ -408,7 +407,7 @@ feature {NONE} -- Implementation
 				across valid_models as models_csr loop
 					model_publisher := models_csr.item.rm_publisher
 
-					-- put a ref to schema, keyed by the model_publisher-package_name key (lower-case) for later lookup by compiler
+					-- put a ref to model, keyed by the model_publisher-package_name key (lower-case) for later lookup by compiler
 					rm_closures := models_csr.item.archetype_rm_closure_packages
 					across rm_closures as rm_closures_csr loop
 						qualified_rm_closure_name := publisher_qualified_rm_closure_key (model_publisher, rm_closures_csr.item)
