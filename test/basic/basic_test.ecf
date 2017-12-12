@@ -25,16 +25,16 @@
 		<setting name="inlining_size" value="4"/>
 		<setting name="line_generation" value="false"/>
 		<setting name="concurrency" value="thread"/>
-		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel-safe.ecf"/>
-		<library name="gobo_regexp" location="$ISE_LIBRARY\library\gobo\gobo_regexp-safe.ecf"/>
-		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string-safe.ecf"/>
-		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure-safe.ecf"/>
-		<library name="gobo_time" location="$ISE_LIBRARY\library\gobo\gobo_time-safe.ecf"/>
-		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility-safe.ecf"/>
-		<library name="ise_base" location="$ISE_LIBRARY\library\base\base-safe.ecf"/>
-		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding-safe.ecf"/>
-		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n-safe.ecf"/>
-		<library name="ise_time" location="$ISE_LIBRARY\library\time\time-safe.ecf">
+		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel.ecf"/>
+		<library name="gobo_regexp" location="$ISE_LIBRARY\library\gobo\gobo_regexp.ecf"/>
+		<library name="gobo_string" location="$ISE_LIBRARY\library\gobo\gobo_string.ecf"/>
+		<library name="gobo_structure" location="$ISE_LIBRARY\library\gobo\gobo_structure.ecf"/>
+		<library name="gobo_time" location="$ISE_LIBRARY\library\gobo\gobo_time.ecf"/>
+		<library name="gobo_utility" location="$ISE_LIBRARY\library\gobo\gobo_utility.ecf"/>
+		<library name="ise_base" location="$ISE_LIBRARY\library\base\base.ecf"/>
+		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding.ecf"/>
+		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n.ecf"/>
+		<library name="ise_time" location="$ISE_LIBRARY\library\time\time.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
