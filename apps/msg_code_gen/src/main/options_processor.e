@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Options  definitions and processor for msg_code_gen command line tool."
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2012- Ocean Informatics Pty Ltd"
+	copyright:   "Copyright (c) 2012- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class

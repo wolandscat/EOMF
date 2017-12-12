@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "In-memory error database helper class"
 	keywords:    "error status reporting"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2005- Ocean Informatics Pty Ltd"
+	copyright:   "Copyright (c) 2005- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class IN_MEMORY_MESSAGE_DB_INITIALISER

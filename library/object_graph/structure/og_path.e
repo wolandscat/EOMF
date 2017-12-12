@@ -9,9 +9,9 @@ note
 				 as if it contained no predicates, i.e. /items[at0004/events[1] would be read as /items/events.
 				 ]"
 	keywords:    "object graph, path"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2003- The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2003 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class OG_PATH
