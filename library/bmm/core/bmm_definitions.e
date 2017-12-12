@@ -45,15 +45,15 @@ feature -- Definitions
 
 	Unknown_type_name: STRING = "UNKNOWN"
 
-	Bmm_container_types: ARRAYED_LIST [STRING]
-			-- built-in container types used to represent class-class 1:N relations
-		once
-			create Result.make (0)
-			Result.compare_objects
-			Result.extend ("List")
-			Result.extend ("Set")
-			Result.extend ("Array")
-		end
+--	Bmm_container_types: ARRAYED_LIST [STRING]
+--			-- built-in container types used to represent class-class 1:N relations
+--		once
+--			create Result.make (0)
+--			Result.compare_objects
+--			Result.extend ("List")
+--			Result.extend ("Set")
+--			Result.extend ("Array")
+--		end
 
 	Type_cat_primitive_class: STRING = "class_primitive"
 	Type_cat_enumeration: STRING = "class_enumeration"
@@ -123,7 +123,7 @@ feature -- Definitions
 	Assumed_bmm_version: STRING = "1.0"
 			-- version of BMM to assume for a schema that doesn't have the bmm_version attribute
 
-feature -- Comparison
+feature -- Validation
 
 	valid_meta_data (a_meta_data: HASH_TABLE [STRING, STRING]): BOOLEAN
 			-- True if `a_meta_data' is valid for creation of a SCHEMA_DESCRIPTOR
@@ -134,32 +134,28 @@ feature -- Comparison
 				attached a_meta_data.item (Metadata_schema_path)
 		end
 
-	is_well_formed_type_name (a_type_name: STRING): BOOLEAN
+	formal_generic_parameter_name (a_type_string: STRING): BOOLEAN
+			-- True if the type string is a single letter
+		require
+			Valid_a_type_string: not a_type_string.is_empty
+		do
+			Result := a_type_string.count = 1
+		end
+
+	valid_type_name (a_type_string: STRING): BOOLEAN
 			-- True if the type name has a valid form, either a single name or a well-formed generic
 		require
-			Valid_type_name: not a_type_name.is_empty
+			Valid_a_type_string: not a_type_string.is_empty
 		do
-			Result := well_formed_type_name_regex.recognizes (a_type_name)
+			Result := attached create_type_name_from_string (a_type_string) as att_tn and then
+				att_tn.is_valid
 		end
 
-	is_well_formed_class_name (a_class_name: STRING): BOOLEAN
-			-- True if the class name has a valid form
-		require
-			Valid_class_name: not a_class_name.is_empty
-		do
-			Result := well_formed_class_name_regex.recognizes (a_class_name)
-		end
-
-	is_well_formed_generic_type_name (a_type_name: STRING): BOOLEAN
-			-- True if the type name is valid and includes a generic parameters part
-		do
-			Result := is_well_formed_type_name (a_type_name) and a_type_name.has (generic_left_delim)
-		end
-
-	is_generic_type_name (a_type_name: STRING): BOOLEAN
+	valid_generic_type_name (a_type_string: STRING): BOOLEAN
 			-- True if the type name includes a generic parameters part
 		do
-			Result := a_type_name.has (generic_left_delim)
+			Result := attached create_type_name_from_string (a_type_string) as att_tn and then
+				att_tn.is_generic
 		end
 
 	bmm_version_compatible (schema_bmm_ver: STRING): BOOLEAN
@@ -244,117 +240,39 @@ feature -- Conversion
 			Result := a_rm_closure_name + Qualified_name_delimiter.out + a_class_name
 		end
 
-	type_name_as_flat_list (a_type_name: STRING): ARRAYED_LIST [STRING]
-			-- convert a type name to a flat set of strings
+	type_name_as_flat_list (a_type_string: STRING): ARRAYED_LIST [STRING]
+			-- convert a type name to a flat list of strings
 		require
-			Valid_type_name: is_well_formed_type_name (a_type_name)
-		local
-			is_gen_type: BOOLEAN
-			stype: STRING
-			lpos, rpos: INTEGER
+			Valid_type_name: valid_type_name (a_type_string)
 		do
-			create Result.make(0)
-			Result.compare_objects
-			stype := a_type_name.twin
-			stype.prune_all (' ')
-			if stype.has (generic_left_delim) then
-				rpos := stype.index_of (generic_left_delim, 1) - 1
-				is_gen_type := True
+			if attached create_type_name_from_string (a_type_string) as att_tn then
+				Result := att_tn.as_string_list
 			else
-				rpos := stype.count
-			end
-			Result.extend (a_type_name.substring(1, rpos))
-
-			if is_gen_type then
-				stype.replace_substring_all (generic_left_delim.out, Generic_separator.out)
-				stype.replace_substring_all (generic_right_delim.out, Generic_separator.out)
-				from lpos := rpos + 2 until lpos > stype.count loop
-					rpos := stype.index_of (Generic_separator, lpos) - 1
-					Result.extend (stype.substring (lpos, rpos))
-					lpos := rpos + 2
-				end
+				create Result.make(0)
+				Result.compare_objects
 			end
 		ensure
 			Result.object_comparison
 		end
 
-	type_name_to_class_key (a_type_name: STRING): STRING
-			-- convert a type name which might have a generic part to a simple class name; Result will be upper case
+feature -- Factory
+
+	create_type_name_from_string (a_type_string: STRING): detachable BMM_TYPE_NAME
+			-- create from a string of unknown meta-type, i.e. simple, formal param, generic
 		require
-			Type_valid: not a_type_name.is_empty
-		local
-			delim_pos: INTEGER
+			a_type_string.count >= 1
 		do
-			delim_pos := a_type_name.substring_index (generic_left_delim.out, 1)
-			if delim_pos > 0 then
-				Result := a_type_name.substring (1, delim_pos-1)
-				Result.right_adjust
-				Result.to_upper
-			else
-				Result := a_type_name.as_upper
-			end
-		ensure
-			Upper_case: Result ~ Result.as_upper
-		end
-
-	generic_parameter_types (a_type_name: STRING): ARRAYED_LIST [STRING]
-			-- for a generic type name, extract the parameter type name(s) (which could themselves be generic)
-			-- and put them into a list.
-			-- Example: for "Hash <List <String>, Integer>", return a list with contents:
-			--	"List <String>", "Integer"
-		require
-			is_well_formed_generic_type_name (a_type_name)
-		local
-			arg_types: STRING
-			i, start_pos, gen_level: INTEGER
-		do
-			create Result.make (0)
-			create arg_types.make_from_string (a_type_name)
-			arg_types.prune_all (' ')
-
-			-- remove the root class and one level of generic delimiters
-			arg_types := a_type_name.substring (a_type_name.index_of (Generic_left_delim, 1) + 1, a_type_name.count - 1)
-			start_pos := 1
-			from i := 1 until i > arg_types.count loop
-				if arg_types.item (i) = generic_left_delim then
-					gen_level := gen_level + 1
-				elseif arg_types.item (i) = generic_right_delim then
-					gen_level := gen_level - 1
-				end
-
-				-- if we hit a comma and we are at the outermost generic level, save the string before the comma as a
-				-- generic parameter type
-				if gen_level = 0 then
-					if arg_types.item (i) = Generic_separator then
-						Result.extend (arg_types.substring (start_pos, i - 1))
-						start_pos := i + 1
-					elseif i = arg_types.count then
-						Result.extend (arg_types.substring (start_pos, i))
-					end
-				end
-				i := i + 1
+			type_name_parser.execute (a_type_string)
+			if attached type_name_parser.output as a_type_name then
+				Result := a_type_name
 			end
 		end
 
 feature {NONE} -- Implementation
 
-	well_formed_type_name_regex: RX_PCRE_REGULAR_EXPRESSION
-			-- Pattern matcher for well-formed type names down to two-levels of generic nesting
-		once
+	type_name_parser: BMM_TYPE_NAME_PARSER
+		once ("PROCESS")
 			create Result.make
-			Result.set_case_insensitive (True)
-
-			--               |clname||<--------------------------------- optional generics ------------------------------------------------>|
-			--                             |clname||<------ optional generics ----->|       |clname||<------ optional generics ----->|
-			Result.compile ("[a-z]\w*( *< *[a-z]\w*( *< *[a-z]\w*( *, *[a-z]\w+)* *>)?( *, *[a-z]\w*( *< *[a-z]\w*( *, *[a-z]\w+)* *>)?)* *>)?")
-		end
-
-	well_formed_class_name_regex: RX_PCRE_REGULAR_EXPRESSION
-			-- Pattern matcher for well-formed class names
-		once
-			create Result.make
-			Result.set_case_insensitive (True)
-			Result.compile ("[a-z]\w+")
 		end
 
 end

@@ -15,7 +15,7 @@ class BMM_CLASS
 inherit
 	BMM_CLASSIFIER
 		export
-			{ANY} is_well_formed_type_name
+			{ANY} valid_type_name
 		end
 
 	IDENTIFIED_TOOL_ARTEFACT
@@ -281,8 +281,8 @@ feature -- Access
 
 	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY [BMM_TYPE]
 			-- retrieve the property definition for `a_prop_path' in flattened class
-			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
-			-- recursive evaluation)
+			-- note that the internal cursor of the path is used to know how much to read -
+			-- from cursor to end (this allows recursive evaluation)
 		require
 			Property_path_valid: has_property_path (a_prop_path)
 		local
@@ -353,10 +353,9 @@ feature -- Access
 			a_prop_path.go_i_th (a_path_pos)
 		end
 
-	effective_property_type (a_type_name, a_prop_name: STRING): STRING
+	effective_property_type (a_prop_name: STRING): STRING
 			-- determine the property type for `a_prop_name' in type corresponding to `a_type_name'
 		require
-			Type_name_valid: is_well_formed_type_name (a_type_name)
 			Property_valid: has_property (a_prop_name)
 		do
 			if attached flat_properties.item (a_prop_name) as prop_def then

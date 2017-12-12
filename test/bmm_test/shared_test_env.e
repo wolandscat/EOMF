@@ -61,7 +61,6 @@ feature -- Initialization
 			if ready_to_initialise_app then
 				initialise_app
 				if not has_errors then
-					-- now demonstrate some usage of the schemas
 					bmm_model_cache.put (ref_models_access.rm_for_closure ("openehr-ehr"))
 				else
 					io.put_string (error_strings)

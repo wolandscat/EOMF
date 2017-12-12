@@ -17,7 +17,7 @@ inherit
 			on_prepare
 		end
 
-	SHARED_REFERENCE_MODEL_ACCESS
+	SHARED_TEST_ENV
 		undefine
 			default_create
 		end
@@ -27,21 +27,15 @@ feature {NONE} -- Events
 	on_prepare
 			-- <Precursor>
 		do
-			app_root.initialise_shell
-			if app_root.ready_to_initialise_app then
-				app_root.initialise_app
-				assert ("No RM schemas", rm_schemas_access.found_valid_schemas)
-				rm_schema := rm_schemas_access.schema_for_rm_closure ("openehr-ehr")
+			if ready_to_initialise_app then
+				initialise_app
+				if not has_errors then
+					bmm_model_cache.put (ref_models_access.rm_for_closure ("openehr-ehr"))
+				else
+					io.put_string (error_strings)
+					io.put_string ("Check .cfg gile " + app_cfg.file_path + "%N")
+				end
 			end
-		end
-
-feature -- Access
-
-	rm_schema: detachable BMM_SCHEMA
-			-- set if this archetype has a valid package-class_name
-		note
-			option: stable
-		attribute
 		end
 
 feature -- Test routines
@@ -93,12 +87,12 @@ feature -- Test routines
 		note
 			testing:  "type_name_conforms_to", "bmm", "covers/{BMM_SCHEMA}.type_name_conforms_to"
 		do
-			assert ("COMPOSITION conforms to LOCATABLE", rm_schema.type_name_conforms_to ("COMPOSITION", "LOCATABLE"))
-			assert ("LOCATABLE conforms to COMPOSITION", not rm_schema.type_name_conforms_to ("LOCATABLE", "COMPOSITION"))
-			assert ("ITEM_STRUCTURE <T> conforms to LOCATABLE", rm_schema.type_name_conforms_to ("ITEM_STRUCTURE <T>", "LOCATABLE"))
-			assert ("EVENT <ITEM_STRUCTURE> conforms to LOCATABLE", rm_schema.type_name_conforms_to ("EVENT <ITEM_STRUCTURE>", "LOCATABLE"))
-			assert ("List <ITEM_TREE> conforms to List <ITEM_STRUCTURE>", rm_schema.type_name_conforms_to ("List <ITEM_TREE>", "List <ITEM_STRUCTURE>"))
-			assert ("List <ITEM_STRUCTURE> conforms to List <ITEM_TREE>", not rm_schema.type_name_conforms_to ("List <ITEM_STRUCTURE>", "List <ITEM_TREE>"))
+			assert ("COMPOSITION conforms to LOCATABLE", rm_schema.type_conforms_to ("COMPOSITION", "LOCATABLE"))
+			assert ("LOCATABLE conforms to COMPOSITION", not rm_schema.type_conforms_to ("LOCATABLE", "COMPOSITION"))
+			assert ("ITEM_STRUCTURE <T> conforms to LOCATABLE", rm_schema.type_conforms_to ("ITEM_STRUCTURE <T>", "LOCATABLE"))
+			assert ("EVENT <ITEM_STRUCTURE> conforms to LOCATABLE", rm_schema.type_conforms_to ("EVENT <ITEM_STRUCTURE>", "LOCATABLE"))
+			assert ("List <ITEM_TREE> conforms to List <ITEM_STRUCTURE>", rm_schema.type_conforms_to ("List <ITEM_TREE>", "List <ITEM_STRUCTURE>"))
+			assert ("List <ITEM_STRUCTURE> conforms to List <ITEM_TREE>", not rm_schema.type_conforms_to ("List <ITEM_STRUCTURE>", "List <ITEM_TREE>"))
 		end
 
 	test_immediate_suppliers

@@ -1,0 +1,248 @@
+Grammar
+
+rule 1 input -> type_name
+rule 2 input -> error
+rule 3 type_name -> simple_type_name
+rule 4 type_name -> generic_formal_parameter_type
+rule 5 type_name -> generic_type_name
+rule 6 generic_type_name -> simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE
+rule 7 generic_type_params -> type_name
+rule 8 generic_type_params -> generic_type_params SYM_COMMA type_name
+rule 9 simple_type_name -> V_TYPE_ID
+rule 10 generic_formal_parameter_type -> V_GENERIC_TYPE_PARAM_ID
+rule 11 generic_formal_parameter_type -> V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name
+
+Terminals, with rules where they appear
+
+$ (token 0)
+error (token 256) 2
+$undefined. (token 257)
+SYM_GEN_OPEN (token 258) 6
+SYM_GEN_CLOSE (token 259) 6
+SYM_TYPE_CONSTRAIN_SEP (token 260) 11
+SYM_COMMA (token 261) 8
+V_TYPE_ID (token 262) 9
+V_GENERIC_TYPE_PARAM_ID (token 263) 10 11
+
+Nonterminals, with rules where they appear
+
+type_name (0) on left: 3 4 5, on right: 1 7 8 11
+simple_type_name (1) on left: 9, on right: 3 6
+generic_type_name (2) on left: 6, on right: 5
+generic_formal_parameter_type (3) on left: 10 11, on right: 4
+generic_type_params (4) on left: 7 8, on right: 6 8
+input (5) on left: 1 2
+
+
+state 0
+
+	input  ->  . type_name   (rule 1)
+	input  ->  . error   (rule 2)
+	type_name  ->  . simple_type_name   (rule 3)
+	type_name  ->  . generic_formal_parameter_type   (rule 4)
+	type_name  ->  . generic_type_name   (rule 5)
+	generic_type_name  ->  . simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE   (rule 6)
+	simple_type_name  ->  . V_TYPE_ID   (rule 9)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID   (rule 10)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name   (rule 11)
+
+	V_GENERIC_TYPE_PARAM_ID	shift, and go to state 1
+	V_TYPE_ID	shift, and go to state 2
+	error	shift, and go to state 3
+
+	type_name	go to state 4
+	simple_type_name	go to state 5
+	generic_type_name	go to state 6
+	generic_formal_parameter_type	go to state 7
+	input	go to state 16
+
+
+
+state 1
+
+	generic_formal_parameter_type  ->  V_GENERIC_TYPE_PARAM_ID .   (rule 10)
+	generic_formal_parameter_type  ->  V_GENERIC_TYPE_PARAM_ID . SYM_TYPE_CONSTRAIN_SEP type_name   (rule 11)
+
+	SYM_TYPE_CONSTRAIN_SEP	shift, and go to state 8
+
+	$default	reduce using rule 10 (generic_formal_parameter_type)
+
+
+
+state 2
+
+	simple_type_name  ->  V_TYPE_ID .   (rule 9)
+
+	$default	reduce using rule 9 (simple_type_name)
+
+
+
+state 3
+
+	input  ->  error .   (rule 2)
+
+	$default	reduce using rule 2 (input)
+
+
+
+state 4
+
+	input  ->  type_name .   (rule 1)
+
+	$default	reduce using rule 1 (input)
+
+
+
+state 5
+
+	type_name  ->  simple_type_name .   (rule 3)
+	generic_type_name  ->  simple_type_name . SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE   (rule 6)
+
+	SYM_GEN_OPEN	shift, and go to state 9
+
+	$default	reduce using rule 3 (type_name)
+
+
+
+state 6
+
+	type_name  ->  generic_type_name .   (rule 5)
+
+	$default	reduce using rule 5 (type_name)
+
+
+
+state 7
+
+	type_name  ->  generic_formal_parameter_type .   (rule 4)
+
+	$default	reduce using rule 4 (type_name)
+
+
+
+state 8
+
+	type_name  ->  . simple_type_name   (rule 3)
+	type_name  ->  . generic_formal_parameter_type   (rule 4)
+	type_name  ->  . generic_type_name   (rule 5)
+	generic_type_name  ->  . simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE   (rule 6)
+	simple_type_name  ->  . V_TYPE_ID   (rule 9)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID   (rule 10)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name   (rule 11)
+	generic_formal_parameter_type  ->  V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP . type_name   (rule 11)
+
+	V_GENERIC_TYPE_PARAM_ID	shift, and go to state 1
+	V_TYPE_ID	shift, and go to state 2
+
+	type_name	go to state 10
+	simple_type_name	go to state 5
+	generic_type_name	go to state 6
+	generic_formal_parameter_type	go to state 7
+
+
+
+state 9
+
+	type_name  ->  . simple_type_name   (rule 3)
+	type_name  ->  . generic_formal_parameter_type   (rule 4)
+	type_name  ->  . generic_type_name   (rule 5)
+	generic_type_name  ->  . simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE   (rule 6)
+	generic_type_name  ->  simple_type_name SYM_GEN_OPEN . generic_type_params SYM_GEN_CLOSE   (rule 6)
+	generic_type_params  ->  . type_name   (rule 7)
+	generic_type_params  ->  . generic_type_params SYM_COMMA type_name   (rule 8)
+	simple_type_name  ->  . V_TYPE_ID   (rule 9)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID   (rule 10)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name   (rule 11)
+
+	V_GENERIC_TYPE_PARAM_ID	shift, and go to state 1
+	V_TYPE_ID	shift, and go to state 2
+
+	type_name	go to state 11
+	simple_type_name	go to state 5
+	generic_type_name	go to state 6
+	generic_formal_parameter_type	go to state 7
+	generic_type_params	go to state 12
+
+
+
+state 10
+
+	generic_formal_parameter_type  ->  V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name .   (rule 11)
+
+	$default	reduce using rule 11 (generic_formal_parameter_type)
+
+
+
+state 11
+
+	generic_type_params  ->  type_name .   (rule 7)
+
+	$default	reduce using rule 7 (generic_type_params)
+
+
+
+state 12
+
+	generic_type_name  ->  simple_type_name SYM_GEN_OPEN generic_type_params . SYM_GEN_CLOSE   (rule 6)
+	generic_type_params  ->  generic_type_params . SYM_COMMA type_name   (rule 8)
+
+	SYM_COMMA	shift, and go to state 13
+	SYM_GEN_CLOSE	shift, and go to state 14
+
+
+
+state 13
+
+	type_name  ->  . simple_type_name   (rule 3)
+	type_name  ->  . generic_formal_parameter_type   (rule 4)
+	type_name  ->  . generic_type_name   (rule 5)
+	generic_type_name  ->  . simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE   (rule 6)
+	generic_type_params  ->  generic_type_params SYM_COMMA . type_name   (rule 8)
+	simple_type_name  ->  . V_TYPE_ID   (rule 9)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID   (rule 10)
+	generic_formal_parameter_type  ->  . V_GENERIC_TYPE_PARAM_ID SYM_TYPE_CONSTRAIN_SEP type_name   (rule 11)
+
+	V_GENERIC_TYPE_PARAM_ID	shift, and go to state 1
+	V_TYPE_ID	shift, and go to state 2
+
+	type_name	go to state 15
+	simple_type_name	go to state 5
+	generic_type_name	go to state 6
+	generic_formal_parameter_type	go to state 7
+
+
+
+state 14
+
+	generic_type_name  ->  simple_type_name SYM_GEN_OPEN generic_type_params SYM_GEN_CLOSE .   (rule 6)
+
+	$default	reduce using rule 6 (generic_type_name)
+
+
+
+state 15
+
+	generic_type_params  ->  generic_type_params SYM_COMMA type_name .   (rule 8)
+
+	$default	reduce using rule 8 (generic_type_params)
+
+
+
+state 16
+
+
+	$	go to state 17
+
+
+
+state 17
+
+
+	$	go to state 18
+
+
+
+state 18
+
+
+	$default	accept

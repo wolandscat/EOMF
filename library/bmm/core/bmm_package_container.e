@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Abstraction of a model component that contains packages and classes"
 	keywords:    "basic meta-model, BMM, UML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2011- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_PACKAGE_CONTAINER
@@ -13,7 +13,7 @@ inherit
 	BMM_DEFINITIONS
 		export
 			{NONE} all;
-			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
+			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal, valid_generic_type_name
 		end
 
 feature -- Access

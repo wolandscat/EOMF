@@ -1,0 +1,109 @@
+<html>
+<head>
+	<title>Grammar</title>
+	<style type="text/css">
+	<!--
+	body {
+		font-family: Verdana,Georgia,Geneva,sans serif;
+		font-size: 11pt;
+	}
+	a:link {
+		color: green;
+	}
+	a:visited {
+		color: green;
+	}
+	a:hover {
+		color: white;
+		background-color: blue;
+	}
+	a:active {
+		color: red;
+	}
+	.lhs {
+		font-weight: bold;
+	}
+	.rhs {
+		margin: 0% 0% 0% 3%;
+	}
+	.empty {
+		color: gray;
+	}
+	.literal_token {
+		font-family: Courier New,Courier; 
+		color: blue;
+	}
+	.token {
+		font-family: Courier New,Courier; 
+		font-style: italic;
+		color: black;
+	}
+	.rule {
+		margin: 2% 0% 0% 1%;
+	}
+	.lhs_variable {
+		font-family: Verdana,Georgia,sans serif; 
+		color: navy;
+	}
+	.rhs_variable {
+		font-family: Verdana,Georgia,sans serif; 
+		color: green;
+	}
+	-->
+	</style>
+</head>
+<body>
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="input">input</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#type_name">type_name</a> </span></div>
+<div class="rhs">
+| <span class="token">error </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="type_name">type_name</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#simple_type_name">simple_type_name</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#generic_formal_parameter_type">generic_formal_parameter_type</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#generic_type_name">generic_type_name</a> </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="generic_type_name">generic_type_name</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#simple_type_name">simple_type_name</a> </span><span class="token">SYM_GEN_OPEN </span><span class="rhs_variable"><a href="#generic_type_params">generic_type_params</a> </span><span class="token">SYM_GEN_CLOSE </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="generic_type_params">generic_type_params</span>: </div>
+<div class="rhs">
+&nbsp; <span class="rhs_variable"><a href="#type_name">type_name</a> </span></div>
+<div class="rhs">
+| <span class="rhs_variable"><a href="#generic_type_params">generic_type_params</a> </span><span class="token">SYM_COMMA </span><span class="rhs_variable"><a href="#type_name">type_name</a> </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="simple_type_name">simple_type_name</span>: </div>
+<div class="rhs">
+&nbsp; <span class="token">V_TYPE_ID </span></div>
+</div>
+
+<div class="rule">
+<div class="lhs">
+<span class="lhs_variable" id="generic_formal_parameter_type">generic_formal_parameter_type</span>: </div>
+<div class="rhs">
+&nbsp; <span class="token">V_GENERIC_TYPE_PARAM_ID </span></div>
+<div class="rhs">
+| <span class="token">V_GENERIC_TYPE_PARAM_ID </span><span class="token">SYM_TYPE_CONSTRAIN_SEP </span><span class="rhs_variable"><a href="#type_name">type_name</a> </span></div>
+</div>
+
+</body>
+</html>

@@ -43,14 +43,8 @@ feature -- Initialization
 			bmm_env_setup
 			app_cfg.save
 			if not has_errors then
-			--	run_mso_tests
 				run_openehr_tests
 			end
-		end
-
-	run_mso_tests
-		do
-			bmm_model_cache.put (ref_models_access.rm_for_closure ("acme-maritime"))
 		end
 
 	run_openehr_tests
