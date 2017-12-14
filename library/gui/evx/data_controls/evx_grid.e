@@ -236,6 +236,18 @@ feature -- Modification
 			end
 		end
 
+	set_last_row_label_col_multi_line_editable (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP;
+		an_edit_action: PROCEDURE [ANY, TUPLE])
+			-- add editable cell and post-edit agent to `last_row'
+		do
+			if attached last_row as att_last_row then
+				set_last_row_label_col_editable (a_col, a_text, a_tooltip, a_font, a_fg_colour, a_pixmap, an_edit_action)
+				if attached {EV_GRID_EDITABLE_ITEM} att_last_row.item (a_col) as gli then
+					att_last_row.set_height (gli.text_height + Default_grid_row_expansion)
+				end
+			end
+		end
+
 	update_last_row_label_col (a_col: INTEGER; a_text, a_tooltip: detachable STRING; a_font: detachable EV_FONT; a_fg_colour: detachable EV_COLOR; a_pixmap: detachable EV_PIXMAP)
 			-- update column details to `last_sub_row'; any detail that is Void is not changed in existing column
 		require
@@ -467,6 +479,9 @@ feature {NONE} -- Implementation
 						create gli.default_create
 					end
 				end
+				if attached a_tooltip then
+					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
+				end
 				if attached a_font then
 					gli.set_font (a_font)
 				end
@@ -475,9 +490,6 @@ feature {NONE} -- Implementation
 				end
 				if attached a_pixmap then
 					gli.set_pixmap (a_pixmap)
-				end
-				if attached a_tooltip then
-					gli.set_tooltip (utf8_to_utf32 (a_tooltip))
 				end
 				att_last_row.set_item (a_col, gli)
 			end
