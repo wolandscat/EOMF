@@ -154,6 +154,14 @@ feature -- Status Report
 			Result := base_class.has_descendants or else across generic_parameters as gen_parms_csr some gen_parms_csr.item.has_type_substitutions end
 		end
 
+	is_fully_open: BOOLEAN
+			-- True if all type parameters are open
+		do
+			Result := across generic_parameters as gen_parms_csr all
+				attached {BMM_OPEN_TYPE} gen_parms_csr.item
+			end
+		end
+
 feature -- Modification
 
 	add_generic_parameter (a_gen_parm: BMM_TYPE)
