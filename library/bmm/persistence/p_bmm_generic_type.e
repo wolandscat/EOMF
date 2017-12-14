@@ -44,8 +44,7 @@ feature -- Access
 			elseif attached generic_parameters as att_gen_parms_strings then
 				create Result.make (0)
 				across att_gen_parms_strings as gen_parms_csr loop
-					-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
-					if gen_parms_csr.item.count = 1 then
+					if formal_generic_parameter_name (gen_parms_csr.item) then
 						Result.extend (create {P_BMM_OPEN_TYPE}.make_simple (gen_parms_csr.item))
 					else
 						Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))

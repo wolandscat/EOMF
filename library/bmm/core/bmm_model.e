@@ -266,7 +266,7 @@ feature -- Status Report
 		local
 			an_og_path: OG_PATH
 		do
-			create an_og_path.make_pure_from_string(a_prop_path)
+			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
 			if has_class_definition (an_obj_type) then
 				Result := class_definition (an_obj_type).has_property_path (an_og_path)
@@ -316,7 +316,7 @@ feature -- Conformance
 			then
 				desc_base_class := desc_type_name.name
 				anc_base_class := anc_type_name.name
-				if desc_base_class.is_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor (anc_base_class)  then
+				if desc_base_class.is_case_insensitive_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor (anc_base_class)  then
 					if valid_generic_type_name (a_desc_type) and attached {BMM_GENERIC_CLASS} class_definition (desc_base_class) as desc_bmm_gen_class then
 
 						-- in the case of both being generic, we need to compare generics
@@ -471,9 +471,12 @@ feature -- Modification
 			gen_prop: BMM_PROPERTY[BMM_GENERIC_TYPE]
 			generic_type_properties: HASH_TABLE [ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]], STRING]
 		do
-			-- Record any generic types found among properties; this creates the
+			-- Record any closed or part-closed generic types found among properties; this creates the
 			-- Hash table `generic_type_properties', which contains BMM_PROPERTY instances
-			-- that point to BMM_GENERIC_TYPEs that have as their base_class a BMM_GENERIC_CLASS
+			-- that point to BMM_GENERIC_TYPEs that have as their base_class a BMM_GENERIC_CLASS.
+			-- We don't bother with fully open generic types, i.e. with type sig of the form
+			-- TYPE <T, U, V>, since the properties in question already point to the correct
+			-- BMM_GENERIC_CLASS instance.
 			create generic_type_properties.make (0)
 			across class_definitions as class_def_csr loop
 				across class_def_csr.item.generic_properties as gen_props_csr loop

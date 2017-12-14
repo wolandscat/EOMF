@@ -65,7 +65,7 @@ feature -- Access
 		end
 
 	ancestors: HASH_TABLE [BMM_CLASS, STRING]
-			-- list of immediate inheritance parents
+			-- list of immediate inheritance parents; keyed by upper case class name
 		attribute
 			create Result.make (0)
 		end
@@ -86,7 +86,7 @@ feature -- Access
 		end
 
 	all_ancestors: ARRAYED_SET [STRING]
-			-- list of all inheritance parent class names
+			-- list of all inheritance parent class names (upper case)
 		do
 			if attached all_ancestors_cache as aac then
 				Result := aac
@@ -110,8 +110,8 @@ feature -- Access
 		end
 
 	all_descendants: ARRAYED_SET [STRING]
-			-- obtain names of all descendant classes of this class. If there are none,
-			-- the result is empty.
+			-- obtain names of all descendant classes of this class (upper case).
+			-- If there are none, the result is empty;
 		do
 			if attached all_descendants_cache as adc then
 				Result := adc
@@ -407,7 +407,9 @@ feature -- Status Report
 		require
 			Class_name_valid: not a_class_name.is_empty
 		do
-			Result := a_class_name.is_equal (any_type) or else ancestors.has (a_class_name.as_upper) or else all_ancestors.has (a_class_name.as_upper)
+			Result := a_class_name.is_case_insensitive_equal (any_type) or else
+				ancestors.has (a_class_name.as_upper) or else
+				all_ancestors.has (a_class_name.as_upper)
 		end
 
 	has_immediate_descendant (a_class_name: STRING): BOOLEAN
@@ -415,7 +417,7 @@ feature -- Status Report
 		require
 			Class_name_valid: not a_class_name.is_empty
 		do
-			Result := across immediate_descendants as descs_csr some descs_csr.item.name.is_equal (a_class_name) end
+			Result := across immediate_descendants as descs_csr some descs_csr.item.name.is_case_insensitive_equal (a_class_name) end
 		end
 
 	has_property_path (a_path: OG_PATH): BOOLEAN
