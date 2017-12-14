@@ -43,6 +43,20 @@ feature -- Definitions
 
 	Odin_key_right_delim: CHARACTER = ']'
 
+feature -- Access
+
+	odin_serialiser_file_extensions: HASH_TABLE [STRING, STRING]
+			-- File extensions for logical serialisation formats.
+		once ("PROCESS")
+			create Result.make (0)
+			Result.put (File_ext_odin, Syntax_type_odin)
+			Result.put (File_ext_xml_default, Syntax_type_xml)
+			Result.put (File_ext_json_default, Syntax_type_json)
+			Result.put (File_ext_yaml_default, Syntax_type_yaml)
+		ensure
+			not_empty: not Result.is_empty
+		end
+
 end
 
 
