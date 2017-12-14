@@ -5,15 +5,20 @@ note
 				 model reported in last_op_fail and fail_reason.
 				 ]"
 	keywords:    "Data tree"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2005- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2005- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class DT_OBJECT_CONVERTER
 
 inherit
 	DT_FACTORY
+
+	MEMORY
+		export
+			{NONE} all
+		end
 
 	SHARED_DEBUG_HELPER
 		export
@@ -74,15 +79,23 @@ feature -- Conversion
 	object_to_dt (an_obj: ANY): DT_COMPLEX_OBJECT
 			-- generate a DT_OBJECT from an Eiffel object; called only on top-level object
 		do
+			collection_off
+
 			create Result.make_anonymous
 			errors.wipe_out
 			populate_dt_from_object (an_obj, Result, No_type)
+
+			collection_on
 		end
 
 	populate_dt_from_root_object (an_obj: ANY; a_dt_co: DT_COMPLEX_OBJECT)
 		do
+			collection_off
+
 			errors.wipe_out
 			populate_dt_from_object (an_obj, a_dt_co, No_type)
+
+			collection_on
 		end
 
 	dt_to_object_from_string (a_dt_co: DT_COMPLEX_OBJECT; a_type_name: STRING; make_args: detachable ARRAY[ANY]): detachable ANY
@@ -108,6 +121,8 @@ feature -- Conversion
 			src_obj_fld: INTEGER
 			path_list: SEQUENCE [OG_PATH]
 		do
+			collection_off
+
 debug ("DT")
 	io.put_string (indent_str + "---> DT_OBJECT_CONVERTER.dt_to_object: populating from a " +
 		a_dt_co.generating_type.name + "%N")
@@ -187,6 +202,7 @@ debug ("DT")
 		a_dt_co.generating_type.name + "%N")
 	dec_indent
 end
+			collection_on
 		rescue
 			if assertion_violation then
 				-- check that the original was set_reference_field () - this indicates a type mismatch
