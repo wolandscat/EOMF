@@ -596,18 +596,19 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			-- check that all ancestors exist
 			across a_class_def.ancestors as ancs_csr loop
 				if ancs_csr.item.is_empty then
-					add_validity_error (a_class_def.source_schema_id, "BMM_ANCE", <<a_class_def.source_schema_id, a_class_def.name>>)
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_ANCE, <<a_class_def.source_schema_id, a_class_def.name>>)
 				elseif not has_class_definition (ancs_csr.item) then
-					add_validity_error (a_class_def.source_schema_id, "BMM_ANC", <<a_class_def.source_schema_id, a_class_def.name, ancs_csr.item>>)
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_ANC, <<a_class_def.source_schema_id, a_class_def.name, ancs_csr.item>>)
 				end
 			end
 
-			-- check that all generic parameter.conforms_to_type exist exists
+			-- check that all generic parameter.conforms_to_type exist
 			if not has_errors then
 				if a_class_def.is_generic and attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
 					across att_gen_parm_defs as gen_param_defs_csr loop
 						if attached gen_param_defs_csr.item.conforms_to_type as conf_type and then not has_class_definition (conf_type) then
-							add_validity_error (a_class_def.source_schema_id, "BMM_GPCT", <<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
+							add_validity_error (a_class_def.source_schema_id, ec_bmm_gpct,
+								<<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
 						end
 					end
 				end
@@ -619,9 +620,14 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 					validate_property (a_class_def, props_csr.item)
 				end
 			end
+
 		end
 
 	validate_property (a_class_def: P_BMM_CLASS; a_prop_def: P_BMM_PROPERTY)
+		local
+			gen_parm_refs: ARRAYED_LIST [P_BMM_TYPE]
+			gen_parm_actual_open_count: INTEGER
+			gen_root_type: P_BMM_CLASS
 		do
 			-- first check if any property replicates a property from a parent class
 			across a_class_def.ancestors as ancs_csr loop
@@ -629,46 +635,46 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 					attached anc_class.properties.item (a_prop_def.name) as anc_prop and then not
 					property_conforms_to (a_prop_def, anc_prop)
 				then
-					add_validity_error (a_class_def.source_schema_id, "BMM_PRNCF", <<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_PRNCF,
+						<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
 				end
 			end
 
 			if attached {P_BMM_SINGLE_PROPERTY} a_prop_def as a_single_prop_def then
-				if attached a_single_prop_def.type_def as att_type_def then
+				check attached a_single_prop_def.type_def as att_type_def then
 					if (att_type_def.type.is_empty or else not has_class_definition (att_type_def.type)) then
-						add_validity_error (a_class_def.source_schema_id, "BMM_SPT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, att_type_def.type>>)
+						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPT,
+							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, att_type_def.type>>)
 					end
-				else
-					-- report?
 				end
 
 			elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_prop_def as a_single_prop_def_open then
-				if attached a_single_prop_def_open.type_def as att_type_def then
+				check attached a_single_prop_def_open.type_def as att_type_def then
 					if not a_class_def.is_generic or else (attached a_class_def.generic_parameter_defs as att_gen_parm_defs and then not att_gen_parm_defs.has (att_type_def.type)) then
-						add_validity_error (a_class_def.source_schema_id, "BMM_SPOT", <<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, att_type_def.type>>)
+						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPOT,
+							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, att_type_def.type>>)
 					end
-				else
-					-- report?
 				end
 
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
 				if attached a_cont_prop_def.type_def as att_type_def then
 					if not has_class_definition (att_type_def.container_type) then
-						add_validity_error (a_class_def.source_schema_id, "BMM_CPCT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, att_type_def.container_type>>)
+						add_validity_error (a_class_def.source_schema_id, ec_BMM_CPCT,
+							<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, att_type_def.container_type>>)
 					elseif attached att_type_def.type_ref as att_type_ref then
 						-- loop through types inside container type
 						across att_type_ref.flattened_type_list as types_csr loop
 							if not has_class_definition (types_csr.item) then
 								if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-									if attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
+									check attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
 										if not att_gen_parm_defs.has (types_csr.item) then
-											add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+											add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
+												<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
 										end
-									else
-										-- report?
 									end
 								else
-									add_validity_error (a_class_def.source_schema_id, "BMM_CPTV", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
+									add_validity_error (a_class_def.source_schema_id, ec_BMM_CPTV,
+										<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 								end
 							end
 						end
@@ -676,38 +682,70 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 						-- Report?
 					end
 				else
-					add_validity_error (a_class_def.source_schema_id, "BMM_CPT", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_CPT,
+						<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 				if not attached a_cont_prop_def.cardinality then
-					add_validity_info (a_class_def.source_schema_id, "BMM_CPTNC", <<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
+					add_validity_info (a_class_def.source_schema_id, ec_BMM_CPTNC,
+						<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 			elseif attached {P_BMM_GENERIC_PROPERTY} a_prop_def as a_gen_prop_def then
-				if attached a_gen_prop_def.type_def as att_type_def then
-					if not has_class_definition (att_type_def.root_type) then
-						add_validity_error (a_class_def.source_schema_id, "BMM_GPRT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, att_type_def.root_type>>)
+				if attached a_gen_prop_def.type_def as gen_type_def then
+					if not has_class_definition (gen_type_def.root_type) then
+						add_validity_error (a_class_def.source_schema_id, ec_BMM_GPRT,
+							<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_type_def.root_type>>)
 					else
-						across att_type_def.generic_parameter_refs as gen_parms_csr loop
-							across gen_parms_csr.item.flattened_type_list as gen_parm_types_csr loop
-								if not has_class_definition (gen_parm_types_csr.item) then
-									if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-										if attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
-											if not att_gen_parm_defs.has (gen_parm_types_csr.item) then
-												add_validity_error (a_class_def.source_schema_id, "BMM_GPGPU", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
+						-- check that all actual generic parameters are either defined classes, or open
+						gen_parm_refs := gen_type_def.generic_parameter_refs
+						gen_root_type := class_definition (gen_type_def.root_type)
+						if attached gen_root_type.generic_parameter_defs as root_formal_parms then
+							-- the root class is generic, but actual and formal params count don't match
+							if gen_parm_refs.count /= root_formal_parms.count then
+								add_validity_error (a_class_def.source_schema_id, ec_BMM_GPBPC,
+									<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_refs.count.out, root_formal_parms.count.out, gen_root_type.name>>)
+							else
+								gen_parm_actual_open_count := 0
+								across gen_parm_refs as gen_parms_csr loop
+									if attached {P_BMM_SINGLE_PROPERTY_OPEN} gen_parms_csr.item then
+										gen_parm_actual_open_count := gen_parm_actual_open_count + 1
+									end
+									across gen_parms_csr.item.flattened_type_list as gen_parm_types_csr loop
+										if not has_class_definition (gen_parm_types_csr.item) then
+											-- it might be a formal parameter, to be matched against those of enclosing class
+											if a_class_def.is_generic then
+												check attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
+													if not att_gen_parm_defs.has (gen_parm_types_csr.item) then
+														add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
+															<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
+													end
+												end
+											else
+												add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPT,
+													<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
 											end
-										else
-											-- report?
 										end
-									else
-										add_validity_error (a_class_def.source_schema_id, "BMM_GPGPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
+									end
+								end
+
+								-- check that the number of open generic parameters in the property matches the number in the containing class
+								if attached a_class_def.generic_parameter_defs as formal_parms then
+									if gen_parm_actual_open_count > formal_parms.count then
+										add_validity_error (a_class_def.source_schema_id, ec_BMM_GPOPC,
+											<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
 									end
 								end
 							end
+						else
+							-- root class is not even generic
+							add_validity_error (a_class_def.source_schema_id, ec_BMM_GPRTNG,
+								<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_root_type.name>>)
 						end
 					end
 				else
-					add_validity_error (a_class_def.source_schema_id, "BMM_GPT", <<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_GPT,
+						<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
 				end
 			end
 		end

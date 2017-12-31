@@ -34,6 +34,14 @@ feature -- Access
 		attribute
 		end
 
+feature -- Status Report
+
+	is_open: BOOLEAN
+			-- True if there is any open actual parameter
+		do
+			Result := attached type_def as td and then td.is_open
+		end
+
 end
 
 

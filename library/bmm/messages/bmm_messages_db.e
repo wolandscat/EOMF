@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Generated class from message text files"
 	keywords:    "Internationalisation, I18N, Localisation, L10N, command line"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
-	support:     "Ocean Informatics <support@OceanInformatics.com>"
-	copyright:   "Copyright (c) 2012 Ocean Informatics Pty Ltd"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
+	support:     "http://www.openehr.org/issues/browse/AWB"
+	copyright:   "Copyright (c) 2012- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_MESSAGES_DB
@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (64)
+			create message_table.make (67)
 			message_table.put ("Documentation", ec_bmm_documentation_text)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
 			message_table.put ("Reference Model schema file $1 does not exist or not readable", ec_bmm_schema_file_not_valid)
@@ -70,9 +70,12 @@ feature -- Initialisation
 			message_table.put ("Schema $1 class definition $2 container property $3 container type $4 not found in schema", ec_BMM_CPCT)
 			message_table.put ("Schema $1 class definition $2 generic property $3 not defined", ec_BMM_GPT)
 			message_table.put ("Schema $1 class definition $2 generic property $3 root type $4 not found in schema", ec_BMM_GPRT)
+			message_table.put ("Schema $1 class definition $2 generic property $3 root type $4 has no formal generic parameters", ec_BMM_GPRTNG)
 			message_table.put ("Schema $1 class definition $2 generic property $3 generic parameter $4 not found in schema or in containing class declarations (if open)", ec_BMM_GPGPT)
 			message_table.put ("Schema $1 class definition $2 marked 'is_generic' but has no generic parameter declarations", ec_BMM_GPGPM)
 			message_table.put ("Schema $1 class definition $2 generic property $3 type $4 parameter $5 not found in class definitions or $4 formal declaration", ec_BMM_GPGPU)
+			message_table.put ("Schema $1 class definition $2 generic property $3 open parameter count does not match owning class", ec_BMM_GPOPC)
+			message_table.put ("Schema $1 class definition $2 generic property $3 generic parameter count $4 does not match formal parameter count $5 of root type $6", ec_BMM_GPBPC)
 			message_table.put ("Schema $1 class definition $2 single-valued property $3 type $4 not found in schema", ec_BMM_SPT)
 			message_table.put ("Schema $1 class definition $2 single-valued property $3 open generic parameter $4 not found in containing class declarations", ec_BMM_SPOT)
 			message_table.put ("Schema $1 class $2 mentioned in package $3 but not in schema, or relevant child schema", ec_BMM_PKGCL)

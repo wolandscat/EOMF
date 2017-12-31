@@ -62,6 +62,16 @@ feature -- Access
 		attribute
 		end
 
+feature -- Status Report
+
+	is_open: BOOLEAN
+			-- True if there is any open actual parameter
+		do
+			Result := across generic_parameter_refs as gen_parms_csr some
+				attached {P_BMM_OPEN_TYPE} gen_parms_csr.item
+			end
+		end
+
 feature -- Factory
 
 	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
