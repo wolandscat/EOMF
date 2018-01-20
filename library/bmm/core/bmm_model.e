@@ -250,6 +250,17 @@ feature -- Status Report
 			Result := class_definition (a_type_name).is_primitive_type
 		end
 
+	is_enumerated_type (a_type_name: STRING): BOOLEAN
+		require
+			has_class_definition (a_type_name)
+		local
+			bmm_class_def: BMM_CLASS
+		do
+			bmm_class_def := class_definition (a_type_name)
+			Result := attached {BMM_ENUMERATION_INTEGER} bmm_class_def or
+				attached {BMM_ENUMERATION_STRING} bmm_class_def
+		end
+
 	is_descendant_of (a_class, a_parent_class: STRING): BOOLEAN
 			-- True if `a_class' is a descendant in the model of `a_parent_class'
 			-- Use `type_conforms_to' for full type names
