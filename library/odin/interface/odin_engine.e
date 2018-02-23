@@ -41,7 +41,7 @@ feature -- Commands
 	serialise (a_format: STRING; full_type_marking_on, output_typed_encapsulated: BOOLEAN)
 			-- Serialise current artifact into `a_format'.
 			-- `full_type_marking_on' = True if type marking even for inferrable primitive types should be added to serialised output
-			-- `output_typed_encapsulated' = True: output with typed object wrapper, rather than just the series of attributes innside the object
+			-- `output_typed_encapsulated' = True: output with typed object wrapper, rather than just the series of attributes inside the object
 
 		require
 			Format_valid: has_dt_serialiser_format (a_format)
