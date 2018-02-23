@@ -107,17 +107,19 @@ feature -- Access
 feature -- Status Report
 
 	is_top_level: BOOLEAN
-			-- True if this is a top-level schema, i.e. not included by some other schema
+			-- True if this is a top-level schema, i.e. has archetype closures
+		require
+			attached p_schema
+		do
+			check attached p_schema then
+				Result := not p_schema.archetype_rm_closure_packages.is_empty
+			end
+		end
 
 	is_bmm_compatible: BOOLEAN
 			-- True if the BMM version found in the schema (or assumed, if none) is compatible with that in this software
 
 feature -- Modification
-
-	set_top_level
-		do
-			is_top_level := True
-		end
 
 	signal_load_include_error
 			-- set error status due to failure to load an included schema

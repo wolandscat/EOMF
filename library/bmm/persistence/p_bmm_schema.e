@@ -443,8 +443,10 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			if attached included_schema.archetype_data_value_parent_class and not attached archetype_data_value_parent_class then
 				archetype_data_value_parent_class := included_schema.archetype_data_value_parent_class
 			end
-			-- archetype closures
-			archetype_rm_closure_packages.merge (included_schema.archetype_rm_closure_packages)
+			-- archetype closures: only merge if nothing already in the higher-level schema
+			if attached included_schema.archetype_rm_closure_packages and not attached archetype_rm_closure_packages then
+				archetype_rm_closure_packages.merge (included_schema.archetype_rm_closure_packages)
+			end
 
 			-- primitive types
 			across included_schema.primitive_types as other_prim_types_csr loop
