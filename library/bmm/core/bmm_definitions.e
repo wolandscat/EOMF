@@ -210,34 +210,33 @@ feature -- Conversion
 			end
 		end
 
-	publisher_qualified_rm_closure_key (a_rm_publisher, a_rm_closure_name: STRING): STRING
-			-- lower-case form of `publisher_qualified_rm_closure_name'
+	publisher_qualified_namespace_key (a_model_publisher, a_namespace: STRING): STRING
+			-- lower-case form of `a_namespace' qualified by `a_model_publisher'
 		require
-			Model_publisher_valid: not a_rm_publisher.is_empty
-			Closure_name_valid: not a_rm_closure_name.is_empty
+			Model_publisher_valid: not a_model_publisher.is_empty
+			Namespace_name_valid: not a_namespace.is_empty
 		do
-			Result := publisher_qualified_rm_closure_name (a_rm_publisher, a_rm_closure_name).as_lower
+			Result := publisher_qualified_namespace (a_model_publisher, a_namespace).as_lower
 		ensure
 			Is_lower: Result.same_string (Result.as_lower)
 		end
 
-	publisher_qualified_rm_closure_name (a_rm_publisher, a_rm_closure_name: STRING): STRING
+	publisher_qualified_namespace (a_model_publisher, a_namespace: STRING): STRING
 			-- mixed-case standard model-package name string, e.g. "openEHR-EHR" for UI display
-			-- uses `package_base_name' to obtain terminal form of package name
 		require
-			Model_publisher_valid: not a_rm_publisher.is_empty
-			Closure_name_valid: not a_rm_closure_name.is_empty
+			Model_publisher_valid: not a_model_publisher.is_empty
+			Namespace_valid: not a_namespace.is_empty
 		do
-			Result := a_rm_publisher + Qualified_name_delimiter.out + package_base_name (a_rm_closure_name).as_upper
+			Result := a_model_publisher + Qualified_name_delimiter.out + a_namespace.as_upper
 		end
 
-	rm_closure_qualified_class_name (a_rm_closure_name, a_class_name: STRING): STRING
+	namespace_qualified_class_name (a_namespace, a_class_name: STRING): STRING
 			-- generate a standard model-class name string, e.g. "ehr-observation" for use in finding RM schemas
 		require
-			Rm_closure_name_valid: not a_rm_closure_name.is_empty
+			Namespace_valid: not a_namespace.is_empty
 			Class_name_valid: not a_class_name.is_empty
 		do
-			Result := a_rm_closure_name + Qualified_name_delimiter.out + a_class_name
+			Result := a_namespace + Qualified_name_delimiter.out + a_class_name
 		end
 
 	type_name_as_flat_list (a_type_string: STRING): ARRAYED_LIST [STRING]

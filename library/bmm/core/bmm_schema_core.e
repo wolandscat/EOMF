@@ -116,15 +116,10 @@ feature -- Access
 			-- enabling filtering of classes in RM visualisation. If empty, 'Any' is assumed
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	archetype_rm_closure_packages: ARRAYED_SET [STRING]
-			-- list of top-level package paths that provide the RM 'model' part in achetype identifiers,
-			-- e.g. the path "org.openehr.ehr" gives "EHR" in "openEHR-EHR". Within this namespace,
-			-- archetypes can be based on any class reachable from classes defined directly in these packages
+	archetype_namespace: detachable STRING
+			-- Archetype namespace to use in archetypes for a particular kind of system component
+			-- e.g. "EHR" in "openEHR-EHR".
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-		attribute
-			create Result.make (0)
-			Result.compare_objects
-		end
 
 	archetype_visualise_descendants_of: detachable STRING
 			-- If archetype_parent_class is not set, designate a class whose descendants should be
@@ -148,14 +143,6 @@ feature -- Status Report
 			-- True if this schema has an archetype_parent_class
 		do
 			Result := attached archetype_data_value_parent_class
-		end
-
-	has_rm_closure_package (a_package_path: STRING): BOOLEAN
-			-- `a_package_path' is a qualified package name, like 'org.openehr.ehr', 'org.openehr.demographic'
-		require
-			valid_package_path: not a_package_path.is_empty
-		do
-			Result := archetype_rm_closure_packages.has (a_package_path)
 		end
 
 	has_schema_contributor (a_contributor: STRING): BOOLEAN
@@ -202,9 +189,11 @@ feature -- Modification
 			schema_contributors := a_contributors
 		end
 
-	set_archetype_rm_closure_packages (a_package_list: like archetype_rm_closure_packages)
+	set_archetype_namespace (a_namespace: STRING)
+		require
+			valid_namespace: not a_namespace.is_empty
 		do
-			archetype_rm_closure_packages := a_package_list
+			archetype_namespace := a_namespace
 		end
 
 	set_schema_description (a_description: STRING)

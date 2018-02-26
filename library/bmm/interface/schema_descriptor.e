@@ -112,7 +112,7 @@ feature -- Status Report
 			attached p_schema
 		do
 			check attached p_schema then
-				Result := not p_schema.archetype_rm_closure_packages.is_empty
+				Result := attached p_schema.archetype_namespace
 			end
 		end
 
@@ -127,7 +127,7 @@ feature -- Modification
 			add_error (ec_bmm_schema_include_failed_to_load, <<schema_id>>)
 		end
 
-feature {REFERENCE_MODEL_ACCESS} -- Commands
+feature {MODEL_ACCESS} -- Commands
 
 	load
 			-- load schema into in-memory form

@@ -51,8 +51,6 @@ feature -- Initialisation
 		do
 			reset
 			state := State_created
-			create archetype_rm_closure_packages.make (0)
-			archetype_rm_closure_packages.compare_objects
 		end
 
 feature -- Access (attributes from schema)
@@ -298,7 +296,7 @@ feature -- Comparison
 			Result := type_name_as_flat_list (type_1).is_equal (type_name_as_flat_list (type_2))
 		end
 
-feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
+feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 
 	validate_created
 			-- do some basic validation post initial creation
@@ -439,13 +437,10 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			if attached included_schema.archetype_parent_class and not attached archetype_parent_class then
 				archetype_parent_class := included_schema.archetype_parent_class
 			end
+
 			-- archetype data value parent class: only merge if nothing already in the higher-level schema
 			if attached included_schema.archetype_data_value_parent_class and not attached archetype_data_value_parent_class then
 				archetype_data_value_parent_class := included_schema.archetype_data_value_parent_class
-			end
-			-- archetype closures: only merge if nothing already in the higher-level schema
-			if attached included_schema.archetype_rm_closure_packages and not attached archetype_rm_closure_packages then
-				archetype_rm_closure_packages.merge (included_schema.archetype_rm_closure_packages)
 			end
 
 			-- primitive types
@@ -543,13 +538,6 @@ feature {SCHEMA_DESCRIPTOR, REFERENCE_MODEL_ACCESS} -- Schema Processing
 			-- check archetype parent class in list of class names
 			if attached archetype_parent_class as apc and then not has_class_definition (apc) then
 				add_error (ec_BMM_ARPAR, <<schema_id, apc>>)
-			end
-
-			-- check that all models refer to declared packages
-			across archetype_rm_closure_packages as pkgs_csr loop
-				if not has_canonical_package_path (pkgs_csr.item) then
-					add_error (ec_BMM_MDLPK, <<schema_id, pkgs_csr.item>>)
-				end
 			end
 
 			-- check that no duplicate class names are found in packages
@@ -798,8 +786,10 @@ feature -- Factory
 			if attached archetype_visualise_descendants_of as avd then
 				new_rm.set_archetype_visualise_descendants_of (avd)
 			end
-			-- add RM closure packages - clone because merging will change the structure in the BMM_SCHEMA
-			new_rm.set_archetype_rm_closure_packages (archetype_rm_closure_packages.deep_twin)
+			-- set archetype namespace
+			if attached archetype_namespace as ns then
+				new_rm.set_archetype_namespace (ns)
+			end
 
 			--------- PASS 2 ----------
 			-- populate BMM_CLASS objects
@@ -882,7 +872,7 @@ feature {DT_OBJECT_CONVERTER} -- Persistence
 			)
 		end
 
-feature {REFERENCE_MODEL_ACCESS} -- Implementation
+feature {MODEL_ACCESS} -- Implementation
 
 	schema_error_table: HASH_TABLE [ERROR_ACCUMULATOR, STRING]
 			-- set of error accumulators for other schemas, keyed by schema id

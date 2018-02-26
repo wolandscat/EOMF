@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class REFERENCE_MODEL_ACCESS
+class MODEL_ACCESS
 
 inherit
 	ANY_VALIDATOR
@@ -39,7 +39,7 @@ create
 feature -- Definitions
 
 	Max_inclusion_depth: INTEGER = 10
-			-- maximum number of levelsof schema inclusion
+			-- maximum number of levels of schema inclusion
 
 feature {NONE} -- Initialisation
 
@@ -53,7 +53,7 @@ feature {NONE} -- Initialisation
 			create valid_models.make(0)
 			create top_level_schemas_by_publisher.make (0)
 			create schema_inclusion_map.make(0)
-			create models_by_closure.make(0)
+			create models_by_namespace.make(0)
 			create {ARRAYED_LIST[STRING]} schemas_load_list.make(0)
 			schemas_load_list.compare_objects
 		end
@@ -111,12 +111,12 @@ feature -- Access
 	top_level_schemas_by_publisher: HASH_TABLE [ARRAYED_LIST [SCHEMA_DESCRIPTOR], STRING]
 			-- all top-level schemas keyed by issuer
 
-	rm_for_closure (a_qualified_rm_closure_name: STRING): BMM_MODEL
-			-- Return ref model containing the model-class key `a_qualified_rm_closure_name', e.g. "openEHR-EHR"
+	model_for_namespace (a_qualified_namespace: STRING): BMM_MODEL
+			-- Return ref model containing the model-class key `a_qualified_namespace', e.g. "openEHR-EHR"
 		require
-			has_rm_for_closure (a_qualified_rm_closure_name)
+			has_model_for_namespace (a_qualified_namespace)
 		do
-			check attached models_by_closure.item (a_qualified_rm_closure_name.as_lower) as sch then
+			check attached models_by_namespace.item (a_qualified_namespace.as_lower) as sch then
 				Result := sch
 			end
 		end
@@ -151,10 +151,10 @@ feature -- Status Report
 			Result := not schema_directories.is_empty
 		end
 
-	has_rm_for_closure (a_qualified_rm_closure_name: STRING): BOOLEAN
-			-- True if there is a schema containing the qualified package key `a_qualified_rm_closure_name', e.g. "openEHR-EHR"
+	has_model_for_namespace (a_qualified_namespace: STRING): BOOLEAN
+			-- True if there is a schema containing the qualified package key `a_qualified_namespace', e.g. "openEHR-EHR"
 		do
-			Result := models_by_closure.has (a_qualified_rm_closure_name.as_lower)
+			Result := models_by_namespace.has (a_qualified_namespace.as_lower)
 		end
 
 	found_valid_models: BOOLEAN
@@ -204,7 +204,7 @@ feature {NONE} -- Implementation
 			-- Schemas not included by other schemas have NO ENTRY in this list
 			-- this is detected and used to populate `top_level_schemas'
 
-	models_by_closure: HASH_TABLE [BMM_MODEL, STRING]
+	models_by_namespace: HASH_TABLE [BMM_MODEL, STRING]
 			-- fully merged models keyed by lower-case qualified package name, i.e. model_publisher '-' package_name,
 			-- e.g. "openehr-ehr"; this matches the qualified package name part of an ARCHETYPE_ID
 
@@ -272,8 +272,6 @@ feature {NONE} -- Implementation
 			-- config variable, or by reading all schemas found in the schema directory
 		local
 			model_publisher: STRING
-			qualified_rm_closure_name: STRING
-			rm_closures: ARRAYED_LIST [STRING]
 			i: INTEGER
 			finished: BOOLEAN
 			schema_desc: SCHEMA_DESCRIPTOR
@@ -398,20 +396,11 @@ feature {NONE} -- Implementation
 					end
 				end
 
-				-- now populate the `models_by_closure' table
-				models_by_closure.wipe_out
+				-- now populate the `models_by_namespace' table
+				models_by_namespace.wipe_out
 				across valid_models as models_csr loop
-					model_publisher := models_csr.item.rm_publisher
-
-					-- put a ref to model, keyed by the model_publisher-package_name key (lower-case) for later lookup by compiler
-					rm_closures := models_csr.item.archetype_rm_closure_packages
-					across rm_closures as rm_closures_csr loop
-						qualified_rm_closure_name := publisher_qualified_rm_closure_key (model_publisher, rm_closures_csr.item)
-						if models_by_closure.has (qualified_rm_closure_name) and then attached models_by_closure.item (qualified_rm_closure_name) as att_schema then
-							add_info (ec_bmm_schema_duplicate_found, <<qualified_rm_closure_name, att_schema.schema_id, models_csr.key>>)
-						else
-							models_by_closure.put (models_csr.item, qualified_rm_closure_name.as_lower)
-						end
+					if attached models_csr.item.archetype_namespace as ns then
+						models_by_namespace.put (models_csr.item, publisher_qualified_namespace_key (models_csr.item.rm_publisher, ns).as_lower)
 					end
 				end
 
