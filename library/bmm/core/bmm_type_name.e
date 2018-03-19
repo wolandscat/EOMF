@@ -22,7 +22,7 @@ create
 feature {NONE} -- Initialisation
 
 	make_simple (a_name: STRING)
-			-- make in simple form
+			-- make with no generic parameters
 		require
 			a_name.count > 1
 		do
@@ -33,7 +33,7 @@ feature {NONE} -- Initialisation
 		end
 
 	make_formal_parameter (a_name: STRING)
-			-- make as formal generic parameter
+			-- make representing a formal generic parameter, using a single-letter type name
 		require
 			a_name.count = 1
 		do
@@ -46,7 +46,8 @@ feature {NONE} -- Initialisation
 		end
 
 	make_formal_parameter_constrained (a_name: STRING; a_constrainer: BMM_TYPE_NAME)
-			-- make as constrained formal generic parameter
+			-- make representing a formal generic parameter, using a single-letter type name,
+			-- with a constrainer type
 		require
 			a_name.count = 1
 		do
