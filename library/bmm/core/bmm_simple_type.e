@@ -17,7 +17,7 @@ create
 
 feature -- Initialisation
 
-	make (a_class: BMM_CLASS)
+	make (a_class: like base_class)
 		do
 			base_class := a_class
 		end
@@ -42,13 +42,13 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.append (base_class.flattened_type_list)
+			Result.extend (base_class.name)
 		end
 
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if base_class.is_abstract then
+			if is_abstract then
 				Result := Type_cat_abstract_class
 			elseif base_class.is_primitive_type then
 				Result := Type_cat_primitive_class
@@ -65,6 +65,12 @@ feature -- Access
 		end
 
 feature -- Status Report
+
+	is_abstract: BOOLEAN
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			Result := base_class.is_abstract
+		end
 
 	has_type_substitutions: BOOLEAN
 		do

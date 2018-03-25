@@ -60,14 +60,14 @@ feature -- Initialisation
     			if attached {BMM_PROPERTY[BMM_OPEN_TYPE]} props_csr.item as open_gen_prop then
     				gen_param_name := open_gen_prop.bmm_type.generic_constraint.name
     				check generic_substitutions.has (gen_param_name) end
-    				if attached {BMM_SIMPLE_TYPE} generic_substitutions.item (gen_param_name) as simple_type then
+    				if attached {BMM_GENERIC_TYPE} generic_substitutions.item (gen_param_name) as gen_type then
+						create {BMM_PROPERTY[BMM_GENERIC_TYPE]} new_prop.make_from_other(open_gen_prop, gen_type)
+						overwrite_property (new_prop)
+    				elseif attached {BMM_SIMPLE_TYPE} generic_substitutions.item (gen_param_name) as simple_type then
 						create {BMM_PROPERTY[BMM_SIMPLE_TYPE]} new_prop.make_from_other(open_gen_prop, simple_type)
 						overwrite_property (new_prop)
     				elseif attached {BMM_CONTAINER_TYPE} generic_substitutions.item (gen_param_name) as cont_type then
 						create {BMM_PROPERTY[BMM_CONTAINER_TYPE]} new_prop.make_from_other(open_gen_prop, cont_type)
-						overwrite_property (new_prop)
-    				elseif attached {BMM_GENERIC_TYPE} generic_substitutions.item (gen_param_name) as gen_type then
-						create {BMM_PROPERTY[BMM_GENERIC_TYPE]} new_prop.make_from_other(open_gen_prop, gen_type)
 						overwrite_property (new_prop)
 					else
 						-- do nothing; the parameter is still BMM_OPEN_TYPE

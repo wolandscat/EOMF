@@ -89,48 +89,6 @@ feature -- Access
 			end
 		end
 
---	effective_property_type (a_type_name, a_prop_name: STRING): STRING
---			-- determine the property type for `a_prop_name' in type corresponding to `a_type_name'
---			-- same as property_definition.type, except if a_type_name is generic, in which case:
---			-- `a_type_name' will be an actual type name, e.g. "INTERVAL<TIME>", whereas
---			-- Current's type is "INTERVAL<T>"
---		local
---			prop_type: BMM_TYPE
---			i, gen_param_count: INTEGER
---			gen_param_type: detachable STRING
---		do
---			if attached flat_properties.item (a_prop_name) as prop_def then
---				prop_type := prop_def.bmm_type
---				if attached {BMM_OPEN_TYPE} prop_type as simple_type_open then
---					i := 1
---					-- we traverse the generic parameters Hash instead of just keying into it so as
---					-- to get the index in order of the required parameter
---					across generic_parameters as gen_parms_csr loop
---						if gen_parms_csr.item.name.is_equal (simple_type_open.generic_constraint.name) then
---							-- if the supplied type lacked generic parameters, e.g. just "INTERVAL" was
---							-- supplied as a constraint, then we need to use the RM's idea of its generic prameter types
---							gen_param_type := gen_parms_csr.item.base_class.type_name
---							gen_param_count := i
---						end
---						i := i + 1
---					end
-
---					-- if the supplied type has generic parameters, e.g. "INTERVAL<TIME>" then use that
---					if is_generic_type_name (a_type_name) then
---						Result := generic_parameter_types (a_type_name).i_th (gen_param_count)
---					else
---						check attached gen_param_type as gpt then
---							Result := gen_param_type
---						end
---					end
---				else
---					Result := prop_type.type_name
---				end
---			else
---				Result := unknown_type_name
---			end
---		end
-
 	generic_parameter_conformance_types: ARRAYED_LIST [STRING]
 			-- for a generic class, list of types to which generic parameter types of an actual generic type
 			-- would have to conform. E.g. if this class is Interval <T: Comparable> then the Result will
@@ -239,5 +197,3 @@ feature -- Modification
 		end
 
 end
-
-

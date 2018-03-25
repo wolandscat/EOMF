@@ -10,16 +10,20 @@ note
 class BMM_GENERIC_TYPE
 
 inherit
-	BMM_TYPE
+	BMM_SIMPLE_TYPE
+		redefine
+			make, base_class, type_name, is_abstract,
+			has_type_substitutions, type_substitutions, flattened_type_list
+		end
 
 create
 	make
 
 feature -- Initialisation
 
-	make (a_base_class: BMM_GENERIC_CLASS)
+	make (a_class: like base_class)
 		do
-			base_class := a_base_class
+			precursor (a_class)
 			create generic_parameters.make (0)
 		end
 
@@ -42,41 +46,20 @@ feature -- Identification
 
 feature -- Access
 
+	base_class: BMM_GENERIC_CLASS
+			-- the base class of this type
+
 	generic_parameters: ARRAYED_LIST [BMM_TYPE]
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
-
-	base_class: BMM_GENERIC_CLASS
-			-- the base class of this type
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
 			-- Note: can include repeats, e.g. HASH_TABLE <STRING, STRING> => HASH_TABLE, STRING, STRING
 		do
-			create Result.make(0)
-			Result.compare_objects
-			Result.extend (base_class.name)
+			Result := precursor
 			across generic_parameters as gen_parm_csr loop
 				Result.append (gen_parm_csr.item.flattened_type_list)
-			end
-		end
-
-	type_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		local
-			has_abstract_gen_parms: BOOLEAN
-		do
-			across generic_parameters as gen_parm_csr loop
-				if not gen_parm_csr.item.type_category.is_equal (Type_cat_concrete_class) then
-					has_abstract_gen_parms := True
-				end
-			end
-			if base_class.is_abstract and has_abstract_gen_parms then
-				Result := Type_cat_abstract_class
-			elseif has_type_substitutions then
-				Result := Type_cat_concrete_class_supertype
-			else
-				Result := Type_cat_concrete_class
 			end
 		end
 
@@ -149,17 +132,21 @@ feature -- Access
 
 feature -- Status Report
 
-	has_type_substitutions: BOOLEAN
+	is_abstract: BOOLEAN
+			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := base_class.has_descendants or else across generic_parameters as gen_parms_csr some gen_parms_csr.item.has_type_substitutions end
+			Result := precursor or else
+				across generic_parameters as gen_parm_csr some
+					not gen_parm_csr.item.type_category.is_equal (Type_cat_concrete_class)
+				end
 		end
 
-	is_fully_open: BOOLEAN
-			-- True if all type parameters are open
+	has_type_substitutions: BOOLEAN
 		do
-			Result := across generic_parameters as gen_parms_csr all
-				attached {BMM_OPEN_TYPE} gen_parms_csr.item
-			end
+			Result := precursor or else
+				across generic_parameters as gen_parms_csr some
+					gen_parms_csr.item.has_type_substitutions
+				end
 		end
 
 feature -- Modification
