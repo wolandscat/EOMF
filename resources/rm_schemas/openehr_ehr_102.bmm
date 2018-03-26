@@ -46,7 +46,7 @@ includes = <
 ------------------------------------------------------
 -- archetyping
 ------------------------------------------------------
-archetype_rm_closure_packages = <"org.openehr.rm.ehr", "org.openehr.rm.common.directory">
+archetype_namespace = <"EHR">
 
 
 ------------------------------------------------------

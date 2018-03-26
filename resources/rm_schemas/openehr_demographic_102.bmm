@@ -45,7 +45,7 @@ includes = <
 ------------------------------------------------------
 -- archetyping
 ------------------------------------------------------
-archetype_rm_closure_packages = <"org.openehr.rm.demographic", ...>
+archetype_namespace = <"DEMOGRAPHIC">
 
 
 ------------------------------------------------------
