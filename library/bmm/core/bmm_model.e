@@ -194,10 +194,42 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
 		end
 
+	type_substitutions (a_type_name: STRING): ARRAYED_SET [STRING]
+			-- obtain names of all possible type substitutions of `a_type_name' in the model
+			-- including generic types.
+		require
+			Type_name_valid: has_type_definition (a_type_name)
+		local
+			class_def: BMM_CLASS
+			type_name: BMM_TYPE_NAME
+			base_classes: ARRAYED_SET [STRING]
+		do
+			check attached class_definition (a_type_name) as cd then
+				class_def := cd
+			end
+
+			if attached create_type_name_from_string (a_type_name) as tn then
+				type_name := tn
+			end
+
+			base_classes := class_def.all_descendants
+			base_classes.extend (class_def.name)
+			if type_name.is_generic then
+				create Result.make (0)
+				Result.compare_objects
+				across base_classes as base_classes_csr loop
+
+				end
+			else
+				Result := base_classes
+			end
+		end
+
 feature -- Status Report
 
 	candidate_generic_type_name (a_type_string: STRING): BOOLEAN
 			-- is `a_type_string' a possible new generic type in the current model, but not yet known?
+			-- TODO: implement proper conformance checking
 		require
 			valid_generic_type_name (a_type_string)
 		do
@@ -648,8 +680,7 @@ feature {NONE} -- Implementation
 		require
 			Valid_name: not a_type_name.is_formal_type_parameter
 		local
-			open_type: BMM_OPEN_TYPE
-			gen_parm_def: BMM_GENERIC_PARAMETER
+			gen_parm_def: BMM_PARAMETER_TYPE
 			gen_type: BMM_GENERIC_TYPE
 		do
 			if attached {BMM_GENERIC_CLASS} type_definition (a_type_name.as_string) as gen_class_def then
@@ -660,8 +691,7 @@ feature {NONE} -- Implementation
 						check attached gen_class_def.generic_parameters.item (gen_types_csr.item.name) as att_gpd then
 							gen_parm_def := att_gpd
 						end
-						create open_type.make (gen_parm_def)
-						gen_type.add_generic_parameter (open_type)
+						gen_type.add_generic_parameter (gen_parm_def)
 					else
 						gen_type.add_generic_parameter (create_bmm_type_from_bmm_type_name (gen_types_csr.item))
 					end
@@ -678,8 +708,7 @@ feature {NONE} -- Implementation
 			Valid_name: not a_type_name.is_formal_type_parameter
 			Has_base_class: has_class_definition (a_type_name.name)
 		local
-			open_type: BMM_OPEN_TYPE
-			gen_parm_def: BMM_GENERIC_PARAMETER
+			gen_parm_def: BMM_PARAMETER_TYPE
 			gen_class_def: BMM_GENERIC_CLASS
 		do
 			check attached {BMM_GENERIC_CLASS} class_definition (a_type_name.name) as gcd then
@@ -691,8 +720,7 @@ feature {NONE} -- Implementation
 					check attached gen_class_def.generic_parameters.item (gen_types_csr.item.name) as att_gpd then
 						gen_parm_def := att_gpd
 					end
-					create open_type.make (gen_parm_def)
-					Result.add_generic_parameter (open_type)
+					Result.add_generic_parameter (gen_parm_def)
 				else
 					Result.add_generic_parameter (create_bmm_type_from_bmm_type_name (gen_types_csr.item))
 				end

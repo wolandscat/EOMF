@@ -15,7 +15,7 @@ note
 deferred class BMM_TYPE
 
 inherit
-	BMM_TYPE_ELEMENT
+	BMM_CLASSIFIER
 
 feature -- Access
 

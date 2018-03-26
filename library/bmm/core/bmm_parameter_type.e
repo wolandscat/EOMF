@@ -2,15 +2,15 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Definition of a generic parameter in a class definition of a generic type."
 	keywords:    "model, object"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2009- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_GENERIC_PARAMETER
+class BMM_PARAMETER_TYPE
 
 inherit
-	BMM_TYPE_ELEMENT
+	BMM_TYPE
 		redefine
 			type_signature
 		end
@@ -20,19 +20,17 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; a_doc: detachable STRING; any_class: BMM_CLASS)
+	make (a_name: STRING; any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			documentation := a_doc
 			any_class_definition := any_class
 		end
 
-	make_constrained (a_name: STRING; a_doc: detachable STRING; a_conforms_to_type, any_class: BMM_CLASS)
+	make_constrained (a_name: STRING; a_conforms_to_type, any_class: BMM_CLASS)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			documentation := a_doc
 			conforms_to_type := a_conforms_to_type
 			any_class_definition := any_class
 		end
@@ -61,9 +59,7 @@ feature -- Identification
 
 feature -- Access
 
-	documentation: detachable STRING
-
-	inheritance_precursor: detachable BMM_GENERIC_PARAMETER
+	inheritance_precursor: detachable BMM_PARAMETER_TYPE
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
 	base_class: BMM_CLASS
@@ -123,7 +119,17 @@ feature -- Access
 			end
 		end
 
+	type_substitutions: ARRAYED_SET [STRING]
+		do
+			Result := effective_conforms_to_type.all_descendants
+		end
+
 feature -- Status Report
+
+	has_type_substitutions: BOOLEAN
+		do
+			Result := effective_conforms_to_type.has_descendants
+		end
 
 	is_constrained: BOOLEAN
 			-- True if this generic parameter has a type constraint
@@ -133,7 +139,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	set_inheritance_precursor (a_gen_parm_def: BMM_GENERIC_PARAMETER)
+	set_inheritance_precursor (a_gen_parm_def: BMM_PARAMETER_TYPE)
 			-- set `inheritance_precursor'
 		do
 			inheritance_precursor := a_gen_parm_def

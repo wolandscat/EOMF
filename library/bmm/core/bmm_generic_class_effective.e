@@ -57,8 +57,8 @@ feature -- Initialisation
     		-- iterate through flat properties, and any that are of open type, build
     		-- a replacement from `generic_substitutions'
     		across flat_properties as props_csr loop
-    			if attached {BMM_PROPERTY[BMM_OPEN_TYPE]} props_csr.item as open_gen_prop then
-    				gen_param_name := open_gen_prop.bmm_type.generic_constraint.name
+    			if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} props_csr.item as open_gen_prop then
+    				gen_param_name := open_gen_prop.bmm_type.name
     				check generic_substitutions.has (gen_param_name) end
     				if attached {BMM_GENERIC_TYPE} generic_substitutions.item (gen_param_name) as gen_type then
 						create {BMM_PROPERTY[BMM_GENERIC_TYPE]} new_prop.make_from_other(open_gen_prop, gen_type)
@@ -70,7 +70,7 @@ feature -- Initialisation
 						create {BMM_PROPERTY[BMM_CONTAINER_TYPE]} new_prop.make_from_other(open_gen_prop, cont_type)
 						overwrite_property (new_prop)
 					else
-						-- do nothing; the parameter is still BMM_OPEN_TYPE
+						-- do nothing; the parameter is still BMM_PARAMETER_TYPE
     				end
     			end
     		end

@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2014- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_OPEN_TYPE
+class X_BMM_OPEN_TYPE
 
 inherit
 	BMM_TYPE
@@ -17,7 +17,7 @@ create
 
 feature -- Initialisation
 
-	make (a_type: BMM_GENERIC_PARAMETER)
+	make (a_type: like generic_constraint)
 		do
 			generic_constraint := a_type
 		end
@@ -32,7 +32,7 @@ feature -- Identification
 
 feature -- Access
 
-	generic_constraint: BMM_GENERIC_PARAMETER
+	generic_constraint: BMM_PARAMETER_TYPE
 			-- the target type
 
 	base_class: BMM_CLASS

@@ -55,7 +55,7 @@ feature -- Identification
 
 feature -- Access
 
-	generic_parameters: HASH_TABLE [BMM_GENERIC_PARAMETER, STRING]
+	generic_parameters: HASH_TABLE [BMM_PARAMETER_TYPE, STRING]
 			-- list of generic parameter definitions, keyed by name of generic parameter;
 			-- these are defined either directly on this class or by the addition of an
 			-- ancestor class which is generic. Chronological order of insertion
@@ -125,13 +125,12 @@ feature -- Status Report
 
 feature -- Modification
 
-	add_generic_parameter (a_gen_parm_def: BMM_GENERIC_PARAMETER)
+	add_generic_parameter (a_gen_parm_def: BMM_PARAMETER_TYPE)
 			-- add a generic parameter, and link it to the corresponding definition in any generic ancestor
 		require
 			New_gen_parm_def: not has_generic_parameter (a_gen_parm_def.name)
 		local
-			new_prop: BMM_PROPERTY[BMM_OPEN_TYPE]
-			new_type: BMM_OPEN_TYPE
+			new_prop: BMM_PROPERTY[BMM_PARAMETER_TYPE]
 			doc: detachable STRING
 		do
 			generic_parameters.put (a_gen_parm_def, a_gen_parm_def.name.as_upper)
@@ -163,8 +162,8 @@ feature -- Modification
 							and then a_gen_parm_def.effective_conforms_to_type /= gp_inh_parent.effective_conforms_to_type
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
-								if attached {BMM_PROPERTY[BMM_OPEN_TYPE]} parent_props_csr.item as parent_prop_type and then
-									parent_prop_type.bmm_type.generic_constraint = a_gen_parm_def.inheritance_precursor
+								if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} parent_props_csr.item as parent_prop_type and then
+									parent_prop_type.bmm_type = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
 										io.put_string ("Schema: " + bmm_model.schema_id + " found in class " + type_signature +
@@ -172,11 +171,10 @@ feature -- Modification
 											" gen parm " + a_gen_parm_def.type_signature +
 											"; redefined in property " + parent_prop_type.display_name + "%N")
 									end
-									create new_type.make (a_gen_parm_def)
 									if attached parent_prop_type.documentation as att_doc then doc := att_doc.twin end
 									create new_prop.make (parent_prop_type.name.twin,
 										doc,
-										new_type,
+										a_gen_parm_def,
 										parent_prop_type.is_mandatory,
 										parent_prop_type.is_computed,
 										parent_prop_type.is_im_infrastructure,

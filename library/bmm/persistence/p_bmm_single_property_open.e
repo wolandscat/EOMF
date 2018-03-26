@@ -42,7 +42,7 @@ feature -- Access
 
 feature -- Access
 
-	bmm_property: detachable BMM_PROPERTY [BMM_OPEN_TYPE]
+	bmm_property: detachable BMM_PROPERTY [BMM_PARAMETER_TYPE]
 		note
 			option: transient
 		attribute
