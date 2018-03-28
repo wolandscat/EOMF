@@ -40,7 +40,7 @@ feature -- Access
 		do
 			if not attached type_def and attached type as att_type then
 				-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
-				if att_type.count = 1 then
+				if valid_generic_type_name (att_type) then
 					create {P_BMM_OPEN_TYPE} type_def.make_simple (att_type)
 				else
 					create {P_BMM_SIMPLE_TYPE} type_def.make_simple (att_type)
@@ -58,11 +58,16 @@ feature -- Access
 feature -- Factory
 
 	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
+		local
+			bmm_cont_class: BMM_GENERIC_CLASS
 		do
-			if a_bmm_model.has_class_definition (container_type) and attached type_ref as att_type_ref then
-				att_type_ref.create_bmm_type (a_bmm_model, a_class_def)
-				if attached att_type_ref.bmm_type as bt then
-					create bmm_type.make (bt, a_bmm_model.class_definition (container_type))
+			if a_bmm_model.has_class_definition (container_type) and attached type_ref then
+				check attached {BMM_GENERIC_CLASS} a_bmm_model.class_definition (container_type) as bmm_gc then
+					bmm_cont_class := bmm_gc
+				end
+				type_ref.create_bmm_type (a_bmm_model, a_class_def)
+				if attached type_ref.bmm_type as bt then
+					create bmm_type.make (bt, bmm_cont_class)
 				end
 			end
 		end
@@ -72,8 +77,8 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			check attached type_ref as att_type_ref then
-				Result := container_type + Generic_left_delim.out + att_type_ref.as_type_string + Generic_right_delim.out
+			check attached type_ref then
+				Result := container_type + Generic_left_delim.out + type_ref.as_type_string + Generic_right_delim.out
 			end
 		end
 
