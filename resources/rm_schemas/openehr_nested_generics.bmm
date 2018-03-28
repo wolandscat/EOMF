@@ -38,7 +38,7 @@ schema_description = <"nested generic types test schema">
 ------------------------------------------------------
 includes = <
 	["1"] = <
-		id = <"openehr_primitive_types_1.0.2">
+		id = <"openehr_base_1.1.0">
 	>
 >
 

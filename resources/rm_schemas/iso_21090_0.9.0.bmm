@@ -29,14 +29,14 @@ rm_release = <"0.9.0">
 schema_revision = <"0.9.5">
 schema_lifecycle_state = <"experimental">
 schema_description = <"13606 Release 2008 draft reference model, expressed in 'basic meta-model' format described in ISO 13606">
-schema_author = <"thomas.beale@oceaninformatics.com">
+schema_author = <"thomas.beale@openehr.org">
 
 ------------------------------------------------------
 -- inclusions
 ------------------------------------------------------
 includes = <
 	["1"] = <
-		id = <"openehr_primitive_types_1.0.2">
+		id = <"openehr_base_1.1.0">
 	>
 >
 

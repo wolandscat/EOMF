@@ -1,20 +1,16 @@
 -- 
--- 	component:   openEHR Archetype Project
--- 	description: openEHR Reference Model formal expression. This file is a DADL serialisation of
---               the BMM object meta-model classes found at 
---               http://www.openehr.org/svn/ref_impl_eiffel/BRANCHES/specialisation/libraries/common_libs/src/basic_meta_model
+-- 	component:   openEHR Reference Model (RM)
+-- 	description: openEHR Reference Model schema. This file format is based on the BMM specification
+--  				http://www.openehr.org/releases/BASE/latest/docs/bmm/bmm.html
 -- 	keywords:    reference model, meta-model, archetypes
 -- 	author:      Thomas Beale
--- 	support:     Ocean Informatics <support@OceanInformatics.com>
--- 	copyright:   Copyright (c) 2009- openEHR Foundation
--- 	license:     Apache 2.0 <http://www.apache.org/licenses/LICENSE-2.0.html>
+-- 	support:     https://openehr.atlassian.net/projects/SPECPR
+-- 	copyright:   Copyright (c) 2016 openEHR Foundation
+-- 	license:     CC-BY-ND <https://creativecommons.org/licenses/by-nd/3.0/>
 -- 
 
 ------------------------------------------------------
 -- BMM version on which these schemas are based.
--- Current BMM version can be found as value of 'Bmm_internal_version' in 
---     https://github.com/openEHR/adl-tools/blob/master/libraries/common_libs/src/basic_meta_model/bmm_definitions.e
---
 ------------------------------------------------------
 bmm_version = <"2.1">
 
@@ -23,22 +19,23 @@ bmm_version = <"2.1">
 -- (schema_id computed as <rm_publisher>_<schema_name>_<rm_release>)
 ------------------------------------------------------
 rm_publisher = <"openehr">
-schema_name = <"basic_types">
-rm_release = <"1.0.2">
+schema_name = <"rm_data_types">
+rm_release = <"1.0.4">
 
 ------------------------------------------------------
 -- schema documentation
 ------------------------------------------------------
-schema_revision = <"$LastChangedRevision: 26 $">
+schema_revision = <"1.0.4.1">
 schema_lifecycle_state = <"stable">
-schema_description = <"openEHR Release 1.0.2 reference model Support types and Data types"> 
+schema_description = <"openEHR Release 1.0.4 reference model Data types"> 
+schema_author = <"Thomas Beale <thomas.beale@openehr.org>">
 
 ------------------------------------------------------
 -- inclusions
 ------------------------------------------------------
 includes = <
 	["1"] = <
-		id = <"openehr_primitive_types_1.0.2">
+		id = <"openehr_base_1.1.0">
 	>
 >
 
@@ -52,10 +49,6 @@ archetype_data_value_parent_class = <"DATA_VALUE">
 ------------------------------------------------------
 
 packages = <
-	["org.openehr.rm.support.identification"] = <
-		name = <"org.openehr.rm.support.identification">
-		classes = <"OBJECT_REF", "OBJECT_ID", "UID", "LOCATABLE_REF", "PARTY_REF", "OBJECT_ID", "TERMINOLOGY_ID", "UID_BASED_ID", "GENERIC_ID", "ARCHETYPE_ID", "TEMPLATE_ID", "OBJECT_VERSION_ID", "HIER_OBJECT_ID", "VERSION_TREE_ID", "INTERNET_ID", "UUID", "ISO_OID">
-	>
 	["org.openehr.rm.data_types"] = <
 		name = <"org.openehr.rm.data_types">
 		packages = <
@@ -69,7 +62,7 @@ packages = <
 			>
 			["quantity"] = <
 				name = <"quantity">
-				classes = <"DV_INTERVAL", "REFERENCE_RANGE", "DV_ORDERED", "DV_QUANTIFIED", "MAGNITUDE_STATUS", "DV_QUANTITY", "DV_PROPORTION", "PROPORTION_KIND", "DV_AMOUNT", "DV_ABSOLUTE_QUANTITY", "DV_COUNT", "DV_ORDINAL">
+				classes = <"DV_INTERVAL", "REFERENCE_RANGE", "DV_ORDERED", "DV_QUANTIFIED", "DV_QUANTITY", "DV_PROPORTION", "PROPORTION_KIND", "DV_AMOUNT", "DV_ABSOLUTE_QUANTITY", "DV_COUNT", "DV_ORDINAL">
 				packages = <
 					["date_time"] = <
 						name = <"date_time">
@@ -99,124 +92,6 @@ packages = <
 
 class_definitions = <
 
-	------------------------------------------------------------
-	------------------ rm.support.identification ---------------
-	------------------------------------------------------------
-
-	["OBJECT_REF"] = <
-		name = <"OBJECT_REF">
-		ancestors = <"Any", ...>
-		properties = <
-			["id"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"id">
-				type = <"OBJECT_ID">
-				is_mandatory = <True>
-			>
-			["namespace"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"namespace">
-				type = <"String">
-				is_mandatory = <True>
-			>
-			["type"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"type">
-				type = <"String">
-				is_mandatory = <True>
-			>
-		>
-	>
-
-	["LOCATABLE_REF"] = <
-		name = <"LOCATABLE_REF">
-		ancestors = <"OBJECT_REF", ...>
-		properties = <
-			["path"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"path">
-				type = <"String">
-				is_im_infrastructure = <True>
-			>
-		>
-	>
-
-	["PARTY_REF"] = <
-		name = <"PARTY_REF">
-		ancestors = <"OBJECT_REF", ...>
-	>
-
-	["OBJECT_ID"] = <
-		name = <"OBJECT_ID">
-		is_abstract = <True>
-		ancestors = <"Any", ...>
-		properties = <
-			["value"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"value">
-				type = <"String">
-				is_mandatory = <True>
-			>
-		>
-	>
-
-	["TERMINOLOGY_ID"] = <
-		name = <"TERMINOLOGY_ID">
-		ancestors = <"OBJECT_ID", ...>
-	>
-	
-	["UID_BASED_ID"] = <
-		name = <"UID_BASED_ID">
-		ancestors = <"OBJECT_ID", ...>
-		is_abstract = <True>
-	>
-	
-	["GENERIC_ID"] = <
-		name = <"GENERIC_ID">
-		ancestors = <"OBJECT_ID", ...>
-	>
-	
-	["ARCHETYPE_ID"] = <
-		name = <"ARCHETYPE_ID">
-		ancestors = <"OBJECT_ID", ...>
-	>
-	
-	["TEMPLATE_ID"] = <
-		name = <"TEMPLATE_ID">
-		ancestors = <"OBJECT_ID", ...>
-	>
-	
-	["OBJECT_VERSION_ID"] = <
-		name = <"OBJECT_VERSION_ID">
-		ancestors = <"UID_BASED_ID", ...>
-	>
-	
-	["HIER_OBJECT_ID"] = <
-		name = <"HIER_OBJECT_ID">
-		ancestors = <"UID_BASED_ID", ...>
-	>
-	
-	["VERSION_TREE_ID"] = <
-		name = <"VERSION_TREE_ID">
-		ancestors = <"Any", ...>
-	>
-	
-	["UID"] = <
-		name = <"UID">
-		is_abstract = <True>
-		ancestors = <"Any", ...>
-	>
-	
-	["INTERNET_ID"] = <
-		name = <"INTERNET_ID">
-		ancestors = <"UID", ...>
-	>
-	
-	["UUID"] = <
-		name = <"UUID">
-		ancestors = <"UID", ...>
-	>
-	
-	["ISO_OID"] = <
-		name = <"ISO_OID">
-		ancestors = <"UID", ...>
-	>
-	
 	------------------------------------------------------------
 	--------------------- rm.data_types ------------------------
 	------------------------------------------------------------
@@ -250,7 +125,6 @@ class_definitions = <
 			["issuer"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"issuer">
 				type = <"String">
-				is_mandatory = <True>
 			>
 			["id"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"id">
@@ -261,12 +135,10 @@ class_definitions = <
 			["type"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"type">
 				type = <"String">
-				is_mandatory = <True>
 			>
 			["assigner"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"assigner">
 				type = <"String">
-				is_mandatory = <True>
 			>
 		>
 	>
@@ -411,10 +283,12 @@ class_definitions = <
 			>
 		>
 		properties = <
-			["range"] = (P_BMM_SINGLE_PROPERTY) <
+			["range"] = (P_BMM_GENERIC_PROPERTY) <
 				name = <"range">
-				type = <"DV_INTERVAL">
-				is_mandatory = <True>
+				type_def = <
+					root_type = <"DV_INTERVAL">
+					generic_parameters = <"T">
+				>
 			>
 		>
 	>
@@ -452,18 +326,11 @@ class_definitions = <
 		properties = <
 			["magnitude_status"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"magnitude_status">
-				type = <"MAGNITUDE_STATUS">
+				type = <"String">
 				is_mandatory = <True>
 				is_im_runtime = <True>
 			>
 		>
-	>
-
-	["MAGNITUDE_STATUS"] = (P_BMM_ENUMERATION_STRING) <
-		name = <"MAGNITUDE_STATUS">
-		ancestors = <"String", ...>
-		item_names = <"le", "ge", "eq", "approx_eq">
-		item_values = <"<=", ">=", "=", "~">
 	>
 
 	["DV_ORDINAL"] = <
@@ -546,7 +413,7 @@ class_definitions = <
 		properties = <
 			["magnitude"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"magnitude">
-				type = <"Integer">
+				type = <"Integer64">
 			>
 		>
 	>
