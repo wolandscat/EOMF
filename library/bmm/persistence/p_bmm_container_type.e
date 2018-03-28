@@ -21,7 +21,7 @@ feature -- Access (persisted)
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	type_def: detachable P_BMM_TYPE
+	type_def: detachable P_BMM_PROPER_TYPE
 			-- type definition of the `type', if not a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
@@ -34,7 +34,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	type_ref: detachable P_BMM_TYPE
+	type_ref: detachable P_BMM_PROPER_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		do
@@ -66,7 +66,7 @@ feature -- Factory
 					bmm_cont_class := bmm_gc
 				end
 				type_ref.create_bmm_type (a_bmm_model, a_class_def)
-				if attached type_ref.bmm_type as bt then
+				if attached {BMM_PROPER_TYPE} type_ref.bmm_type as bt then
 					create bmm_type.make (bt, bmm_cont_class)
 				end
 			end

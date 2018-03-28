@@ -10,11 +10,6 @@ note
 class P_BMM_GENERIC_PROPERTY
 
 inherit
-	BMM_DEFINITIONS
-		export
-			{NONE} all
-		end
-
 	P_BMM_PROPERTY
 		redefine
 			bmm_property

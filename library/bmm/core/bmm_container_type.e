@@ -17,9 +17,9 @@ create
 
 feature -- Initialisation
 
-	make (a_type: BMM_TYPE; a_container_type: like container_type)
+	make (a_base_type: like base_type; a_container_type: like container_type)
 		do
-			base_type := a_type
+			base_type := a_base_type
 			container_type := a_container_type
 		end
 
@@ -34,7 +34,7 @@ feature -- Identification
 
 feature -- Access
 
-	base_type: BMM_TYPE
+	base_type: BMM_PROPER_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 	container_type: BMM_GENERIC_CLASS

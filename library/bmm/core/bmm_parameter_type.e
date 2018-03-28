@@ -10,7 +10,7 @@ note
 class BMM_PARAMETER_TYPE
 
 inherit
-	BMM_TYPE
+	BMM_PROPER_TYPE
 		redefine
 			type_signature
 		end

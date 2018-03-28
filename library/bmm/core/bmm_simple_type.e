@@ -10,7 +10,7 @@ note
 class BMM_SIMPLE_TYPE
 
 inherit
-	BMM_TYPE
+	BMM_PROPER_TYPE
 
 create
 	make
