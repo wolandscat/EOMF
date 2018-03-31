@@ -17,7 +17,8 @@ create
 
 feature {NONE} -- Initialisation
 
-	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type; is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
+	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type;
+			is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
 			documentation := a_doc

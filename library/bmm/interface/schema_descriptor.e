@@ -45,8 +45,10 @@ feature -- Initialisation
 			reset
 			meta_data := a_meta_data
 
-			check attached meta_data.item (metadata_rm_publisher) as md_publisher and attached meta_data.item (metadata_schema_name) as md_schema_name and
-				attached meta_data.item (metadata_rm_release) as md_release and attached meta_data.item (Metadata_schema_path) as md_schema_path
+			check attached meta_data.item (metadata_rm_publisher) as md_publisher and
+				attached meta_data.item (metadata_schema_name) as md_schema_name and
+				attached meta_data.item (metadata_rm_release) as md_release and
+				attached meta_data.item (Metadata_schema_path) as md_schema_path
 			then
 				schema_id := create_schema_id (md_publisher, md_schema_name, md_release)
 
@@ -107,11 +109,9 @@ feature -- Access
 feature -- Status Report
 
 	is_top_level: BOOLEAN
-			-- True if this is a top-level schema, i.e. has archetype closures
-		require
-			attached p_schema
+			-- True if this is a top-level schema, i.e. has an archetype namespace
 		do
-			check attached p_schema then
+			if attached p_schema then
 				Result := attached p_schema.archetype_namespace
 			end
 		end
@@ -177,7 +177,7 @@ feature {MODEL_ACCESS} -- Commands
 			create all_schemas.make (0)
 			all_schemas.compare_objects
 			all_schemas.make_from_array (all_schemas_list)
-			if attached p_schema as att_schema and then attached att_schema.includes as att_includes then
+			if attached p_schema and then attached p_schema.includes as att_includes then
 				across att_includes as supplier_schemas_csr loop
 					if not all_schemas.has (supplier_schemas_csr.item.id) then
 						add_error (ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
@@ -190,9 +190,9 @@ feature {MODEL_ACCESS} -- Commands
 
 	validate
 		do
-			check attached p_schema as att_schema then
-				att_schema.validate
-				merge_errors (att_schema.errors)
+			check attached p_schema then
+				p_schema.validate
+				merge_errors (p_schema.errors)
 			end
 		end
 
@@ -203,12 +203,12 @@ feature {MODEL_ACCESS} -- Commands
 		local
 			exception_encountered: BOOLEAN
 		do
-			check attached p_schema as att_p_schema then
+			check attached p_schema then
 				if not exception_encountered then
-					att_p_schema.create_bmm_model
-					model := att_p_schema.bmm_model
+					p_schema.create_bmm_model
+					model := p_schema.bmm_model
 				else
-					add_error (ec_BMM_CRF, <<att_p_schema.schema_id>>)
+					add_error (ec_BMM_CRF, <<p_schema.schema_id>>)
 				end
 			end
 		ensure

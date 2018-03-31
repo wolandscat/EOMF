@@ -72,7 +72,7 @@ feature -- Access
 		local
 			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
 		do
-			cont_sub_type_list := container_type.all_descendants.deep_twin
+			cont_sub_type_list := container_type.all_descendant_types.deep_twin
 			if cont_sub_type_list.is_empty then
 				cont_sub_type_list.extend (container_type.name)
 			end

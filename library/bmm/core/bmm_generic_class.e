@@ -131,7 +131,6 @@ feature -- Modification
 			New_gen_parm_def: not has_generic_parameter (a_gen_parm_def.name)
 		local
 			new_prop: BMM_PROPERTY[BMM_PARAMETER_TYPE]
-			doc: detachable STRING
 		do
 			generic_parameters.put (a_gen_parm_def, a_gen_parm_def.name.as_upper)
 
@@ -139,7 +138,7 @@ feature -- Modification
 			-- first find a direct ancestor that has generic parameters
 			if not ancestors.is_empty then
 				from ancestors.start until ancestors.off or attached a_gen_parm_def.inheritance_precursor loop
-					if attached {BMM_GENERIC_CLASS} ancestors.item_for_iteration as anc_gen_class then
+					if attached {BMM_GENERIC_CLASS} ancestors.item_for_iteration.base_class as anc_gen_class then
 						if anc_gen_class.has_generic_parameter (a_gen_parm_def.name) and then
 							attached anc_gen_class.generic_parameters.item (a_gen_parm_def.name.as_upper) as gen_parm
 						then
@@ -155,7 +154,7 @@ feature -- Modification
 			-- and it has a parent Interval <T: Ordered>, where DV_ORDERED further constraints Ordered, then any
 			-- properties from Interval of type T should be recreated in DV_INTERVAL.
 			across ancestors as anc_class_csr loop
-				if attached {BMM_GENERIC_CLASS} anc_class_csr.item as parent_gen_class then
+				if attached {BMM_GENERIC_CLASS} anc_class_csr.item.base_class as parent_gen_class then
 					across parent_gen_class.generic_parameters as parent_gen_class_gen_parms loop
 						if parent_gen_class_gen_parms.item.name.same_string (a_gen_parm_def.name) and
 							a_gen_parm_def.is_constrained and then attached a_gen_parm_def.inheritance_precursor as gp_inh_parent
@@ -171,9 +170,9 @@ feature -- Modification
 											" gen parm " + a_gen_parm_def.type_signature +
 											"; redefined in property " + parent_prop_type.display_name + "%N")
 									end
-									if attached parent_prop_type.documentation as att_doc then doc := att_doc.twin end
+
 									create new_prop.make (parent_prop_type.name.twin,
-										doc,
+										if attached parent_prop_type.documentation as att_doc then att_doc.twin else Void end,
 										a_gen_parm_def,
 										parent_prop_type.is_mandatory,
 										parent_prop_type.is_computed,

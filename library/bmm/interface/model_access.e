@@ -372,7 +372,7 @@ feature {NONE} -- Implementation
 					across candidate_schemas as schemas_csr loop
 						schema_desc := schemas_csr.item
 						if schema_desc.is_top_level and schemas_load_list.has (schema_desc.schema_id) then
-							if schema_desc.passed and attached schema_desc.p_schema as att_p_schema and then att_p_schema.state = {P_BMM_SCHEMA}.State_includes_processed then
+							if schema_desc.passed and attached schema_desc.p_schema as att_p_schema and then att_p_schema.ready_to_validate then
 								-- validate the schema & if passed, put it into `top_level_schemas'
 								schema_desc.validate
 								merge_validation_errors (schema_desc)
@@ -404,7 +404,8 @@ feature {NONE} -- Implementation
 					end
 				end
 
-				-- add entry to top_level_schemas_by_publisher
+				-- add entry to `top_level_schemas_by_publisher`; this includes non-valid schemas
+				-- so they can be displayed and edited by the user
 				across all_schemas as schemas_csr loop
 					schema_desc := schemas_csr.item
 					if schema_desc.is_top_level then

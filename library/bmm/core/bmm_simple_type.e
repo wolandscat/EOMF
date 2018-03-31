@@ -48,20 +48,12 @@ feature -- Access
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if is_abstract then
-				Result := Type_cat_abstract_class
-			elseif base_class.is_primitive_type then
-				Result := Type_cat_primitive_class
-			elseif has_type_substitutions then
-				Result := Type_cat_concrete_class_supertype
-			else
-				Result := Type_cat_concrete_class
-			end
+			Result := base_class.type_category
 		end
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := base_class.all_descendants
+			Result := base_class.all_descendant_types
 		end
 
 feature -- Status Report

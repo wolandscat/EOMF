@@ -121,7 +121,7 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := effective_conforms_to_type.all_descendants
+			Result := effective_conforms_to_type.all_descendant_types
 		end
 
 feature -- Status Report

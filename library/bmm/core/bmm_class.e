@@ -58,14 +58,10 @@ feature -- Access
 
 	documentation: detachable STRING
 
-	base_class: BMM_CLASS
-			-- the 'design' class of this type, ignoring containers, multiplicity etc.
-		do
-			Result := Current
-		end
-
-	ancestors: HASH_TABLE [BMM_CLASS, STRING]
-			-- list of immediate inheritance parents; keyed by upper case class name
+	ancestors: HASH_TABLE [BMM_SIMPLE_TYPE, STRING]
+			-- list of directly inheritance parent types, which may include
+			-- closed, open and partial generic type signatures
+			-- keyed by case class name
 		attribute
 			create Result.make (0)
 		end
@@ -85,22 +81,21 @@ feature -- Access
 			create Result.make_from_string ("(uninitialised)")
 		end
 
-	all_ancestors: ARRAYED_SET [STRING]
-			-- list of all inheritance parent class names (upper case)
+	all_ancestor_types: ARRAYED_SET [STRING]
+			-- list of all inheritance parent class names
 		do
-			if attached all_ancestors_cache as aac then
-				Result := aac
-			else
+			Result := all_ancestors_cache
+			if not attached Result then
 				create Result.make (0)
 				Result.compare_objects
 				across ancestors as ancestors_csr loop
 					Result.extend (ancestors_csr.key)
-					Result.merge (ancestors_csr.item.all_ancestors)
+					Result.merge (ancestors_csr.item.base_class.all_ancestor_types)
 				end
 				all_ancestors_cache := Result
 			end
 		ensure
-			strict: not Result.has (name.as_upper)
+			strict: not Result.has (name)
 		end
 
 	immediate_descendants: ARRAYED_LIST [BMM_CLASS]
@@ -109,33 +104,32 @@ feature -- Access
 			create Result.make (0)
 		end
 
-	all_descendants: ARRAYED_SET [STRING]
-			-- obtain names of all descendant classes of this class (upper case).
+	all_descendant_types: ARRAYED_SET [STRING]
+			-- obtain names of all descendant classes of this class.
 			-- If there are none, the result is empty;
 		do
-			if attached all_descendants_cache as adc then
-				Result := adc
-			else
+			Result := all_descendants_cache
+			if not attached Result then
 				create Result.make(0)
 				Result.compare_objects
 				across immediate_descendants as imm_descs_csr loop
 					Result.extend (imm_descs_csr.item.name)
-					Result.merge (imm_descs_csr.item.all_descendants)
+					Result.merge (imm_descs_csr.item.all_descendant_types)
 				end
 				all_descendants_cache := Result
 			end
 		ensure
-			strict: not Result.has (name.as_upper)
+			strict: not Result.has (name)
 		end
 
 	type_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if is_primitive_type then
-				Result := Type_cat_primitive_class
-			elseif is_abstract then
+			if is_abstract then
 				Result := Type_cat_abstract_class
-			elseif is_abstract or else has_descendants then
+			elseif is_primitive_type then
+				Result := Type_cat_primitive_class
+			elseif has_descendants then
 				Result := Type_cat_concrete_class_supertype
 			else
 				Result := Type_cat_concrete_class
@@ -261,7 +255,7 @@ feature -- Access
 
 				-- merge ancestor properties
 				across ancestors as ancestors_csr loop
-					Result.merge (ancestors_csr.item.flat_properties)
+					Result.merge (ancestors_csr.item.base_class.flat_properties)
 				end
 
 				-- now merge the current properties - merging afterward will correctly replace ancestor properties of same name
@@ -408,8 +402,8 @@ feature -- Status Report
 			Class_name_valid: not a_class_name.is_empty
 		do
 			Result := a_class_name.is_case_insensitive_equal (any_type) or else
-				ancestors.has (a_class_name.as_upper) or else
-				all_ancestors.has (a_class_name.as_upper)
+				ancestors.has (a_class_name) or else
+				all_ancestor_types.has (a_class_name)
 		end
 
 	has_immediate_descendant (a_class_name: STRING): BOOLEAN
@@ -464,7 +458,8 @@ feature -- Traversal
 	do_supplier_closure (flat_flag: BOOLEAN; continue_action: FUNCTION [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]], BOOLEAN];
 				enter_action: PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE], INTEGER]];
 				exit_action: detachable PROCEDURE [ANY, TUPLE [BMM_PROPERTY [BMM_TYPE]]])
-			-- On all nodes in supplier closure of this class, execute `enter_action', then recurse into its subnodes, then execute `exit_action'.
+			-- On all nodes in supplier closure of this class, execute `enter_action',
+			-- then recurse into its subnodes, then execute `exit_action'.
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
@@ -523,18 +518,17 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
-	add_ancestor (an_anc_class: BMM_CLASS)
-			-- add an ancestor class, using upper-case key
+	add_ancestor (an_anc_type: BMM_SIMPLE_TYPE)
+			-- add an ancestor class
 		require
-			New_ancestor: not ancestors.has_item (an_anc_class)
+			New_ancestor: not ancestors.has_item (an_anc_type)
 		do
-			ancestors.put (an_anc_class, an_anc_class.name.as_upper)
-			an_anc_class.add_immediate_descendant (Current)
+			ancestors.put (an_anc_type, an_anc_type.type_name)
+			an_anc_type.base_class.add_immediate_descendant (Current)
 			all_ancestors_cache := Void
 			reset_flat_properties_cache
 		ensure
-			Ancestor_added: ancestors.item (an_anc_class.name.as_upper) = an_anc_class
-			Ancestor_descendant_added: an_anc_class.immediate_descendants.has (Current)
+			Ancestor_added: ancestors.item (an_anc_type.type_name) = an_anc_type
 		end
 
 	set_is_override

@@ -51,9 +51,9 @@ feature -- Initialisation
 feature -- Access
 
 	class_definitions: HASH_TABLE [BMM_CLASS, STRING]
-			-- All classes in this model, including for used generic types, keyed by type name
-			-- upper case, no spaces.
-			-- Generate a key from a type name using `type_name_to_class_key'
+			-- All classes in this model, including for used generic types,
+			-- keyed by type name, no spaces.
+			-- Generate a key from a type name using `type_name_to_class_key`
 		attribute
 			create Result.make (0)
 		end
@@ -115,6 +115,16 @@ feature -- Access
 				Result := class_def
 			end
 		end
+
+--	type_definition (a_type_name: STRING): BMM_CLASS
+--			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
+--		require
+--			Type_name_valid: has_type_definition (a_type_name)
+--		do
+--			check attached type_definitions.item (type_name_to_type_key (a_type_name)).base_class as class_def then
+--				Result := class_def
+--			end
+--		end
 
 	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION [COMPARABLE]
 			-- retrieve the enumeration definition corresponding to `a_type_name'
@@ -212,7 +222,7 @@ feature -- Access
 				type_name := tn
 			end
 
-			base_classes := class_def.all_descendants
+			base_classes := class_def.all_descendant_types
 			base_classes.extend (class_def.name)
 			if type_name.is_generic then
 				create Result.make (0)
@@ -242,12 +252,21 @@ feature -- Status Report
 
 	has_type_definition (a_type_name: STRING): BOOLEAN
 			-- True if `a_type_name' is already concretely known in the system, including if it is
-			-- generic - in which case, it already has a BMM_GENERIC_CLASS_EFFECTIVE created for it
+			-- genericm which may be open, partially open or closed.
 		require
 			Type_valid: not a_type_name.is_empty
 		do
 			Result := class_definitions.has (type_name_to_type_key (a_type_name))
 		end
+
+--	has_type_definition (a_type_name: STRING): BOOLEAN
+--			-- True if `a_type_name' is already concretely known in the system, including if it is
+--			-- genericm which may be open, partially open or closed.
+--		require
+--			Type_valid: not a_type_name.is_empty
+--		do
+--			Result := type_definitions.has (type_name_to_type_key (a_type_name))
+--		end
 
 	has_class_definition (a_class_name: STRING): BOOLEAN
 			-- True if `a_class_name' has a class definition or prmitive type in the model.
@@ -295,7 +314,7 @@ feature -- Status Report
 			Sub_class_valid: has_class_definition (a_class_name)
 			Parent_class_valid: has_class_definition (a_parent_class_name)
 		do
-			Result := class_definition (type_name_to_class_key (a_class_name)).all_ancestors.has (a_parent_class_name.as_upper)
+			Result := class_definition (type_name_to_class_key (a_class_name)).all_ancestor_types.has (a_parent_class_name.as_upper)
 		end
 
 	has_property_path (a_type_name, a_prop_path: STRING): BOOLEAN
@@ -427,8 +446,8 @@ feature -- Factory
 			end
 		end
 
-	create_bmm_generic_type_from_name (a_type_string: STRING): BMM_TYPE
-			-- create a new BMM_TYPE from a valid type name string
+	create_bmm_generic_type_from_name (a_type_string: STRING): BMM_GENERIC_TYPE
+			-- create a new BMM_GENERIC_TYPE from a valid type name string
 		require
 			Valid_name: candidate_generic_type_name (a_type_string)
 		do
@@ -505,7 +524,6 @@ feature -- Modification
 			-- compute BMM_GENERIC_CLASS_EFFECTIVE instances from open BMM_GENERIC_CLASS instances
 		local
 			gen_bmm_type: BMM_GENERIC_TYPE
-			gen_class_eff: BMM_GENERIC_CLASS_EFFECTIVE
 			gen_prop: BMM_PROPERTY[BMM_GENERIC_TYPE]
 			generic_type_properties: HASH_TABLE [ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]], STRING]
 		do
@@ -535,14 +553,27 @@ feature -- Modification
 
 				add_effective_type (gen_prop.bmm_type)
 				check attached {BMM_GENERIC_CLASS_EFFECTIVE} type_definition (gen_prop.bmm_type.type_name) as att_gce then
-					gen_class_eff := att_gce
-				end
-
-				-- Now replace the bmm_type.base_class of all properties in the list
-				across gen_type_prop_lists_csr.item as bmm_props_csr loop
-					bmm_props_csr.item.bmm_type.set_base_class (gen_class_eff)
+					-- Now replace the bmm_type.base_class of all properties in the list
+					across gen_type_prop_lists_csr.item as bmm_props_csr loop
+						bmm_props_csr.item.bmm_type.set_base_class (att_gce)
+					end
 				end
 			end
+
+			-- now deal with types mentioned in class ancestor lists
+			across class_definitions as class_def_csr loop
+				across class_def_csr.item.ancestors as anc_types_csr loop
+					if attached {BMM_GENERIC_TYPE} anc_types_csr.item as anc_gen_type then
+						if not has_type_definition (anc_gen_type.type_name) then
+							add_effective_type (anc_gen_type)
+						end
+						check attached {BMM_GENERIC_CLASS_EFFECTIVE} type_definition (anc_gen_type.type_name) as att_gce then
+							anc_gen_type.set_base_class (att_gce)
+						end
+					end
+				end
+			end
+
 		end
 
 	add_effective_type (a_gen_type: BMM_GENERIC_TYPE)
@@ -656,10 +687,8 @@ feature {NONE} -- Implementation
 			else
 				Result := a_type_name
 			end
-			Result := Result.as_upper
 			Result.prune_all (' ')
 		ensure
-			Upper_case: Result ~ Result.as_upper
 			No_spaces: not Result.has (' ')
 		end
 
@@ -669,33 +698,20 @@ feature {NONE} -- Implementation
 		require
 			Type_valid: not a_type_name.is_empty
 		do
-			Result := a_type_name.as_upper
+			create Result.make_empty
+			Result.append (a_type_name)
 			Result.prune_all (' ')
 		ensure
-			Upper_case: Result ~ Result.as_upper
+			No_spaces: not Result.has (' ')
 		end
 
 	create_bmm_type_from_bmm_type_name (a_type_name: BMM_TYPE_NAME): BMM_TYPE
 			-- create a new BMM_TYPE from a bmm type already known in the sytem
 		require
 			Valid_name: not a_type_name.is_formal_type_parameter
-		local
-			gen_parm_def: BMM_PARAMETER_TYPE
-			gen_type: BMM_GENERIC_TYPE
 		do
 			if attached {BMM_GENERIC_CLASS} type_definition (a_type_name.as_string) as gen_class_def then
-				create gen_type.make (gen_class_def)
-				Result := gen_type
-				across a_type_name.generic_parameters as gen_types_csr loop
-					if gen_types_csr.item.is_formal_type_parameter then
-						check attached gen_class_def.generic_parameters.item (gen_types_csr.item.name) as att_gpd then
-							gen_parm_def := att_gpd
-						end
-						gen_type.add_generic_parameter (gen_parm_def)
-					else
-						gen_type.add_generic_parameter (create_bmm_type_from_bmm_type_name (gen_types_csr.item))
-					end
-				end
+				Result := create_bmm_generic_type_from_bmm_type_name (a_type_name)
 			else
 				create {BMM_SIMPLE_TYPE} Result.make (class_definition (a_type_name.name))
 			end
