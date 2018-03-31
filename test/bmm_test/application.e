@@ -49,7 +49,7 @@ feature -- Initialization
 
 	run_openehr_tests
 		do
-		--	rm_schema_cache.put (rm_schemas_access.schema_for_rm_closure ("openehr-ehr"))
+			bmm_model_cache.put (models_access.model_for_namespace ("openehr-task_planning"))
 
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
@@ -71,11 +71,7 @@ feature -- Initialization
 
 			io.put_string ("---------------- rm_schema.class_definition.properties --------------%N")
 			io.put_string ("Generic class and properties, showing generic type substitutions %N")
-			io.put_string ("CONTACT %N")
-			across rm_schema.class_definition ("CONTACT").properties as props_csr loop
-				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.base_class.type_name + "%N")
-			end
-			io.new_line
+			output_class_properties ("CONTACT", False)
 
 			io.put_string ("---------------- rm_schema.class_definition.suppliers --------------%N")
 			io.put_string ("All supplier classes of COMPOSITION: %N")
@@ -95,6 +91,44 @@ feature -- Initialization
 					end
 				end
 				io.put_string ("%N")
+			end
+			io.new_line
+
+
+			bmm_model_cache.put (models_access.model_for_namespace ("openehr-generics"))
+
+			io.put_string ("======================= generic inheritance =======================%N")
+			io.put_string ("......... generic inheritance - source form ..........%N")
+			output_class_properties ("SUPPLIER", False)
+			output_class_properties ("SUPPLIER_A", False)
+			output_class_properties ("SUPPLIER_B", False)
+			output_class_properties ("GENERIC_PARENT", False)
+			output_class_properties ("GENERIC_CHILD_OPEN_T", False)
+			output_class_properties ("GENERIC_CHILD_OPEN_U", False)
+			output_class_properties ("GENERIC_CHILD_CLOSED", False)
+
+			io.put_string ("......... generic inheritance - flat form ..........%N")
+			output_class_properties ("SUPPLIER", True)
+			output_class_properties ("SUPPLIER_A", True)
+			output_class_properties ("SUPPLIER_B", True)
+			output_class_properties ("GENERIC_PARENT", True)
+			output_class_properties ("GENERIC_CHILD_OPEN_T", True)
+			output_class_properties ("GENERIC_CHILD_OPEN_U", True)
+			output_class_properties ("GENERIC_CHILD_CLOSED", True)
+		end
+
+	output_class_properties (a_class_name: STRING; show_flat: BOOLEAN)
+		local
+			properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+		do
+			io.put_string (a_class_name + " %N")
+			if show_flat then
+				properties := rm_schema.class_definition (a_class_name).flat_properties
+			else
+				properties := rm_schema.class_definition (a_class_name).properties
+			end
+			across properties as props_csr loop
+				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
 			end
 			io.new_line
 		end

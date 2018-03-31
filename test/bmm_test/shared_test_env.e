@@ -60,9 +60,7 @@ feature -- Initialization
 		do
 			if ready_to_initialise_app then
 				initialise_app
-				if not has_errors then
-					bmm_model_cache.put (models_access.model_for_namespace ("openehr-task_planning"))
-				else
+				if has_errors then
 					io.put_string (error_strings)
 					io.put_string ("Check .cfg gile " + app_cfg.file_path + "%N")
 				end
