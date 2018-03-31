@@ -34,7 +34,7 @@ feature -- Initialisation
     		gen_param_name: STRING
     	do
     		a_base_class := a_gen_type.base_class
-    		make_class (a_base_class.name.twin, clone(a_base_class.documentation), a_base_class.is_abstract)
+    		make_class (a_base_class.name.twin, if attached a_base_class.documentation as doc then doc.twin else Void end, a_base_class.is_abstract)
 
     		generic_parameters.merge (a_base_class.generic_parameters)
     		ancestors.merge (a_base_class.ancestors)
