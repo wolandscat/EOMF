@@ -28,11 +28,6 @@ feature -- Identification
 
 feature -- Access
 
-	base_class: BMM_CLASS
-			-- main design class for this type, from which properties etc can be extracted
-		deferred
-		end
-
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
 		deferred

@@ -19,6 +19,11 @@ inherit
 
 feature -- Access
 
+	base_class: BMM_CLASS
+			-- main design class for this type, from which properties etc can be extracted
+		deferred
+		end
+
 	type_substitutions: ARRAYED_SET [STRING]
 			-- List of type substitutions if any available for this type within the current BMM model.
 		deferred
