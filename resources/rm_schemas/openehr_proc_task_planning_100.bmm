@@ -12,7 +12,7 @@
 ------------------------------------------------------
 -- BMM version on which these schemas are based.
 ------------------------------------------------------
-bmm_version = <"2.1">
+bmm_version = <"2.3">
 
 ------------------------------------------------------
 -- schema identification
@@ -1191,25 +1191,23 @@ class_definitions = <
 
 	["TIMER_WAIT"] = <
 		name = <"TIMER_WAIT">
-		ancestors = <"EVENT_WAIT">
-		properties = <
-			["event"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"event">
-				type = <"TIMER_EVENT">
-				is_mandatory = <True>
+		ancestor_defs = <
+			["EVENT_WAIT<TIMER_EVENT>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"EVENT_WAIT">
+				generic_parameters = <"TIMER_EVENT">
 			>
 		>
 	>
 
 	["CALLBACK_WAIT"] = <
 		name = <"CALLBACK_WAIT">
-		ancestors = <"EVENT_WAIT">
-		properties = <
-			["event"] = (P_BMM_SINGLE_PROPERTY) <
-				name = <"event">
-				type = <"CALLBACK_NOTIFICATION">
-				is_mandatory = <True>
+		ancestor_defs = <
+			["EVENT_WAIT<CALLBACK_NOTIFICATION>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"EVENT_WAIT">
+				generic_parameters = <"CALLBACK_NOTIFICATION">
 			>
+		>
+		properties = <
 			["fail_action"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"fail_action">
 				type = <"EVENT_ACTION">
