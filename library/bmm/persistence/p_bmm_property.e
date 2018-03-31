@@ -55,9 +55,9 @@ feature -- Factory
 
 	create_bmm_property (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
-			if attached type_def as td then
-				td.create_bmm_type (a_bmm_model, a_class_def)
-				if attached td.bmm_type as bt then
+			if attached type_def then
+				type_def.create_bmm_type (a_bmm_model, a_class_def)
+				if attached type_def.bmm_type as bt then
 					create bmm_property.make (name, documentation, bt, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
 				end
 			end

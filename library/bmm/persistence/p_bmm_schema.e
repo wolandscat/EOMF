@@ -69,14 +69,14 @@ feature -- Access (attributes from schema)
 		end
 
 	primitive_types: HASH_TABLE [P_BMM_CLASS, STRING]
-			-- types like Integer, Boolean etc
+			-- types like Integer, Boolean etc, keyed by class name
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
 			create Result.make (0)
 		end
 
 	class_definitions: HASH_TABLE [P_BMM_CLASS, STRING]
-			-- constructed classes
+			-- constructed classes, keyed by class name
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 		attribute
 			create Result.make (0)
@@ -368,6 +368,8 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 				add_info (ec_bmm_schema_info_loaded, << schema_id, primitive_types.count.out, class_definitions.count.out >>)
 				state := State_validated_created
 			end
+		ensure
+			passed implies state = State_validated_created
 		end
 
 	load_finalise
@@ -424,6 +426,8 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 				end
 				state := State_includes_pending
 			end
+		ensure
+			state = State_includes_processed or state = State_includes_pending
 		end
 
 	merge (included_schema: P_BMM_SCHEMA)
@@ -509,7 +513,7 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 					do
 						create anc_list.make (0)
 						anc_list.compare_objects
-						anc_list.merge (a_class_def.ancestors)
+						anc_list.merge (a_class_def.ancestor_type_names)
 						ancestors_index.put (anc_list, a_class_def.name.as_upper)
 					end
 			)
@@ -520,7 +524,8 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 						anc_list_copy: ARRAYED_SET [STRING]
 					do
 						if attached ancestors_index.item (a_class_def.name.as_upper) as anc_list then
-							anc_list_copy := anc_list.deep_twin -- create a copy for iteration purposes
+							-- create a copy for iteration purposes
+							anc_list_copy := anc_list.deep_twin
 							across anc_list_copy as anc_copy_csr loop
 								if ancestors_index.has (anc_copy_csr.item.as_upper) and then attached ancestors_index.item (anc_copy_csr.item.as_upper) as iter_anc_list then
 									anc_list.merge (iter_anc_list)
@@ -774,19 +779,16 @@ feature -- Factory
 				pkgs_csr.item.do_recursive_classes (agent add_bmm_schema_class_definition)
 			end
 
-			-- set the archetype root class
+			-- set the archetype-related model elements
 			if attached archetype_parent_class as apc then
 				new_rm.set_archetype_parent_class (apc)
 			end
-			-- set the archetype data value root class
 			if attached archetype_data_value_parent_class as advp then
 				new_rm.set_archetype_data_value_parent_class (advp)
 			end
-			-- set the archetype data value root class
 			if attached archetype_visualise_descendants_of as avd then
 				new_rm.set_archetype_visualise_descendants_of (avd)
 			end
-			-- set archetype namespace
 			if attached archetype_namespace as ns then
 				new_rm.set_archetype_namespace (ns)
 			end

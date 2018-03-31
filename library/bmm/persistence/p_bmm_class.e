@@ -40,13 +40,13 @@ feature -- Access (persisted)
 			-- FIXME: this won't function correctly unless ordering is guaranteed;
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	ancestors: ARRAYED_LIST [STRING]
+	ancestors: detachable ARRAYED_LIST [STRING]
 			-- list of immediate inheritance parents FROM SCHEMA
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-		attribute
-			create Result.make (0)
-			Result.compare_objects
-		end
+
+	ancestor_defs: detachable ARRAYED_LIST [P_BMM_GENERIC_TYPE]
+			-- list of immediate inheritance parents FROM SCHEMA
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
 	properties: HASH_TABLE [P_BMM_PROPERTY, STRING]
 			-- list of attributes defined in this class FROM SCHEMA
@@ -56,6 +56,31 @@ feature -- Access (persisted)
 		end
 
 feature -- Access
+
+	ancestor_type_names: ARRAYED_LIST [STRING]
+			-- list of ancestor type names
+		do
+			create Result.make (0)
+			Result.compare_objects
+			across ancestor_refs as ancs_csr loop
+				Result.extend (ancs_csr.item.as_type_string)
+			end
+		end
+
+	ancestor_refs: ARRAYED_LIST [P_BMM_PROPER_TYPE]
+			-- structural form of ancestors
+		do
+			if attached ancestor_defs as att_defs then
+				Result := att_defs
+			elseif attached ancestors as att_anc_strings then
+				create Result.make (0)
+				across att_anc_strings as anc_csr loop
+					Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (anc_csr.item))
+				end
+			else
+				create Result.make (0)
+			end
+		end
 
 	source_schema_id: STRING
 			-- reference to original source schema defining this class
@@ -107,38 +132,39 @@ feature -- Factory
 
 	create_bmm_class
 			-- add BMM model elements to `bmm_class'
-		local
-			att_bmm_class: attached like bmm_class
 		do
 			if attached generic_parameter_defs as gen_parm_defs then
-				create {BMM_GENERIC_CLASS} att_bmm_class.make (name, documentation, is_abstract)
+				create {BMM_GENERIC_CLASS} bmm_class.make (name, documentation, is_abstract)
 			else
-				create att_bmm_class.make (name, documentation, is_abstract)
+				create bmm_class.make (name, documentation, is_abstract)
 			end
-			att_bmm_class.set_source_schema_id (source_schema_id)
-			bmm_class := att_bmm_class
+			bmm_class.set_source_schema_id (source_schema_id)
 		end
 
 	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements from Current to `bmm_class'
 		do
 			if attached bmm_class as att_bmm_class then
-				-- populate references to ancestor classes; should be every class except Any
-				if attached ancestors then
-					across ancestors as ancs_csr loop
-						if attached a_bmm_model.class_definition (ancs_csr.item) as class_def then
-							att_bmm_class.add_ancestor (class_def)
+				-- create generic parameters
+				if attached generic_parameter_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
+					across generic_parameter_defs as gen_parm_defs_csr loop
+						gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
+						check attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
+							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
 						end
 					end
 				end
 
-				-- create generic parameters
-				if attached generic_parameter_defs as gen_parm_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
-					across gen_parm_defs as gen_parm_defs_csr loop
-						gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
-						if attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
-							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
-						end
+				-- populate references to ancestor classes; should be every class except Any
+				across ancestor_refs as ancs_csr loop
+					ancs_csr.item.create_bmm_type (a_bmm_model, att_bmm_class)
+
+					-- add a BMM_TYPE to the BMM_GENERIC_TYPE.generic_parameters list
+					-- NOTE: we have to test for {BMM_SIMPLE_TYPE} here because P_BMM_GENERIC_TYPE
+					-- doesn't inherit from P_BMM_SIMPLE_TYPE as BMM_GENERIC_TYPE inherits from
+					-- BMM_SIMPLE_TYPE. Could be fixed, but better to move on to new serial format
+					check attached {BMM_SIMPLE_TYPE} ancs_csr.item.bmm_type as bt then
+						bmm_class.add_ancestor (bt)
 					end
 				end
 
