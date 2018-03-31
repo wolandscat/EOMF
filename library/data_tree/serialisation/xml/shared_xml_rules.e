@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Object containing rules for controlling XML serialisation and deserialisation in ADL Workbench"
 	keywords:    "serialisation, XML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
-	support:     "openEHR AWB project <http://www.openehr.org/issues/browse/AWB>"
-	copyright:   "Copyright (c) 2011- Ocean Informatics Pty Ltd"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
+	support:     "http://www.openehr.org/issues/browse/AWB"
+	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class SHARED_XML_RULES
