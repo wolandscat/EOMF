@@ -140,7 +140,6 @@ feature -- Access (Attributes from schema load post-processing)
 
 	ancestors_index: HASH_TABLE [ARRAYED_SET [STRING], STRING]
 			-- index of all ancestors of each class
-			-- key is UPPER case
 		do
 			if attached ancestors_index_cache as aic then
 				Result := aic
@@ -157,15 +156,13 @@ feature -- Access
 		require
 			Class_valid: has_class_definition (a_class_name)
 		local
-			a_key: STRING
 			fake_int_enum: P_BMM_ENUMERATION_INTEGER
 			fake_str_enum: P_BMM_ENUMERATION_STRING
 		do
-			a_key := a_class_name.as_upper
-			if primitive_types.has (a_key) and attached primitive_types.item (a_key) as att_prim_type then
+			if primitive_types.has (a_class_name) and attached primitive_types.item (a_class_name) as att_prim_type then
 				Result := att_prim_type
 			else
-				check attached class_definitions.item (a_key) as att_class_def then
+				check attached class_definitions.item (a_class_name) as att_class_def then
 					Result := att_class_def
 				end
 			end
@@ -176,7 +173,7 @@ feature -- Access
 		require
 			Class_valid: has_primitive_type (a_class_name)
 		do
-			check attached primitive_types.item (a_class_name.as_upper) as att_type then
+			check attached primitive_types.item (a_class_name) as att_type then
 				Result := att_type
 			end
 		end
@@ -188,11 +185,8 @@ feature -- Status Report
 			-- could be a generic type string; only the root class is considered
 		require
 			Class_valid: not a_class_name.is_empty
-		local
-			a_key: STRING
 		do
-			a_key := a_class_name.as_upper
-			Result := primitive_types.has (a_key) or class_definitions.has (a_key)
+			Result := primitive_types.has (a_class_name) or class_definitions.has (a_class_name)
 		end
 
 	has_primitive_type (a_class_name: STRING): BOOLEAN
@@ -201,7 +195,7 @@ feature -- Status Report
 		require
 			Class_valid: not a_class_name.is_empty
 		do
-			Result := primitive_types.has (a_class_name.as_upper)
+			Result := primitive_types.has (a_class_name)
 		end
 
 	has_canonical_package_path (a_path: STRING): BOOLEAN
@@ -277,8 +271,8 @@ feature -- Comparison
 			until
 				tlist1.off or tlist2.off or not Result or not has_class_definition (tlist1.item) or not has_class_definition (tlist2.item)
 			loop
-				Result := Result and (tlist1.item.is_equal (tlist2.item) or else (ancestors_index.has (tlist1.item.as_upper) and then
-					attached ancestors_index.item (tlist1.item.as_upper) as att_anc_idx and then att_anc_idx.has (tlist2.item)))
+				Result := Result and (tlist1.item.is_equal (tlist2.item) or else (ancestors_index.has (tlist1.item) and then
+					attached ancestors_index.item (tlist1.item) as att_anc_idx and then att_anc_idx.has (tlist2.item)))
 				tlist1.forth
 				tlist2.forth
 			end
@@ -514,7 +508,7 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 						create anc_list.make (0)
 						anc_list.compare_objects
 						anc_list.merge (a_class_def.ancestor_type_names)
-						ancestors_index.put (anc_list, a_class_def.name.as_upper)
+						ancestors_index.put (anc_list, a_class_def.name)
 					end
 			)
 			-- pass 2: add indirect ancestors
@@ -523,11 +517,11 @@ feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
 					local
 						anc_list_copy: ARRAYED_SET [STRING]
 					do
-						if attached ancestors_index.item (a_class_def.name.as_upper) as anc_list then
+						if attached ancestors_index.item (a_class_def.name) as anc_list then
 							-- create a copy for iteration purposes
 							anc_list_copy := anc_list.deep_twin
 							across anc_list_copy as anc_copy_csr loop
-								if ancestors_index.has (anc_copy_csr.item.as_upper) and then attached ancestors_index.item (anc_copy_csr.item.as_upper) as iter_anc_list then
+								if ancestors_index.has (anc_copy_csr.item) and then attached ancestors_index.item (anc_copy_csr.item) as iter_anc_list then
 									anc_list.merge (iter_anc_list)
 								end
 							end
@@ -809,7 +803,7 @@ feature -- Factory
 			if attached class_definition (a_class_name) as p_class_def then
 				p_class_def.create_bmm_class
 				if attached p_class_def.bmm_class as bmm_class_def and attached a_pkg.bmm_package_definition as pkg_def then
-					if primitive_types.has (a_class_name.as_upper) then
+					if primitive_types.has (a_class_name) then
 						bmm_class_def.set_primitive_type
 					end
 					if p_class_def.is_override then
@@ -833,31 +827,12 @@ feature {DT_OBJECT_CONVERTER} -- Persistence
 	finalise_dt
 			-- Finalisation work:
 			-- 1. Do name case conversion on primitive classes
-		local
-			keys: ARRAY [STRING]
-			i: INTEGER
 		do
 			-- set bmm_version if not found in schema
 			if attached bmm_version then
 				bmm_version_from_schema := True
 			else
 				bmm_version := Assumed_bmm_version
-			end
-
-			-- has to be done in two gos, because changing keys messs with the table structure
-			-- if done in one pass			
-			keys := primitive_types.current_keys
-			from i := 1 until i > keys.count loop
-				primitive_types.replace_key (keys.item(i).as_upper, keys.item(i))
-				i := i + 1
-			end
-
-			keys := class_definitions.current_keys
-			from i := 1 until i > keys.count loop
-				if not keys.item(i).is_equal (keys.item(i).as_upper) then
-					class_definitions.replace_key (keys.item(i).as_upper, keys.item(i))
-				end
-				i := i + 1
 			end
 
 			-- set all packages keys to upper case
