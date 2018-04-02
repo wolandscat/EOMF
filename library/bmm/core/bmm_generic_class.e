@@ -14,7 +14,7 @@ class BMM_GENERIC_CLASS
 inherit
 	BMM_CLASS
 		redefine
-			suppliers, type_name, type_signature, flattened_type_list --, effective_property_type
+			suppliers, type
 		end
 
 create
@@ -22,46 +22,28 @@ create
 
 feature -- Identification
 
-	type_name: STRING
-			-- name of the type, in form:
-			--    name < generic_param_name, .... >
-			-- e.g. Interval<T>
+	type: BMM_GENERIC_TYPE
+			-- generate a type that corresponds to this class definition
 		do
-			create Result.make_from_string (name)
-			Result.append_character (generic_left_delim)
-			across generic_parameters as gen_parms_csr loop
-				Result.append (gen_parms_csr.item.type_name)
-				if not gen_parms_csr.is_last then
-					Result.append_character (generic_separator)
+			Result := type_cache
+			if not attached Result then
+				create Result.make (Current)
+				across generic_parameters as gen_parms_csr loop
+					Result.add_generic_parameter (gen_parms_csr.item)
 				end
+				type_cache := Result
 			end
-			Result.append_character (generic_right_delim)
-		end
-
-	type_signature: STRING
-			-- Signature form of the type, which for generics includes generic parameter constrainer types
-			-- E.g. Interval<T:Ordered>
-		do
-			create Result.make_from_string (name)
-			Result.append_character (generic_left_delim)
-			across generic_parameters as gen_parms_csr loop
-				Result.append (gen_parms_csr.item.type_signature)
-				if not gen_parms_csr.is_last then
-					Result.append_character (generic_separator)
-				end
-			end
-			Result.append_character (generic_right_delim)
 		end
 
 feature -- Access
 
-	generic_parameters: HASH_TABLE [BMM_PARAMETER_TYPE, STRING]
+	generic_parameters: STRING_TABLE [BMM_PARAMETER_TYPE]
 			-- list of generic parameter definitions, keyed by name of generic parameter;
 			-- these are defined either directly on this class or by the addition of an
 			-- ancestor class which is generic. Chronological order of insertion
 			-- is maintained for iteration.
 		attribute
-			create Result.make (0)
+			create Result.make_caseless (0)
 		end
 
 	suppliers: ARRAYED_SET [STRING]
@@ -73,20 +55,10 @@ feature -- Access
 			Result := precursor
 
 			-- get the types defined in formal generics
-			ftl := flattened_type_list
+			ftl := type.flattened_type_list
 			ftl.go_i_th (1)
 			ftl.remove
 			Result.merge (ftl)
-		end
-
-	flattened_type_list: ARRAYED_LIST [STRING]
-			-- completely flattened list of type names, flattening out all generic parameters
-			-- e.g. "HASH_TABLE <LINKED_LIST <STRING>, STRING>" => <<"HASH_TABLE", "LINKED_LIST", "STRING", "STRING">>
-		do
-			Result := precursor
-			across generic_parameters as gen_parms_csr loop
-				Result.append (gen_parms_csr.item.flattened_type_list)
-			end
 		end
 
 	generic_parameter_conformance_types: ARRAYED_LIST [STRING]
@@ -165,8 +137,9 @@ feature -- Modification
 									parent_prop_type.bmm_type = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
-										io.put_string ("Schema: " + bmm_model.schema_id + " found in class " + type_signature +
-											"; parent type = " + parent_gen_class.type_name +
+										io.put_string ("Schema: " + bmm_model.schema_id +
+											" found in class " + type.type_signature +
+											"; parent type = " + parent_gen_class.type.type_name +
 											" gen parm " + a_gen_parm_def.type_signature +
 											"; redefined in property " + parent_prop_type.display_name + "%N")
 									end
@@ -186,6 +159,7 @@ feature -- Modification
 				end
 			end
 
+			type_cache := Void
 			suppliers_cache := Void
 			supplier_closure_cache := Void
 			suppliers_non_primitive_cache := Void

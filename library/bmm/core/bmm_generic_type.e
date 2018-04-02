@@ -12,7 +12,7 @@ class BMM_GENERIC_TYPE
 inherit
 	BMM_SIMPLE_TYPE
 		redefine
-			make, base_class, type_name, is_abstract,
+			make, base_class, type_name, is_abstract, type_signature,
 			has_type_substitutions, type_substitutions, flattened_type_list
 		end
 
@@ -44,6 +44,21 @@ feature -- Identification
 			Result.append_character (Generic_right_delim)
 		end
 
+	type_signature: STRING
+			-- Signature form of the type, which for generics includes generic parameter constrainer types
+			-- E.g. Interval<T:Ordered>
+		do
+			create Result.make_from_string (base_class.name)
+			Result.append_character (generic_left_delim)
+			across generic_parameters as gen_parms_csr loop
+				Result.append (gen_parms_csr.item.type_signature)
+				if not gen_parms_csr.is_last then
+					Result.append_character (generic_separator)
+				end
+			end
+			Result.append_character (generic_right_delim)
+		end
+
 feature -- Access
 
 	base_class: BMM_GENERIC_CLASS
@@ -55,7 +70,7 @@ feature -- Access
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
-			-- Note: can include repeats, e.g. HASH_TABLE <STRING, STRING> => HASH_TABLE, STRING, STRING
+			-- e.g. "HASH_TABLE <LINKED_LIST <STRING>, STRING>" => <<"HASH_TABLE", "LINKED_LIST", "STRING", "STRING">>
 		do
 			Result := precursor
 			across generic_parameters as gen_parm_csr loop
@@ -137,7 +152,7 @@ feature -- Status Report
 		do
 			Result := precursor or else
 				across generic_parameters as gen_parm_csr some
-					not gen_parm_csr.item.type_category.is_equal (Type_cat_concrete_class)
+					not gen_parm_csr.item.classifier_category.is_equal (Classifier_concrete_class)
 				end
 		end
 
@@ -146,6 +161,15 @@ feature -- Status Report
 			Result := precursor or else
 				across generic_parameters as gen_parms_csr some
 					gen_parms_csr.item.has_type_substitutions
+				end
+		end
+
+	is_partially_closed: BOOLEAN
+			-- True if there is at least one substituted parameter in this type
+		do
+			Result :=
+				across generic_parameters as gen_parms_csr some
+					not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item
 				end
 		end
 
@@ -159,7 +183,24 @@ feature -- Modification
 	set_base_class (an_eff_gen_class: BMM_GENERIC_CLASS_EFFECTIVE)
 			-- overwrite `base_class' with the effective version that has substituted
 			-- properties according to type parameter substitutions
+		local
+			class_to_move: detachable BMM_CLASS
 		do
+			-- first, check current base_class's immediate descendants, which may include a class
+			-- that has the current type as an ancestor; if so, we need to move that class ref
+			-- to the immediate_descendants of the new base_class, i.e. `an_eff_gen_class`.
+
+			across base_class.immediate_descendants as old_descs_csr loop
+				if old_descs_csr.item.ancestors.has_item (Current) then
+					class_to_move := old_descs_csr.item
+				end
+			end
+			if attached class_to_move then
+				base_class.immediate_descendants.prune (class_to_move)
+				an_eff_gen_class.immediate_descendants.extend (class_to_move)
+			end
+
+			-- now set the new base class.
 			base_class := an_eff_gen_class
 		end
 

@@ -56,15 +56,15 @@ feature -- Access
 			Result.append (base_type.flattened_type_list)
 		end
 
-	type_category: STRING
+	classifier_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if base_type.type_category = Type_cat_abstract_class or container_type.is_abstract then
-				Result := Type_cat_abstract_class
+			if base_type.classifier_category = Classifier_abstract_class or container_type.is_abstract then
+				Result := Classifier_abstract_class
 			elseif has_type_substitutions then
-				Result := Type_cat_concrete_class_supertype
+				Result := Classifier_concrete_class_supertype
 			else
-				Result := Type_cat_concrete_class
+				Result := Classifier_concrete_class
 			end
 		end
 

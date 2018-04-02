@@ -27,7 +27,7 @@ feature -- Identification
 	type_name: STRING
 			-- formal name of the type
 		do
-			Result := base_class.type_name
+			Result := base_class.name
 		end
 
 feature -- Access
@@ -45,10 +45,10 @@ feature -- Access
 			Result.extend (base_class.name)
 		end
 
-	type_category: STRING
+	classifier_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := base_class.type_category
+			Result := base_class.classifier_category
 		end
 
 	type_substitutions: ARRAYED_SET [STRING]

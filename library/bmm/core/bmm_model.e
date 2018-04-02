@@ -50,12 +50,12 @@ feature -- Initialisation
 
 feature -- Access
 
-	class_definitions: HASH_TABLE [BMM_CLASS, STRING]
+	class_definitions: STRING_TABLE [BMM_CLASS]
 			-- All classes in this model, including for used generic types,
 			-- keyed by type name, no spaces.
 			-- Generate a key from a type name using `type_name_to_class_key`
 		attribute
-			create Result.make (0)
+			create Result.make_caseless (100)
 		end
 
 	primitive_types: ARRAYED_SET [STRING]
@@ -107,7 +107,8 @@ feature -- Access
 		end
 
 	type_definition (a_type_name: STRING): BMM_CLASS
-			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
+			-- retrieve the class definition corresponding to `a_type_name'. If it contains a generic part,
+			-- this will be removed if it is a fully open generic name, otherwise it will remain intact
 		require
 			Type_name_valid: has_type_definition (a_type_name)
 		do
@@ -115,16 +116,6 @@ feature -- Access
 				Result := class_def
 			end
 		end
-
---	type_definition (a_type_name: STRING): BMM_CLASS
---			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
---		require
---			Type_name_valid: has_type_definition (a_type_name)
---		do
---			check attached type_definitions.item (type_name_to_type_key (a_type_name)).base_class as class_def then
---				Result := class_def
---			end
---		end
 
 	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION [COMPARABLE]
 			-- retrieve the enumeration definition corresponding to `a_type_name'
@@ -259,15 +250,6 @@ feature -- Status Report
 			Result := class_definitions.has (type_name_to_type_key (a_type_name))
 		end
 
---	has_type_definition (a_type_name: STRING): BOOLEAN
---			-- True if `a_type_name' is already concretely known in the system, including if it is
---			-- genericm which may be open, partially open or closed.
---		require
---			Type_valid: not a_type_name.is_empty
---		do
---			Result := type_definitions.has (type_name_to_type_key (a_type_name))
---		end
-
 	has_class_definition (a_class_name: STRING): BOOLEAN
 			-- True if `a_class_name' has a class definition or prmitive type in the model.
 		require
@@ -309,7 +291,6 @@ feature -- Status Report
 
 	is_descendant_of (a_class_name, a_parent_class_name: STRING): BOOLEAN
 			-- True if `a_class_name' is a descendant in the model of `a_parent_class_name'
-			-- Use `type_conforms_to' for full type names
 		require
 			Sub_class_valid: has_class_definition (a_class_name)
 			Parent_class_valid: has_class_definition (a_parent_class_name)
@@ -343,9 +324,9 @@ feature -- Conformance
 			prop_conf_type: STRING
 		do
 			if has_type_definition (a_ms_property_type) then
-				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.base_class.type_name
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.base_class.type.type_name
 
-				-- adjust for case where candidate type is not generic, but bmm_property type is - just test on non-generic version
+				-- adjust for case where candidate type is not generic, but bmm_property type is - test on non-generic version
 				if valid_generic_type_name (prop_conf_type) and not valid_generic_type_name (a_ms_property_type) then
 					check attached create_type_name_from_string (prop_conf_type) as att_tn then
 						prop_conf_type := type_name_to_class_key (att_tn.name)
@@ -373,7 +354,7 @@ feature -- Conformance
 			then
 				desc_base_class := desc_type_name.name
 				anc_base_class := anc_type_name.name
-				if desc_base_class.is_case_insensitive_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor (anc_base_class)  then
+				if desc_base_class.is_case_insensitive_equal (anc_base_class) or else class_definition (desc_base_class).has_ancestor_class (anc_base_class)  then
 					if valid_generic_type_name (a_desc_type) and attached {BMM_GENERIC_CLASS} class_definition (desc_base_class) as desc_bmm_gen_class then
 
 						-- in the case of both being generic, we need to compare generics
@@ -475,12 +456,12 @@ feature -- Modification
 	add_generic_type_definition (a_type_def: BMM_GENERIC_CLASS_EFFECTIVE)
 			-- add `a_type_def' to this schema
 		require
-			Valid_class: not has_type_definition (a_type_def.type_name)
+			Valid_class: not has_type_definition (a_type_def.type.type_name)
 		do
-			class_definitions.put (a_type_def, type_name_to_type_key (a_type_def.type_name))
+			class_definitions.put (a_type_def, type_name_to_type_key (a_type_def.type.type_name))
 			a_type_def.set_bmm_model (Current)
 		ensure
-			Type_added: type_definition (a_type_def.type_name) = a_type_def
+			Type_added: type_definition (a_type_def.type.type_name) = a_type_def
 			Schema_set_in_class: a_type_def.bmm_model = Current
 		end
 
@@ -525,7 +506,7 @@ feature -- Modification
 		local
 			gen_bmm_type: BMM_GENERIC_TYPE
 			gen_prop: BMM_PROPERTY[BMM_GENERIC_TYPE]
-			generic_type_properties: HASH_TABLE [ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]], STRING]
+			generic_type_properties: STRING_TABLE [ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]]]
 		do
 			-- Record any closed or part-closed generic types found among properties; this creates the
 			-- Hash table `generic_type_properties', which contains BMM_PROPERTY instances
@@ -533,14 +514,16 @@ feature -- Modification
 			-- We don't bother with fully open generic types, i.e. with type sig of the form
 			-- TYPE <T, U, V>, since the properties in question already point to the correct
 			-- BMM_GENERIC_CLASS instance.
-			create generic_type_properties.make (0)
+			create generic_type_properties.make_caseless (0)
 			across class_definitions as class_def_csr loop
 				across class_def_csr.item.generic_properties as gen_props_csr loop
 					gen_bmm_type := gen_props_csr.item.bmm_type
-					if not generic_type_properties.has (gen_bmm_type.type_name) then
-						generic_type_properties.put (create {ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]]}.make (0), gen_bmm_type.type_name)
+					if gen_bmm_type.is_partially_closed then
+						if not generic_type_properties.has (gen_bmm_type.type_name) then
+							generic_type_properties.put (create {ARRAYED_LIST[BMM_PROPERTY[BMM_GENERIC_TYPE]]}.make (0), gen_bmm_type.type_name)
+						end
+						generic_type_properties.item (gen_bmm_type.type_name).extend (gen_props_csr.item)
 					end
-					generic_type_properties.item (gen_bmm_type.type_name).extend (gen_props_csr.item)
 				end
 			end
 
@@ -550,20 +533,23 @@ feature -- Modification
 			across generic_type_properties as gen_type_prop_lists_csr loop
 				-- process the first item in the list at this key, i.e. some type like "DV_INTERVAL<TIME>"
 				gen_prop := gen_type_prop_lists_csr.item.first
+				if not has_type_definition (gen_prop.bmm_type.type_name) then
+					add_effective_type (gen_prop.bmm_type)
+				end
 
-				add_effective_type (gen_prop.bmm_type)
+				-- Now replace the bmm_type.base_class of all properties in the list with the
+				-- newly created effective class
 				check attached {BMM_GENERIC_CLASS_EFFECTIVE} type_definition (gen_prop.bmm_type.type_name) as att_gce then
-					-- Now replace the bmm_type.base_class of all properties in the list
 					across gen_type_prop_lists_csr.item as bmm_props_csr loop
 						bmm_props_csr.item.bmm_type.set_base_class (att_gce)
 					end
 				end
 			end
 
-			-- now deal with types mentioned in class ancestor lists
+			-- now deal with generic types mentioned in class ancestor lists
 			across class_definitions as class_def_csr loop
 				across class_def_csr.item.ancestors as anc_types_csr loop
-					if attached {BMM_GENERIC_TYPE} anc_types_csr.item as anc_gen_type then
+					if attached {BMM_GENERIC_TYPE} anc_types_csr.item as anc_gen_type and then anc_gen_type.is_partially_closed then
 						if not has_type_definition (anc_gen_type.type_name) then
 							add_effective_type (anc_gen_type)
 						end
@@ -655,12 +641,12 @@ feature -- Statistics
 					statistics_table.force (statistics_table.item (generic_key) + 1, generic_key)
 				end
 				if attached archetype_parent_class as ap_class and attached arch_parent_key as ap_key then
-					if class_defs_csr.item.has_ancestor (ap_class) then
+					if class_defs_csr.item.has_ancestor_class (ap_class) then
 						statistics_table.force (statistics_table.item (ap_key) + 1, ap_key)
 					end
 				end
 				if attached archetype_data_value_parent_class as adv_class and attached data_value_parent_key as dvp_key then
-					if class_defs_csr.item.has_ancestor (adv_class) then
+					if class_defs_csr.item.has_ancestor_class (adv_class) then
 						statistics_table.force (statistics_table.item (dvp_key) + 1, dvp_key)
 					end
 				end
@@ -699,8 +685,13 @@ feature {NONE} -- Implementation
 			Type_valid: not a_type_name.is_empty
 		do
 			create Result.make_empty
-			Result.append (a_type_name)
-			Result.prune_all (' ')
+			check attached create_type_name_from_string (a_type_name) as bmm_type_name then
+				if bmm_type_name.is_generic_class_signature then
+					Result.append (bmm_type_name.name)
+				else
+					Result.append (bmm_type_name.as_string)
+				end
+			end
 		ensure
 			No_spaces: not Result.has (' ')
 		end

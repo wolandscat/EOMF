@@ -55,25 +55,25 @@ feature -- Definitions
 --			Result.extend ("Array")
 --		end
 
-	Type_cat_primitive_class: STRING = "class_primitive"
-	Type_cat_enumeration: STRING = "class_enumeration"
-	Type_cat_concrete_class: STRING = "class_concrete"
-	Type_cat_concrete_class_supertype: STRING = "class_concrete_supertype"
-	Type_cat_abstract_class: STRING = "class_abstract"
-	Type_cat_generic_parameter: STRING = "generic_parameter"
-	Type_cat_constrained_generic_parameter: STRING = "constrained_generic_parameter"
+	Classifier_primitive_class: STRING = "class_primitive"
+	Classifier_enumeration: STRING = "class_enumeration"
+	Classifier_concrete_class: STRING = "class_concrete"
+	Classifier_concrete_class_supertype: STRING = "class_concrete_supertype"
+	Classifier_abstract_class: STRING = "class_abstract"
+	Classifier_generic_parameter: STRING = "generic_parameter"
+	Classifier_constrained_generic_parameter: STRING = "constrained_generic_parameter"
 
-	Type_categories: ARRAYED_LIST [STRING]
+	classifier_categories: ARRAYED_LIST [STRING]
 		once
 			create Result.make (0)
 			Result.compare_objects
-			Result.extend (Type_cat_primitive_class)
-			Result.extend (Type_cat_enumeration)
-			Result.extend (Type_cat_concrete_class)
-			Result.extend (Type_cat_concrete_class_supertype)
-			Result.extend (Type_cat_abstract_class)
-			Result.extend (Type_cat_generic_parameter)
-			Result.extend (Type_cat_constrained_generic_parameter)
+			Result.extend (Classifier_primitive_class)
+			Result.extend (Classifier_enumeration)
+			Result.extend (Classifier_concrete_class)
+			Result.extend (Classifier_concrete_class_supertype)
+			Result.extend (Classifier_abstract_class)
+			Result.extend (Classifier_generic_parameter)
+			Result.extend (Classifier_constrained_generic_parameter)
 		end
 
 	Bmm_schema_file_match_regex: STRING

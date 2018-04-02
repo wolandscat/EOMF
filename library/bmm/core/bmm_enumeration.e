@@ -17,7 +17,7 @@ class BMM_ENUMERATION[G->COMPARABLE]
 inherit
 	BMM_CLASS
 		redefine
-			type_category
+			classifier_category
 		end
 
 create
@@ -28,6 +28,12 @@ feature -- Identification
 	underlying_type_name: STRING
 		do
 			Result := ({G}).name
+		end
+
+	classifier_category: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			Result := Classifier_enumeration
 		end
 
 feature -- Access
@@ -45,12 +51,6 @@ feature -- Access
 		attribute
 			create Result.make (0)
 			Result.compare_objects
-		end
-
-	type_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			Result := Type_cat_enumeration
 		end
 
 	name_map: HASH_TABLE [STRING, STRING]

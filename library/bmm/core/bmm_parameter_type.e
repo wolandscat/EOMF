@@ -51,9 +51,9 @@ feature -- Identification
 			-- E.g. "T:Ordered"
 		do
 			create Result.make_from_string (name)
-			if attached flattened_conforms_to_type as att_conf_type then
+			if attached flattened_conforms_to_type then
 				Result.append_character (Generic_constraint_delimiter)
-				Result.append (att_conf_type.type_name)
+				Result.append (flattened_conforms_to_type.type.type_name)
 			end
 		end
 
@@ -102,20 +102,20 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			if attached flattened_conforms_to_type as att_fct then
-				Result.append (att_fct.flattened_type_list)
+			if attached flattened_conforms_to_type then
+				Result.append (flattened_conforms_to_type.type.flattened_type_list)
 			else
 				Result.extend (Any_type)
 			end
 		end
 
-	type_category: STRING
+	classifier_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
 			if attached flattened_conforms_to_type then
-				Result := Type_cat_constrained_generic_parameter
+				Result := Classifier_constrained_generic_parameter
 			else
-				Result := Type_cat_generic_parameter
+				Result := Classifier_generic_parameter
 			end
 		end
 

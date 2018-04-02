@@ -42,10 +42,28 @@ feature -- Identification
 	name: STRING
 			-- name of the class FROM SCHEMA
 
-	type_name: STRING
-			-- name of the type corresponding to the class
+	type: BMM_SIMPLE_TYPE
+			-- type related to this class
 		do
-			create Result.make_from_string (name)
+			Result := type_cache
+			if not attached Result then
+				create Result.make (Current)
+				type_cache := Result
+			end
+		end
+
+	classifier_category: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			if is_abstract then
+				Result := Classifier_abstract_class
+			elseif is_primitive_type then
+				Result := Classifier_primitive_class
+			elseif has_descendants then
+				Result := Classifier_concrete_class_supertype
+			else
+				Result := Classifier_concrete_class
+			end
 		end
 
 feature -- Access
@@ -58,18 +76,18 @@ feature -- Access
 
 	documentation: detachable STRING
 
-	ancestors: HASH_TABLE [BMM_SIMPLE_TYPE, STRING]
+	ancestors: STRING_TABLE [BMM_SIMPLE_TYPE]
 			-- list of directly inheritance parent types, which may include
 			-- closed, open and partial generic type signatures
-			-- keyed by case class name
+			-- keyed by type name, which may be generic
 		attribute
-			create Result.make (0)
+			create Result.make_caseless (0)
 		end
 
-	properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+	properties: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 			-- list of attributes defined in this class
 		attribute
-			create Result.make (0)
+			create Result.make_caseless (0)
 		end
 
 	package: detachable BMM_PACKAGE
@@ -81,21 +99,39 @@ feature -- Access
 			create Result.make_from_string ("(uninitialised)")
 		end
 
-	all_ancestor_types: ARRAYED_SET [STRING]
+	all_ancestor_classes: ARRAYED_SET [STRING]
 			-- list of all inheritance parent class names
 		do
-			Result := all_ancestors_cache
+			Result := all_ancestor_classes_cache
 			if not attached Result then
 				create Result.make (0)
 				Result.compare_objects
-				across ancestors as ancestors_csr loop
-					Result.extend (ancestors_csr.key)
-					Result.merge (ancestors_csr.item.base_class.all_ancestor_types)
+				across ancestors as ancs_csr loop
+					Result.extend (ancs_csr.item.base_class.name)
+					Result.merge (ancs_csr.item.base_class.all_ancestor_classes)
+
+					-- remove own class name, which might appear due to generic types
+					Result.prune (name)
 				end
-				all_ancestors_cache := Result
+				all_ancestor_classes_cache := Result
 			end
 		ensure
 			strict: not Result.has (name)
+		end
+
+	all_ancestor_types: ARRAYED_SET [STRING]
+			-- list of all inheritance parent type names
+		do
+			Result := all_ancestor_types_cache
+			if not attached Result then
+				create Result.make (0)
+				Result.compare_objects
+				across ancestors as ancs_csr loop
+					Result.extend (ancs_csr.key.as_string_8)
+					Result.merge (ancs_csr.item.base_class.all_ancestor_types)
+				end
+				all_ancestor_types_cache := Result
+			end
 		end
 
 	immediate_descendants: ARRAYED_LIST [BMM_CLASS]
@@ -105,7 +141,7 @@ feature -- Access
 		end
 
 	all_descendant_types: ARRAYED_SET [STRING]
-			-- obtain names of all descendant classes of this class.
+			-- obtain type names of all descendant classes of this class.
 			-- If there are none, the result is empty;
 		do
 			Result := all_descendants_cache
@@ -120,20 +156,6 @@ feature -- Access
 			end
 		ensure
 			strict: not Result.has (name)
-		end
-
-	type_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			if is_abstract then
-				Result := Type_cat_abstract_class
-			elseif is_primitive_type then
-				Result := Type_cat_primitive_class
-			elseif has_descendants then
-				Result := Type_cat_concrete_class_supertype
-			else
-				Result := Type_cat_concrete_class
-			end
 		end
 
 	package_path: STRING
@@ -244,39 +266,31 @@ feature -- Access
 			end
 		end
 
-	flat_properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+	flat_properties: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 			-- list of all properties due to current and ancestor classes, keyed by property name
 		do
 			if attached flat_properties_cache as fpc then
 				Result := fpc
 			else
-				create Result.make (0)
-				Result.compare_objects
 
+				create Result.make_caseless (0)
 				-- merge ancestor properties
 				across ancestors as ancestors_csr loop
 					Result.merge (ancestors_csr.item.base_class.flat_properties)
 				end
 
-				-- now merge the current properties - merging afterward will correctly replace ancestor properties of same name
+				-- now merge the current properties - merging afterward will correctly replace
+				-- ancestor properties of same name
 				Result.merge (properties)
 
 				flat_properties_cache := Result
 			end
 		end
 
-	flattened_type_list: ARRAYED_LIST [STRING]
-			-- completely flattened list of type names
-		do
-			create Result.make(0)
-			Result.compare_objects
-			Result.extend (name)
-		end
-
 	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY [BMM_TYPE]
 			-- retrieve the property definition for `a_prop_path' in flattened class
-			-- note that the internal cursor of the path is used to know how much to read -
-			-- from cursor to end (this allows recursive evaluation)
+			-- note that the internal cursor of the path is used to know how much to
+			-- read - from cursor to end (this allows recursive evaluation)
 		require
 			Property_path_valid: has_property_path (a_prop_path)
 		local
@@ -369,7 +383,7 @@ feature -- Access
 			-- tool-wide category for this artefact, useful for indexing visual type indeicators
 			-- like pixmap etc
 		do
-			Result := type_category
+			Result := classifier_category
 		end
 
 feature -- Status Report
@@ -385,7 +399,7 @@ feature -- Status Report
 
 	has_descendants: BOOLEAN
 		do
-			Result := immediate_descendants.is_empty
+			Result := not immediate_descendants.is_empty
 		end
 
 	has_property (a_prop_name: STRING): BOOLEAN
@@ -396,14 +410,13 @@ feature -- Status Report
 			Result := flat_properties.has (a_prop_name)
 		end
 
-	has_ancestor (a_class_name: STRING): BOOLEAN
+	has_ancestor_class (a_class_name: STRING): BOOLEAN
 			-- True if a_class_name is among the ancestor classes
 		require
 			Class_name_valid: not a_class_name.is_empty
 		do
 			Result := a_class_name.is_case_insensitive_equal (any_type) or else
-				ancestors.has (a_class_name) or else
-				all_ancestor_types.has (a_class_name)
+				all_ancestor_classes.has (a_class_name)
 		end
 
 	has_immediate_descendant (a_class_name: STRING): BOOLEAN
@@ -463,7 +476,7 @@ feature -- Traversal
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
-			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+			props: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 		do
 			supplier_closure_stack.wipe_out
 			supplier_closure_stack.extend (name)
@@ -525,7 +538,8 @@ feature -- Modification
 		do
 			ancestors.put (an_anc_type, an_anc_type.type_name)
 			an_anc_type.base_class.add_immediate_descendant (Current)
-			all_ancestors_cache := Void
+			all_ancestor_types_cache := Void
+			all_ancestor_classes_cache := Void
 			reset_flat_properties_cache
 		ensure
 			Ancestor_added: ancestors.item (an_anc_type.type_name) = an_anc_type
@@ -570,15 +584,19 @@ feature {BMM_CLASS} -- Implementation
 	add_immediate_descendant (a_class: BMM_CLASS)
 			-- add a class def to the descendants list
 		do
-			immediate_descendants.extend (a_class)
-
-			all_descendants_cache := Void
-			suppliers_cache := Void
-			supplier_closure_cache := Void
-			suppliers_non_primitive_cache := Void
+			-- avoid multiple copies
+			if not immediate_descendants.has (a_class) then
+				immediate_descendants.extend (a_class)
+				all_descendants_cache := Void
+				suppliers_cache := Void
+				supplier_closure_cache := Void
+				suppliers_non_primitive_cache := Void
+			end
 		end
 
-	flat_properties_cache: detachable HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+	type_cache: detachable like type
+
+	flat_properties_cache: detachable STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 			-- reference list of all attributes due to inheritance flattening of this type
 
 	suppliers_cache: detachable ARRAYED_SET [STRING]
@@ -590,8 +608,11 @@ feature {BMM_CLASS} -- Implementation
 	supplier_closure_cache: detachable ARRAYED_SET [STRING]
 			-- cache for `supplier_closure'
 
-	all_ancestors_cache: detachable ARRAYED_SET [STRING]
-			-- cache for `all_ancestors'
+	all_ancestor_types_cache: detachable ARRAYED_SET [STRING]
+			-- cache for `all_ancestor_types'
+
+	all_ancestor_classes_cache: detachable ARRAYED_SET [STRING]
+			-- cache for `all_ancestor_classes'
 
 	all_descendants_cache: detachable ARRAYED_SET [STRING]
 			-- cache for `all_descendants'
@@ -620,7 +641,7 @@ feature {NONE} -- Implementation
 			-- If `flat_flag' = True, use the inheritance-flattened closure
 			-- THIS CAN BE AN EXPENSIVE COMPUTATION, so it is limited by the max_depth argument
 		local
-			props: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+			props: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 			prop_type_name: STRING
 		do
 			prop_type_name := a_prop.bmm_type.base_class.name

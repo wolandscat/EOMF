@@ -17,10 +17,30 @@ deferred class BMM_TYPE
 inherit
 	BMM_CLASSIFIER
 
+feature -- Identification
+
+	type_name: STRING
+			-- formal string form of the type as per UML
+		deferred
+		end
+
+	type_signature: STRING
+			-- Signature form of the type, which for generics includes generic parameter constrainer types
+			-- E.g. Interval<T:Ordered>
+		do
+			create Result.make_from_string (type_name)
+		end
+
 feature -- Access
 
 	base_class: BMM_CLASS
-			-- main design class for this type, from which properties etc can be extracted
+			-- model-semantic class for this type, from which properties etc can be extracted;
+			-- abstracts away container types.
+		deferred
+		end
+
+	flattened_type_list: ARRAYED_LIST [STRING]
+			-- completely flattened list of type names, flattening out all generic parameters
 		deferred
 		end
 
