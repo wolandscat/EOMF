@@ -249,7 +249,7 @@ class_definitions = <
 		properties = <
 			["name"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"name">
-				type = <"string">
+				type = <"String">
 				is_mandatory = <True>
 			>
 			["type"] = (P_BMM_SINGLE_PROPERTY_OPEN) <
@@ -290,7 +290,7 @@ class_definitions = <
 		properties = <
 			["expression"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"expression">
-				type = <"string">
+				type = <"String">
 				is_mandatory = <True>
 			>
 		>
