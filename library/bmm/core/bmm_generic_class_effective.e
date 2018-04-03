@@ -17,7 +17,7 @@ inherit
 		rename
 			make as make_class
 		redefine
-			type
+			type, classifier_category
 		end
 
 create
@@ -105,6 +105,12 @@ feature -- Identification
 			if not attached Result then
 				create Result.make (Current)
 			end
+		end
+
+	classifier_category: STRING
+			-- generate a category of main target type from Classifier_xx values
+		do
+			Result := Classifier_class_generic_effective
 		end
 
 feature -- Access

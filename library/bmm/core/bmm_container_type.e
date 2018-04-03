@@ -32,6 +32,16 @@ feature -- Identification
 			Result.append (container_type.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
 		end
 
+	classifier_category: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			if base_type.classifier_category = Classifier_class_abstract or container_type.is_abstract then
+				Result := classifier_container_type_abstract
+			else
+				Result := classifier_container_type_concrete
+			end
+		end
+
 feature -- Access
 
 	base_type: BMM_PROPER_TYPE
@@ -54,18 +64,6 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			Result.append (base_type.flattened_type_list)
-		end
-
-	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			if base_type.classifier_category = Classifier_abstract_class or container_type.is_abstract then
-				Result := Classifier_abstract_class
-			elseif has_type_substitutions then
-				Result := Classifier_concrete_class_supertype
-			else
-				Result := Classifier_concrete_class
-			end
 		end
 
 	type_substitutions: ARRAYED_SET [STRING]

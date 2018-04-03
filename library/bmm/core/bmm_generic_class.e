@@ -14,7 +14,7 @@ class BMM_GENERIC_CLASS
 inherit
 	BMM_CLASS
 		redefine
-			suppliers, type
+			suppliers, type, classifier_category
 		end
 
 create
@@ -32,6 +32,16 @@ feature -- Identification
 					Result.add_generic_parameter (gen_parms_csr.item)
 				end
 				type_cache := Result
+			end
+		end
+
+	classifier_category: STRING
+			-- generate a category of main target type from Classifier_xx values
+		do
+			if is_abstract then
+				Result := classifier_class_generic_abstract
+			else
+				Result := classifier_class_generic_concrete
 			end
 		end
 

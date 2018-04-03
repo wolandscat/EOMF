@@ -53,16 +53,16 @@ feature -- Identification
 		end
 
 	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
+			-- generate a category of main target type from Classifier_xx values
 		do
 			if is_abstract then
-				Result := Classifier_abstract_class
+				Result := Classifier_class_abstract
 			elseif is_primitive_type then
-				Result := Classifier_primitive_class
+				Result := Classifier_class_primitive
 			elseif has_descendants then
-				Result := Classifier_concrete_class_supertype
+				Result := Classifier_class_concrete_supertype
 			else
-				Result := Classifier_concrete_class
+				Result := classifier_class_concrete
 			end
 		end
 

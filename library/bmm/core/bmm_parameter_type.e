@@ -57,6 +57,16 @@ feature -- Identification
 			end
 		end
 
+	classifier_category: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			if attached flattened_conforms_to_type then
+				Result := Classifier_generic_parameter_constrained
+			else
+				Result := Classifier_generic_parameter
+			end
+		end
+
 feature -- Access
 
 	inheritance_precursor: detachable BMM_PARAMETER_TYPE
@@ -106,16 +116,6 @@ feature -- Access
 				Result.append (flattened_conforms_to_type.type.flattened_type_list)
 			else
 				Result.extend (Any_type)
-			end
-		end
-
-	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			if attached flattened_conforms_to_type then
-				Result := Classifier_constrained_generic_parameter
-			else
-				Result := Classifier_generic_parameter
 			end
 		end
 

@@ -152,7 +152,7 @@ feature -- Status Report
 		do
 			Result := precursor or else
 				across generic_parameters as gen_parm_csr some
-					not gen_parm_csr.item.classifier_category.is_equal (Classifier_concrete_class)
+					not gen_parm_csr.item.classifier_category.is_equal (classifier_class_concrete)
 				end
 		end
 

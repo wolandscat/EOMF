@@ -33,7 +33,7 @@ feature -- Identification
 	classifier_category: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := Classifier_enumeration
+			Result := Classifier_class_enumeration
 		end
 
 feature -- Access
