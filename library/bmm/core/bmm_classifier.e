@@ -10,7 +10,7 @@ note
 deferred class BMM_CLASSIFIER
 
 inherit
-	BMM_MODEL_ELEMENT
+	BMM_DEFINITIONS
 
 feature -- Access
 

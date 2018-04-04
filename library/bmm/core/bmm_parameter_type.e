@@ -10,7 +10,7 @@ note
 class BMM_PARAMETER_TYPE
 
 inherit
-	BMM_PROPER_TYPE
+	BMM_BASE_TYPE
 		redefine
 			type_signature
 		end
@@ -112,8 +112,8 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			if attached flattened_conforms_to_type then
-				Result.append (flattened_conforms_to_type.type.flattened_type_list)
+			if attached flattened_conforms_to_type as conf_type then
+				Result.append (conf_type.type.flattened_type_list)
 			else
 				Result.extend (Any_type)
 			end

@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class P_BMM_PROPER_TYPE
+deferred class P_BMM_BASE_TYPE
 
 inherit
 	P_BMM_TYPE

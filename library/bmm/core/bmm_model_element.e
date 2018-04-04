@@ -19,8 +19,6 @@ inherit
 feature -- Access
 
 	documentation: detachable STRING
-		deferred
-		end
 
 end
 

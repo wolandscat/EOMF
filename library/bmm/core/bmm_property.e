@@ -55,8 +55,6 @@ feature -- Identification
 
 feature -- Access
 
-	documentation: detachable STRING
-
 	bmm_type: G
 			-- formal meta-type of this attribute
 

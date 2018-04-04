@@ -34,8 +34,6 @@ feature -- Access
 			-- name of the package FROM SCHEMA; this name may be qualified if it is a top-level
 			-- package within the schema, or unqualified.
 
-	documentation: detachable STRING
-
 	classes: ARRAYED_SET [BMM_CLASS]
 		attribute
 			create Result.make (0)

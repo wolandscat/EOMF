@@ -49,11 +49,6 @@ feature -- Access
 		deferred
 		end
 
-	documentation: detachable STRING
-		do
-			Result := base_class.documentation
-		end
-
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN

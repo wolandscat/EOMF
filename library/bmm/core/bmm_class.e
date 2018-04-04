@@ -13,6 +13,8 @@ note
 class BMM_CLASS
 
 inherit
+	BMM_MODEL_ELEMENT
+
 	BMM_CLASSIFIER
 		export
 			{ANY} valid_type_name
@@ -73,8 +75,6 @@ feature -- Access
 		attribute
 			create Result.default_create
 		end
-
-	documentation: detachable STRING
 
 	ancestors: STRING_TABLE [BMM_SIMPLE_TYPE]
 			-- list of directly inheritance parent types, which may include

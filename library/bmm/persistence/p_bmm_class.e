@@ -67,7 +67,7 @@ feature -- Access
 			end
 		end
 
-	ancestor_refs: ARRAYED_LIST [P_BMM_PROPER_TYPE]
+	ancestor_refs: ARRAYED_LIST [P_BMM_BASE_TYPE]
 			-- structural form of ancestors
 		do
 			if attached ancestor_defs as att_defs then
