@@ -15,7 +15,7 @@ note
 deferred class BMM_TYPE
 
 inherit
-	BMM_CLASSIFIER
+	BMM_ENTITY
 
 feature -- Identification
 
@@ -29,6 +29,12 @@ feature -- Identification
 			-- E.g. Interval<T:Ordered>
 		do
 			create Result.make_from_string (type_name)
+		end
+
+	entity_metatype: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			Result := base_class.entity_metatype
 		end
 
 feature -- Access
@@ -50,6 +56,12 @@ feature -- Access
 		end
 
 feature -- Status Report
+
+	is_primitive: BOOLEAN
+			-- True if this entity corresponds to a primitive type
+		do
+			Result := base_class.is_primitive
+		end
 
 	has_type_substitutions: BOOLEAN
 			-- Determine if there are any type substitutions.

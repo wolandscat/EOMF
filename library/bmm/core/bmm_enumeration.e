@@ -17,7 +17,7 @@ class BMM_ENUMERATION[G->COMPARABLE]
 inherit
 	BMM_CLASS
 		redefine
-			classifier_category
+			entity_metatype
 		end
 
 create
@@ -30,10 +30,9 @@ feature -- Identification
 			Result := ({G}).name
 		end
 
-	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
+	entity_metatype: STRING
 		do
-			Result := Classifier_class_enumeration
+			Result := Entity_metatype_enumeration
 		end
 
 feature -- Access

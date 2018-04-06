@@ -17,7 +17,7 @@ inherit
 		rename
 			make as make_class
 		redefine
-			type, classifier_category
+			type, entity_metatype
 		end
 
 create
@@ -55,7 +55,7 @@ feature -- Initialisation
     		package := an_anc_class.package
     		source_schema_id := an_anc_class.source_schema_id.twin
     		is_override := an_anc_class.is_override
-    		is_primitive_type := an_anc_class.is_primitive_type
+    		is_primitive := an_anc_class.is_primitive
 
   			-- now that the type def is stable, make a copy of the type
 			type_cache := an_anc_gen_type
@@ -107,10 +107,9 @@ feature -- Identification
 			end
 		end
 
-	classifier_category: STRING
-			-- generate a category of main target type from Classifier_xx values
+	entity_metatype: STRING
 		do
-			Result := Classifier_class_generic_effective
+			Result := Entity_metatype_generic_effective
 		end
 
 feature -- Access

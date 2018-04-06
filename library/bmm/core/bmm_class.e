@@ -15,7 +15,7 @@ class BMM_CLASS
 inherit
 	BMM_MODEL_ELEMENT
 
-	BMM_CLASSIFIER
+	BMM_ENTITY
 		export
 			{ANY} valid_type_name
 		end
@@ -54,18 +54,9 @@ feature -- Identification
 			end
 		end
 
-	classifier_category: STRING
-			-- generate a category of main target type from Classifier_xx values
+	entity_metatype: STRING
 		do
-			if is_abstract then
-				Result := Classifier_class_abstract
-			elseif is_primitive_type then
-				Result := Classifier_class_primitive
-			elseif has_descendants then
-				Result := Classifier_class_concrete_supertype
-			else
-				Result := classifier_class_concrete
-			end
+			Result := Entity_metatype_simple
 		end
 
 feature -- Access
@@ -140,7 +131,7 @@ feature -- Access
 			create Result.make (0)
 		end
 
-	all_descendant_types: ARRAYED_SET [STRING]
+	all_descendants: ARRAYED_SET [STRING]
 			-- obtain type names of all descendant classes of this class.
 			-- If there are none, the result is empty;
 		do
@@ -150,7 +141,7 @@ feature -- Access
 				Result.compare_objects
 				across immediate_descendants as imm_descs_csr loop
 					Result.extend (imm_descs_csr.item.name)
-					Result.merge (imm_descs_csr.item.all_descendant_types)
+					Result.merge (imm_descs_csr.item.all_descendants)
 				end
 				all_descendants_cache := Result
 			end
@@ -383,7 +374,7 @@ feature -- Access
 			-- tool-wide category for this artefact, useful for indexing visual type indeicators
 			-- like pixmap etc
 		do
-			Result := classifier_category
+			Result := entity_category
 		end
 
 feature -- Status Report
@@ -391,7 +382,7 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- True if this is an abstract type
 
-	is_primitive_type: BOOLEAN
+	is_primitive: BOOLEAN
 			-- True if this class is designated a primitive type within the overall type system of the schema
 
 	is_override: BOOLEAN
@@ -520,9 +511,9 @@ feature -- Modification
 
 	set_primitive_type
 		do
-			is_primitive_type := True
+			is_primitive := True
 		ensure
-			is_primitive_type
+			is_primitive
 		end
 
 	set_source_schema_id (an_id: STRING)

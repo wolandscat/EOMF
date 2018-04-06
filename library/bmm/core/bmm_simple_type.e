@@ -30,12 +30,6 @@ feature -- Identification
 			Result := base_class.name
 		end
 
-	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			Result := base_class.classifier_category
-		end
-
 feature -- Access
 
 	base_class: BMM_CLASS
@@ -53,7 +47,7 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := base_class.all_descendant_types
+			Result := base_class.all_descendants
 		end
 
 feature -- Status Report

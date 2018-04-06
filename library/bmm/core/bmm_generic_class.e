@@ -14,7 +14,7 @@ class BMM_GENERIC_CLASS
 inherit
 	BMM_CLASS
 		redefine
-			suppliers, type, classifier_category
+			suppliers, type, entity_metatype
 		end
 
 create
@@ -35,14 +35,9 @@ feature -- Identification
 			end
 		end
 
-	classifier_category: STRING
-			-- generate a category of main target type from Classifier_xx values
+	entity_metatype: STRING
 		do
-			if is_abstract then
-				Result := classifier_class_generic_abstract
-			else
-				Result := classifier_class_generic_concrete
-			end
+			Result := Entity_metatype_generic
 		end
 
 feature -- Access

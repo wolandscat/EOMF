@@ -12,7 +12,7 @@ class BMM_PARAMETER_TYPE
 inherit
 	BMM_BASE_TYPE
 		redefine
-			type_signature
+			type_signature, is_primitive, entity_metatype
 		end
 
 create
@@ -20,19 +20,19 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; any_class: BMM_CLASS)
+	make (a_name: STRING; an_any_type: BMM_TYPE)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			any_class_definition := any_class
+			any_type_definition := an_any_type
 		end
 
-	make_constrained (a_name: STRING; a_conforms_to_type, any_class: BMM_CLASS)
+	make_constrained (a_name: STRING; a_conforms_to_type, an_any_type: BMM_TYPE)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
 			conforms_to_type := a_conforms_to_type
-			any_class_definition := any_class
+			any_type_definition := an_any_type
 		end
 
 feature -- Identification
@@ -53,18 +53,14 @@ feature -- Identification
 			create Result.make_from_string (name)
 			if attached flattened_conforms_to_type then
 				Result.append_character (Generic_constraint_delimiter)
-				Result.append (flattened_conforms_to_type.type.type_name)
+				Result.append (flattened_conforms_to_type.type_name)
 			end
 		end
 
-	classifier_category: STRING
+	entity_metatype: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			if attached flattened_conforms_to_type then
-				Result := Classifier_generic_parameter_constrained
-			else
-				Result := Classifier_generic_parameter
-			end
+			Result := Entity_metatype_generic_parameter
 		end
 
 feature -- Access
@@ -76,44 +72,44 @@ feature -- Access
 			-- the effective conformance type of this parameter, 'Any' if none other
 		do
 			if attached flattened_conforms_to_type as fctt then
-				Result := fctt
+				Result := fctt.base_class
 			else
-				Result := any_class_definition
+				Result := any_type_definition.base_class
 			end
 		end
 
-	conforms_to_type: detachable BMM_CLASS
+	conforms_to_type: detachable BMM_TYPE
 			-- optional conformance constraint that must be another valid class name.
 
-	flattened_conforms_to_type: detachable BMM_CLASS
+	flattened_conforms_to_type: detachable BMM_TYPE
 			-- ultimate type conformance constraint on this generic parameter due to inheritance;
 			-- Void if no constraint type.
 		do
 			if attached conforms_to_type then
 				Result := conforms_to_type
-			elseif attached inheritance_precursor as att_inh_prec then
-				Result := att_inh_prec.flattened_conforms_to_type
+			elseif attached inheritance_precursor then
+				Result := inheritance_precursor.flattened_conforms_to_type
 			end
 		end
 
-	effective_conforms_to_type: BMM_CLASS
+	effective_conforms_to_type: BMM_TYPE
 			-- Effective conformance type: either defined in model, or 'Any' if none from the model.
 		do
 			if attached flattened_conforms_to_type as att_fct then
 				Result := att_fct
 			else
-				Result := any_class_definition
+				Result := any_type_definition
 			end
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
-			-- note that for this type, we output "ANY" if there is no constraint
+			-- note that for this type, we output "Any" if there is no constraint
 		do
 			create Result.make(0)
 			Result.compare_objects
-			if attached flattened_conforms_to_type as conf_type then
-				Result.append (conf_type.type.flattened_type_list)
+			if attached flattened_conforms_to_type then
+				Result.append (flattened_conforms_to_type.flattened_type_list)
 			else
 				Result.extend (Any_type)
 			end
@@ -121,20 +117,32 @@ feature -- Access
 
 	type_substitutions: ARRAYED_SET [STRING]
 		do
-			Result := effective_conforms_to_type.all_descendant_types
+			Result := effective_conforms_to_type.base_class.all_descendants
 		end
 
 feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := effective_conforms_to_type.has_descendants
+			Result := effective_conforms_to_type.base_class.has_descendants
 		end
 
 	is_constrained: BOOLEAN
 			-- True if this generic parameter has a type constraint
 		do
 			Result := attached flattened_conforms_to_type
+		end
+
+	is_abstract: BOOLEAN
+			-- generic parameters are not consider abstract
+		do
+			Result := False
+		end
+
+	is_primitive: BOOLEAN
+			-- generic parameters are not consider abstract
+		do
+			Result := False
 		end
 
 feature -- Modification
@@ -147,7 +155,7 @@ feature -- Modification
 
 feature {NONE} -- Implementation
 
-	any_class_definition: BMM_CLASS
+	any_type_definition: BMM_TYPE
 
 end
 

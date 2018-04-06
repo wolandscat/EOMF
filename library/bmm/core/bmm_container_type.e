@@ -11,6 +11,9 @@ class BMM_CONTAINER_TYPE
 
 inherit
 	BMM_TYPE
+		redefine
+			entity_metatype
+		end
 
 create
 	make
@@ -32,14 +35,9 @@ feature -- Identification
 			Result.append (container_type.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
 		end
 
-	classifier_category: STRING
-			-- generate a type category of main target type from Type_cat_xx values
+	entity_metatype: STRING
 		do
-			if base_type.classifier_category = Classifier_class_abstract or container_type.is_abstract then
-				Result := classifier_container_type_abstract
-			else
-				Result := classifier_container_type_concrete
-			end
+			Result := Entity_metatype_container
 		end
 
 feature -- Access
@@ -70,7 +68,7 @@ feature -- Access
 		local
 			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
 		do
-			cont_sub_type_list := container_type.all_descendant_types.deep_twin
+			cont_sub_type_list := container_type.all_descendants.deep_twin
 			if cont_sub_type_list.is_empty then
 				cont_sub_type_list.extend (container_type.name)
 			end
@@ -86,6 +84,12 @@ feature -- Access
 		end
 
 feature -- Status Report
+
+	is_abstract: BOOLEAN
+			-- abstract status of this class or type
+		do
+			Result := base_type.is_abstract or container_type.is_abstract
+		end
 
 	has_type_substitutions: BOOLEAN
 		do

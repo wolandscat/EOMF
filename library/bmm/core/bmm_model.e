@@ -64,7 +64,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across class_definitions as class_defs_csr loop
-				if class_defs_csr.item.is_primitive_type then
+				if class_defs_csr.item.is_primitive then
 					Result.extend (class_defs_csr.item.name)
 				end
 			end
@@ -94,6 +94,12 @@ feature -- Access
 			else
 				create Result.make (any_type, "Root class of type system", True)
 			end
+		end
+
+	any_type_definition: BMM_SIMPLE_TYPE
+			-- generate a BMM_SIMPLE_TYPE instance corresponding to the top `Any' class
+		do
+			create Result.make (any_class_definition)
 		end
 
 	class_definition (a_class_name: STRING): BMM_CLASS
@@ -213,7 +219,7 @@ feature -- Access
 				type_name := tn
 			end
 
-			base_classes := class_def.all_descendant_types
+			base_classes := class_def.all_descendants
 			base_classes.extend (class_def.name)
 			if type_name.is_generic then
 				create Result.make (0)
@@ -279,7 +285,7 @@ feature -- Status Report
 		require
 			has_class_definition (a_class_name)
 		do
-			Result := class_definition (type_name_to_class_key (a_class_name)).is_primitive_type
+			Result := class_definition (type_name_to_class_key (a_class_name)).is_primitive
 		end
 
 	is_enumerated_type (a_class_name: STRING): BOOLEAN
@@ -465,6 +471,35 @@ feature -- Modification
 			Schema_set_in_class: a_type_def.bmm_model = Current
 		end
 
+	add_effective_type (a_gen_type: BMM_GENERIC_TYPE)
+			-- add a new BMM_GENERIC_TYPE_EFFECTIVE into the system corresponding to `a_generic_type'
+			-- and add to `class_definitions'
+		require
+			Type_is_generic: candidate_generic_type_name (a_gen_type.type_name)
+			Type_not_already_created: not has_type_definition (a_gen_type.type_name)
+		local
+			gen_eff_class: BMM_GENERIC_CLASS_EFFECTIVE
+		do
+			create gen_eff_class.make (a_gen_type)
+			add_generic_type_definition (gen_eff_class)
+		ensure
+			Type_created: has_type_definition (a_gen_type.type_name)
+		end
+
+	add_effective_type_from_name (a_gen_type_name: STRING)
+			-- add a new BMM_GENERIC_TYPE_EFFECTIVE into the system corresponding to `a_generic_type'
+			-- and add to `class_definitions'
+		require
+			Type_is_generic: candidate_generic_type_name (a_gen_type_name)
+			Type_not_already_created: not has_type_definition (a_gen_type_name)
+		do
+			check attached {BMM_GENERIC_TYPE} create_bmm_generic_type_from_name (a_gen_type_name) as gen_type then
+				add_effective_type (gen_type)
+			end
+		ensure
+			Type_created: has_type_definition (a_gen_type_name)
+		end
+
 	add_package (a_pkg: BMM_PACKAGE)
 		do
 			precursor (a_pkg)
@@ -495,11 +530,82 @@ feature -- Modification
 			archetype_visualise_descendants_of := a_class_name
 		end
 
+feature -- Statistics
+
+	generate_statistics
+		local
+			arch_parent_key, data_value_parent_key: detachable STRING
+			class_count_key, primitive_key, abstract_key, generic_key, package_key: STRING
+		do
+			statistics_table.wipe_out
+			package_key := "Package count"
+			package_count := 0
+			do_recursive_packages (
+				agent (a_pkg: BMM_PACKAGE)
+					do
+						package_count :=  package_count + 1
+					end
+			)
+			statistics_table.put (package_count, package_key)
+
+			class_count_key := "Classes"
+			statistics_table.put (0, class_count_key)
+
+			primitive_key := "Primitive classes"
+			statistics_table.put (0, primitive_key)
+
+			abstract_key := "Abstract classes"
+			statistics_table.put (0, abstract_key)
+
+			generic_key := "Generic classes"
+			statistics_table.put (0, generic_key)
+
+			if attached archetype_parent_class as ap_class then
+				arch_parent_key := ap_class + " classes"
+				statistics_table.put (0, arch_parent_key)
+			end
+			if attached archetype_data_value_parent_class as adv_class then
+				data_value_parent_key := adv_class + " classes"
+				statistics_table.put (0, data_value_parent_key)
+			end
+			across class_definitions as class_defs_csr loop
+				statistics_table.force (statistics_table.item (class_count_key) + 1, class_count_key)
+				if class_defs_csr.item.is_primitive then
+					statistics_table.force (statistics_table.item (primitive_key) + 1, primitive_key)
+				end
+				if class_defs_csr.item.is_abstract then
+					statistics_table.force (statistics_table.item (abstract_key) + 1, abstract_key)
+				end
+				if attached {BMM_GENERIC_CLASS} class_defs_csr.item as bmm_gen_class then
+					statistics_table.force (statistics_table.item (generic_key) + 1, generic_key)
+				end
+				if attached archetype_parent_class as ap_class and attached arch_parent_key as ap_key then
+					if class_defs_csr.item.has_ancestor_class (ap_class) then
+						statistics_table.force (statistics_table.item (ap_key) + 1, ap_key)
+					end
+				end
+				if attached archetype_data_value_parent_class as adv_class and attached data_value_parent_key as dvp_key then
+					if class_defs_csr.item.has_ancestor_class (adv_class) then
+						statistics_table.force (statistics_table.item (dvp_key) + 1, dvp_key)
+					end
+				end
+			end
+		end
+
+	statistics_table: HASH_TABLE [INTEGER, STRING]
+		attribute
+			create Result.make (0)
+		end
+
+feature {MODEL_ACCESS} -- Implementation
+
 	post_process
 			-- post-processing
 		do
 			compute_effective_types
 		end
+
+feature {BMM_MODEL} -- Implementation
 
 	compute_effective_types
 			-- compute BMM_GENERIC_CLASS_EFFECTIVE instances from open BMM_GENERIC_CLASS instances
@@ -560,102 +666,6 @@ feature -- Modification
 				end
 			end
 
-		end
-
-	add_effective_type (a_gen_type: BMM_GENERIC_TYPE)
-			-- add a new BMM_GENERIC_TYPE_EFFECTIVE into the system corresponding to `a_generic_type'
-			-- and add to `class_definitions'
-		require
-			Type_is_generic: candidate_generic_type_name (a_gen_type.type_name)
-			Type_not_already_created: not has_type_definition (a_gen_type.type_name)
-		local
-			gen_eff_class: BMM_GENERIC_CLASS_EFFECTIVE
-		do
-			create gen_eff_class.make (a_gen_type)
-			add_generic_type_definition (gen_eff_class)
-		ensure
-			Type_created: has_type_definition (a_gen_type.type_name)
-		end
-
-	add_effective_type_from_name (a_gen_type_name: STRING)
-			-- add a new BMM_GENERIC_TYPE_EFFECTIVE into the system corresponding to `a_generic_type'
-			-- and add to `class_definitions'
-		require
-			Type_is_generic: candidate_generic_type_name (a_gen_type_name)
-			Type_not_already_created: not has_type_definition (a_gen_type_name)
-		do
-			check attached {BMM_GENERIC_TYPE} create_bmm_generic_type_from_name (a_gen_type_name) as gen_type then
-				add_effective_type (gen_type)
-			end
-		ensure
-			Type_created: has_type_definition (a_gen_type_name)
-		end
-
-feature -- Statistics
-
-	generate_statistics
-		local
-			arch_parent_key, data_value_parent_key: detachable STRING
-			class_count_key, primitive_key, abstract_key, generic_key, package_key: STRING
-		do
-			statistics_table.wipe_out
-			package_key := "Package count"
-			package_count := 0
-			do_recursive_packages (
-				agent (a_pkg: BMM_PACKAGE)
-					do
-						package_count :=  package_count + 1
-					end
-			)
-			statistics_table.put (package_count, package_key)
-
-			class_count_key := "Classes"
-			statistics_table.put (0, class_count_key)
-
-			primitive_key := "Primitive classes"
-			statistics_table.put (0, primitive_key)
-
-			abstract_key := "Abstract classes"
-			statistics_table.put (0, abstract_key)
-
-			generic_key := "Generic classes"
-			statistics_table.put (0, generic_key)
-
-			if attached archetype_parent_class as ap_class then
-				arch_parent_key := ap_class + " classes"
-				statistics_table.put (0, arch_parent_key)
-			end
-			if attached archetype_data_value_parent_class as adv_class then
-				data_value_parent_key := adv_class + " classes"
-				statistics_table.put (0, data_value_parent_key)
-			end
-			across class_definitions as class_defs_csr loop
-				statistics_table.force (statistics_table.item (class_count_key) + 1, class_count_key)
-				if class_defs_csr.item.is_primitive_type then
-					statistics_table.force (statistics_table.item (primitive_key) + 1, primitive_key)
-				end
-				if class_defs_csr.item.is_abstract then
-					statistics_table.force (statistics_table.item (abstract_key) + 1, abstract_key)
-				end
-				if attached {BMM_GENERIC_CLASS} class_defs_csr.item as bmm_gen_class then
-					statistics_table.force (statistics_table.item (generic_key) + 1, generic_key)
-				end
-				if attached archetype_parent_class as ap_class and attached arch_parent_key as ap_key then
-					if class_defs_csr.item.has_ancestor_class (ap_class) then
-						statistics_table.force (statistics_table.item (ap_key) + 1, ap_key)
-					end
-				end
-				if attached archetype_data_value_parent_class as adv_class and attached data_value_parent_key as dvp_key then
-					if class_defs_csr.item.has_ancestor_class (adv_class) then
-						statistics_table.force (statistics_table.item (dvp_key) + 1, dvp_key)
-					end
-				end
-			end
-		end
-
-	statistics_table: HASH_TABLE [INTEGER, STRING]
-		attribute
-			create Result.make (0)
 		end
 
 feature {NONE} -- Implementation

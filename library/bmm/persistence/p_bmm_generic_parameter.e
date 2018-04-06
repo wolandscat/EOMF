@@ -38,9 +38,9 @@ feature -- Factory
 	create_bmm_generic_parameter (a_bmm_model: BMM_MODEL)
 		do
 			if attached conforms_to_type as conf_type and then attached a_bmm_model.class_definition (conf_type) as class_def_conf_type then
-				create bmm_generic_parameter.make_constrained (name, class_def_conf_type, a_bmm_model.any_class_definition)
+				create bmm_generic_parameter.make_constrained (name, create {BMM_SIMPLE_TYPE}.make (class_def_conf_type), a_bmm_model.any_type_definition)
 			else
-				create bmm_generic_parameter.make (name, a_bmm_model.any_class_definition)
+				create bmm_generic_parameter.make (name, a_bmm_model.any_type_definition)
 			end
 		end
 

@@ -88,7 +88,7 @@ feature -- Access
 		do
 			-- build list of permutation sets
 			create sub_type_lists.make (0)
-			sub_type_lists.extend (base_class.all_descendant_types.deep_twin)
+			sub_type_lists.extend (base_class.all_descendants.deep_twin)
 			sub_type_lists.last.extend (base_class.name)
 			perm_count := sub_type_lists.last.count
 
@@ -152,7 +152,7 @@ feature -- Status Report
 		do
 			Result := precursor or else
 				across generic_parameters as gen_parm_csr some
-					not gen_parm_csr.item.classifier_category.is_equal (classifier_class_concrete)
+					not gen_parm_csr.item.is_abstract
 				end
 		end
 

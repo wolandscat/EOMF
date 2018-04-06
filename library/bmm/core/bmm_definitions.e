@@ -55,47 +55,6 @@ feature -- Definitions
 --			Result.extend ("Array")
 --		end
 
-	-- NOTE: the string values of the following constants are also the names of
-	-- icons usable in applications that can load them, in order to visually
-	-- identify the various model entities.
-	Classifier_class_abstract: STRING = "class_abstract"
-	Classifier_class_primitive: STRING = "class_primitive"
-	Classifier_class_enumeration: STRING = "class_enumeration"
-	classifier_class_concrete: STRING = "class_concrete"
-	Classifier_class_concrete_supertype: STRING = "class_concrete_supertype"
-
-	classifier_class_generic_abstract: STRING = "class_generic_abstract"
-	classifier_class_generic_concrete: STRING = "class_generic_concrete"
-	Classifier_class_generic_effective: STRING = "class_generic_effective"
-
-	Classifier_generic_parameter: STRING = "generic_parameter"
-	classifier_generic_parameter_constrained: STRING = "generic_parameter_constrained"
-
-
-	classifier_container_type_abstract: STRING = "container_type_abstract"
-	classifier_container_type_concrete: STRING = "container_type_concrete"
-
-	classifier_categories: ARRAYED_LIST [STRING]
-		once
-			create Result.make (0)
-			Result.compare_objects
-			Result.extend (Classifier_class_abstract)
-			Result.extend (Classifier_class_primitive)
-			Result.extend (Classifier_class_enumeration)
-			Result.extend (classifier_class_concrete)
-			Result.extend (Classifier_class_concrete_supertype)
-
-			Result.extend (classifier_class_generic_abstract)
-			Result.extend (classifier_class_generic_concrete)
-			Result.extend (Classifier_class_generic_effective)
-
-			Result.extend (Classifier_generic_parameter)
-			Result.extend (classifier_generic_parameter_constrained)
-
-			Result.extend (classifier_container_type_abstract)
-			Result.extend (classifier_container_type_concrete)
-		end
-
 	Bmm_schema_file_match_regex: STRING
 		once
 			Result :=  ".*\" + Bmm_schema_file_extension + "$"
