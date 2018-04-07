@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class MODEL_ACCESS
+class BMM_MODEL_ACCESS
 
 inherit
 	ANY_VALIDATOR
@@ -85,7 +85,7 @@ feature -- Access
 	schema_directories: LIST [STRING]
 			-- List of directories where all the schemas loaded here are found
 
-	all_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
+	all_schemas: HASH_TABLE [P_BMM_SCHEMA_DESCRIPTOR, STRING]
 			-- all schemas found and loaded from `schema_directory'
 			-- Keyed by schema_id, i.e.
 			-- 		model_publisher '_' schema_name '_' model_release
@@ -93,14 +93,14 @@ feature -- Access
 			-- This is the same key as BMM_SCHEMA.schema_id
 			-- Does not include schemas that failed to parse (i.e. SCHEMA_ACCESS.passed = False)
 
-	all_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
+	all_schemas_item (a_schema_id: STRING): P_BMM_SCHEMA_DESCRIPTOR
 		do
 			check attached all_schemas.item (a_schema_id) as att_item then
 				Result := att_item
 			end
 		end
 
-	candidate_schemas: HASH_TABLE [SCHEMA_DESCRIPTOR, STRING]
+	candidate_schemas: HASH_TABLE [P_BMM_SCHEMA_DESCRIPTOR, STRING]
 			-- includes only fully validated schemas
 
 	valid_models: HASH_TABLE [BMM_MODEL, STRING]
@@ -108,7 +108,7 @@ feature -- Access
 			-- i.e. model_publisher '_' model_name, e.g. "openehr_rm"
 			-- Schemas containing different variants of same model (i.e. model_publisher + model_name) are considered duplicates
 
-	top_level_schemas_by_publisher: HASH_TABLE [ARRAYED_LIST [SCHEMA_DESCRIPTOR], STRING]
+	top_level_schemas_by_publisher: HASH_TABLE [ARRAYED_LIST [P_BMM_SCHEMA_DESCRIPTOR], STRING]
 			-- all top-level schemas keyed by issuer
 
 	model_for_namespace (a_qualified_namespace: STRING): BMM_MODEL
@@ -246,7 +246,7 @@ feature {NONE} -- Implementation
 			-- read in the schema `a_schema_file_path'
 		local
 			dmp: ODIN_MINI_PARSER
-			sd: SCHEMA_DESCRIPTOR
+			sd: P_BMM_SCHEMA_DESCRIPTOR
 		do
 			create dmp
 			dmp.extract_attr_values (a_schema_file_path, Schema_fast_parse_attrs)
@@ -274,8 +274,8 @@ feature {NONE} -- Implementation
 			model_publisher: STRING
 			i: INTEGER
 			finished: BOOLEAN
-			schema_desc: SCHEMA_DESCRIPTOR
-			publisher_schemas: ARRAYED_LIST [SCHEMA_DESCRIPTOR]
+			schema_desc: P_BMM_SCHEMA_DESCRIPTOR
+			publisher_schemas: ARRAYED_LIST [P_BMM_SCHEMA_DESCRIPTOR]
 		do
 			if not exception_encountered then
 				-- populate the rm_schemas table first
@@ -374,11 +374,11 @@ feature {NONE} -- Implementation
 						if schema_desc.is_top_level and schemas_load_list.has (schema_desc.schema_id) then
 							if schema_desc.passed and attached schema_desc.p_schema as att_p_schema and then att_p_schema.ready_to_validate then
 								-- validate the schema & if passed, put it into `top_level_schemas'
-								schema_desc.validate
+								schema_desc.validate_merged
 								merge_validation_errors (schema_desc)
 								if schema_desc.passed then
 									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
-									schema_desc.create_schema
+									schema_desc.create_model
 									if attached schema_desc.model as att_model then
 										att_model.post_process
 										valid_models.extend (att_model, schema_desc.schema_id)
@@ -442,7 +442,7 @@ feature {NONE} -- Implementation
 		local
 			includes: HASH_TABLE [BMM_INCLUDE_SPEC, STRING]
 			includers: ARRAYED_SET[STRING]
-			target_schema: SCHEMA_DESCRIPTOR
+			target_schema: P_BMM_SCHEMA_DESCRIPTOR
 		do
 			target_schema := all_schemas_item (a_schema_id)
 			target_schema.load
@@ -471,14 +471,14 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	merge_validation_errors (sd: SCHEMA_DESCRIPTOR)
+	merge_validation_errors (sd: P_BMM_SCHEMA_DESCRIPTOR)
 			-- merge all errors recorded during validation of `sd' - this includes errors that
 			-- may be for included schemas, so we use the inclusion map to mark all schemas
 			-- up the hierarchy with the knock-on effect of these errors
 		local
 			err_table: HASH_TABLE [ERROR_ACCUMULATOR, STRING]
 			errors_to_propagate: BOOLEAN
-			targ_sd, client_sd: SCHEMA_DESCRIPTOR
+			targ_sd, client_sd: P_BMM_SCHEMA_DESCRIPTOR
 		do
 			if attached sd.p_schema as att_p_schema then
 				err_table := att_p_schema.schema_error_table
@@ -525,7 +525,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	candidate_schemas_item (a_schema_id: STRING): SCHEMA_DESCRIPTOR
+	candidate_schemas_item (a_schema_id: STRING): P_BMM_SCHEMA_DESCRIPTOR
 		do
 			check attached candidate_schemas.item (a_schema_id) as att_item then
 				Result := att_item

@@ -597,7 +597,7 @@ feature -- Statistics
 			create Result.make (0)
 		end
 
-feature {MODEL_ACCESS} -- Implementation
+feature {BMM_MODEL_ACCESS} -- Implementation
 
 	post_process
 			-- post-processing

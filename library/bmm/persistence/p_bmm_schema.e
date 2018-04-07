@@ -290,7 +290,7 @@ feature -- Comparison
 			Result := type_name_as_flat_list (type_1).is_equal (type_name_as_flat_list (type_2))
 		end
 
-feature {SCHEMA_DESCRIPTOR, MODEL_ACCESS} -- Schema Processing
+feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 
 	validate_created
 			-- do some basic validation post initial creation
@@ -849,7 +849,7 @@ feature {DT_OBJECT_CONVERTER} -- Persistence
 			)
 		end
 
-feature {MODEL_ACCESS} -- Implementation
+feature {BMM_MODEL_ACCESS} -- Implementation
 
 	schema_error_table: HASH_TABLE [ERROR_ACCUMULATOR, STRING]
 			-- set of error accumulators for other schemas, keyed by schema id

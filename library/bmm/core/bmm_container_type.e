@@ -20,10 +20,10 @@ create
 
 feature -- Initialisation
 
-	make (a_base_type: like base_type; a_container_type: like container_type)
+	make (a_base_type: like base_type; a_container_class: like container_class)
 		do
 			base_type := a_base_type
-			container_type := a_container_type
+			container_class := a_container_class
 		end
 
 feature -- Identification
@@ -32,7 +32,7 @@ feature -- Identification
 			-- formal name of the type
 		do
 			create Result.make_empty
-			Result.append (container_type.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
+			Result.append (container_class.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
 		end
 
 	entity_metatype: STRING
@@ -45,7 +45,7 @@ feature -- Access
 	base_type: BMM_BASE_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
-	container_type: BMM_GENERIC_CLASS
+	container_class: BMM_GENERIC_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 
 	base_class: BMM_CLASS
@@ -68,9 +68,9 @@ feature -- Access
 		local
 			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
 		do
-			cont_sub_type_list := container_type.all_descendants.deep_twin
+			cont_sub_type_list := container_class.all_descendants.deep_twin
 			if cont_sub_type_list.is_empty then
-				cont_sub_type_list.extend (container_type.name)
+				cont_sub_type_list.extend (container_class.name)
 			end
 
 			item_sub_type_list := base_type.type_substitutions
@@ -88,12 +88,12 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- abstract status of this class or type
 		do
-			Result := base_type.is_abstract or container_type.is_abstract
+			Result := base_type.is_abstract or container_class.is_abstract
 		end
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := container_type.has_descendants or base_type.has_type_substitutions
+			Result := container_class.has_descendants or base_type.has_type_substitutions
 		end
 
 end

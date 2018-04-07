@@ -23,7 +23,7 @@ create
 feature -- Identification
 
 	type: BMM_GENERIC_TYPE
-			-- generate a type that corresponds to this class definition
+			-- generate a fully open generic type that corresponds to this class definition
 		do
 			Result := type_cache
 			if not attached Result then

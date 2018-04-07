@@ -10,10 +10,13 @@ note
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class SCHEMA_DESCRIPTOR
+class P_BMM_SCHEMA_DESCRIPTOR
 
 inherit
 	ANY_VALIDATOR
+		rename
+			validate as validate_merged
+		end
 
 	BMM_DEFINITIONS
 		export
@@ -127,7 +130,7 @@ feature -- Modification
 			add_error (ec_bmm_schema_include_failed_to_load, <<schema_id>>)
 		end
 
-feature {MODEL_ACCESS} -- Commands
+feature {BMM_MODEL_ACCESS} -- Commands
 
 	load
 			-- load schema into in-memory form
@@ -188,7 +191,7 @@ feature {MODEL_ACCESS} -- Commands
 			end
 		end
 
-	validate
+	validate_merged
 		do
 			check attached p_schema then
 				p_schema.validate
@@ -196,7 +199,7 @@ feature {MODEL_ACCESS} -- Commands
 			end
 		end
 
-	create_schema
+	create_model
 			-- create `model'
 		require
 			passed

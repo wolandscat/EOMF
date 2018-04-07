@@ -104,6 +104,15 @@ feature -- Identification
 			Result := type_cache
 			if not attached Result then
 				create Result.make (Current)
+				across ancestor_generic_parameters as anc_gen_parms_csr loop
+					if generic_substitutions.has (anc_gen_parms_csr.key) then
+						check attached generic_substitutions.item (anc_gen_parms_csr.key) as subst_type then
+							Result.add_generic_parameter (subst_type)
+						end
+					else
+						Result.add_generic_parameter (anc_gen_parms_csr.item)
+					end
+				end
 			end
 		end
 
@@ -115,13 +124,13 @@ feature -- Identification
 feature -- Access
 
 	ancestor_generic_parameters: STRING_TABLE [BMM_PARAMETER_TYPE]
-			-- quick access to
+			-- quick access to generic parameters of inheritance ancestor
 		attribute
 			create Result.make_caseless (0)
 		end
 
 	generic_substitutions: STRING_TABLE [BMM_TYPE]
-			-- list of generic parameter subsitutions, keyed by formal parameter name, e.g. 'T', 'U'
+			-- list of generic parameter substitutions, keyed by formal parameter name, e.g. 'T', 'U'
 		attribute
 			create Result.make_caseless (0)
 		end

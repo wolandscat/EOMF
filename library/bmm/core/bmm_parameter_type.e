@@ -31,7 +31,7 @@ feature -- Initialisation
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			conforms_to_type := a_conforms_to_type
+			type_constraint := a_conforms_to_type
 			any_type_definition := an_any_type
 		end
 
@@ -78,15 +78,15 @@ feature -- Access
 			end
 		end
 
-	conforms_to_type: detachable BMM_TYPE
+	type_constraint: detachable BMM_TYPE
 			-- optional conformance constraint that must be another valid class name.
 
 	flattened_conforms_to_type: detachable BMM_TYPE
 			-- ultimate type conformance constraint on this generic parameter due to inheritance;
 			-- Void if no constraint type.
 		do
-			if attached conforms_to_type then
-				Result := conforms_to_type
+			if attached type_constraint then
+				Result := type_constraint
 			elseif attached inheritance_precursor then
 				Result := inheritance_precursor.flattened_conforms_to_type
 			end

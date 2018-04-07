@@ -11,7 +11,7 @@ class SHARED_MODEL_ACCESS
 
 feature -- Access
 
-	models_access: MODEL_ACCESS
+	models_access: BMM_MODEL_ACCESS
 		once ("PROCESS") 
 			create Result.make
 		end

@@ -35,7 +35,7 @@ feature -- Identification
 			-- name of this attribute to display in screen form, grid etc
 		do
 			Result := name.twin
-			Result.append (": " + bmm_type.container_type.name + Generic_left_delim.out + Generic_right_delim.out)
+			Result.append (": " + bmm_type.container_class.name + Generic_left_delim.out + Generic_right_delim.out)
 		end
 
 feature -- Access
