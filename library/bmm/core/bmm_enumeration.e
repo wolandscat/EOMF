@@ -15,7 +15,7 @@ note
 class BMM_ENUMERATION[G->COMPARABLE]
 
 inherit
-	BMM_CLASS
+	BMM_SIMPLE_CLASS
 		redefine
 			entity_metatype
 		end

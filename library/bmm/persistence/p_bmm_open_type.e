@@ -44,8 +44,9 @@ feature -- Access
 feature -- Factory
 
 	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
+			-- obtain from the formal generic parameter list of `a_class_def`
 		do
-			check attached {BMM_GENERIC_CLASS} a_class_def as bmm_gen_class  and then
+			check attached {BMM_GENERIC_CLASS} a_class_def as bmm_gen_class and then
 				attached bmm_gen_class.generic_parameters.item (type) as bmm_gen_parm
 			then
 				bmm_type := bmm_gen_parm

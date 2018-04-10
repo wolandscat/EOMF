@@ -10,7 +10,7 @@ note
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_CLASS
+deferred class BMM_CLASS
 
 inherit
 	BMM_MODEL_ELEMENT
@@ -24,9 +24,6 @@ inherit
 		export
 			{NONE} all
 		end
-
-create
-	make
 
 feature -- Initialisation
 
@@ -44,19 +41,9 @@ feature -- Identification
 	name: STRING
 			-- name of the class FROM SCHEMA
 
-	type: BMM_SIMPLE_TYPE
+	type: BMM_DEFINED_TYPE
 			-- type related to this class
-		do
-			Result := type_cache
-			if not attached Result then
-				create Result.make (Current)
-				type_cache := Result
-			end
-		end
-
-	entity_metatype: STRING
-		do
-			Result := Entity_metatype_simple
+		deferred
 		end
 
 feature -- Access
@@ -67,7 +54,7 @@ feature -- Access
 			create Result.default_create
 		end
 
-	ancestors: STRING_TABLE [BMM_SIMPLE_TYPE]
+	ancestors: STRING_TABLE [BMM_DEFINED_TYPE]
 			-- list of directly inheritance parent types, which may include
 			-- closed, open and partial generic type signatures
 			-- keyed by type name, which may be generic
@@ -522,7 +509,7 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
-	add_ancestor (an_anc_type: BMM_SIMPLE_TYPE)
+	add_ancestor (an_anc_type: BMM_DEFINED_TYPE)
 			-- add an ancestor class
 		require
 			New_ancestor: not ancestors.has_item (an_anc_type)

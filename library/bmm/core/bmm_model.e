@@ -86,10 +86,10 @@ feature -- Access
 			Result.object_comparison
 		end
 
-	any_class_definition: BMM_CLASS
+	any_class_definition: BMM_SIMPLE_CLASS
 			-- retrieve the class definition corresponding to the top `Any' class
 		do
-			if attached class_definition (any_type) as class_def then
+			if attached {BMM_SIMPLE_CLASS} class_definition (any_type) as class_def then
 				Result := class_def
 			else
 				create Result.make (any_type, "Root class of type system", True)
@@ -204,6 +204,7 @@ feature -- Access
 	type_substitutions (a_type_name: STRING): ARRAYED_SET [STRING]
 			-- obtain names of all possible type substitutions of `a_type_name' in the model
 			-- including generic types.
+			-- TODO: incomplete
 		require
 			Type_name_valid: has_type_definition (a_type_name)
 		local
@@ -225,7 +226,9 @@ feature -- Access
 				create Result.make (0)
 				Result.compare_objects
 				across base_classes as base_classes_csr loop
-
+					--
+					-- TODO: implementation
+					--
 				end
 			else
 				Result := base_classes
@@ -706,8 +709,8 @@ feature {NONE} -- Implementation
 			No_spaces: not Result.has (' ')
 		end
 
-	create_bmm_type_from_bmm_type_name (a_type_name: BMM_TYPE_NAME): BMM_TYPE
-			-- create a new BMM_TYPE from a bmm type already known in the sytem
+	create_bmm_type_from_bmm_type_name (a_type_name: BMM_TYPE_NAME): BMM_DEFINED_TYPE
+			-- create a new BMM_TYPE from a bmm type already known in the system
 		require
 			Valid_name: not a_type_name.is_formal_type_parameter
 		do

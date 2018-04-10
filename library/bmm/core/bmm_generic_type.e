@@ -10,10 +10,9 @@ note
 class BMM_GENERIC_TYPE
 
 inherit
-	BMM_SIMPLE_TYPE
+	BMM_DEFINED_TYPE
 		redefine
-			make, base_class, type_name, is_abstract, type_signature,
-			has_type_substitutions, type_substitutions, flattened_type_list
+			make, base_class, type_signature
 		end
 
 create
@@ -72,7 +71,10 @@ feature -- Access
 			-- completely flattened list of type names, flattening out all generic parameters
 			-- e.g. "HASH_TABLE <LINKED_LIST <STRING>, STRING>" => <<"HASH_TABLE", "LINKED_LIST", "STRING", "STRING">>
 		do
-			Result := precursor
+			create Result.make (0)
+			Result.compare_objects
+			Result.extend (base_class.name)
+
 			across generic_parameters as gen_parm_csr loop
 				Result.append (gen_parm_csr.item.flattened_type_list)
 			end
@@ -150,7 +152,7 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := precursor or else
+			Result := base_class.is_abstract or else
 				across generic_parameters as gen_parm_csr some
 					not gen_parm_csr.item.is_abstract
 				end
@@ -158,7 +160,7 @@ feature -- Status Report
 
 	has_type_substitutions: BOOLEAN
 		do
-			Result := precursor or else
+			Result := base_class.has_descendants or else
 				across generic_parameters as gen_parms_csr some
 					gen_parms_csr.item.has_type_substitutions
 				end

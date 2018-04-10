@@ -42,7 +42,7 @@ feature -- Identification
 
 feature -- Access
 
-	base_type: BMM_BASE_TYPE
+	base_type: BMM_UNITARY_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 	container_class: BMM_GENERIC_CLASS

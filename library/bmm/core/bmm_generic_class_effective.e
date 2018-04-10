@@ -53,7 +53,6 @@ feature -- Initialisation
     		end
 
     		package := an_anc_class.package
-    		source_schema_id := an_anc_class.source_schema_id.twin
     		is_override := an_anc_class.is_override
     		is_primitive := an_anc_class.is_primitive
 
@@ -94,6 +93,8 @@ feature -- Initialisation
 	    			end
     			end
     		end
+    	ensure
+    		source_schema_id = Void
     	end
 
 feature -- Identification

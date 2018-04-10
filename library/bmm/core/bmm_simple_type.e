@@ -10,17 +10,10 @@ note
 class BMM_SIMPLE_TYPE
 
 inherit
-	BMM_BASE_TYPE
+	BMM_DEFINED_TYPE
 
 create
 	make
-
-feature -- Initialisation
-
-	make (a_class: like base_class)
-		do
-			base_class := a_class
-		end
 
 feature -- Identification
 
@@ -31,9 +24,6 @@ feature -- Identification
 		end
 
 feature -- Access
-
-	base_class: BMM_CLASS
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters

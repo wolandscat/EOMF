@@ -65,7 +65,7 @@ feature -- Factory
 					bmm_cont_class := bmm_gc
 				end
 				type_ref.create_bmm_type (a_bmm_model, a_class_def)
-				if attached {BMM_BASE_TYPE} type_ref.bmm_type as bt then
+				if attached {BMM_UNITARY_TYPE} type_ref.bmm_type as bt then
 					create bmm_type.make (bt, bmm_cont_class)
 				end
 			end

@@ -69,6 +69,7 @@ feature -- Access
 
 	ancestor_refs: ARRAYED_LIST [P_BMM_BASE_TYPE]
 			-- structural form of ancestors
+			-- TODO: not dealing with inheritance from Enmerated classes - if it is allowed....
 		do
 			if attached ancestor_defs as att_defs then
 				Result := att_defs
@@ -136,35 +137,47 @@ feature -- Factory
 			if attached generic_parameter_defs as gen_parm_defs then
 				create {BMM_GENERIC_CLASS} bmm_class.make (name, documentation, is_abstract)
 			else
-				create bmm_class.make (name, documentation, is_abstract)
+				create {BMM_SIMPLE_CLASS} bmm_class.make (name, documentation, is_abstract)
 			end
 			bmm_class.set_source_schema_id (source_schema_id)
 		end
 
 	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements from Current to `bmm_class'
+		local
+			anc_class_name: STRING
 		do
 			if attached bmm_class as att_bmm_class then
+				-- populate references to ancestor classes; should be every class except Any
+				across ancestor_refs as ancs_csr loop
+					-- find the BMM_CLASS of the ancestor reference
+					if attached {P_BMM_GENERIC_TYPE} ancs_csr.item as gen_type then
+						anc_class_name := gen_type.root_type
+					elseif attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
+						anc_class_name := simple_type.type
+					end
+
+					check attached anc_class_name and then attached a_bmm_model.class_definition (anc_class_name) as anc_class then
+						ancs_csr.item.create_bmm_type (a_bmm_model, anc_class)
+					end
+
+					-- NOTE: we have to test for {BMM_DEFINED_TYPE} here to avoid
+					-- BMM_PARAMETER_TYPE (necessary because P_BMM_GENERIC_TYPE
+					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
+					-- Could be fixed, but better to move on to new serial format
+					check attached {BMM_DEFINED_TYPE} ancs_csr.item.bmm_type as bt then
+						bmm_class.add_ancestor (bt)
+					end
+				end
+
 				-- create generic parameters
+				-- and add to the BMM_GENERIC_TYPE.generic_parameters list
 				if attached generic_parameter_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
 					across generic_parameter_defs as gen_parm_defs_csr loop
 						gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
 						check attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
 							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
 						end
-					end
-				end
-
-				-- populate references to ancestor classes; should be every class except Any
-				across ancestor_refs as ancs_csr loop
-					ancs_csr.item.create_bmm_type (a_bmm_model, att_bmm_class)
-
-					-- add a BMM_TYPE to the BMM_GENERIC_TYPE.generic_parameters list
-					-- NOTE: we have to test for {BMM_SIMPLE_TYPE} here because P_BMM_GENERIC_TYPE
-					-- doesn't inherit from P_BMM_SIMPLE_TYPE as BMM_GENERIC_TYPE inherits from
-					-- BMM_SIMPLE_TYPE. Could be fixed, but better to move on to new serial format
-					check attached {BMM_SIMPLE_TYPE} ancs_csr.item.bmm_type as bt then
-						bmm_class.add_ancestor (bt)
 					end
 				end
 
