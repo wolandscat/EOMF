@@ -88,7 +88,7 @@ feature -- Factory
 					gen_parms_csr.item.create_bmm_type (a_bmm_model, a_class_def)
 
 					-- add a BMM_TYPE to the BMM_GENERIC_TYPE.generic_parameters list
-					check attached gen_parms_csr.item.bmm_type as bt then
+					check attached {BMM_UNITARY_TYPE} gen_parms_csr.item.bmm_type as bt then
 						new_bmm_type.add_generic_parameter (bt)
 					end
 				end

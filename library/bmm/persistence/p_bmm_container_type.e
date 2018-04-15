@@ -38,7 +38,6 @@ feature -- Access
 			-- the target type
 		do
 			if not attached type_def and attached type as att_type then
-				-- probably reliable way of detecting an open gen parm - look for a type name of only 1 character
 				if valid_generic_type_name (att_type) then
 					create {P_BMM_OPEN_TYPE} type_def.make_simple (att_type)
 				else

@@ -431,16 +431,6 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			Loaded: state = State_includes_pending
 			Other_valid: includes_to_process.has (included_schema.schema_id)
 		do
-			-- archetype parent class: only merge if nothing already in the higher-level schema
-			if attached included_schema.archetype_parent_class and not attached archetype_parent_class then
-				archetype_parent_class := included_schema.archetype_parent_class
-			end
-
-			-- archetype data value parent class: only merge if nothing already in the higher-level schema
-			if attached included_schema.archetype_data_value_parent_class and not attached archetype_data_value_parent_class then
-				archetype_data_value_parent_class := included_schema.archetype_data_value_parent_class
-			end
-
 			-- primitive types
 			across included_schema.primitive_types as other_prim_types_csr loop
 				-- note that `put' only puts the class defintion from the included schema only if the current one does not already
@@ -532,11 +522,6 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			-- check that RM shema release is valid
 			if not valid_standard_version (rm_release) then
 				add_error (ec_BMM_RMREL, <<schema_id, rm_release>>)
-			end
-
-			-- check archetype parent class in list of class names
-			if attached archetype_parent_class as apc and then not has_class_definition (apc) then
-				add_error (ec_BMM_ARPAR, <<schema_id, apc>>)
 			end
 
 			-- check that no duplicate class names are found in packages
@@ -774,15 +759,6 @@ feature -- Factory
 			end
 
 			-- set the archetype-related model elements
-			if attached archetype_parent_class as apc then
-				new_rm.set_archetype_parent_class (apc)
-			end
-			if attached archetype_data_value_parent_class as advp then
-				new_rm.set_archetype_data_value_parent_class (advp)
-			end
-			if attached archetype_visualise_descendants_of as avd then
-				new_rm.set_archetype_visualise_descendants_of (avd)
-			end
 			if attached archetype_namespace as ns then
 				new_rm.set_archetype_namespace (ns)
 			end

@@ -27,11 +27,11 @@ feature -- Initialisation
 			any_type_definition := an_any_type
 		end
 
-	make_constrained (a_name: STRING; a_conforms_to_type, an_any_type: BMM_TYPE)
+	make_constrained (a_name: STRING; a_type_constraint, an_any_type: BMM_TYPE)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
-			type_constraint := a_conforms_to_type
+			type_constraint := a_type_constraint
 			any_type_definition := an_any_type
 		end
 
@@ -115,14 +115,14 @@ feature -- Access
 			end
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
+	subtypes: ARRAYED_SET [STRING]
 		do
 			Result := effective_conforms_to_type.base_class.all_descendants
 		end
 
 feature -- Status Report
 
-	has_type_substitutions: BOOLEAN
+	has_subtypes: BOOLEAN
 		do
 			Result := effective_conforms_to_type.base_class.has_descendants
 		end
@@ -143,6 +143,21 @@ feature -- Status Report
 			-- generic parameters are not consider abstract
 		do
 			Result := False
+		end
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this type object, with common references to BMM_CLASS objects
+		do
+			if attached type_constraint then
+				create Result.make (name.twin, any_type_definition)
+			else
+				create Result.make_constrained (name.twin, type_constraint.create_duplicate, any_type_definition)
+			end
+			if attached inheritance_precursor as ip then
+				Result.set_inheritance_precursor (ip)
+			end
 		end
 
 feature -- Modification

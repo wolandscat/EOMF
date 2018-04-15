@@ -12,7 +12,7 @@ class BMM_CONTAINER_TYPE
 inherit
 	BMM_TYPE
 		redefine
-			entity_metatype
+			entity_metatype, has_formal_generic_type, substitute_formal_generic_type
 		end
 
 create
@@ -64,7 +64,7 @@ feature -- Access
 			Result.append (base_type.flattened_type_list)
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
+	subtypes: ARRAYED_SET [STRING]
 		local
 			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
 		do
@@ -73,7 +73,7 @@ feature -- Access
 				cont_sub_type_list.extend (container_class.name)
 			end
 
-			item_sub_type_list := base_type.type_substitutions
+			item_sub_type_list := base_type.subtypes
 
 			create Result.make (0)
 			across cont_sub_type_list as cont_sub_types_csr loop
@@ -91,9 +91,36 @@ feature -- Status Report
 			Result := base_type.is_abstract or container_class.is_abstract
 		end
 
-	has_type_substitutions: BOOLEAN
+	has_subtypes: BOOLEAN
 		do
-			Result := container_class.has_descendants or base_type.has_type_substitutions
+			Result := container_class.has_descendants or base_type.has_subtypes
+		end
+
+	has_formal_generic_type (a_gen_type_name: STRING): BOOLEAN
+			-- True if there is any occurrence of `a_gen_type_name` in the type structure
+		do
+			Result := base_type.has_formal_generic_type (a_gen_type_name)
+		end
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this type object, with common references to BMM_CLASS objects
+		do
+			create Result.make (base_type.create_duplicate, container_class)
+		end
+
+feature -- Modification
+
+	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_DEFINED_TYPE)
+			-- substitute any occurrence of `a_gen_type_name` in the type structure
+			-- with `a_sub_type
+		do
+			if attached {BMM_PARAMETER_TYPE} base_type as param_type and then param_type.name.is_equal (a_gen_type_name) then
+				base_type := a_sub_type
+			elseif attached {BMM_GENERIC_TYPE} base_type as gen_type then
+				gen_type.substitute_formal_generic_type (a_gen_type_name, a_sub_type)
+			end
 		end
 
 end

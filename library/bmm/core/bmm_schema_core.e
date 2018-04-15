@@ -106,44 +106,12 @@ feature -- Identification
 
 feature -- Access
 
-	archetype_parent_class: detachable STRING
-			-- name of a parent class used within the schema to provide archetype capability,
-			-- enabling filtering of classes in RM visualisation. If empty, 'Any' is assumed
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
-	archetype_data_value_parent_class: detachable STRING
-			-- name of a parent class of logical 'data types' used within the schema to provide archetype capability,
-			-- enabling filtering of classes in RM visualisation. If empty, 'Any' is assumed
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
 	archetype_namespace: detachable STRING
 			-- Archetype namespace to use in archetypes for a particular kind of system component
 			-- e.g. "EHR" in "openEHR-EHR".
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	archetype_visualise_descendants_of: detachable STRING
-			-- If archetype_parent_class is not set, designate a class whose descendants should be
-			-- made visible in tree and grid renderings of the archetype definition. For openEHR
-			-- and CEN this class is normally the same as the archetype_parent_class, i.e. LOCATABLE
-			-- and RECORD_COMPONENT respectively. It is typically set for CEN, because archetype_
-			-- parent_class may not be stated, due to demographic types not inheriting from it.
-			--
-			-- The effect of this attribute in visualisation is to generate the most natural tree or
-			-- grid-based view of an archetype definition, from the semantic viewpoint.
-
 feature -- Status Report
-
-	has_archetype_parent_class: BOOLEAN
-			-- True if this schema has an archetype_parent_class
-		do
-			Result := attached archetype_parent_class
-		end
-
-	has_archetype_data_value_parent_class: BOOLEAN
-			-- True if this schema has an archetype_parent_class
-		do
-			Result := attached archetype_data_value_parent_class
-		end
 
 	has_schema_contributor (a_contributor: STRING): BOOLEAN
 		require

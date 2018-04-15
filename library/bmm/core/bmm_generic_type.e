@@ -12,7 +12,7 @@ class BMM_GENERIC_TYPE
 inherit
 	BMM_DEFINED_TYPE
 		redefine
-			make, base_class, type_signature
+			make, base_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
 		end
 
 create
@@ -63,7 +63,7 @@ feature -- Access
 	base_class: BMM_GENERIC_CLASS
 			-- the base class of this type
 
-	generic_parameters: ARRAYED_LIST [BMM_TYPE]
+	generic_parameters: ARRAYED_LIST [BMM_UNITARY_TYPE]
 			-- generic parameters of the root_type in this type specifier
 			-- The order must match the order of the owning class's formal generic parameter declarations
 
@@ -80,7 +80,21 @@ feature -- Access
 			end
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
+	generic_substitutions: STRING_TABLE [BMM_UNITARY_TYPE]
+			-- list of generic parameter substitutions, keyed by formal parameter name, e.g. 'T', 'U'
+		do
+			create Result.make_caseless (0)
+			base_class.generic_parameters.start
+			across generic_parameters as gen_parms_csr loop
+				-- if this is not a formal generic parameter, record a substitution
+				if not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item then
+					Result.put (gen_parms_csr.item, base_class.generic_parameters.item_for_iteration.name)
+				end
+				base_class.generic_parameters.forth
+			end
+		end
+
+	subtypes: ARRAYED_SET [STRING]
 			-- generate all possible type substitutions of this type
 		local
 			sub_type_lists: ARRAYED_LIST [ARRAYED_SET [STRING]]
@@ -95,7 +109,7 @@ feature -- Access
 			perm_count := sub_type_lists.last.count
 
 			across generic_parameters as gen_parms_csr loop
-				sub_type_lists.extend (gen_parms_csr.item.type_substitutions)
+				sub_type_lists.extend (gen_parms_csr.item.subtypes)
 				if sub_type_lists.last.is_empty then
 					sub_type_lists.last.extend (gen_parms_csr.item.type_name)
 				end
@@ -158,11 +172,11 @@ feature -- Status Report
 				end
 		end
 
-	has_type_substitutions: BOOLEAN
+	has_subtypes: BOOLEAN
 		do
 			Result := base_class.has_descendants or else
 				across generic_parameters as gen_parms_csr some
-					gen_parms_csr.item.has_type_substitutions
+					gen_parms_csr.item.has_subtypes
 				end
 		end
 
@@ -175,35 +189,47 @@ feature -- Status Report
 				end
 		end
 
-feature -- Modification
-
-	add_generic_parameter (a_gen_parm: BMM_TYPE)
+	has_formal_generic_type (a_gen_type_name: STRING): BOOLEAN
+			-- True if there is any occurrence of `a_gen_type_name` in the type structure
 		do
-			generic_parameters.extend (a_gen_parm)
+			Result :=
+				across generic_parameters as gen_parms_csr some
+					attached {BMM_PARAMETER_TYPE} gen_parms_csr.item as formal_param and then
+						formal_param.name.is_equal (a_gen_type_name) or
+					gen_parms_csr.item.has_formal_generic_type (a_gen_type_name)
+				end
 		end
 
-	set_base_class (an_eff_gen_class: BMM_GENERIC_CLASS_EFFECTIVE)
-			-- overwrite `base_class' with the effective version that has substituted
-			-- properties according to type parameter substitutions
-		local
-			class_to_move: detachable BMM_CLASS
-		do
-			-- first, check current base_class's immediate descendants, which may include a class
-			-- that has the current type as an ancestor; if so, we need to move that class ref
-			-- to the immediate_descendants of the new base_class, i.e. `an_eff_gen_class`.
+feature -- Factory
 
-			across base_class.immediate_descendants as old_descs_csr loop
-				if old_descs_csr.item.ancestors.has_item (Current) then
-					class_to_move := old_descs_csr.item
+	create_duplicate: like Current
+			-- create a copy of this type object, with common references to BMM_CLASS objects
+		do
+			create Result.make (base_class)
+			across generic_parameters as gen_parms_csr loop
+				Result.add_generic_parameter (gen_parms_csr.item.create_duplicate)
+			end
+		end
+
+feature -- Modification
+
+	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_DEFINED_TYPE)
+			-- substitute any occurrence of `a_gen_type_name` in the type structure
+			-- with `a_sub_type`
+		do
+			across generic_parameters as gen_parms_csr loop
+				if attached {BMM_PARAMETER_TYPE} gen_parms_csr.item then
+					generic_parameters.go_i_th (gen_parms_csr.cursor_index)
+					generic_parameters.replace (a_sub_type)
+				else
+					gen_parms_csr.item.substitute_formal_generic_type (a_gen_type_name, a_sub_type)
 				end
 			end
-			if attached class_to_move then
-				base_class.immediate_descendants.prune (class_to_move)
-				an_eff_gen_class.immediate_descendants.extend (class_to_move)
-			end
+		end
 
-			-- now set the new base class.
-			base_class := an_eff_gen_class
+	add_generic_parameter (a_gen_parm: BMM_UNITARY_TYPE)
+		do
+			generic_parameters.extend (a_gen_parm)
 		end
 
 end

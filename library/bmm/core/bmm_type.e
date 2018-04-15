@@ -50,7 +50,7 @@ feature -- Access
 		deferred
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
+	subtypes: ARRAYED_SET [STRING]
 			-- List of type substitutions if any available for this type within the current BMM model.
 		deferred
 		end
@@ -63,9 +63,31 @@ feature -- Status Report
 			Result := base_class.is_primitive
 		end
 
-	has_type_substitutions: BOOLEAN
+	has_subtypes: BOOLEAN
 			-- Determine if there are any type substitutions.
 		deferred
+		end
+
+	has_formal_generic_type (a_gen_type_name: STRING): BOOLEAN
+			-- True if there is any occurrence of `a_gen_type_name` in the type structure
+		do
+			-- default: nothing to do
+		end
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this type object, with common references to BMM_CLASS objects
+		deferred
+		end
+
+feature -- Modification
+
+	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_TYPE)
+			-- substitute any occurrence of `a_gen_type_name` in the type structure
+			-- with `a_sub_type
+		do
+			-- default: nothing to do
 		end
 
 end

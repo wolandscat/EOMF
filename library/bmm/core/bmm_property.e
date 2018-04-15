@@ -13,11 +13,11 @@ inherit
 	BMM_MODEL_ELEMENT
 
 create
-	make, make_from_other
+	make, make_from_other, make_from_other_generic
 
 feature {NONE} -- Initialisation
 
-	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type;
+	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: G;
 			is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
@@ -29,11 +29,23 @@ feature {NONE} -- Initialisation
 			bmm_type := a_bmm_type
 		end
 
-	make_from_other (other: BMM_PROPERTY[BMM_TYPE]; a_bmm_type: G)
+	make_from_other (other: like Current)
 			-- make from a BMM_PROPERTY of any generic flavour
 		do
 			name := other.name.twin
-			documentation := clone (other.documentation)
+			documentation := if attached other.documentation as att_doc then att_doc.twin else Void end
+			is_mandatory := other.is_mandatory
+			is_computed := other.is_computed
+			is_im_infrastructure := other.is_im_infrastructure
+			is_im_runtime := other.is_im_runtime
+			bmm_type := other.bmm_type
+		end
+
+	make_from_other_generic (other: BMM_PROPERTY[BMM_TYPE]; a_bmm_type: G)
+			-- make from a BMM_PROPERTY of any generic flavour
+		do
+			name := other.name.twin
+			documentation := if attached other.documentation as att_doc then att_doc.twin else Void end
 			is_mandatory := other.is_mandatory
 			is_computed := other.is_computed
 			is_im_infrastructure := other.is_im_infrastructure
@@ -106,6 +118,18 @@ feature -- Status Report
 			Result := attached {BMM_CONTAINER_TYPE} bmm_type
 		end
 
+	is_synthesised_generic: BOOLEAN
+			-- True if this property was synthesised due to generic substitution
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this property object
+		do
+			Create Result.make_from_other (Current)
+			Result.set_bmm_type (bmm_type.create_duplicate)
+		end
+
 feature -- Comparison
 
 	bmm_conforms_to (other: BMM_PROPERTY [BMM_TYPE]): BOOLEAN
@@ -113,6 +137,20 @@ feature -- Comparison
 		do
 			-- FIXME: to be implemented
 			Result := True
+		end
+
+feature -- Modification
+
+	set_bmm_type (a_bmm_type: G)
+			-- set `bmm_type`
+		do
+			bmm_type := a_bmm_type
+		end
+
+	set_is_synthesised_generic
+			-- set `is_synthesised_generic`
+		do
+			is_synthesised_generic := True
 		end
 
 end

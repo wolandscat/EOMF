@@ -4,8 +4,8 @@ note
 				 Subtype of BMM_PROPERTY that represents a container type based on one of the 
 				 inbuilt types List <>, Set <>, Array <>.
 				 ]"
-	keywords:    "model, UML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	keywords:    "model, BMM"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
@@ -15,11 +15,11 @@ class BMM_CONTAINER_PROPERTY
 inherit
 	BMM_PROPERTY [BMM_CONTAINER_TYPE]
 		redefine
-			make, display_name, object_multiplicity
+			make, make_from_other, display_name, object_multiplicity
 		end
 
 create
-	make
+	make, make_from_other
 
 feature -- Initialisation
 
@@ -27,6 +27,13 @@ feature -- Initialisation
 		do
 			precursor (a_name, a_doc, a_type, is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag)
 			create cardinality.make_open
+		end
+
+	make_from_other (other: like Current)
+			-- make from a BMM_PROPERTY of any generic flavour
+		do
+			precursor (other)
+			cardinality := other.cardinality.twin
 		end
 
 feature -- Identification

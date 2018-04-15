@@ -138,24 +138,20 @@ feature -- Modification
 							and then a_gen_parm_def.effective_conforms_to_type /= gp_inh_parent.effective_conforms_to_type
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
-								if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} parent_props_csr.item as parent_prop_type and then
-									parent_prop_type.bmm_type = a_gen_parm_def.inheritance_precursor
+								if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} parent_props_csr.item as parent_prop and then
+									parent_prop.bmm_type = a_gen_parm_def.inheritance_precursor
 								then
 									debug ("bmm")
 										io.put_string ("Schema: " + bmm_model.schema_id +
 											" found in class " + type.type_signature +
 											"; parent type = " + parent_gen_class.type.type_name +
 											" gen parm " + a_gen_parm_def.type_signature +
-											"; redefined in property " + parent_prop_type.display_name + "%N")
+											"; redefined in property " + parent_prop.display_name + "%N")
 									end
 
-									create new_prop.make (parent_prop_type.name.twin,
-										if attached parent_prop_type.documentation as att_doc then att_doc.twin else Void end,
-										a_gen_parm_def,
-										parent_prop_type.is_mandatory,
-										parent_prop_type.is_computed,
-										parent_prop_type.is_im_infrastructure,
-										parent_prop_type.is_im_runtime)
+									create new_prop.make_from_other (parent_prop)
+									new_prop.set_is_synthesised_generic
+									new_prop.set_bmm_type (a_gen_parm_def)
 									properties.force (new_prop, new_prop.name)
 								end
 							end

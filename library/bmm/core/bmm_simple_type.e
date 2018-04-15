@@ -35,7 +35,7 @@ feature -- Access
 			Result.extend (base_class.name)
 		end
 
-	type_substitutions: ARRAYED_SET [STRING]
+	subtypes: ARRAYED_SET [STRING]
 		do
 			Result := base_class.all_descendants
 		end
@@ -48,9 +48,17 @@ feature -- Status Report
 			Result := base_class.is_abstract
 		end
 
-	has_type_substitutions: BOOLEAN
+	has_subtypes: BOOLEAN
 		do
 			Result := base_class.has_descendants
+		end
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this type object, with common references to BMM_CLASS objects
+		do
+			create Result.make (base_class)
 		end
 
 end

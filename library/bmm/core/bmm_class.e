@@ -74,7 +74,7 @@ feature -- Access
 	source_schema_id: STRING
 			-- reference to original source schema defining this class
 		attribute
-			create Result.make_from_string ("(uninitialised)")
+			create Result.make_empty
 		end
 
 	all_ancestor_classes: ARRAYED_SET [STRING]
@@ -380,6 +380,12 @@ feature -- Status Report
 			Result := not immediate_descendants.is_empty
 		end
 
+	has_ancestor (a_class_name: STRING): BOOLEAN
+			-- True if `a_class_name` is the name of an ancestor class of this class
+		do
+			Result := all_ancestor_classes.has (a_class_name)
+		end
+
 	has_property (a_prop_name: STRING): BOOLEAN
 			-- True if a_prop_name valid in this type, due to this type definition, or any ancestor
 		require
@@ -513,9 +519,63 @@ feature -- Modification
 			-- add an ancestor class
 		require
 			New_ancestor: not ancestors.has_item (an_anc_type)
+		local
+			subst_type: BMM_TYPE
+			new_prop: BMM_PROPERTY [BMM_TYPE]
+			anc_gen_subs: STRING_TABLE [BMM_TYPE]
 		do
 			ancestors.put (an_anc_type, an_anc_type.type_name)
 			an_anc_type.base_class.add_immediate_descendant (Current)
+
+			-- if the new ancestor is an effective generic type, we need to synthesise
+			-- replacements in the current class for inherited properties of open types
+			-- or based on an open type, from the ancestor's base class.
+			if attached {BMM_GENERIC_TYPE} an_anc_type as anc_gen_type and then anc_gen_type.is_partially_closed then
+				anc_gen_subs := anc_gen_type.generic_substitutions
+				across flat_properties as props_csr loop
+					-- if property is of a formal type for which there is a substitution, replace it
+					if attached {BMM_PARAMETER_TYPE} props_csr.item.bmm_type as formal_type and then
+						anc_gen_subs.has (formal_type.name)
+					then
+						-- The replacement may be of any type, except an open type
+						subst_type := anc_gen_subs.item (formal_type.name)
+						if attached {BMM_GENERIC_TYPE} subst_type as gen_type then
+							create {BMM_PROPERTY[BMM_GENERIC_TYPE]} new_prop.make_from_other_generic (props_csr.item, gen_type.create_duplicate)
+						elseif attached {BMM_CONTAINER_TYPE} subst_type as cont_type then
+							create {BMM_PROPERTY[BMM_CONTAINER_TYPE]} new_prop.make_from_other_generic (props_csr.item, cont_type.create_duplicate)
+						elseif attached {BMM_SIMPLE_TYPE} subst_type as simple_type then
+							create {BMM_PROPERTY[BMM_SIMPLE_TYPE]} new_prop.make_from_other_generic (props_csr.item, simple_type.create_duplicate)
+						end
+
+						check attached new_prop end
+						new_prop.set_is_synthesised_generic
+						overwrite_property (new_prop)
+
+					-- else if the property is of a type containing any open parameter
+					-- with a substitution in the ancestor type
+					else
+						if
+							across anc_gen_subs as gen_subs_csr some
+								props_csr.item.bmm_type.has_formal_generic_type (gen_subs_csr.key.as_string_8)
+							end
+						then
+							-- substitute all occurrences of the open type
+							new_prop := props_csr.item.create_duplicate
+
+							across anc_gen_subs as anc_gen_subs_csr loop
+								if new_prop.bmm_type.has_formal_generic_type (anc_gen_subs_csr.key.as_string_8) then
+									-- create a new BMM_PROPERTY of the same meta-type, and then
+									-- substitute all occurrences of the open type
+									new_prop.bmm_type.substitute_formal_generic_type (anc_gen_subs_csr.key.as_string_8, anc_gen_subs_csr.item.create_duplicate)
+								end
+							end
+							overwrite_property (new_prop)
+						end
+					end
+				end
+			end
+
+			-- clear caches
 			all_ancestor_types_cache := Void
 			all_ancestor_classes_cache := Void
 			reset_flat_properties_cache
