@@ -60,8 +60,7 @@ packages = <
 		classes = <"EXTRACT", "EXTRACT_SPEC", "EXTRACT_ITEM", "GENERIC_CONTENT_ITEM", "OPENEHR_CONTENT_ITEM", "EXTRACT_REQUEST", 
 			"EXTRACT_UPDATE_SPEC", "EXTRACT_ACTION_REQUEST",
 			"EXTRACT_CONTENT_ITEM", "EXTRACT_FOLDER", "EXTRACT_VERSION_SPEC", "EXTRACT_CHAPTER", "EXTRACT_ENTITY_CHAPTER", 
-			-- following not yet supported in BMM
-			-- "X_VERSIONED_PARTY", "X_VERSIONED_EHR_ACCESS", "X_VERSIONED_EHR_STATUS", "X_VERSIONED_COMPOSITION", "X_VERSIONED_FOLDER",
+			"X_VERSIONED_PARTY", "X_VERSIONED_EHR_ACCESS", "X_VERSIONED_EHR_STATUS", "X_VERSIONED_COMPOSITION", "X_VERSIONED_FOLDER",
 			"EXTRACT_MANIFEST", "EXTRACT_ENTITY_MANIFEST", "EXTRACT_PARTICIPATION", "X_VERSIONED_OBJECT"
 		>
 	>
@@ -217,8 +216,8 @@ class_definitions = <
 			["item_list"] = (P_BMM_CONTAINER_PROPERTY) <
 				name = <"item_list">
 				type_def = <
-					type = <"OBJECT_REF">
 					container_type = <"List">
+					type = <"OBJECT_REF">
 				>
 				cardinality = <|>=0|>
 			>
@@ -522,7 +521,10 @@ class_definitions = <
 			["versions"] = (P_BMM_CONTAINER_PROPERTY) <
 				name = <"versions">
 				type_def = <
-					type = <"ORIGINAL_VERSION">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"ORIGINAL_VERSION">
+						generic_parameters = <"T">
+					>
 					container_type = <"List">
 				>
 				cardinality = <|>=0|>
@@ -559,32 +561,53 @@ class_definitions = <
 		>
 	>
 
-----------------------------------------------------
--- the following not yet supported by BMM
-----------------------------------------------------
--- 	["X_VERSIONED_EHR_ACCESS"] = <
--- 		name = <"X_VERSIONED_EHR_ACCESS">
--- 		ancestors = <"X_VERSIONED_OBJECT<EHR_ACCESS>", ...>
--- 	>
--- 
--- 	["X_VERSIONED_EHR_STATUS"] = <
--- 		name = <"X_VERSIONED_EHR_STATUS">
--- 		ancestors = <"X_VERSIONED_OBJECT<EHR_STATUS>", ...>
--- 	>
--- 
--- 	["X_VERSIONED_COMPOSITION"] = <
--- 		name = <"X_VERSIONED_COMPOSITION">
--- 		ancestors = <"X_VERSIONED_OBJECT<COMPOSITION>", ...>
--- 	>
--- 
--- 	["X_VERSIONED_FOLDER"] = <
--- 		name = <"X_VERSIONED_FOLDER">
--- 		ancestors = <"X_VERSIONED_OBJECT<FOLDER>", ...>
--- 	>
--- 
--- 	["X_VERSIONED_PARTY"] = <
--- 		name = <"X_VERSIONED_PARTY">
--- 		ancestors = <"X_VERSIONED_OBJECT<PARTY>", ...>
--- 	>
-
+ 	["X_VERSIONED_EHR_ACCESS"] = <
+ 		name = <"X_VERSIONED_EHR_ACCESS">
+ 		ancestor_defs = <
+			["X_VERSIONED_OBJECT<EHR_ACCESS>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"X_VERSIONED_OBJECT">
+				generic_parameters = <"EHR_ACCESS">
+			>
+		>
+ 	>
+ 
+ 	["X_VERSIONED_EHR_STATUS"] = <
+ 		name = <"X_VERSIONED_EHR_STATUS">
+ 		ancestor_defs = <
+			["X_VERSIONED_OBJECT<EHR_STATUS>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"X_VERSIONED_OBJECT">
+				generic_parameters = <"EHR_STATUS">
+			>
+		>
+ 	>
+ 
+ 	["X_VERSIONED_COMPOSITION"] = <
+ 		name = <"X_VERSIONED_COMPOSITION">
+ 		ancestor_defs = <
+			["X_VERSIONED_OBJECT<COMPOSITION>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"X_VERSIONED_OBJECT">
+				generic_parameters = <"COMPOSITION">
+			>
+		>
+ 	>
+ 
+ 	["X_VERSIONED_FOLDER"] = <
+ 		name = <"X_VERSIONED_FOLDER">
+ 		ancestor_defs = <
+			["X_VERSIONED_OBJECT<FOLDER>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"X_VERSIONED_OBJECT">
+				generic_parameters = <"FOLDER">
+			>
+		>
+ 	>
+ 
+ 	["X_VERSIONED_PARTY"] = <
+ 		name = <"X_VERSIONED_PARTY">
+ 		ancestor_defs = <
+			["X_VERSIONED_OBJECT<PARTY>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"X_VERSIONED_OBJECT">
+				generic_parameters = <"PARTY">
+			>
+		>
+ 	>
 >
