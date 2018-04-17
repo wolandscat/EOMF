@@ -115,7 +115,7 @@ feature -- Status Report
 			-- True if this is a top-level schema, i.e. has an archetype namespace
 		do
 			if attached p_schema then
-				Result := attached p_schema.archetype_namespace
+				Result := attached p_schema.model_name
 			end
 		end
 

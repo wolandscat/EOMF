@@ -26,6 +26,7 @@ bmm_version = <"2.1">
 rm_publisher = <"acme">
 schema_name = <"maritime">
 rm_release = <"1.0.0">
+model_name = <"maritime">
 
 ------------------------------------------------------
 -- schema documentation
@@ -42,11 +43,6 @@ includes = <
 		id = <"wolandscat_structures_0.9.0">
 	>
 >
-
-------------------------------------
--- archetyping
-------------------------------------
-archetype_rm_closure_packages = <"com.acme.maritime", ...>
 
 ------------------------------------------------------
 -- packages

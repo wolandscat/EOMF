@@ -57,7 +57,13 @@ feature -- Initialization
 
 	bmm_env_setup
 			-- Run application.
-		do
+		once
+			-- add in EOMF error message DB to main message DB
+			message_db.add_table (create {DT_MESSAGES_DB}.make)
+			message_db.add_table (create {ODIN_MESSAGES_DB}.make)
+			message_db.add_table (create {BMM_MESSAGES_DB}.make)
+			message_db.add_table (create {GENERAL_MESSAGES_DB}.make)
+
 			if ready_to_initialise_app then
 				initialise_app
 				if has_errors then
@@ -152,7 +158,6 @@ feature -- Initialization
 			elseif not models_access.found_valid_models then
 				add_error (ec_bmm_schemas_config_not_valid, <<models_access.schemas_load_list_string>>)
 			end
-
 		end
 
 feature -- Status Report

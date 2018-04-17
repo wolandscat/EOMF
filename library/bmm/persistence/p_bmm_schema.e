@@ -82,6 +82,10 @@ feature -- Access (attributes from schema)
 			create Result.make (0)
 		end
 
+	model_name: detachable STRING
+			-- Name of model - only set on model root point.
+			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+
 feature -- Access (Attributes from schema load post-processing)
 
 	state: INTEGER
@@ -729,12 +733,16 @@ feature -- Factory
 	create_bmm_model
 			-- generate a BMM_MODEL object
 		require
-			state = State_includes_processed
+			Processing_state: state = State_includes_processed
+			Model_is_top_level: attached model_name
 		local
 			new_rm: BMM_MODEL
 		do
+			check attached model_name as mn then
+				create new_rm.make (rm_publisher, schema_name, rm_release, mn)
+			end
+
 			--------- PASS 1 ----------
-			create new_rm.make (rm_publisher, schema_name, rm_release)
 			bmm_model_cache := new_rm
 			new_rm.set_schema_author (schema_author)
 			if not schema_contributors.is_empty then
@@ -756,11 +764,6 @@ feature -- Factory
 			-- are added before the class itself.
 			across canonical_packages as pkgs_csr loop
 				pkgs_csr.item.do_recursive_classes (agent add_bmm_schema_class_definition)
-			end
-
-			-- set the archetype-related model elements
-			if attached archetype_namespace as ns then
-				new_rm.set_archetype_namespace (ns)
 			end
 
 			--------- PASS 2 ----------

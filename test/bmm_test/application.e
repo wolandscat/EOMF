@@ -33,12 +33,6 @@ feature -- Initialization
 
 	make
 		do
-			-- add in EOMF error message DB to main message DB
-			message_db.add_table (create {DT_MESSAGES_DB}.make)
-			message_db.add_table (create {ODIN_MESSAGES_DB}.make)
-			message_db.add_table (create {BMM_MESSAGES_DB}.make)
-			message_db.add_table (create {GENERAL_MESSAGES_DB}.make)
-
 			-- BMM initialisation
 			bmm_env_setup
 			app_cfg.save
@@ -50,6 +44,31 @@ feature -- Initialization
 	run_openehr_tests
 		do
 			bmm_model_cache.put (models_access.model_for_namespace ("openehr-task_planning"))
+
+			io.put_string ("---------------- rm_schema.has_property --------------%N")
+			output_ancestors ("CONTEXT_VALUE", 0)
+			output_class_properties ("CONTEXT_VALUE", True)
+			output_class_properties ("CONTEXT_VALUE", False)
+
+			output_ancestors ("CONTEXT_EXPRESSION", 0)
+			output_class_properties ("CONTEXT_EXPRESSION", True)
+			output_class_properties ("CONTEXT_EXPRESSION", False)
+
+			output_ancestors ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", 0)
+			output_class_properties ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", True)
+			io.put_string ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN> has property expression: " + rm_schema.has_property ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", "expression").out + "%N")
+
+			output_ancestors ("STATE_VARIABLE", 0)
+			output_class_properties ("STATE_VARIABLE", True)
+			output_class_properties ("STATE_VARIABLE", False)
+
+			output_ancestors ("DISPATCHABLE_TASK", 0)
+			output_class_properties ("DISPATCHABLE_TASK", True)
+			output_class_properties ("DISPATCHABLE_TASK", False)
+
+			output_ancestors ("TIMER_WAIT", 0)
+			output_class_properties ("TIMER_WAIT", True)
+			output_class_properties ("TIMER_WAIT", False)
 
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
@@ -64,7 +83,7 @@ feature -- Initialization
 			io.put_string ("CLUSTER has /items/items/items: " + rm_schema.has_property_path ("CLUSTER", "/items/items/items").out + "%N")
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.rm_schema.is_descendant_of() --------------%N")
+			io.put_string ("---------------- rm_schema.is_descendant_of() --------------%N")
 			io.put_string ("COMPOSITION is a subclass of LOCATABLE: " + rm_schema.is_descendant_of ("COMPOSITION", "LOCATABLE").out + "%N")
 			io.put_string ("LOCATABLE is not subclass of COMPOSITION" + (not rm_schema.is_descendant_of ("LOCATABLE", "COMPOSITION")).out + "%N")
 			io.new_line
@@ -94,8 +113,17 @@ feature -- Initialization
 			end
 			io.new_line
 
+			output_class_properties ("PARAMETER_MAPPING", True)
+			output_class_properties ("QUERY_CALL", True)
 
 			bmm_model_cache.put (models_access.model_for_namespace ("openehr-generics"))
+
+			io.put_string ("======================= inheritance structure =======================%N")
+			output_ancestors ("GENERIC_CHILD_CLOSED", 0)
+			output_ancestors ("GENERIC_CHILD_OPEN_U", 0)
+			output_ancestors ("GENERIC_CHILD_OPEN_T", 0)
+			output_ancestors ("GENERIC_PARENT<T,SUPPLIER_B>", 0)
+			output_ancestors ("GENERIC_PARENT<SUPPLIER_A,U>", 0)
 
 			io.put_string ("======================= generic inheritance =======================%N")
 			io.put_string ("......... generic inheritance - source form ..........%N")
@@ -115,13 +143,16 @@ feature -- Initialization
 			output_class_properties ("GENERIC_CHILD_OPEN_T", True)
 			output_class_properties ("GENERIC_CHILD_OPEN_U", True)
 			output_class_properties ("GENERIC_CHILD_CLOSED", True)
+
 		end
+
+feature {NONE} -- Implementation
 
 	output_class_properties (a_class_name: STRING; show_flat: BOOLEAN)
 		local
-			properties: HASH_TABLE [BMM_PROPERTY [BMM_TYPE], STRING]
+			properties: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
 		do
-			io.put_string (a_class_name + " %N")
+			io.put_string (a_class_name + " - properties " + if show_flat then "(flat)" else "(source)" end + "%N")
 			if show_flat then
 				properties := rm_schema.class_definition (a_class_name).flat_properties
 			else
@@ -131,6 +162,26 @@ feature -- Initialization
 				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
 			end
 			io.new_line
+		end
+
+	output_ancestors (a_class_name: STRING; depth: INTEGER)
+		do
+			io.put_string (a_class_name + " - ancestors%N")
+			do_output_ancestors (a_class_name, depth)
+			io.put_string ("%N")
+		end
+
+	do_output_ancestors (a_class_name: STRING; depth: INTEGER)
+		local
+			str: STRING
+			class_def: BMM_CLASS
+		do
+			class_def := rm_schema.type_class_definition (a_class_name)
+			across class_def.ancestors as ancs_csr loop
+				create str.make_filled ('%T', depth + 1)
+				io.put_string (str + ancs_csr.key + "%N")
+				do_output_ancestors (ancs_csr.key.as_string_8, depth + 1)
+			end
 		end
 
 end

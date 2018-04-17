@@ -47,7 +47,7 @@ includes = <
 ------------------------------------------------------------------------------
 -- archetype top-level packages - the semantic concept used in archetype ids
 ------------------------------------------------------------------------------
-archetype_namespace = <"EHR_EXTRACT">
+model_name = <"EHR_EXTRACT">
 
 
 ------------------------------------------------------

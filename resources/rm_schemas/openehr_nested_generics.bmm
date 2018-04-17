@@ -45,8 +45,7 @@ includes = <
 ------------------------------------------------------
 -- archetyping
 ------------------------------------------------------
-archetype_namespace = <"GENERICS">
-archetype_data_value_parent_class = <"DATA_VALUE">
+model_name = <"GENERICS">
 
 ------------------------------------------------------
 -- packages

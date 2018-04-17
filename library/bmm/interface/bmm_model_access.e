@@ -205,8 +205,8 @@ feature {NONE} -- Implementation
 			-- this is detected and used to populate `top_level_schemas'
 
 	models_by_namespace: HASH_TABLE [BMM_MODEL, STRING]
-			-- fully merged models keyed by lower-case qualified package name, i.e. model_publisher '-' package_name,
-			-- e.g. "openehr-ehr"; this matches the qualified package name part of an ARCHETYPE_ID
+			-- fully merged models keyed by lower-case qualified package name, i.e. model_publisher '-' model_name,
+			-- e.g. "openehr-ehr"
 
 	load_schema_descriptors
 			-- initialise `rm_schema_metadata_table' by finding all the schema files in the directory tree of `schema_directory'
@@ -377,7 +377,7 @@ feature {NONE} -- Implementation
 								schema_desc.validate_merged
 								merge_validation_errors (schema_desc)
 								if schema_desc.passed then
-									-- now we create a BMM_SCHEMA from a fully merged P_BMM_SCHEMA
+									-- now we create a BMM_MODEL from a fully merged P_BMM_SCHEMA
 									schema_desc.create_model
 									if attached schema_desc.model as att_model then
 										att_model.post_process
@@ -399,9 +399,7 @@ feature {NONE} -- Implementation
 				-- now populate the `models_by_namespace' table
 				models_by_namespace.wipe_out
 				across valid_models as models_csr loop
-					if attached models_csr.item.archetype_namespace as ns then
-						models_by_namespace.put (models_csr.item, publisher_qualified_namespace_key (models_csr.item.rm_publisher, ns).as_lower)
-					end
+					models_by_namespace.put (models_csr.item, publisher_qualified_namespace_key (models_csr.item.rm_publisher, models_csr.item.model_name).as_lower)
 				end
 
 				-- add entry to `top_level_schemas_by_publisher`; this includes non-valid schemas

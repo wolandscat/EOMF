@@ -569,6 +569,7 @@ feature -- Modification
 									new_prop.bmm_type.substitute_formal_generic_type (anc_gen_subs_csr.key.as_string_8, anc_gen_subs_csr.item.create_duplicate)
 								end
 							end
+							new_prop.set_is_synthesised_generic
 							overwrite_property (new_prop)
 						end
 					end

@@ -17,7 +17,6 @@ feature -- Definition
 	Entity_metatype_simple: STRING = "simple_entity"
 	Entity_metatype_enumeration: STRING = "enumeration_entity"
 	Entity_metatype_generic: STRING = "generic_entity"
-	Entity_metatype_generic_effective: STRING = "generic_effective_entity"
 	Entity_metatype_generic_parameter: STRING = "generic_parameter_entity"
 	Entity_metatype_container: STRING = "container_entity"
 

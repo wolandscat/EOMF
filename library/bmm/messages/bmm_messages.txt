@@ -13,6 +13,8 @@ templates = <
 
 		-- displyable text items
 		["bmm_documentation_text"] = <"Documentation">
+		["bmm_prop_synth_gen_text"] = <"Property synthesised due to generic formal parameter substitution">
+
 
 		-- SCHEMA_ACCESS (RM model checker)
 		["bmm_schemas_config_not_valid"] = <"Reference model schema(s) $1 specified in options not valid or not found in schema directories">

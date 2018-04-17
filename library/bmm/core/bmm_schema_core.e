@@ -20,6 +20,7 @@ feature -- Definitions
 
 	Default_schema_option_class_name: STRING = "Any"
 	Default_schema_lifecycle_state: STRING = "Initial"
+	Default_rm_pubisher: STRING = "Unknown"
 	Default_schema_name: STRING = "Unknown"
 	Default_schema_release: STRING = "Unknown"
 	Default_schema_revision: STRING = "Unknown"
@@ -28,16 +29,6 @@ feature -- Definitions
 
 feature -- Initialisation
 
-	make (a_rm_publisher, a_schema_name, a_rm_release: STRING)
-		require
-			valid_rm_publisher: not a_rm_publisher.is_empty
-			valid_schema_name: not a_schema_name.is_empty
-			valid_rm_release: not a_rm_release.is_empty
-		do
-			rm_publisher := a_rm_publisher
-			schema_name := a_schema_name
-			rm_release := a_rm_release
-		end
 
 feature -- Identification
 
@@ -104,13 +95,6 @@ feature -- Identification
 			create Result.make_from_string (Default_schema_description)
 		end
 
-feature -- Access
-
-	archetype_namespace: detachable STRING
-			-- Archetype namespace to use in archetypes for a particular kind of system component
-			-- e.g. "EHR" in "openEHR-EHR".
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
 feature -- Status Report
 
 	has_schema_contributor (a_contributor: STRING): BOOLEAN
@@ -155,13 +139,6 @@ feature -- Modification
 			valid_contributor: not a_contributors.is_empty
 		do
 			schema_contributors := a_contributors
-		end
-
-	set_archetype_namespace (a_namespace: STRING)
-		require
-			valid_namespace: not a_namespace.is_empty
-		do
-			archetype_namespace := a_namespace
 		end
 
 	set_schema_description (a_description: STRING)

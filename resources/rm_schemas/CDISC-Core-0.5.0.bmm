@@ -8,6 +8,7 @@ bmm_version = <"2.1">
 rm_publisher = <"CDISC">
 schema_name = <"core">
 rm_release = <"0.5.0">
+-- model_name = <"CDISC">
 
 ------------------------------------
 -- schema documentation
@@ -24,11 +25,6 @@ includes = <
          id = <"iso_21090_0.9.0">
     >
 >
-
-------------------------------------
--- archetyping
-------------------------------------
-archetype_rm_closure_packages = <"org.cdisc.Core", ...>
 
 ------------------------------------
 -- packages
