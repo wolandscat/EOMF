@@ -5,9 +5,9 @@ note
 				 any specific item.
 				 ]"
 	keywords:    "config, file"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2010- openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class CONFIG_FILE_ACCESS
