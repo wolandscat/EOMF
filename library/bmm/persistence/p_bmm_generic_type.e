@@ -50,7 +50,7 @@ feature -- Access
 						Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
 					end
 				end
-				generic_parameter_defs := Result
+				-- generic_parameter_defs := Result
 			else
 				create Result.make (0)
 			end

@@ -135,11 +135,11 @@ feature -- Modification
 					across parent_gen_class.generic_parameters as parent_gen_class_gen_parms loop
 						if parent_gen_class_gen_parms.item.name.same_string (a_gen_parm_def.name) and
 							a_gen_parm_def.is_constrained and then attached a_gen_parm_def.inheritance_precursor as gp_inh_parent
-							and then a_gen_parm_def.effective_conforms_to_type /= gp_inh_parent.effective_conforms_to_type
+							and then not a_gen_parm_def.effective_conforms_to_type.type_name.same_string (gp_inh_parent.effective_conforms_to_type.type_name)
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
 								if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} parent_props_csr.item as parent_prop and then
-									parent_prop.bmm_type = a_gen_parm_def.inheritance_precursor
+									parent_prop.bmm_type = gp_inh_parent
 								then
 									debug ("bmm")
 										io.put_string ("Schema: " + bmm_model.schema_id +

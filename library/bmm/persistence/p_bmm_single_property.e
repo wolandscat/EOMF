@@ -25,6 +25,10 @@ feature -- Access (persisted)
 			-- type definition of this property, if not a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 			-- Can be used in schema instead of `type', but less readable
+		note
+			option: transient
+		attribute
+		end
 
 feature -- Access
 

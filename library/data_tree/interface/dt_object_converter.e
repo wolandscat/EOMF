@@ -67,11 +67,23 @@ feature -- Access
 			create Result.make
 		end
 
+feature -- Status Report
+
+	false_booleans_off_option: BOOLEAN
+			-- if True, turn off outputting of False-valued Booleans
+
 feature -- Commands
 
 	reset
 		do
 			errors.wipe_out
+			false_booleans_off_option := False
+		end
+
+	set_false_booleans_off_option
+			-- set `false_booleans_off_option`
+		do
+			false_booleans_off_option := True
 		end
 
 feature -- Conversion
@@ -318,11 +330,14 @@ end
 
 						-- the Eiffel object field is a DT primitive type then
 						if is_dt_primitive_atomic_type (fld_att_dyn_tid) then
-							create a_dt_attr.make_single (eif_fld_name)
-							create dt_prim_obj.make_anonymous (eif_fld_val)
-							check attached dt_prim_obj.value end
-							a_dt_attr.put_child (dt_prim_obj)
-							a_dt_co.put_attribute (a_dt_attr)
+							-- if false_booleans_off_option is set and field is a False Boolean, ignore, in all other cases, output
+							if field_type (i, an_obj) /= Boolean_type or not false_booleans_off_option or boolean_field (i, an_obj) = True then
+								create a_dt_attr.make_single (eif_fld_name)
+								create dt_prim_obj.make_anonymous (eif_fld_val)
+								check attached dt_prim_obj.value end
+								a_dt_attr.put_child (dt_prim_obj)
+								a_dt_co.put_attribute (a_dt_attr)
+							end
 
 						-- the Eiffel object field is a SEQUENCE of some DT primitive type
 						elseif is_dt_primitive_sequence_conforming_type (fld_att_dyn_tid) then
