@@ -21,8 +21,8 @@ feature -- Software-dependent definitions
 
 feature -- Definitions
 
-	Qualified_name_delimiter: CHARACTER = '-'
-			-- delimiter between class_name and qualifiying closure name, e.g. EHR-ENTRY
+	Schema_id_delimiter: CHARACTER = '_'
+			-- delimiter between parts of `schema_id`
 
 	Schema_name_delimiter: STRING = "::"
 
@@ -55,12 +55,12 @@ feature -- Definitions
 --			Result.extend ("Array")
 --		end
 
-	Bmm_schema_file_match_regex: STRING
+	bmm2_schema_file_match_regex: STRING
 		once
-			Result :=  ".*\" + Bmm_schema_file_extension + "$"
+			Result :=  ".*\" + bmm2_schema_file_extension + "$"
 		end
 
-	Bmm_schema_file_extension: STRING = ".bmm"
+	bmm2_schema_file_extension: STRING = ".bmm"
 
 	Metadata_bmm_version: STRING = "bmm_version"
 			-- ODIN attribute name of logical attribute 'bmm_version' in schema file;
@@ -104,7 +104,7 @@ feature -- Definitions
 
 feature -- Validation
 
-	valid_meta_data (a_meta_data: HASH_TABLE [STRING, STRING]): BOOLEAN
+	valid_bmm_meta_data (a_meta_data: HASH_TABLE [STRING, STRING]): BOOLEAN
 			-- True if `a_meta_data' is valid for creation of a SCHEMA_DESCRIPTOR
 		do
 			Result := attached a_meta_data.item (metadata_rm_publisher) and
@@ -154,29 +154,29 @@ feature -- Conversion
 			-- Any or all arguments can be Void or empty; for each missing element,
 			-- result contains "unknown", e.g. "unknown_test_1.0"
 			-- Result is lower case
-		local
-			mp, mn, mr: STRING
 		do
 			create Result.make(0)
-			if a_model_publisher = Void or a_model_publisher.is_empty then
-				mp := "unknown"
-			else
-				mp := a_model_publisher
-			end
-			if a_schema_name = Void or a_schema_name.is_empty then
-				mn := "unknown"
-			else
-				mn := a_schema_name
-			end
-			if a_model_release = Void or a_model_release.is_empty then
-				mr := "unknown"
-			else
-				mr := a_model_release
-			end
-			Result.append (mp + "_" + mn + "_" + mr)
+			Result.append (if not a_model_publisher.is_empty then a_model_publisher else "unknown" end)
+			Result.append_character (Schema_id_delimiter)
+			Result.append (if not a_schema_name.is_empty then a_schema_name else "unknown" end)
+			Result.append_character (Schema_id_delimiter)
+			Result.append (if not a_model_release.is_empty then a_model_release else "0.0.0" end)
 			Result.to_lower
 		ensure
-			Result_not_empty: not Result.is_empty
+			Result_valid: valid_full_version (schema_id_version (Result))
+			Result_lower_case: Result.as_lower.is_equal (Result)
+		end
+
+	schema_id_version (a_schema_id: STRING): STRING
+			-- Extract version string from 3-part schema_id as created by `schema_id`,
+			-- otherwise an empty string
+		do
+			-- if there is any version part at all, then we extract it
+			if a_schema_id.tail (1).is_integer then
+				Result := a_schema_id.substring (a_schema_id.last_index_of (Schema_id_delimiter, a_schema_id.count) + 1, a_schema_id.count)
+			else
+				create Result.make_empty
+			end
 		end
 
 	package_base_name (a_package_name: STRING): STRING
@@ -187,35 +187,6 @@ feature -- Conversion
 			else
 				Result := a_package_name
 			end
-		end
-
-	publisher_qualified_namespace_key (a_model_publisher, a_namespace: STRING): STRING
-			-- lower-case form of `a_namespace' qualified by `a_model_publisher'
-		require
-			Model_publisher_valid: not a_model_publisher.is_empty
-			Namespace_name_valid: not a_namespace.is_empty
-		do
-			Result := publisher_qualified_namespace (a_model_publisher, a_namespace).as_lower
-		ensure
-			Is_lower: Result.same_string (Result.as_lower)
-		end
-
-	publisher_qualified_namespace (a_model_publisher, a_namespace: STRING): STRING
-			-- mixed-case standard model-package name string, e.g. "openEHR-EHR" for UI display
-		require
-			Model_publisher_valid: not a_model_publisher.is_empty
-			Namespace_valid: not a_namespace.is_empty
-		do
-			Result := a_model_publisher + Qualified_name_delimiter.out + a_namespace.as_upper
-		end
-
-	namespace_qualified_class_name (a_namespace, a_class_name: STRING): STRING
-			-- generate a standard model-class name string, e.g. "ehr-observation" for use in finding RM schemas
-		require
-			Namespace_valid: not a_namespace.is_empty
-			Class_name_valid: not a_class_name.is_empty
-		do
-			Result := a_namespace + Qualified_name_delimiter.out + a_class_name
 		end
 
 	type_name_as_flat_list (a_type_string: STRING): ARRAYED_LIST [STRING]

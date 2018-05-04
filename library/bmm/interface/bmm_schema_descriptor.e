@@ -10,7 +10,7 @@ note
 	copyright:   "Copyright (c) 2009- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_SCHEMA_DESCRIPTOR
+deferred class BMM_SCHEMA_DESCRIPTOR
 
 inherit
 	ANY_VALIDATOR
@@ -21,7 +21,7 @@ inherit
 	BMM_DEFINITIONS
 		export
 			{NONE} all;
-			{ANY} valid_meta_data
+			{ANY} valid_bmm_meta_data
 		end
 
 	BMM_MESSAGES_IDS
@@ -29,19 +29,17 @@ inherit
 			{NONE} all
 		end
 
-	SHARED_DT_OBJECT_CONVERTER
+	SHARED_DT_SERIALISERS
 		export
-			{NONE} all
+			{NONE} all;
+			{ANY} has_dt_serialiser_format
 		end
-
-create
-	make
 
 feature -- Initialisation
 
 	make (a_meta_data: HASH_TABLE [STRING, STRING])
 		require
-			Meta_data_valid: valid_meta_data (a_meta_data)
+			Meta_data_valid: valid_bmm_meta_data (a_meta_data)
 		local
 			bmm_ver: STRING
 		do
@@ -67,21 +65,21 @@ feature -- Initialisation
 					add_error (ec_BMM_VER, <<schema_id, bmm_ver, Bmm_internal_version>>)
 				end
 				schema_path := md_schema_path
-				create schema_file_accessor.make (schema_path)
+				create_schema_file_accessor (schema_path)
 			end
 		end
 
 feature -- Access
 
-	p_schema: detachable P_BMM_SCHEMA
-			-- persistent form of model
+	bmm_schema: detachable BMM_SCHEMA
+			-- persistent form of model; concrete form set in descendants
 
-	model: detachable BMM_MODEL
+	bmm_model: detachable BMM_MODEL
 			-- computable form of model
 
 	schema_id: STRING
 			-- schema id, formed from:
-			-- meta_data(Metadata_model_publisher) '-' meta_data(metadata_schema_name) '-' meta_data(Metadata_model_release)
+			-- meta_data(Metadata_model_publisher) '_' meta_data(Metadata_schema_name) '_' meta_data(Metadata_model_release)
 			--	 e.g. openehr_rm_1.0.3, openehr_test_1.0.1, iso_13606-1_2008
 		attribute
 			create Result.make_empty
@@ -93,15 +91,7 @@ feature -- Access
 		end
 
 	meta_data: HASH_TABLE [STRING, STRING]
-			-- table of {key, value} pairs of schema meta-data, keys as follows:
-			-- "bmm_version",
-			-- "model_publisher",
-			-- "schema_name",
-			-- "model_release",
-			-- "schema_revision",
-			-- "schema_lifecycle_state",
-			-- "schema_description",
-			-- "schema_path"
+			-- table of {key, value} pairs of schema meta-data, keys as defined in BMM_DEFINITIONS.metadata_xxx
 
 	includes: ARRAYED_LIST [STRING]
 			-- schema_ids of schemas included by this schema
@@ -114,8 +104,8 @@ feature -- Status Report
 	is_top_level: BOOLEAN
 			-- True if this is a top-level schema, i.e. has an archetype namespace
 		do
-			if attached p_schema then
-				Result := attached p_schema.model_name
+			if attached bmm_schema then
+				Result := attached bmm_schema.model_name
 			end
 		end
 
@@ -135,12 +125,12 @@ feature {BMM_MODEL_ACCESS} -- Commands
 	load
 			-- load schema into in-memory form
 		local
-			new_schema: P_BMM_SCHEMA
+			new_schema: like bmm_schema
 			exception_encountered: BOOLEAN
 		do
 			if not exception_encountered then
 				reset
-				model := Void
+				bmm_model := Void
 				schema_file_accessor.load
 				if not schema_file_accessor.has_errors then
 					passed := True
@@ -152,7 +142,7 @@ feature {BMM_MODEL_ACCESS} -- Commands
 					if passed then
 						new_schema.load_finalise
 					end
-					p_schema := new_schema
+					bmm_schema := new_schema
 				else
 					merge_errors (schema_file_accessor.errors)
 				end
@@ -165,23 +155,18 @@ feature {BMM_MODEL_ACCESS} -- Commands
 				passed := False
 			end
 		ensure
-			P_schema_set: attached p_schema or else errors.has_errors
-			Passed_valid: passed implies attached p_schema
+			Schema_set: attached bmm_schema or else errors.has_errors
+			Passed_valid: passed implies attached bmm_schema
 		rescue
 			exception_encountered := True
 			retry
 		end
 
-	validate_includes (all_schemas_list: ARRAY [STRING])
+	validate_includes (all_schemas: STRING_TABLE [BMM_SCHEMA_DESCRIPTOR])
 			-- validate includes list for this schema, to see if each mentioned schema exists in read schemas
-		local
-			all_schemas: ARRAYED_LIST [STRING]
 		do
-			create all_schemas.make (0)
-			all_schemas.compare_objects
-			all_schemas.make_from_array (all_schemas_list)
-			if attached p_schema and then attached p_schema.includes as att_includes then
-				across att_includes as supplier_schemas_csr loop
+			if attached bmm_schema and then attached bmm_schema.includes as bmm_schema_includes then
+				across bmm_schema_includes as supplier_schemas_csr loop
 					if not all_schemas.has (supplier_schemas_csr.item.id) then
 						add_error (ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
 					else
@@ -193,9 +178,9 @@ feature {BMM_MODEL_ACCESS} -- Commands
 
 	validate_merged
 		do
-			check attached p_schema then
-				p_schema.validate
-				merge_errors (p_schema.errors)
+			check attached bmm_schema then
+				bmm_schema.validate
+				merge_errors (bmm_schema.errors)
 			end
 		end
 
@@ -206,23 +191,40 @@ feature {BMM_MODEL_ACCESS} -- Commands
 		local
 			exception_encountered: BOOLEAN
 		do
-			check attached p_schema then
+			check attached bmm_schema then
 				if not exception_encountered then
-					p_schema.create_bmm_model
-					model := p_schema.bmm_model
+					bmm_schema.create_bmm_model
+					bmm_model := bmm_schema.bmm_model
 				else
-					add_error (ec_BMM_CRF, <<p_schema.schema_id>>)
+					add_error (ec_BMM_CRF, <<bmm_schema.schema_id>>)
 				end
 			end
 		ensure
-			attached model or else errors.has_errors
+			attached bmm_model or else errors.has_errors
 		rescue
 			exception_encountered := True
 			retry
 		end
 
+feature -- Commands
+
+	export_schema (a_syntax, a_file_path: STRING)
+			-- export whole schema in `a_syntax`
+		require
+			Format_valid: has_dt_serialiser_format (a_syntax)
+			Schema_exists: attached bmm_schema
+		do
+			check attached bmm_schema as bs then
+				schema_file_accessor.save_as (bs, a_syntax, a_file_path, True)
+			end
+		end
+
 feature {NONE} -- Implementation
 
-	schema_file_accessor: ODIN_OBJECT_READER [P_BMM_SCHEMA]
+	schema_file_accessor: OBJECT_READER [BMM_SCHEMA]
+
+	create_schema_file_accessor (a_schema_path: STRING)
+		deferred
+		end
 
 end

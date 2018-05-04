@@ -142,7 +142,7 @@ feature -- Modification
 									parent_prop.bmm_type = gp_inh_parent
 								then
 									debug ("bmm")
-										io.put_string ("Schema: " + bmm_model.schema_id +
+										io.put_string ("Schema: " + bmm_model.model_id +
 											" found in class " + type.type_signature +
 											"; parent type = " + parent_gen_class.type.type_name +
 											" gen parm " + a_gen_parm_def.type_signature +

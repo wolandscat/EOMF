@@ -16,7 +16,7 @@ class
 inherit
 	GLOBAL_ERROR_REPORTING_LEVEL
 
-	SHARED_MODEL_ACCESS
+	SHARED_BMM_MODEL_ACCESS
 
 	SHARED_BMM_APP_RESOURCES
 		redefine
@@ -84,8 +84,8 @@ feature -- Initialization
 			schema_meta_data: HASH_TABLE [STRING, STRING]
 		do
 			-- create row containing widgets for: check column, name column, status column, edit button column
-			across models_access.all_schemas as rm_schemas_csr loop
-				schema_id := rm_schemas_csr.key
+			across bmm_models_access.all_schemas as rm_schemas_csr loop
+				schema_id := rm_schemas_csr.key.as_string_8
 				schema_meta_data := rm_schemas_csr.item.meta_data
 
 				-- column 1 - check box to indicate loaded; only on top-level schemas
@@ -149,14 +149,14 @@ feature -- Initialization
 				rm_schema_directories.prune_all (dead_sch_csr.item)
 			end
 
-			models_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
+			bmm_models_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
 			-- rm_schemas_access.initialise_all (rm_schema_directories)
 			output_schema_info
 
-			if models_access.has_errors then
-				add_error (Ec_general_error, <<models_access.error_strings>>)
-			elseif not models_access.found_valid_models then
-				add_error (ec_bmm_schemas_config_not_valid, <<models_access.schemas_load_list_string>>)
+			if bmm_models_access.has_errors then
+				add_error (Ec_general_error, <<bmm_models_access.error_strings>>)
+			elseif not bmm_models_access.found_valid_models then
+				add_error (ec_bmm_schemas_config_not_valid, <<bmm_models_access.schemas_load_list_string>>)
 			end
 		end
 

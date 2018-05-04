@@ -40,5 +40,9 @@ feature -- Definitions
 		ec_file_already_exists: STRING = "file_already_exists"
 		ec_empty_file_does_not_exist: STRING = "empty_file_does_not_exist"
 		ec_file_exists_replace_question: STRING = "file_exists_replace_question"
+		ec_object_file_not_valid: STRING = "object_file_not_valid"
+		ec_object_load_failure: STRING = "object_load_failure"
+		ec_object_load_failure_exception: STRING = "object_load_failure_exception"
+		ec_object_conv_fail_err: STRING = "object_conv_fail_err"
 	
 end

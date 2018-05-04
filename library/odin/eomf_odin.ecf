@@ -25,6 +25,7 @@
 
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
 		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
+		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
 
 		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
 		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>

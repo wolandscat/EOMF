@@ -21,7 +21,7 @@ inherit
 			add_package
 		end
 
-	BMM_SCHEMA_CORE
+	BMM_MODEL_METADATA
 		redefine
 			default_create
 		end
@@ -44,26 +44,36 @@ feature -- Initialisation
 
 	default_create
 		do
-			make (Default_rm_pubisher, Default_schema_name, Default_schema_release, Default_model_name)
+			make (Default_rm_pubisher, Default_rm_release, Default_model_name, create {DEFAULT_BMM_SCHEMA})
 		end
 
-	make (a_rm_publisher, a_schema_name, a_rm_release, a_model_name: STRING)
+	make (a_rm_publisher, a_rm_release, a_model_name: STRING; a_source_schema: BMM_SCHEMA)
 		require
 			valid_rm_publisher: not a_rm_publisher.is_empty
-			valid_schema_name: not a_schema_name.is_empty
 			valid_rm_release: not a_rm_release.is_empty
 			valid_model_name: not a_model_name.is_empty
 		do
 			rm_publisher := a_rm_publisher
-			schema_name := a_schema_name
 			rm_release := a_rm_release
 			model_name := a_model_name
+			source_schema := a_source_schema
+		end
+
+feature -- Identification
+
+	model_name: STRING
+			-- name of this model
+
+	model_id: STRING
+			-- derived name of model, based on model publisher, model name, model release
+		do
+			Result := create_schema_id (rm_publisher, model_name, rm_release)
 		end
 
 feature -- Access
 
-	model_name: STRING
-			-- name of this model
+	source_schema: BMM_SCHEMA
+			-- source serialised form of model, usuall a file(s)
 
 	class_definitions: STRING_TABLE [BMM_CLASS]
 			-- All classes in this model, including for used generic types,

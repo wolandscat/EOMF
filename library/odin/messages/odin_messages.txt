@@ -1,19 +1,13 @@
 --	component:   openEHR ODIN Project
 --	description: Error database for ADL compiler
 --	keywords:    ODIN
---	author:      Thomas Beale
---	support:     Ocean Informatics <support@OceanInformatics.com>
---	copyright:   Copyright (c) 2010 Ocean Informatics Pty Ltd
+--	author:      Thomas Beale <thomas.beale@openehr.org>
+--	support:     http://www.openehr.org/issues/browse/AWB
+--	copyright:   Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>
 --	license:     See notice at bottom of class
 
 templates = <
 	["en"] = <
-		-- ODIN_OBJECT_READER
-		["object_file_not_valid"] = <"$1 file $2 does not exist or not readable">
-		["object_load_failure"] = <"$1 file $2 load failure; reason: $3">
-		["object_load_failure_exception"] = <"$1 file $2 load failure due to exception during processing">
-		["object_conv_fail_err"] = <"$1 file $2 load data conversion failure; reason: $3">
-
 		-- ODIN_CONFIG_FILE_ACCESS
 		["config_settings_line1"] = <"$1 configuration settings (ODIN format)">
 		["config_settings_line2"] = <"Automatically written by application">

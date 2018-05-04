@@ -29,7 +29,7 @@ feature {NONE} -- Events
 		do
 			bmm_env_setup
 			if not has_errors then
-				bmm_model_cache.put (models_access.model_for_namespace ("openehr-task_planning"))
+				bmm_model_cache.put (bmm_model ("openehr-task_planning"))
 			end
 		end
 

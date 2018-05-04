@@ -1,8 +1,8 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Persisted form of a model component that contains packages"
-	keywords:    "model, UML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	keywords:    "Basic meta-model"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"

@@ -160,7 +160,7 @@ feature -- Access
 			-- 'schema_id::package.package.CLASS' to enable identification in situation when a given class/package
 			-- has been imported into more than one schema.
 		do
-			Result := bmm_model.schema_id + Schema_name_delimiter + class_path
+			Result := bmm_model.model_id + Schema_name_delimiter + class_path
 		end
 
 	suppliers: ARRAYED_SET [STRING]

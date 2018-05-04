@@ -43,7 +43,7 @@ feature -- Initialization
 
 	run_openehr_tests
 		do
-			bmm_model_cache.put (models_access.model_for_namespace ("openehr-task_planning"))
+			bmm_model_cache.put (bmm_model ("openEHR_task_planning"))
 
 			io.put_string ("---------------- rm_schema.has_property --------------%N")
 			output_ancestors ("CONTEXT_VALUE", 0)
@@ -116,7 +116,7 @@ feature -- Initialization
 			output_class_properties ("PARAMETER_MAPPING", True)
 			output_class_properties ("QUERY_CALL", True)
 
-			bmm_model_cache.put (models_access.model_for_namespace ("openehr-generics"))
+			bmm_model_cache.put (bmm_model ("openEHR_generics"))
 
 			io.put_string ("======================= inheritance structure =======================%N")
 			output_ancestors ("GENERIC_CHILD_CLOSED", 0)

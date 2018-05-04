@@ -24,11 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (26)
-			message_table.put ("$1 file $2 does not exist or not readable", ec_object_file_not_valid)
-			message_table.put ("$1 file $2 load failure; reason: $3", ec_object_load_failure)
-			message_table.put ("$1 file $2 load failure due to exception during processing", ec_object_load_failure_exception)
-			message_table.put ("$1 file $2 load data conversion failure; reason: $3", ec_object_conv_fail_err)
+			create message_table.make (22)
 			message_table.put ("$1 configuration settings (ODIN format)", ec_config_settings_line1)
 			message_table.put ("Automatically written by application", ec_config_settings_line2)
 			message_table.put ("put_object call to object_converter.object_to_dt with object of type $1 failed", ec_put_object_conversion_failure)

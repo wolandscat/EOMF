@@ -45,6 +45,8 @@ feature -- Initialisation
 
 feature -- Access
 
+	odin_reader: detachable ODIN_OBJECT_READER[DT_CONVERTIBLE]
+
 feature -- Status Report
 
 end

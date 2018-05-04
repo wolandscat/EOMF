@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Subtype of BMM_TYPE that specifies containers with one generic parameter."
 	keywords:    "model, Basic meta-model"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2011 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class P_BMM_CONTAINER_TYPE
@@ -60,12 +60,12 @@ feature -- Factory
 		local
 			bmm_cont_class: BMM_GENERIC_CLASS
 		do
-			if a_bmm_model.has_class_definition (container_type) and attached type_ref then
+			if a_bmm_model.has_class_definition (container_type) and attached type_ref as tr then
 				check attached {BMM_GENERIC_CLASS} a_bmm_model.class_definition (container_type) as bmm_gc then
 					bmm_cont_class := bmm_gc
 				end
-				type_ref.create_bmm_type (a_bmm_model, a_class_def)
-				if attached {BMM_UNITARY_TYPE} type_ref.bmm_type as bt then
+				tr.create_bmm_type (a_bmm_model, a_class_def)
+				if attached {BMM_UNITARY_TYPE} tr.bmm_type as bt then
 					create bmm_type.make (bt, bmm_cont_class)
 				end
 			end

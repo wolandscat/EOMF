@@ -45,8 +45,8 @@ feature -- Access
 			-- one schema.
 		do
 			create Result.make_empty
-			if attached bmm_model as sch then
-				Result.append (sch.schema_id + schema_name_delimiter + path)
+			if attached bmm_model as bm then
+				Result.append (bm.model_id + schema_name_delimiter + path)
 			end
 		end
 

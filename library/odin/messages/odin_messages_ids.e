@@ -10,10 +10,6 @@ note
 class ODIN_MESSAGES_IDS
 
 feature -- Definitions
-		ec_object_file_not_valid: STRING = "object_file_not_valid"
-		ec_object_load_failure: STRING = "object_load_failure"
-		ec_object_load_failure_exception: STRING = "object_load_failure_exception"
-		ec_object_conv_fail_err: STRING = "object_conv_fail_err"
 		ec_config_settings_line1: STRING = "config_settings_line1"
 		ec_config_settings_line2: STRING = "config_settings_line2"
 		ec_put_object_conversion_failure: STRING = "put_object_conversion_failure"

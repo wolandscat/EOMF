@@ -21,6 +21,11 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal, has_dt_serialiser_format
 		end
 
+	SHARED_DT_OBJECT_CONVERTER
+		export
+			{NONE} all
+		end
+
 create
 	make
 

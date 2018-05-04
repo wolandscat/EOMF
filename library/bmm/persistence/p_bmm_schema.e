@@ -13,7 +13,7 @@ note
 class P_BMM_SCHEMA
 
 inherit
-	BMM_SCHEMA_CORE
+	BMM_SCHEMA
 
 	P_BMM_PACKAGE_CONTAINER
 
@@ -21,28 +21,6 @@ inherit
 		redefine
 			finalise_dt
 		end
-
-	ANY_VALIDATOR
-		redefine
-			ready_to_validate
-		end
-
-	BMM_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
-feature -- Definitions
-
-	State_created: INTEGER = 1
-
-	State_validated_created: INTEGER = 2
-
-	State_includes_pending: INTEGER = 3
-
-	State_includes_processed: INTEGER = 4
-
-	Max_add_attempts: INTEGER = 10
 
 feature -- Initialisation
 
@@ -54,19 +32,6 @@ feature -- Initialisation
 		end
 
 feature -- Access (attributes from schema)
-
-	bmm_version: detachable STRING
-			-- version of BMM model, enabling schema evolution reasoning
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
-	includes: HASH_TABLE [BMM_INCLUDE_SPEC, STRING]
-			-- inclusion list, in the form of a hash of individual include specifications,
-			-- each of which at least specifies the id of another schema, and may specify
-			-- a namespace via which types from the included schemas are known in this schema
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-		attribute
-			create Result.make (0)
-		end
 
 	primitive_types: HASH_TABLE [P_BMM_CLASS, STRING]
 			-- types like Integer, Boolean etc, keyed by class name
@@ -82,18 +47,7 @@ feature -- Access (attributes from schema)
 			create Result.make (0)
 		end
 
-	model_name: detachable STRING
-			-- Name of model - only set on model root point.
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
 feature -- Access (Attributes from schema load post-processing)
-
-	state: INTEGER
-			-- state machine state for this schema
-		note
-			option: transient
-		attribute
-		end
 
 	canonical_packages: HASH_TABLE [P_BMM_PACKAGE, STRING]
 			-- package structure in which all top-level qualified package names like xx.yy.zz have been
@@ -112,34 +66,6 @@ feature -- Access (Attributes from schema load post-processing)
 			check attached canonical_packages.item (a_pkg_name) as att_pkg then
 				Result := att_pkg
 			end
-		end
-
-	bmm_model: BMM_MODEL
-		do
-			check attached bmm_model_cache as att_mod then
-				Result := att_mod
-			end
-		end
-
-	includes_to_process: ARRAYED_LIST [STRING]
-			-- list of includes to process during setup
-		do
-			if attached includes_to_process_cache as ipc then
-				Result := ipc
-			else
-				create Result.make (0)
-				Result.compare_objects
-				includes_to_process_cache := Result
-			end
-		end
-
-	bmm_version_from_schema: BOOLEAN
-			-- True if the bmm_version attribute was actually set in the schema; False means
-			-- the `assumed_bmm_version' value is used instead. This flag enables the situation to
-			-- be reported properly during schema validation.
-		note
-			option: transient
-		attribute
 		end
 
 	ancestors_index: HASH_TABLE [ARRAYED_SET [STRING], STRING]
@@ -180,6 +106,18 @@ feature -- Access
 			check attached primitive_types.item (a_class_name) as att_type then
 				Result := att_type
 			end
+		end
+
+	primitive_types_count: INTEGER
+			-- Report number of primitive types found
+		do
+			Result := primitive_types.count
+		end
+
+	class_definitions_count: INTEGER
+			-- Report number of primitive types found
+		do
+			Result := class_definitions.count
 		end
 
 feature -- Status Report
@@ -294,7 +232,7 @@ feature -- Comparison
 			Result := type_name_as_flat_list (type_1).is_equal (type_name_as_flat_list (type_2))
 		end
 
-feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
+feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 
 	validate_created
 			-- do some basic validation post initial creation
@@ -304,8 +242,6 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			--		 (child package must be declared under the parent)
 			-- 2. check that all classes are mentioned in the package structure
 			-- 3. check that all models refer to valid packages
-		require
-			state = State_created
 		local
 			pkg_names: ARRAY [STRING]
 		do
@@ -366,16 +302,12 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 				add_info (ec_bmm_schema_info_loaded, << schema_id, primitive_types.count.out, class_definitions.count.out >>)
 				state := State_validated_created
 			end
-		ensure
-			passed implies state = State_validated_created
 		end
 
 	load_finalise
 			-- Finalisation work:
 			-- 1. convert packages to canonical form, i.e. full hierarchy with no packages with names like aa.bb.cc
 			-- 2. set up include processing list
-		require
-			state = State_validated_created
 		local
 			child_pkg: P_BMM_PACKAGE
 			pkg_csr: like packages
@@ -424,16 +356,11 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 				end
 				state := State_includes_pending
 			end
-		ensure
-			state = State_includes_processed or state = State_includes_pending
 		end
 
 	merge (included_schema: P_BMM_SCHEMA)
 			-- merge in class and package definitions from `included_schema', except where the current schema already has
 			-- a definition for the given type or package
-		require
-			Loaded: state = State_includes_pending
-			Other_valid: includes_to_process.has (included_schema.schema_id)
 		do
 			-- primitive types
 			across included_schema.primitive_types as other_prim_types_csr loop
@@ -478,11 +405,6 @@ feature {P_BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			if includes_to_process.is_empty then
 				state := State_includes_processed
 			end
-		end
-
-	ready_to_validate: BOOLEAN
-		do
-			Result := state = State_includes_processed
 		end
 
 	validate
@@ -732,25 +654,15 @@ feature -- Factory
 
 	create_bmm_model
 			-- generate a BMM_MODEL object
-		require
-			Processing_state: state = State_includes_processed
-			Model_is_top_level: attached model_name
 		local
 			new_rm: BMM_MODEL
 		do
 			check attached model_name as mn then
-				create new_rm.make (rm_publisher, schema_name, rm_release, mn)
+				create new_rm.make (rm_publisher, rm_release, mn, Current)
 			end
 
 			--------- PASS 1 ----------
 			bmm_model_cache := new_rm
-			new_rm.set_schema_author (schema_author)
-			if not schema_contributors.is_empty then
-				new_rm.set_schema_contributors (schema_contributors)
-			end
-			new_rm.set_schema_lifecycle_state (schema_lifecycle_state)
-			new_rm.set_schema_revision (schema_revision)
-			new_rm.set_schema_description (schema_description)
 
 			-- packages - add package structure only, no classes yet
 			across canonical_packages as pkgs_csr loop
@@ -828,19 +740,6 @@ feature {DT_OBJECT_CONVERTER} -- Persistence
 			)
 		end
 
-feature {BMM_MODEL_ACCESS} -- Implementation
-
-	schema_error_table: HASH_TABLE [ERROR_ACCUMULATOR, STRING]
-			-- set of error accumulators for other schemas, keyed by schema id
-		do
-			if attached schema_error_table_cache as set then
-				Result := set
-			else
-				create Result.make (0)
-				schema_error_table_cache := Result
-			end
-		end
-
 feature {NONE} -- Implementation
 
 	uid_counter: CELL [INTEGER]
@@ -904,62 +803,6 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	add_validity_error (source_schema_id, a_key: STRING; args: ARRAY [STRING])
-			-- append an error with key `a_key' and `args' array to the `errors' string to the
-			-- error list for schema with `a_schema_id'
-		do
-			if source_schema_id.same_string (schema_id) then
-				add_error (a_key, args)
-			else
-				if not schema_error_table.has (source_schema_id) then
-					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
-				end
-				check attached schema_error_table.item (source_schema_id) as att_schema_err then
-					att_schema_err.add_error (a_key, args, "")
-				end
-				add_error (ec_BMM_INCERR, <<schema_id, source_schema_id>>)
-			end
-		end
-
-	add_validity_warning (source_schema_id, a_key: STRING; args: ARRAY [STRING])
-			-- append a warning with key `a_key' and `args' array to the `errors' string to the
-			-- error list for schema with `a_schema_id'
-		do
-			if source_schema_id.same_string (schema_id) then
-				add_warning (a_key, args)
-			else
-				if not schema_error_table.has (source_schema_id) then
-					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
-				end
-				check attached schema_error_table.item (source_schema_id) as att_schema_err then
-					att_schema_err.add_warning (a_key, args, "")
-				end
-			end
-		end
-
-	add_validity_info (source_schema_id, a_key: STRING; args: ARRAY [STRING])
-			-- append an info message with key `a_key' and `args' array to the `errors' string to the
-			-- error list for schema with `a_schema_id'
-		do
-			if source_schema_id.same_string (schema_id) then
-				add_info (a_key, args)
-			else
-				if not schema_error_table.has (source_schema_id) then
-					schema_error_table.put (create {ERROR_ACCUMULATOR}.make, source_schema_id)
-				end
-				check attached schema_error_table.item (source_schema_id) as att_schema_err then
-					att_schema_err.add_info (a_key, args, "")
-				end
-			end
-		end
-
-	schema_error_table_cache: detachable HASH_TABLE [ERROR_ACCUMULATOR, STRING]
-			-- set of error accumulators for other schemas, keyed by schema id
-		note
-			option: transient
-		attribute
-		end
-
 	ancestors_index_cache: detachable HASH_TABLE [ARRAYED_SET [STRING], STRING]
 			-- index of all ancestors of each class
 		note
@@ -967,20 +810,7 @@ feature {NONE} -- Implementation
 		attribute
 		end
 
-	includes_to_process_cache: detachable ARRAYED_LIST [STRING]
-			-- list of includes to process during setup
-		note
-			option: transient
-		attribute
-		end
-
 	canonical_packages_cache: detachable HASH_TABLE [P_BMM_PACKAGE, STRING]
-		note
-			option: transient
-		attribute
-		end
-
-	bmm_model_cache: detachable BMM_MODEL
 		note
 			option: transient
 		attribute

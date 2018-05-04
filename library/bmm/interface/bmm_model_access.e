@@ -48,12 +48,11 @@ feature {NONE} -- Initialisation
 			reset
 			create {ARRAYED_LIST[STRING]} schema_directories.make (0)
 			exception_encountered := False
-			create all_schemas.make(0)
-			create candidate_schemas.make(0)
-			create valid_models.make(0)
-			create top_level_schemas_by_publisher.make (0)
-			create schema_inclusion_map.make(0)
-			create models_by_namespace.make(0)
+			create all_schemas.make_caseless(0)
+			create candidate_schemas.make_caseless(0)
+			create bmm_models.make_caseless (0)
+			create matching_bmm_models.make_caseless (0)
+			create schema_inclusion_map.make_caseless(0)
 			create {ARRAYED_LIST[STRING]} schemas_load_list.make(0)
 			schemas_load_list.compare_objects
 		end
@@ -85,7 +84,7 @@ feature -- Access
 	schema_directories: LIST [STRING]
 			-- List of directories where all the schemas loaded here are found
 
-	all_schemas: HASH_TABLE [P_BMM_SCHEMA_DESCRIPTOR, STRING]
+	all_schemas: STRING_TABLE [BMM_SCHEMA_DESCRIPTOR]
 			-- all schemas found and loaded from `schema_directory'
 			-- Keyed by schema_id, i.e.
 			-- 		model_publisher '_' schema_name '_' model_release
@@ -93,31 +92,63 @@ feature -- Access
 			-- This is the same key as BMM_SCHEMA.schema_id
 			-- Does not include schemas that failed to parse (i.e. SCHEMA_ACCESS.passed = False)
 
-	all_schemas_item (a_schema_id: STRING): P_BMM_SCHEMA_DESCRIPTOR
+	all_schemas_item (a_schema_id: READABLE_STRING_GENERAL): BMM_SCHEMA_DESCRIPTOR
 		do
 			check attached all_schemas.item (a_schema_id) as att_item then
 				Result := att_item
 			end
 		end
 
-	candidate_schemas: HASH_TABLE [P_BMM_SCHEMA_DESCRIPTOR, STRING]
+	candidate_schemas: STRING_TABLE [BMM_SCHEMA_DESCRIPTOR]
 			-- includes only fully validated schemas
 
-	valid_models: HASH_TABLE [BMM_MODEL, STRING]
-			-- Full models, generated from fully merged source schemas. Table is keyed by logical schema_name,
-			-- i.e. model_publisher '_' model_name, e.g. "openehr_rm"
-			-- Schemas containing different variants of same model (i.e. model_publisher + model_name) are considered duplicates
+	bmm_models: STRING_TABLE [BMM_MODEL]
+			-- All validated models, generated from fully merged source schemas. Table is keyed by model_id,
+			-- i.e. model_publisher '_' model_name '_' model_release, e.g. "openehr_ehr_1.0.4"
 
-	top_level_schemas_by_publisher: HASH_TABLE [ARRAYED_LIST [P_BMM_SCHEMA_DESCRIPTOR], STRING]
-			-- all top-level schemas keyed by issuer
+	matching_bmm_models: STRING_TABLE [BMM_MODEL]
+			-- Validated models, keyed by model_id, or any shortened form. Only populated on demand.
 
-	model_for_namespace (a_qualified_namespace: STRING): BMM_MODEL
-			-- Return ref model containing the model-class key `a_qualified_namespace', e.g. "openEHR-EHR"
-		require
-			has_model_for_namespace (a_qualified_namespace)
+	model_descriptors_by_publisher: STRING_TABLE [ARRAYED_LIST [BMM_SCHEMA_DESCRIPTOR]]
+			-- all models keyed by publisher; this includes non-valid schemas
+			-- so they can be displayed and edited by the user
+			-- keyed by schema.publisher name
+		local
+			publisher_schemas: ARRAYED_LIST [BMM_SCHEMA_DESCRIPTOR]
+			model_publisher: STRING
 		do
-			check attached models_by_namespace.item (a_qualified_namespace.as_lower) as sch then
-				Result := sch
+			create Result.make_caseless (0)
+			across all_schemas as schemas_csr loop
+				if schemas_csr.item.is_top_level then
+					check attached schemas_csr.item.meta_data.item (metadata_rm_publisher) as pub then
+						model_publisher :=  pub
+					end
+					if not Result.has (model_publisher) then
+						create publisher_schemas.make (0)
+						Result.put (publisher_schemas, model_publisher)
+					else
+						check attached Result.item (model_publisher) as pub_schs then
+							publisher_schemas := pub_schs
+						end
+					end
+					publisher_schemas.extend (schemas_csr.item)
+				end
+			end
+		end
+
+	bmm_model (a_model_key: STRING): BMM_MODEL
+			-- Return ref model containing the model-class key `a_model_key`, e.g. "openEHR_EHR_1.0.4",
+			-- or a non-or partly-versioned form, e.g. "openEHR_EHR_1.0", "openEHR_EHR_1", "openEHR_EHR" etc
+			-- In each case, the most recent match in terms of matching versions is returned.
+		require
+			has_model (a_model_key)
+		do
+			if attached bmm_models.item (a_model_key) as mod then
+				Result := mod
+			else
+				check attached matching_bmm_models.item (a_model_key) as mod then
+					Result := mod
+				end
 			end
 		end
 
@@ -151,16 +182,37 @@ feature -- Status Report
 			Result := not schema_directories.is_empty
 		end
 
-	has_model_for_namespace (a_qualified_namespace: STRING): BOOLEAN
-			-- True if there is a schema containing the qualified package key `a_qualified_namespace', e.g. "openEHR-EHR"
+	has_model (a_model_key: STRING): BOOLEAN
+			-- True if there is a schema containing the qualified package key `a_model_key`, e.g. "openEHR_EHR_1.0.4",
+			-- or a non-or partly-versioned form, e.g. "openEHR_EHR_1.0", "openEHR_EHR_1", "openEHR_EHR" etc
+		local
+			cand_model_id: detachable STRING
+			cand_ver, new_ver: STRING
 		do
-			Result := models_by_namespace.has (a_qualified_namespace.as_lower)
+			Result := bmm_models.has (a_model_key)
+			if not Result then
+				cand_ver := "0.0.0"
+				across bmm_models.current_keys as model_ids_csr loop
+					if model_ids_csr.item.substring (1, a_model_key.count).is_case_insensitive_equal (a_model_key) then
+						new_ver := schema_id_version (model_ids_csr.item.as_string_8)
+						if version_less_than (cand_ver, new_ver) then
+							cand_model_id := model_ids_csr.item.as_string_8
+							cand_ver := new_ver
+						end
+					end
+				end
+
+				if attached cand_model_id then
+					Result := True
+					matching_bmm_models.put (bmm_model (cand_model_id), a_model_key)
+				end
+			end
 		end
 
 	found_valid_models: BOOLEAN
 			-- True if any Reference Model schemas were found
 		do
-			Result := not valid_models.is_empty
+			Result := not bmm_models.is_empty
 		end
 
 	load_attempted: BOOLEAN
@@ -198,15 +250,11 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	schema_inclusion_map: HASH_TABLE [ARRAYED_LIST [STRING], STRING]
+	schema_inclusion_map: STRING_TABLE [ARRAYED_LIST [STRING]]
 			-- map of inclusions among schemas found in the directory; structure:
 			-- {key = schema_id; {list of schemas that 'include' key}}
 			-- Schemas not included by other schemas have NO ENTRY in this list
 			-- this is detected and used to populate `top_level_schemas'
-
-	models_by_namespace: HASH_TABLE [BMM_MODEL, STRING]
-			-- fully merged models keyed by lower-case qualified package name, i.e. model_publisher '-' model_name,
-			-- e.g. "openehr-ehr"
 
 	load_schema_descriptors
 			-- initialise `rm_schema_metadata_table' by finding all the schema files in the directory tree of `schema_directory'
@@ -215,7 +263,7 @@ feature {NONE} -- Implementation
 			has_schema_directory
 		local
 			dir: KL_DIRECTORY
-			file_repo: FILE_REPOSITORY
+			bmm2_file_repo: FILE_REPOSITORY
 		do
 			if not exception_encountered then
 				all_schemas.wipe_out
@@ -226,8 +274,8 @@ feature {NONE} -- Implementation
 					elseif dir.is_empty then
 						add_error (ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
 					else
-						create file_repo.make (sch_dir_csr.item, Bmm_schema_file_match_regex)
-						across file_repo.matching_paths as paths_csr loop
+						create bmm2_file_repo.make (sch_dir_csr.item, bmm2_schema_file_match_regex)
+						across bmm2_file_repo.matching_paths as paths_csr loop
 							process_schema_file (paths_csr.item)
 						end
 						if all_schemas.is_empty then
@@ -271,16 +319,14 @@ feature {NONE} -- Implementation
 			-- populate the rm_schemas table by reading in schemas either specified in the 'rm_schemas_load_list'
 			-- config variable, or by reading all schemas found in the schema directory
 		local
-			model_publisher: STRING
 			i: INTEGER
 			finished: BOOLEAN
-			schema_desc: P_BMM_SCHEMA_DESCRIPTOR
-			publisher_schemas: ARRAYED_LIST [P_BMM_SCHEMA_DESCRIPTOR]
+			schema_desc: BMM_SCHEMA_DESCRIPTOR
 		do
 			if not exception_encountered then
 				-- populate the rm_schemas table first
-				valid_models.wipe_out
-				top_level_schemas_by_publisher.wipe_out
+				bmm_models.wipe_out
+				matching_bmm_models.wipe_out
 				schema_inclusion_map.wipe_out
 				candidate_schemas.wipe_out
 
@@ -301,22 +347,25 @@ feature {NONE} -- Implementation
 							end
 						end
 					else
-						create {ARRAYED_LIST[STRING]} schemas_load_list.make_from_array (all_schemas.current_keys)
+						create {ARRAYED_LIST[STRING]} schemas_load_list.make (0)
 						schemas_load_list.compare_objects
+						across all_schemas.current_keys as schema_ids_csr loop
+							schemas_load_list.extend (schema_ids_csr.item.as_string_8)
+						end
 						add_warning (ec_bmm_schemas_no_load_list_found, Void)
 					end
 
 					-- initial load of all schemas, which populates `schema_inclusion_map';
 					across all_schemas as all_schemas_csr loop
 						if all_schemas_csr.item.passed then
-							load_schema_include_closure (all_schemas_csr.key)
+							load_schema_include_closure (all_schemas_csr.key.as_string_8)
 							if all_schemas_csr.item.errors.has_warnings then
-								add_warning (ec_bmm_schema_passed_with_warnings, <<all_schemas_csr.key, all_schemas_csr.item.errors.as_string>>)
+								add_warning (ec_bmm_schema_passed_with_warnings, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
 							end
 						else
-							add_error (ec_bmm_schema_basic_validation_failed, <<all_schemas_csr.key, all_schemas_csr.item.errors.as_string>>)
+							add_error (ec_bmm_schema_basic_validation_failed, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
 							if not all_schemas_csr.item.is_bmm_compatible then
-								add_error (ec_bmm_schema_version_incompatible_with_tool, <<all_schemas_csr.key, Bmm_internal_version>>)
+								add_error (ec_bmm_schema_version_incompatible_with_tool, <<all_schemas_csr.key.as_string_8, Bmm_internal_version>>)
 							end
 						end
 					end
@@ -341,26 +390,26 @@ feature {NONE} -- Implementation
 					from i := 1 until finished or i > Max_inclusion_depth loop
 						finished := True
 						across schema_inclusion_map as map_csr loop
-							if candidate_schemas.has (map_csr.key) and then attached candidate_schemas_item (map_csr.key).p_schema as included_schema then
+							if candidate_schemas.has (map_csr.key) and then attached candidate_schemas_item (map_csr.key).bmm_schema as included_schema then
 								-- only process current schema if its lower level includes have already been copied into it,
 								-- or if it had no includes, since only then is it ready to be itself included in the next one up the chain
 								-- If this included schema is in this state, merge its contents into each schema that includes it
 								if included_schema.state = {P_BMM_SCHEMA}.State_includes_processed then
 									-- iterate over the schemas that include `included_schema' and process the inclusion
 									across map_csr.item as schemas_csr loop
-										if candidate_schemas.has (schemas_csr.item) and then attached candidate_schemas_item (schemas_csr.item).p_schema as including_schema then
+										if candidate_schemas.has (schemas_csr.item) and then attached candidate_schemas_item (schemas_csr.item).bmm_schema as including_schema then
 											if including_schema.state = {P_BMM_SCHEMA}.State_includes_pending then
 												including_schema.merge (included_schema)
 												add_info (ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas_item (schemas_csr.item).schema_id>>)
 												finished := False
 											end
 										else
-											add_error (ec_bmm_schema_including_schema_not_valid, <<map_csr.key>>)
+											add_error (ec_bmm_schema_including_schema_not_valid, <<map_csr.key.as_string_8>>)
 										end
 									end
 								end
 							else
-								add_error (ec_bmm_schema_included_schema_not_found, <<map_csr.key>>)
+								add_error (ec_bmm_schema_included_schema_not_found, <<map_csr.key.as_string_8>>)
 							end
 						end
 						i := i + 1
@@ -372,16 +421,16 @@ feature {NONE} -- Implementation
 					across candidate_schemas as schemas_csr loop
 						schema_desc := schemas_csr.item
 						if schema_desc.is_top_level and schemas_load_list.has (schema_desc.schema_id) then
-							if schema_desc.passed and attached schema_desc.p_schema as att_p_schema and then att_p_schema.ready_to_validate then
+							if schema_desc.passed and attached schema_desc.bmm_schema as att_p_schema and then att_p_schema.ready_to_validate then
 								-- validate the schema & if passed, put it into `top_level_schemas'
 								schema_desc.validate_merged
 								merge_validation_errors (schema_desc)
 								if schema_desc.passed then
 									-- now we create a BMM_MODEL from a fully merged P_BMM_SCHEMA
 									schema_desc.create_model
-									if attached schema_desc.model as att_model then
+									if attached schema_desc.bmm_model as att_model then
 										att_model.post_process
-										valid_models.extend (att_model, schema_desc.schema_id)
+										bmm_models.extend (att_model, att_model.model_id)
 										if schema_desc.errors.has_warnings then
 											add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 										end
@@ -393,32 +442,6 @@ feature {NONE} -- Implementation
 								end
 							end
 						end
-					end
-				end
-
-				-- now populate the `models_by_namespace' table
-				models_by_namespace.wipe_out
-				across valid_models as models_csr loop
-					models_by_namespace.put (models_csr.item, publisher_qualified_namespace_key (models_csr.item.rm_publisher, models_csr.item.model_name).as_lower)
-				end
-
-				-- add entry to `top_level_schemas_by_publisher`; this includes non-valid schemas
-				-- so they can be displayed and edited by the user
-				across all_schemas as schemas_csr loop
-					schema_desc := schemas_csr.item
-					if schema_desc.is_top_level then
-						check attached schema_desc.meta_data.item (metadata_rm_publisher) as pub then
-							model_publisher :=  pub
-						end
-						if not top_level_schemas_by_publisher.has (model_publisher) then
-							create publisher_schemas.make (0)
-							top_level_schemas_by_publisher.put (publisher_schemas, model_publisher)
-						else
-							check attached top_level_schemas_by_publisher.item (model_publisher) as pub_schs then
-								publisher_schemas := pub_schs
-							end
-						end
-						publisher_schemas.extend (schema_desc)
 					end
 				end
 
@@ -438,27 +461,23 @@ feature {NONE} -- Implementation
 	load_schema_include_closure (a_schema_id: STRING)
 			-- process the include directives for a given schema & build the `schema_inclusion_map' reverse reference table
 		local
-			includes: HASH_TABLE [BMM_INCLUDE_SPEC, STRING]
 			includers: ARRAYED_SET[STRING]
-			target_schema: P_BMM_SCHEMA_DESCRIPTOR
+			target_schema: BMM_SCHEMA_DESCRIPTOR
 		do
 			target_schema := all_schemas_item (a_schema_id)
 			target_schema.load
 			if target_schema.passed then
-				target_schema.validate_includes (all_schemas.current_keys)
-				if target_schema.passed and attached target_schema.p_schema as att_p_schema then
-					add_info (ec_bmm_schema_info_loaded, <<a_schema_id, att_p_schema.primitive_types.count.out, att_p_schema.class_definitions.count.out>>)
-					includes := att_p_schema.includes
-					if not includes.is_empty then
-						across includes as includes_csr loop
-							if not schema_inclusion_map.has (includes_csr.item.id) then
-								create includers.make (0)
-								schema_inclusion_map.put (includers, includes_csr.item.id)
-							end
-							schema_inclusion_map_item (includes_csr.item.id).extend (a_schema_id)
-							if not all_schemas.has (includes_csr.item.id) then
-								load_schema_include_closure (includes_csr.item.id)
-							end
+				target_schema.validate_includes (all_schemas)
+				if target_schema.passed and attached target_schema.bmm_schema as att_p_schema then
+					add_info (ec_bmm_schema_info_loaded, <<a_schema_id, att_p_schema.primitive_types_count.out, att_p_schema.class_definitions_count.out>>)
+					across att_p_schema.includes as includes_csr loop
+						if not schema_inclusion_map.has (includes_csr.item.id) then
+							create includers.make (0)
+							schema_inclusion_map.put (includers, includes_csr.item.id)
+						end
+						schema_inclusion_map_item (includes_csr.item.id).extend (a_schema_id)
+						if not all_schemas.has (includes_csr.item.id) then
+							load_schema_include_closure (includes_csr.item.id)
 						end
 					end
 				else
@@ -469,16 +488,16 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	merge_validation_errors (sd: P_BMM_SCHEMA_DESCRIPTOR)
+	merge_validation_errors (sd: BMM_SCHEMA_DESCRIPTOR)
 			-- merge all errors recorded during validation of `sd' - this includes errors that
 			-- may be for included schemas, so we use the inclusion map to mark all schemas
 			-- up the hierarchy with the knock-on effect of these errors
 		local
 			err_table: HASH_TABLE [ERROR_ACCUMULATOR, STRING]
 			errors_to_propagate: BOOLEAN
-			targ_sd, client_sd: P_BMM_SCHEMA_DESCRIPTOR
+			targ_sd, client_sd: BMM_SCHEMA_DESCRIPTOR
 		do
-			if attached sd.p_schema as att_p_schema then
+			if attached sd.bmm_schema as att_p_schema then
 				err_table := att_p_schema.schema_error_table
 				across err_table as err_table_csr loop
 					-- merge errors into the offending schema error accumulator
@@ -511,9 +530,9 @@ feature {NONE} -- Implementation
 							client_sd := all_schemas_item (client_schemas_csr.item)
 							if client_sd.passed and not client_sd.errors.has_warnings then
 								if not targ_sd.passed then
-									client_sd.add_error (ec_BMM_INCERR, <<client_schemas_csr.item, schema_inclusion_map_csr.key>>)
+									client_sd.add_error (ec_BMM_INCERR, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
 								else
-									client_sd.add_warning (ec_BMM_INCWARN, <<client_schemas_csr.item, schema_inclusion_map_csr.key>>)
+									client_sd.add_warning (ec_BMM_INCWARN, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
 								end
 								errors_to_propagate := True
 							end
@@ -523,14 +542,14 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	candidate_schemas_item (a_schema_id: STRING): P_BMM_SCHEMA_DESCRIPTOR
+	candidate_schemas_item (a_schema_id: READABLE_STRING_GENERAL): BMM_SCHEMA_DESCRIPTOR
 		do
 			check attached candidate_schemas.item (a_schema_id) as att_item then
 				Result := att_item
 			end
 		end
 
-	schema_inclusion_map_item (a_schema_id: STRING): ARRAYED_LIST [STRING]
+	schema_inclusion_map_item (a_schema_id: READABLE_STRING_GENERAL): ARRAYED_LIST [STRING]
 		do
 			check attached schema_inclusion_map.item (a_schema_id) as att_item then
 				Result := att_item

@@ -63,10 +63,19 @@ feature -- Definitions
 	Standard_version_regex: STRING = "[0-9]+(\.[0-9]+){0,2}"
 			-- Regex for 1, 2, or 3-part version string string of form N.M.P
 
+	Full_version_regex: STRING = "[0-9]+\.[0-9]+\.[0-9]+"
+			-- Regex for 3-part version string string of form N.M.P
+
 	Standard_version_regex_matcher: RX_PCRE_REGULAR_EXPRESSION
 		once ("PROCESS")
 			create Result.make
 			Result.compile (Standard_version_regex)
+		end
+
+	Full_version_regex_matcher: RX_PCRE_REGULAR_EXPRESSION
+		once ("PROCESS")
+			create Result.make
+			Result.compile (Full_version_regex)
 		end
 
 	version_less_than (lver, rver: STRING): BOOLEAN
@@ -117,6 +126,13 @@ feature -- Definitions
 			-- with '.' separators
 		do
 			Result := Standard_version_regex_matcher.matches (a_ver)
+		end
+
+	valid_full_version (a_ver: STRING): BOOLEAN
+			-- True if `a_ver' fits the pattern of a 3 part numeric version string
+			-- with '.' separators
+		do
+			Result := Full_version_regex_matcher.matches (a_ver)
 		end
 
 end

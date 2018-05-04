@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (30)
+			create message_table.make (34)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -55,5 +55,9 @@ feature -- Initialisation
 			message_table.put ("File $1 already exists", ec_file_already_exists)
 			message_table.put ("File <empty> does not exist.", ec_empty_file_does_not_exist)
 			message_table.put ("File $1 already exists. Replace it?", ec_file_exists_replace_question)
+			message_table.put ("$1 file $2 does not exist or not readable", ec_object_file_not_valid)
+			message_table.put ("$1 file $2 load failure; reason: $3", ec_object_load_failure)
+			message_table.put ("$1 file $2 load failure due to exception during processing", ec_object_load_failure_exception)
+			message_table.put ("$1 file $2 load data conversion failure; reason: $3", ec_object_conv_fail_err)
 end	
 end

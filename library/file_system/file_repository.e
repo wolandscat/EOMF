@@ -41,7 +41,8 @@ feature -- Definitions
 feature {NONE} -- Initialisation
 
 	make (a_dir_name, a_match_pattern: STRING)
-			-- initialise with `a_dir_name', and a filename match regex `a_match_pattern'
+			-- initialise with `a_dir_name', and a filename match regex `a_match_pattern';
+			-- populate `matching_file_paths` with paths matching `a_match_pattern`
 		require
 			Dir_name_exists: not a_dir_name.is_empty
 			Ext_valid: not a_match_pattern.is_empty
@@ -62,7 +63,8 @@ feature {NONE} -- Initialisation
 
 	make_fixed (a_dir_name, a_file_name: STRING)
 			-- initialise with `a_dir_name', and a literal file name to match exactly (faster
-			-- than `make', which uses regex matching)
+			-- than `make', which uses regex matching);
+			-- populate `matching_file_paths` with paths matching `a_file_name`
 		require
 			Dir_name_exists: not a_dir_name.is_empty
 			Filename_valid: not a_file_name.is_empty
@@ -91,7 +93,7 @@ feature {NONE} -- Implementation
 
 	find_matching_file_paths (a_dir_name: STRING; use_regex_matching: BOOLEAN)
 			-- add file paths found in `a_dir_name' that match `base_name_pattern'
-			-- recursively applied
+			-- recursively applied, to `matching_paths`
 		require
 			Dir_name_valid: not a_dir_name.is_empty
 		local
