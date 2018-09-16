@@ -107,7 +107,7 @@ feature -- Access
 			-- i.e. model_publisher '_' model_name '_' model_release, e.g. "openehr_ehr_1.0.4"
 
 	matching_bmm_models: STRING_TABLE [BMM_MODEL]
-			-- Validated models, keyed by model_id, or any shortened form. Only populated on demand.
+			-- Validated models, keyed by model_id, or any shortened form. Populated on demand.
 
 	model_descriptors_by_publisher: STRING_TABLE [ARRAYED_LIST [BMM_SCHEMA_DESCRIPTOR]]
 			-- all models keyed by publisher; this includes non-valid schemas
@@ -141,7 +141,7 @@ feature -- Access
 			-- or a non-or partly-versioned form, e.g. "openEHR_EHR_1.0", "openEHR_EHR_1", "openEHR_EHR" etc
 			-- In each case, the most recent match in terms of matching versions is returned.
 		require
-			has_model (a_model_key)
+			has_bmm_model (a_model_key)
 		do
 			if attached bmm_models.item (a_model_key) as mod then
 				Result := mod
@@ -182,7 +182,7 @@ feature -- Status Report
 			Result := not schema_directories.is_empty
 		end
 
-	has_model (a_model_key: STRING): BOOLEAN
+	has_bmm_model (a_model_key: STRING): BOOLEAN
 			-- True if there is a schema containing the qualified package key `a_model_key`, e.g. "openEHR_EHR_1.0.4",
 			-- or a non-or partly-versioned form, e.g. "openEHR_EHR_1.0", "openEHR_EHR_1", "openEHR_EHR" etc
 		local

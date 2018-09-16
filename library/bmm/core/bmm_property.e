@@ -7,17 +7,14 @@ note
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_PROPERTY [G -> BMM_TYPE]
+deferred class BMM_PROPERTY
 
 inherit
 	BMM_MODEL_ELEMENT
 
-create
-	make, make_from_other, make_from_other_generic
-
 feature {NONE} -- Initialisation
 
-	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: G;
+	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type;
 			is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
@@ -41,8 +38,8 @@ feature {NONE} -- Initialisation
 			bmm_type := other.bmm_type
 		end
 
-	make_from_other_generic (other: BMM_PROPERTY[BMM_TYPE]; a_bmm_type: G)
-			-- make from a BMM_PROPERTY of any generic flavour
+	make_from_other_generic (other: BMM_PROPERTY; a_bmm_type: like bmm_type)
+			-- make from a BMM_PROPERTY of any flavour
 		do
 			name := other.name.twin
 			documentation := if attached other.documentation as att_doc then att_doc.twin else Void end
@@ -67,7 +64,7 @@ feature -- Identification
 
 feature -- Access
 
-	bmm_type: G
+	bmm_type: BMM_TYPE
 			-- formal meta-type of this attribute
 
 	existence: MULTIPLICITY_INTERVAL
@@ -125,14 +122,12 @@ feature -- Factory
 
 	create_duplicate: like Current
 			-- create a copy of this property object
-		do
-			Create Result.make_from_other (Current)
-			Result.set_bmm_type (bmm_type.create_duplicate)
+		deferred
 		end
 
 feature -- Comparison
 
-	bmm_conforms_to (other: BMM_PROPERTY [BMM_TYPE]): BOOLEAN
+	bmm_conforms_to (other: BMM_PROPERTY): BOOLEAN
 			-- True if this property conforms to `other' such that it could be used to override it
 		do
 			-- FIXME: to be implemented
@@ -141,7 +136,7 @@ feature -- Comparison
 
 feature -- Modification
 
-	set_bmm_type (a_bmm_type: G)
+	set_bmm_type (a_bmm_type: like bmm_type)
 			-- set `bmm_type`
 		do
 			bmm_type := a_bmm_type

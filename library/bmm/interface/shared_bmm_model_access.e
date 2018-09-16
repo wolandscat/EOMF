@@ -33,7 +33,7 @@ feature -- Status Report
 
 	has_bmm_model (a_model_id: STRING): BOOLEAN
 		do
-			Result := bmm_models_access.has_model (a_model_id)
+			Result := bmm_models_access.has_bmm_model (a_model_id)
 		end
 
 end

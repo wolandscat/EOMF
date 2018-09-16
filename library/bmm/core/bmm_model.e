@@ -161,7 +161,7 @@ feature -- Access
 			end
 		end
 
-	property_definition (a_type_name, a_prop_name: STRING): BMM_PROPERTY [BMM_TYPE]
+	property_definition (a_type_name, a_prop_name: STRING): BMM_PROPERTY
 			-- retrieve the property definition for `a_prop_name' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
@@ -199,7 +199,7 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).effective_property_type (a_prop_name)
 		end
 
-	property_definition_at_path (a_type_name, a_prop_path: STRING): BMM_PROPERTY [BMM_TYPE]
+	property_definition_at_path (a_type_name, a_prop_path: STRING): BMM_PROPERTY
 			-- retrieve the property definition for `a_prop_path' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)

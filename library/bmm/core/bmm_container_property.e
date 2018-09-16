@@ -13,13 +13,13 @@ note
 class BMM_CONTAINER_PROPERTY
 
 inherit
-	BMM_PROPERTY [BMM_CONTAINER_TYPE]
+	BMM_PROPERTY
 		redefine
-			make, make_from_other, display_name, object_multiplicity
+			bmm_type, make, make_from_other, make_from_other_generic, display_name, object_multiplicity
 		end
 
 create
-	make, make_from_other
+	make, make_from_other, make_from_other_generic
 
 feature -- Initialisation
 
@@ -36,6 +36,13 @@ feature -- Initialisation
 			cardinality := other.cardinality.twin
 		end
 
+	make_from_other_generic (other: BMM_CONTAINER_PROPERTY; a_bmm_type: like bmm_type)
+			-- make from a BMM_PROPERTY of any flavour
+		do
+			precursor (other, a_bmm_type)
+			cardinality := other.cardinality.twin
+		end
+
 feature -- Identification
 
 	display_name: STRING
@@ -46,6 +53,9 @@ feature -- Identification
 		end
 
 feature -- Access
+
+	bmm_type: BMM_CONTAINER_TYPE
+			-- formal meta-type of this attribute
 
 	cardinality: MULTIPLICITY_INTERVAL
 
@@ -67,6 +77,15 @@ feature -- Modification
 	set_cardinality (a_cardinality: MULTIPLICITY_INTERVAL)
 		do
 			cardinality := a_cardinality
+		end
+
+feature -- Factory
+
+	create_duplicate: like Current
+			-- create a copy of this property object
+		do
+			Create Result.make_from_other (Current)
+			Result.set_bmm_type (bmm_type.create_duplicate)
 		end
 
 end

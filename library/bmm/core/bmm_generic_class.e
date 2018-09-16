@@ -107,7 +107,7 @@ feature -- Modification
 		require
 			New_gen_parm_def: not has_generic_parameter (a_gen_parm_def.name)
 		local
-			new_prop: BMM_PROPERTY[BMM_PARAMETER_TYPE]
+			new_prop: BMM_PROPERTY
 		do
 			generic_parameters.put (a_gen_parm_def, a_gen_parm_def.name.as_upper)
 
@@ -138,9 +138,7 @@ feature -- Modification
 							and then not a_gen_parm_def.effective_conforms_to_type.type_name.same_string (gp_inh_parent.effective_conforms_to_type.type_name)
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
-								if attached {BMM_PROPERTY[BMM_PARAMETER_TYPE]} parent_props_csr.item as parent_prop and then
-									parent_prop.bmm_type = gp_inh_parent
-								then
+								if attached {BMM_UNITARY_PROPERTY} parent_props_csr.item as parent_prop and then parent_prop.bmm_type = gp_inh_parent then
 									debug ("bmm")
 										io.put_string ("Schema: " + bmm_model.model_id +
 											" found in class " + type.type_signature +
@@ -149,7 +147,7 @@ feature -- Modification
 											"; redefined in property " + parent_prop.display_name + "%N")
 									end
 
-									create new_prop.make_from_other (parent_prop)
+									create {BMM_UNITARY_PROPERTY} new_prop.make_from_other (parent_prop)
 									new_prop.set_is_synthesised_generic
 									new_prop.set_bmm_type (a_gen_parm_def)
 									properties.force (new_prop, new_prop.name)

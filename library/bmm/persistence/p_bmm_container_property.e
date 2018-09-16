@@ -38,12 +38,16 @@ feature -- Factory
 
 	create_bmm_property (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)
 		do
-			precursor (a_bmm_model, a_class_def)
-			if attached bmm_property and attached cardinality then
-				bmm_property.set_cardinality (cardinality)
+			if attached type_def then
+				type_def.create_bmm_type (a_bmm_model, a_class_def)
+				check attached {BMM_CONTAINER_TYPE} type_def.bmm_type as b_ct then
+					create bmm_property.make (name, documentation, b_ct, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
+					if attached cardinality then
+						bmm_property.set_cardinality (cardinality)
+					end
+				end
 			end
 		end
-
 end
 
 

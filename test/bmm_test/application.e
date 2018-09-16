@@ -150,7 +150,7 @@ feature {NONE} -- Implementation
 
 	output_class_properties (a_class_name: STRING; show_flat: BOOLEAN)
 		local
-			properties: STRING_TABLE [BMM_PROPERTY [BMM_TYPE]]
+			properties: STRING_TABLE [BMM_PROPERTY]
 		do
 			io.put_string (a_class_name + " - properties " + if show_flat then "(flat)" else "(source)" end + "%N")
 			if show_flat then

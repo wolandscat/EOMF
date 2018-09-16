@@ -70,12 +70,12 @@ feature -- Access
 	data_source_setter_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
 			-- agent for creating & setting the data source
 
-	update_validity_agent: detachable FUNCTION [ANY, TUPLE [STRING], BOOLEAN]
+	update_validity_agent: detachable FUNCTION [ANY, TUPLE [READABLE_STRING_8], BOOLEAN]
 			-- agent that if set will be used to check data entered into the control
 			-- for validity; if invalid, an error dialog will be displayed and the
 			-- value will be reverted to its previous value
 
-	validity_error_msg_agent: detachable FUNCTION [ANY, TUPLE [args: detachable ARRAY [STRING]], STRING]
+	validity_error_msg_agent: detachable FUNCTION [ANY, TUPLE [args: detachable ARRAY [READABLE_STRING_8]], READABLE_STRING_8]
 			-- agent that if passed optional string args, will generate a message with the arguments
 			-- correctly interpolated, suitable for screen display.
 
