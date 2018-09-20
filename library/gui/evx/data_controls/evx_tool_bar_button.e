@@ -28,7 +28,7 @@ create
 
 feature -- Initialisation
 
-	make (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	make (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable READABLE_STRING_8; a_select_action: detachable PROCEDURE [ANY, TUPLE])
 		do
 			active_pixmap := an_active_pixmap
 			inactive_pixmap := an_inactive_pixmap

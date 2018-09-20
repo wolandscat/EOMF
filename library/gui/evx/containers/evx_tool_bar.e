@@ -70,7 +70,7 @@ feature -- Status Report
 
 feature -- Modification
 
-	add_label (a_text: STRING; a_min_width: INTEGER; expandable, align_right: BOOLEAN)
+	add_label (a_text: READABLE_STRING_8; a_min_width: INTEGER; expandable, align_right: BOOLEAN)
 			-- add an EV_LABEL with text `a_text'. If `a_min_width' = 0, don't set width
 		local
 			new_label: EV_LABEL
@@ -90,7 +90,7 @@ feature -- Modification
 			end
 		end
 
-	add_titled_label (a_title, a_text, a_tooltip_text: STRING; a_min_width: INTEGER)
+	add_titled_label (a_title, a_text, a_tooltip_text: READABLE_STRING_8; a_min_width: INTEGER)
 			-- add 2 EV_LABELs, first with text `a_title', second with with text `a_text'
 			-- and tooltip. If `a_min_width' = 0, don't set width.
 		do
@@ -101,7 +101,7 @@ feature -- Modification
 			add_label (a_text, a_min_width, False, False)
 		end
 
-	add_expanding_text_field (a_title, a_tooltip_text: STRING)
+	add_expanding_text_field (a_title, a_tooltip_text: READABLE_STRING_8)
 			-- add an EV_TEXT_FIELD
 		local
 			new_text_field: EV_TEXT_FIELD
@@ -117,7 +117,7 @@ feature -- Modification
 			ev_root_container.extend (new_text_field)
 		end
 
-	add_fixed_text_field (a_title, a_tooltip_text: STRING; a_min_width: INTEGER)
+	add_fixed_text_field (a_title, a_tooltip_text: READABLE_STRING_8; a_min_width: INTEGER)
 			-- add a fixed width EV_TEXT_FIELD
 		do
 			add_expanding_text_field (a_title, a_tooltip_text)
@@ -127,7 +127,7 @@ feature -- Modification
 			end
 		end
 
-	add_expanding_combo_box (a_title, a_tooltip_text: STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	add_expanding_combo_box (a_title, a_tooltip_text: READABLE_STRING_8; a_select_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add an EV_COMBO_BOX; if `a_title' or `a_tooltip_text' are empty, don't add them
 		local
 			new_combo_box: EV_COMBO_BOX
@@ -144,7 +144,7 @@ feature -- Modification
 			end
 		end
 
-	add_fixed_combo_box (a_title, a_tooltip_text: STRING; a_min_combo_width: INTEGER; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	add_fixed_combo_box (a_title, a_tooltip_text: READABLE_STRING_8; a_min_combo_width: INTEGER; a_select_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add a fixed width EV_COMBO_BOX
 		do
 			add_expanding_combo_box (a_title, a_tooltip_text, a_select_action)
@@ -169,7 +169,7 @@ feature -- Modification
 			has_ev_tool_bar
 		end
 
-	add_tool_bar_with_title (a_title: STRING)
+	add_tool_bar_with_title (a_title: READABLE_STRING_8)
 			-- add an EV_TOOL_BAR with a leader title;
 			-- calls to `add_tool_bar_*' will add to this toolbar
 			-- until another call is made to this routine
@@ -178,7 +178,7 @@ feature -- Modification
 			add_tool_bar
 		end
 
-	add_tool_bar_radio_button (an_active_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	add_tool_bar_radio_button (an_active_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable READABLE_STRING_8; a_select_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add a radio button to current EV_TOOL_BAR
 		local
 			new_tb_radio_button: EV_TOOL_BAR_RADIO_BUTTON
@@ -199,7 +199,7 @@ feature -- Modification
 			end
 		end
 
-	add_tool_bar_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable STRING; a_select_action: detachable PROCEDURE [ANY, TUPLE])
+	add_tool_bar_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_tooltip_text: detachable READABLE_STRING_8; a_select_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add a normal button to current EV_TOOL_BAR
 		require
 			has_ev_tool_bar: has_ev_tool_bar
@@ -229,7 +229,7 @@ feature -- Modification
 		end
 
 	set_visual_appearance (a_padding_width, a_border_width: INTEGER)
-			-- change visual characteristics including padding width, border width. 
+			-- change visual characteristics including padding width, border width.
 			-- A 0 value means keep the default
 		require
 			Sane_padding_width: a_padding_width >= 0 and a_padding_width <= max_padding_width
