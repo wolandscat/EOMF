@@ -532,11 +532,21 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			-- first check if any property replicates a property from a parent class
 			across a_class_def.ancestors as ancs_csr loop
 				if attached class_definition (ancs_csr.item) as anc_class and then anc_class.properties.has (a_prop_def.name) and then
-					attached anc_class.properties.item (a_prop_def.name) as anc_prop and then not
-					property_conforms_to (a_prop_def, anc_prop)
+					attached anc_class.properties.item (a_prop_def.name) as anc_prop
 				then
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_PRNCF,
-						<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
+					if not property_conforms_to (a_prop_def, anc_prop) then
+						-- At the moment we accept an override of the same type, and issue a warning.
+						-- A same-type override is usually used to introduce mandatoriness or some other meta-data property.
+						if a_prop_def.name.same_string (anc_prop.name) and attached a_prop_def.type_def as att_prop_td and then attached anc_prop.type_def as att_anc_prop_td and then
+							att_prop_td.as_type_string.same_string (att_anc_prop_td.as_type_string)
+						then
+							add_validity_warning (a_class_def.source_schema_id, ec_BMM_PRCFD,
+								<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
+						else
+							add_validity_error (a_class_def.source_schema_id, ec_BMM_PRNCF,
+								<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
+						end
+					end
 				end
 			end
 

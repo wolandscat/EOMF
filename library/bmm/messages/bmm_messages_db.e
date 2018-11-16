@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (68)
+			create message_table.make (69)
 			message_table.put ("Documentation", ec_bmm_documentation_text)
 			message_table.put ("Property synthesised due to generic formal parameter substitution", ec_bmm_prop_synth_gen_text)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
@@ -88,7 +88,8 @@ feature -- Initialisation
 			message_table.put ("Schema $1 has duplicate class name $2 in class definitions", ec_BMM_CLDUP)
 			message_table.put ("Schema $1 archetype_closure_package $2 does not exist", ec_BMM_MDLPK)
 			message_table.put ("Schema $1 class $2 duplicate property within class $3", ec_BMM_PRDUP)
-			message_table.put ("Schema $1 class $2 property $3 does not conform to same property in ancestor $4 (duplicate?)", ec_BMM_PRNCF)
+			message_table.put ("Schema $1 class $2 property $3 does not conform to same property in ancestor $4", ec_BMM_PRNCF)
+			message_table.put ("Schema $1 class $2 property $3 has same signature as a property in ancestor $4 (duplicate?)", ec_BMM_PRCFD)
 			message_table.put ("Schema $1 included schema $2 validity failure", ec_BMM_INCERR)
 			message_table.put ("Schema $1 included schema $2 validity warning", ec_BMM_INCWARN)
 			message_table.put ("Schema $1 archetype parent class $2 not defined in schema", ec_BMM_ARPAR)
