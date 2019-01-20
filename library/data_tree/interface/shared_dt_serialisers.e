@@ -2,9 +2,9 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Data Tree serialisers"
 	keywords:    "serialisation"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2003- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2003- openEHR Foundation <http://www.openehr.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class SHARED_DT_SERIALISERS
