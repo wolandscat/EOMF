@@ -39,6 +39,7 @@ templates = <
 		["write_failed_file_does_not_exist"] = <"Write failed; file $1 does not exist">
 		["file_saved_as_in_format"] = <"Saved file $1 in format $2">
 		["directory_does_not_exist"] = <"Directory $1 does not exist.">
+		["directory_not_supplied"] = <"No directory supplied.">
 		["empty_directory_does_not_exist"] = <"Directory <empty> does not exist.">
 		["file_does_not_exist"] = <"File $1 does not exist.">
 		["read_failed_file_does_not_exist"] = <"Read failed; file $1 does not exist.">

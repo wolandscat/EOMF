@@ -32,6 +32,7 @@ feature -- Definitions
 		ec_write_failed_file_does_not_exist: STRING = "write_failed_file_does_not_exist"
 		ec_file_saved_as_in_format: STRING = "file_saved_as_in_format"
 		ec_directory_does_not_exist: STRING = "directory_does_not_exist"
+		ec_directory_not_supplied: STRING = "directory_not_supplied"
 		ec_empty_directory_does_not_exist: STRING = "empty_directory_does_not_exist"
 		ec_file_does_not_exist: STRING = "file_does_not_exist"
 		ec_read_failed_file_does_not_exist: STRING = "read_failed_file_does_not_exist"

@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (34)
+			create message_table.make (35)
 			message_table.put ("No error", ec_none)
 			message_table.put ("Error code $1 does not exist (calling context = $2.$3)", ec_message_code_error)
 			message_table.put ("Software Exception $1 caught; Stack:%N$2", ec_report_exception)
@@ -47,6 +47,7 @@ feature -- Initialisation
 			message_table.put ("Write failed; file $1 does not exist", ec_write_failed_file_does_not_exist)
 			message_table.put ("Saved file $1 in format $2", ec_file_saved_as_in_format)
 			message_table.put ("Directory $1 does not exist.", ec_directory_does_not_exist)
+			message_table.put ("No directory supplied.", ec_directory_not_supplied)
 			message_table.put ("Directory <empty> does not exist.", ec_empty_directory_does_not_exist)
 			message_table.put ("File $1 does not exist.", ec_file_does_not_exist)
 			message_table.put ("Read failed; file $1 does not exist.", ec_read_failed_file_does_not_exist)
