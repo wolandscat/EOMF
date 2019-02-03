@@ -2,12 +2,12 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Definition of ODIN persistent form of an instance of BMM_ENUMERATION_DEFINITION"
 	keywords:    "model, UML"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_ENUMERATION[G->COMPARABLE]
+class P_BMM_ENUMERATION[G->BMM_VALUE]
 
 inherit
 	P_BMM_CLASS

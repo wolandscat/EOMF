@@ -12,28 +12,13 @@ note
 	copyright:   "Copyright (c) 2009- openEHR Foundation <http://www.openehr.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_ENUMERATION[G->COMPARABLE]
+class BMM_ENUMERATION [G -> BMM_VALUE]
 
 inherit
-	BMM_SIMPLE_CLASS
-		redefine
-			entity_metatype
-		end
+	BMM_RANGE_CONSTRAINED
 
 create
 	make
-
-feature -- Identification
-
-	underlying_type_name: STRING
-		do
-			Result := ({G}).name
-		end
-
-	entity_metatype: STRING
-		do
-			Result := Entity_metatype_enumeration
-		end
 
 feature -- Access
 
@@ -46,7 +31,7 @@ feature -- Access
 		end
 
 	item_values:  ARRAYED_LIST [G]
-			-- OPTIONAL list of item integer values; must be of same length as `item_names'
+			-- OPTIONAL list of item values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
 			Result.compare_objects

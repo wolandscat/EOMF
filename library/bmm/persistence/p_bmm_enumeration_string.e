@@ -10,7 +10,7 @@ note
 class P_BMM_ENUMERATION_STRING
 
 inherit
-	P_BMM_ENUMERATION [STRING]
+	P_BMM_ENUMERATION [BMM_STRING_VALUE]
 		redefine
 			bmm_class
 		end
