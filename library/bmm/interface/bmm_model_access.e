@@ -398,7 +398,9 @@ feature {NONE} -- Implementation
 									-- iterate over the schemas that include `included_schema' and process the inclusion
 									across map_csr.item as schemas_csr loop
 										if candidate_schemas.has (schemas_csr.item) and then attached candidate_schemas_item (schemas_csr.item).bmm_schema as including_schema then
-											if including_schema.state = {P_BMM_SCHEMA}.State_includes_pending then
+											if including_schema.state = {P_BMM_SCHEMA}.State_includes_pending and 
+												including_schema.includes_to_process.has (included_schema.schema_id)
+											then
 												including_schema.merge (included_schema)
 												add_info (ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas_item (schemas_csr.item).schema_id>>)
 												finished := False
