@@ -22,6 +22,13 @@ create
 
 feature -- Identification
 
+	entity_metatype: STRING
+		do
+			Result := Entity_metatype_simple
+		end
+
+feature -- Factory
+
 	type: BMM_SIMPLE_TYPE
 			-- type related to this class
 		do
@@ -30,11 +37,6 @@ feature -- Identification
 				create Result.make (Current)
 				type_cache := Result
 			end
-		end
-
-	entity_metatype: STRING
-		do
-			Result := Entity_metatype_simple
 		end
 
 end

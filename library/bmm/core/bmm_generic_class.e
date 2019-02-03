@@ -22,19 +22,6 @@ create
 
 feature -- Identification
 
-	type: BMM_GENERIC_TYPE
-			-- generate a fully open generic type that corresponds to this class definition
-		do
-			Result := type_cache
-			if not attached Result then
-				create Result.make (Current)
-				across generic_parameters as gen_parms_csr loop
-					Result.add_generic_parameter (gen_parms_csr.item)
-				end
-				type_cache := Result
-			end
-		end
-
 	entity_metatype: STRING
 		do
 			Result := Entity_metatype_generic
@@ -164,6 +151,21 @@ feature -- Modification
 			suppliers_non_primitive_cache := Void
 		ensure
 			generic_parameters.item (a_gen_parm_def.name.as_upper) = a_gen_parm_def
+		end
+
+feature -- Factory
+
+	type: BMM_GENERIC_TYPE
+			-- generate a fully open generic type that corresponds to this class definition
+		do
+			Result := type_cache
+			if not attached Result then
+				create Result.make (Current)
+				across generic_parameters as gen_parms_csr loop
+					Result.add_generic_parameter (gen_parms_csr.item)
+				end
+				type_cache := Result
+			end
 		end
 
 end

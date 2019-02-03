@@ -86,6 +86,7 @@ feature -- Access
 		end
 
 	schema_path: STRING
+			-- full path to schema file
 		attribute
 			create Result.make_empty
 		end

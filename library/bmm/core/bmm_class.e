@@ -41,11 +41,6 @@ feature -- Identification
 	name: STRING
 			-- name of the class FROM SCHEMA
 
-	type: BMM_DEFINED_TYPE
-			-- type related to this class
-		deferred
-		end
-
 feature -- Access
 
 	bmm_model: BMM_MODEL
@@ -616,6 +611,13 @@ feature -- Modification
 			supplier_closure_cache := Void
 			suppliers_non_primitive_cache := Void
 			reset_flat_properties_cache
+		end
+
+feature -- Factory
+
+	type: BMM_DEFINED_TYPE
+			-- type related to this class
+		deferred
 		end
 
 feature {BMM_CLASS} -- Implementation
