@@ -14,14 +14,14 @@ inherit
 
 feature -- Initialisation
 
-	make (a_class: like base_class)
+	make (a_class: like effective_base_class)
 		do
-			base_class := a_class
+			effective_base_class := a_class
 		end
 
 feature -- Access
 
-	base_class: BMM_CLASS
+	effective_base_class: BMM_CLASS
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
 end

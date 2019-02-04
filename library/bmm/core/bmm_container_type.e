@@ -48,10 +48,10 @@ feature -- Access
 	container_class: BMM_GENERIC_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 
-	base_class: BMM_CLASS
+	effective_base_class: BMM_CLASS
 			-- the 'design' type of this type, ignoring containers, multiplicity etc.
 		do
-			Result := base_type.base_class
+			Result := base_type.effective_base_class
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]

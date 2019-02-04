@@ -18,7 +18,11 @@ inherit
 
 feature -- Access
 
+	name: STRING
+			-- Name of this model element.
+
 	documentation: detachable STRING
+			-- Optional documentation of this element.  
 
 end
 

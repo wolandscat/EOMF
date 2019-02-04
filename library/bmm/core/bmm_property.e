@@ -10,7 +10,10 @@ note
 deferred class BMM_PROPERTY
 
 inherit
-	BMM_MODEL_ELEMENT
+	BMM_MUTABLE
+		redefine
+			scope
+		end
 
 feature {NONE} -- Initialisation
 
@@ -52,10 +55,6 @@ feature {NONE} -- Initialisation
 
 feature -- Identification
 
-	name: STRING
-			-- name of this attribute
-			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
-
 	display_name: STRING
 			-- name of this attribute to display in screen form, grid etc
 		do
@@ -63,9 +62,6 @@ feature -- Identification
 		end
 
 feature -- Access
-
-	bmm_type: BMM_TYPE
-			-- formal meta-type of this attribute
 
 	existence: MULTIPLICITY_INTERVAL
 			-- interval form of 0..1, 1..1 etc, generated from is_mandatory
@@ -93,6 +89,19 @@ feature -- Access
 			-- corresponding to `a_type_name'. By default, the same as `existence'; override in descendants.
 		do
 			Result := existence.deep_twin
+		end
+
+	signature: STRING
+			-- Formal signature of this element, in the form 'name: Type'
+		do
+			create Result.make_from_string (name)
+			Result.append_character ({BMM_DEFINITIONS}.Type_delimiter)
+			Result.append (bmm_type.type_signature)
+		end
+
+	scope: BMM_CLASS
+		do
+			Result := bmm_type.effective_base_class
 		end
 
 feature -- Status Report

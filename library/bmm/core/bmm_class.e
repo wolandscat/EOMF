@@ -36,11 +36,6 @@ feature -- Initialisation
 			is_abstract := abstract_flag
 		end
 
-feature -- Identification
-
-	name: STRING
-			-- name of the class FROM SCHEMA
-
 feature -- Access
 
 	bmm_model: BMM_MODEL
@@ -80,8 +75,8 @@ feature -- Access
 				create Result.make (0)
 				Result.compare_objects
 				across ancestors as ancs_csr loop
-					Result.extend (ancs_csr.item.base_class.name)
-					Result.merge (ancs_csr.item.base_class.all_ancestor_classes)
+					Result.extend (ancs_csr.item.effective_base_class.name)
+					Result.merge (ancs_csr.item.effective_base_class.all_ancestor_classes)
 
 					-- remove own class name, which might appear due to generic types
 					Result.prune (name)
@@ -101,7 +96,7 @@ feature -- Access
 				Result.compare_objects
 				across ancestors as ancs_csr loop
 					Result.extend (ancs_csr.key.as_string_8)
-					Result.merge (ancs_csr.item.base_class.all_ancestor_types)
+					Result.merge (ancs_csr.item.effective_base_class.all_ancestor_types)
 				end
 				all_ancestor_types_cache := Result
 			end
@@ -249,7 +244,7 @@ feature -- Access
 				create Result.make_caseless (0)
 				-- merge ancestor properties
 				across ancestors as ancestors_csr loop
-					Result.merge (ancestors_csr.item.base_class.flat_properties)
+					Result.merge (ancestors_csr.item.effective_base_class.flat_properties)
 				end
 
 				-- now merge the current properties - merging afterward will correctly replace
@@ -278,7 +273,7 @@ feature -- Access
 					Result := fp
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.effective_base_class.name) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -316,7 +311,7 @@ feature -- Access
 					Result := Current
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.base_class.name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.effective_base_class.name) as class_def then
 					Result := class_def.class_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -416,7 +411,7 @@ feature -- Status Report
 		do
 			a_path_pos := a_path.items.index
 			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				if attached bmm_model.class_definition (flat_prop.bmm_type.base_class.name) as class_def then
+				if attached bmm_model.class_definition (flat_prop.bmm_type.effective_base_class.name) as class_def then
 					a_path.forth
 					if not a_path.off then
 						Result := class_def.has_property_path (a_path)
@@ -520,7 +515,7 @@ feature -- Modification
 			anc_gen_subs: STRING_TABLE [BMM_TYPE]
 		do
 			ancestors.put (an_anc_type, an_anc_type.type_name)
-			an_anc_type.base_class.add_immediate_descendant (Current)
+			an_anc_type.effective_base_class.add_immediate_descendant (Current)
 
 			-- if the new ancestor is an effective generic type, we need to synthesise
 			-- replacements in the current class for inherited properties of open types
@@ -685,7 +680,7 @@ feature {NONE} -- Implementation
 			props: STRING_TABLE [BMM_PROPERTY]
 			prop_type_name: STRING
 		do
-			prop_type_name := a_prop.bmm_type.base_class.name
+			prop_type_name := a_prop.bmm_type.effective_base_class.name
 			if not supplier_closure_stack.has (prop_type_name) then
 				supplier_closure_stack.extend (prop_type_name)
 
@@ -694,10 +689,10 @@ feature {NONE} -- Implementation
 				if continue_action.item ([a_prop, depth]) then
 					if flat_flag then
 						-- props := bmm_model.class_definition (prop_type_name).flat_properties
-						props := a_prop.bmm_type.base_class.flat_properties
+						props := a_prop.bmm_type.effective_base_class.flat_properties
 					else
 						-- props := bmm_model.class_definition (prop_type_name).properties
-						props := a_prop.bmm_type.base_class.properties
+						props := a_prop.bmm_type.effective_base_class.properties
 					end
 
 					across props as props_csr loop

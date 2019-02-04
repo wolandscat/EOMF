@@ -17,10 +17,10 @@ create
 
 feature -- Initialisation
 
-	make (a_value: like value; a_type: like type)
+	make (a_value: like value; a_bmm_type: like bmm_type)
 		do
 			value := a_value
-			type := a_type
+			bmm_type := a_bmm_type
 		end
 
 feature -- Access

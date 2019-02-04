@@ -1,6 +1,11 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Abstraction of a package as a tree structure whose nodes can contain other packages and classes."
+	description: "[
+				 Abstraction of a package as a tree structure whose nodes can contain other packages and classes.
+				 
+				 The `name` field is the name of the package FROM SCHEMA; this name may be qualified if it is a 
+				 top-level package within the schema, or unqualified.
+				 ]"
 	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -29,10 +34,6 @@ feature -- Access
 
 	bmm_model: detachable BMM_MODEL
 			-- reverse reference to parent schema
-
-	name: STRING
-			-- name of the package FROM SCHEMA; this name may be qualified if it is a top-level
-			-- package within the schema, or unqualified.
 
 	classes: ARRAYED_SET [BMM_CLASS]
 		attribute

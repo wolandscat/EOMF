@@ -20,7 +20,7 @@ feature -- Identification
 	type_name: STRING
 			-- formal name of the type
 		do
-			Result := base_class.name
+			Result := effective_base_class.name
 		end
 
 feature -- Access
@@ -32,12 +32,12 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.extend (base_class.name)
+			Result.extend (effective_base_class.name)
 		end
 
 	subtypes: ARRAYED_SET [STRING]
 		do
-			Result := base_class.all_descendants
+			Result := effective_base_class.all_descendants
 		end
 
 feature -- Status Report
@@ -45,12 +45,12 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := base_class.is_abstract
+			Result := effective_base_class.is_abstract
 		end
 
 	has_subtypes: BOOLEAN
 		do
-			Result := base_class.has_descendants
+			Result := effective_base_class.has_descendants
 		end
 
 feature -- Factory
@@ -58,7 +58,7 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			create Result.make (base_class)
+			create Result.make (effective_base_class)
 		end
 
 end

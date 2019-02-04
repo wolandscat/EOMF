@@ -68,13 +68,13 @@ feature -- Access
 	inheritance_precursor: detachable BMM_PARAMETER_TYPE
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
-	base_class: BMM_CLASS
+	effective_base_class: BMM_CLASS
 			-- the effective conformance type of this parameter, 'Any' if none other
 		do
 			if attached flattened_conforms_to_type as fctt then
-				Result := fctt.base_class
+				Result := fctt.effective_base_class
 			else
-				Result := any_type_definition.base_class
+				Result := any_type_definition.effective_base_class
 			end
 		end
 
@@ -117,14 +117,14 @@ feature -- Access
 
 	subtypes: ARRAYED_SET [STRING]
 		do
-			Result := effective_conforms_to_type.base_class.all_descendants
+			Result := effective_conforms_to_type.effective_base_class.all_descendants
 		end
 
 feature -- Status Report
 
 	has_subtypes: BOOLEAN
 		do
-			Result := effective_conforms_to_type.base_class.has_descendants
+			Result := effective_conforms_to_type.effective_base_class.has_descendants
 		end
 
 	is_constrained: BOOLEAN

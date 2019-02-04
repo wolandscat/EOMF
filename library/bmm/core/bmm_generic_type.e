@@ -12,7 +12,7 @@ class BMM_GENERIC_TYPE
 inherit
 	BMM_DEFINED_TYPE
 		redefine
-			make, base_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
+			make, effective_base_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
 		end
 
 create
@@ -20,7 +20,7 @@ create
 
 feature -- Initialisation
 
-	make (a_class: like base_class)
+	make (a_class: like effective_base_class)
 		do
 			precursor (a_class)
 			create generic_parameters.make (0)
@@ -32,7 +32,7 @@ feature -- Identification
 			-- full name of the type including generic parameters
 		do
 			create Result.make_empty
-			Result.append (base_class.name)
+			Result.append (effective_base_class.name)
 			Result.append_character (Generic_left_delim)
 			across generic_parameters as gen_parms_csr loop
 				Result.append (gen_parms_csr.item.type_name)
@@ -47,7 +47,7 @@ feature -- Identification
 			-- Signature form of the type, which for generics includes generic parameter constrainer types
 			-- E.g. Interval<T:Ordered>
 		do
-			create Result.make_from_string (base_class.name)
+			create Result.make_from_string (effective_base_class.name)
 			Result.append_character (generic_left_delim)
 			across generic_parameters as gen_parms_csr loop
 				Result.append (gen_parms_csr.item.type_signature)
@@ -60,7 +60,7 @@ feature -- Identification
 
 feature -- Access
 
-	base_class: BMM_GENERIC_CLASS
+	effective_base_class: BMM_GENERIC_CLASS
 			-- the base class of this type
 
 	generic_parameters: ARRAYED_LIST [BMM_UNITARY_TYPE]
@@ -73,7 +73,7 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.extend (base_class.name)
+			Result.extend (effective_base_class.name)
 
 			across generic_parameters as gen_parm_csr loop
 				Result.append (gen_parm_csr.item.flattened_type_list)
@@ -84,13 +84,13 @@ feature -- Access
 			-- list of generic parameter substitutions, keyed by formal parameter name, e.g. 'T', 'U'
 		do
 			create Result.make_caseless (0)
-			base_class.generic_parameters.start
+			effective_base_class.generic_parameters.start
 			across generic_parameters as gen_parms_csr loop
 				-- if this is not a formal generic parameter, record a substitution
 				if not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item then
-					Result.put (gen_parms_csr.item, base_class.generic_parameters.item_for_iteration.name)
+					Result.put (gen_parms_csr.item, effective_base_class.generic_parameters.item_for_iteration.name)
 				end
-				base_class.generic_parameters.forth
+				effective_base_class.generic_parameters.forth
 			end
 		end
 
@@ -104,8 +104,8 @@ feature -- Access
 		do
 			-- build list of permutation sets
 			create sub_type_lists.make (0)
-			sub_type_lists.extend (base_class.all_descendants.deep_twin)
-			sub_type_lists.last.extend (base_class.name)
+			sub_type_lists.extend (effective_base_class.all_descendants.deep_twin)
+			sub_type_lists.last.extend (effective_base_class.name)
 			perm_count := sub_type_lists.last.count
 
 			across generic_parameters as gen_parms_csr loop
@@ -166,7 +166,7 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := base_class.is_abstract or else
+			Result := effective_base_class.is_abstract or else
 				across generic_parameters as gen_parm_csr some
 					not gen_parm_csr.item.is_abstract
 				end
@@ -174,7 +174,7 @@ feature -- Status Report
 
 	has_subtypes: BOOLEAN
 		do
-			Result := base_class.has_descendants or else
+			Result := effective_base_class.has_descendants or else
 				across generic_parameters as gen_parms_csr some
 					gen_parms_csr.item.has_subtypes
 				end
@@ -205,7 +205,7 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			create Result.make (base_class)
+			create Result.make (effective_base_class)
 			across generic_parameters as gen_parms_csr loop
 				Result.add_generic_parameter (gen_parms_csr.item.create_duplicate)
 			end

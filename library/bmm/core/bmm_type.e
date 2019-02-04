@@ -34,12 +34,12 @@ feature -- Identification
 	entity_metatype: STRING
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := base_class.entity_metatype
+			Result := effective_base_class.entity_metatype
 		end
 
 feature -- Access
 
-	base_class: BMM_CLASS
+	effective_base_class: BMM_CLASS
 			-- model-semantic class for this type, from which properties etc can be extracted;
 			-- abstracts away container types.
 		deferred
@@ -60,7 +60,7 @@ feature -- Status Report
 	is_primitive: BOOLEAN
 			-- True if this entity corresponds to a primitive type
 		do
-			Result := base_class.is_primitive
+			Result := effective_base_class.is_primitive
 		end
 
 	has_subtypes: BOOLEAN

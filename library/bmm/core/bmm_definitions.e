@@ -37,6 +37,9 @@ feature -- Definitions
 	Generic_constraint_delimiter: CHARACTER = ':'
 			-- appears between 'T' and constraining type if there is one
 
+	Type_delimiter: CHARACTER = ':'
+			-- appears between a name and a type in a declaration or type signature
+
 	Unknown_package_name: STRING = "(uninitialised)"
 
 	Unknown_schema_id: STRING = "(uninitialised)"
