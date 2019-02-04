@@ -18,11 +18,11 @@ inherit
 feature {NONE} -- Initialisation
 
 	make (a_name: STRING; a_doc: detachable STRING; a_bmm_type: like bmm_type;
-			is_mandatory_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
+			is_nullable_flag, is_computed_flag, is_im_infrastructure_flag, is_im_runtime_flag: BOOLEAN)
 		do
 			name := a_name
 			documentation := a_doc
-			is_mandatory := is_mandatory_flag
+			is_nullable := is_nullable_flag
 			is_computed := is_computed_flag
 			is_im_infrastructure := is_im_infrastructure_flag
 			is_im_runtime := is_im_runtime_flag
@@ -34,7 +34,7 @@ feature {NONE} -- Initialisation
 		do
 			name := other.name.twin
 			documentation := if attached other.documentation as att_doc then att_doc.twin else Void end
-			is_mandatory := other.is_mandatory
+			is_nullable := other.is_nullable
 			is_computed := other.is_computed
 			is_im_infrastructure := other.is_im_infrastructure
 			is_im_runtime := other.is_im_runtime
@@ -46,7 +46,7 @@ feature {NONE} -- Initialisation
 		do
 			name := other.name.twin
 			documentation := if attached other.documentation as att_doc then att_doc.twin else Void end
-			is_mandatory := other.is_mandatory
+			is_nullable := other.is_nullable
 			is_computed := other.is_computed
 			is_im_infrastructure := other.is_im_infrastructure
 			is_im_runtime := other.is_im_runtime
@@ -66,10 +66,10 @@ feature -- Access
 	existence: MULTIPLICITY_INTERVAL
 			-- interval form of 0..1, 1..1 etc, generated from is_mandatory
 		do
-			if is_mandatory then
-				create Result.make_point (1)
-			else
+			if is_nullable then
 				create Result.make_bounded (0, 1)
+			else
+				create Result.make_point (1)
 			end
 		end
 
@@ -105,9 +105,6 @@ feature -- Access
 		end
 
 feature -- Status Report
-
-	is_mandatory: BOOLEAN
-			-- True if this propert is mandatory in its class
 
 	is_computed: BOOLEAN
 			-- True if this property is computed rather than stored in objects of this class

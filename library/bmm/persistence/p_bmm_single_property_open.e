@@ -59,7 +59,7 @@ feature -- Factory
 			if attached type_def then
 				type_def.create_bmm_type (a_bmm_model, a_class_def)
 				check attached {BMM_UNITARY_TYPE} type_def.bmm_type as b_ut then
-					create bmm_property.make (name, documentation, b_ut, is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
+					create bmm_property.make (name, documentation, b_ut, not is_mandatory, is_computed, is_im_infrastructure, is_im_runtime)
 				end
 			end
 		end
