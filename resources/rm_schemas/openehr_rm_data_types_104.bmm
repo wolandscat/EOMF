@@ -259,7 +259,15 @@ class_definitions = <
 
 	["DV_INTERVAL"] = <
 		name = <"DV_INTERVAL">
-		ancestors = <"Interval", "DATA_VALUE">
+		ancestor_defs = <
+			["Interval<T>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"Interval">
+				generic_parameters = <"T">
+			>
+			["DATA_VALUE"] = (P_BMM_SIMPLE_TYPE) <
+				type = <"DATA_VALUE">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">

@@ -14,6 +14,10 @@ class P_BMM_SCHEMA
 
 inherit
 	BMM_SCHEMA
+		rename
+			primitive_types_count as primitive_types_count,
+			class_definitions_count as class_definitions_count
+		end
 
 	P_BMM_PACKAGE_CONTAINER
 
@@ -378,7 +382,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 
 			-- classes
 			across included_schema.class_definitions as other_classes_csr loop
-				-- note that `put' only puts the class definition from the included schema only if the current one does not already
+				-- note that `put' only puts the class definition from the included schema if the current one does not already
 				-- have a definition for that class name. Since higher-level schemas are processed first, any over-rides they
 				-- contain will stay, with the classes being overridden being ignored - which is the desired behaviour.
 				if class_definitions.has (other_classes_csr.key) then
@@ -414,6 +418,14 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			package_classes: HASH_TABLE [STRING, STRING]
 			class_names: ARRAYED_LIST [STRING]
 		do
+			-- pass 0 set reverse ref
+			do_all_classes (
+				agent (a_class_def: P_BMM_CLASS)
+					do
+						a_class_def.set_p_bmm_schema (Current)
+					end
+			)
+
 			-- compute ancestors index:
 			-- pass 1: add class direct ancestors
 			do_all_classes (
@@ -427,6 +439,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						ancestors_index.put (anc_list, a_class_def.name)
 					end
 			)
+
 			-- pass 2: add indirect ancestors
 			do_all_classes (
 				agent (a_class_def: P_BMM_CLASS)
@@ -537,7 +550,8 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					if not property_conforms_to (a_prop_def, anc_prop) then
 						-- At the moment we accept an override of the same type, and issue a warning.
 						-- A same-type override is usually used to introduce mandatoriness or some other meta-data property.
-						if a_prop_def.name.same_string (anc_prop.name) and attached a_prop_def.type_def as att_prop_td and then attached anc_prop.type_def as att_anc_prop_td and then
+						if a_prop_def.name.same_string (anc_prop.name) and attached a_prop_def.type_def as att_prop_td and then
+							attached anc_prop.type_def as att_anc_prop_td and then
 							att_prop_td.as_type_string.same_string (att_anc_prop_td.as_type_string)
 						then
 							add_validity_warning (a_class_def.source_schema_id, ec_BMM_PRCFD,
@@ -560,31 +574,39 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 
 			elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_prop_def as a_single_prop_def_open then
 				check attached a_single_prop_def_open.type_def as att_type_def then
-					if not a_class_def.is_generic or else (attached a_class_def.generic_parameter_defs as att_gen_parm_defs and then not att_gen_parm_defs.has (att_type_def.type)) then
+					if not a_class_def.is_generic or else (attached a_class_def.generic_parameter_defs as att_gen_parm_defs and then
+						not att_gen_parm_defs.has (att_type_def.type))
+					then
 						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPOT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, att_type_def.type>>)
 					end
 				end
 
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
-				if attached a_cont_prop_def.type_def as att_type_def then
-					if not has_class_definition (att_type_def.container_type) then
+				if attached a_cont_prop_def.type_def as cont_type_def then
+					if not has_class_definition (cont_type_def.container_type) then
 						add_validity_error (a_class_def.source_schema_id, ec_BMM_CPCT,
-							<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, att_type_def.container_type>>)
-					elseif attached att_type_def.type_ref as att_type_ref then
-						-- loop through types inside container type
-						across att_type_ref.flattened_type_list as types_csr loop
-							if not has_class_definition (types_csr.item) then
-								if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
-									check attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
-										if not att_gen_parm_defs.has (types_csr.item) then
-											add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
-												<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+							<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, cont_type_def.container_type>>)
+					elseif attached cont_type_def.type_ref as value_type_ref then
+						-- check if it is the correct meta-type
+						if attached {P_BMM_SIMPLE_TYPE} value_type_ref as simple_type and then attached class_definition (simple_type.type) as p_bmm_class and then p_bmm_class.is_generic then
+							add_validity_error (a_class_def.source_schema_id, ec_BMM_CPVT,
+								<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, simple_type.type>>)
+						else
+							-- loop through types inside contained type and check them
+							across value_type_ref.flattened_type_list as types_csr loop
+								if not has_class_definition (types_csr.item) then
+									if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
+										check attached a_class_def.generic_parameter_defs as gen_parm_defs then
+											if not gen_parm_defs.has (types_csr.item) then
+												add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
+													<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
+											end
 										end
+									else
+										add_validity_error (a_class_def.source_schema_id, ec_BMM_CPTV,
+											<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 									end
-								else
-									add_validity_error (a_class_def.source_schema_id, ec_BMM_CPTV,
-										<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 								end
 							end
 						end
@@ -701,9 +723,9 @@ feature -- Factory
 			-- create the BMM_CLASS object, add it to the BMM_SCHEMA;
 			-- set its source_schema_id; set its primitive_type flag; its BMM_SCHEMA link will also be set
 		do
-			if attached class_definition (a_class_name) as p_class_def then
+			check attached class_definition (a_class_name) as p_class_def then
 				p_class_def.create_bmm_class
-				if attached p_class_def.bmm_class as bmm_class_def and attached a_pkg.bmm_package_definition as pkg_def then
+				check attached p_class_def.bmm_class as bmm_class_def and attached a_pkg.bmm_package_definition as pkg_def then
 					if primitive_types.has (a_class_name) then
 						bmm_class_def.set_primitive_type
 					end
@@ -774,7 +796,7 @@ feature {NONE} -- Implementation
 			-- process in breadth first order of inheritance tree
 		local
 			attempts, missed_count: INTEGER
-			visited_classes: ARRAYED_LIST [STRING]
+			visited_classes, ancestor_class_names: ARRAYED_LIST [STRING]
 		do
 			create visited_classes.make (0)
 			visited_classes.compare_objects
@@ -782,8 +804,9 @@ feature {NONE} -- Implementation
 				missed_count := 0
 				across primitive_types as prim_types_csr loop
 					if not visited_classes.has (prim_types_csr.item.name.as_upper) then
-						if prim_types_csr.item.ancestors.is_empty or else
-							across prim_types_csr.item.ancestors as ancs_csr all visited_classes.has (ancs_csr.item.as_upper) end
+						ancestor_class_names := prim_types_csr.item.ancestor_class_names
+						if ancestor_class_names.is_empty or else
+							across ancestor_class_names as ancs_csr all visited_classes.has (ancs_csr.item.as_upper) end
 						then
 							action.call ([prim_types_csr.item])
 							visited_classes.extend (prim_types_csr.item.name.as_upper)
@@ -799,8 +822,9 @@ feature {NONE} -- Implementation
 				missed_count := 0
 				across class_definitions as class_defs_csr loop
 					if not visited_classes.has (class_defs_csr.item.name.as_upper) then
-						if class_defs_csr.item.ancestors.is_empty or else
-							across class_defs_csr.item.ancestors as ancs_csr all visited_classes.has (ancs_csr.item.as_upper) end
+						ancestor_class_names := class_defs_csr.item.ancestor_class_names
+						if ancestor_class_names.is_empty or else
+							across ancestor_class_names as ancs_csr all visited_classes.has (ancs_csr.item.as_upper) end
 						then
 							action.call ([class_defs_csr.item])
 							visited_classes.extend (class_defs_csr.item.name.as_upper)

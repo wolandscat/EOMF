@@ -584,7 +584,9 @@ feature {NONE} -- Implementation
 			if attached {BMM_GENERIC_CLASS} type_class_definition (a_type_name.as_string) as gen_class_def then
 				Result := create_bmm_generic_type_from_bmm_type_name (a_type_name)
 			else
-				create {BMM_SIMPLE_TYPE} Result.make (class_definition (a_type_name.name))
+				check attached {BMM_SIMPLE_CLASS} class_definition (a_type_name.name) as simple_class_def then
+					create {BMM_SIMPLE_TYPE} Result.make (simple_class_def)
+				end
 			end
 		end
 

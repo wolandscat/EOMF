@@ -96,7 +96,7 @@ class_definitions = <
 
 	["DATA_VALUE"] = <
 		name = <"DATA_VALUE">
-		ancestors = <"Any", ...>
+		ancestors = <"Any">
 		is_abstract = <True>
 	>
 
@@ -125,7 +125,15 @@ class_definitions = <
 
 	["DV_INTERVAL"] = <
 		name = <"DV_INTERVAL">
-		ancestors = <"Interval", "DATA_VALUE">
+		ancestor_defs = <
+			["Interval<T>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"Interval">
+				generic_parameters = <"T">
+			>
+			["DATA_VALUE"] = (P_BMM_SIMPLE_TYPE) <
+				type = <"DATA_VALUE">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -136,7 +144,7 @@ class_definitions = <
 
 	["REFERENCE_RANGE"] = <
 		name = <"REFERENCE_RANGE">
-		ancestors = <"Any", ...>
+		ancestors = <"Any">
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -144,9 +152,12 @@ class_definitions = <
 			>
 		>
 		properties = <
-			["range"] = (P_BMM_SINGLE_PROPERTY) <
+			["range"] = (P_BMM_GENERIC_PROPERTY) <
 				name = <"range">
-				type = <"DV_INTERVAL">
+				type_def = <
+					root_type = <"DV_INTERVAL">
+					generic_parameters = <"T">
+				>
 				is_mandatory = <True>
 			>
 		>
@@ -181,7 +192,7 @@ class_definitions = <
 	["DV_QUANTIFIED"] = <
 		name = <"DV_QUANTIFIED">
 		is_abstract = <True>
-		ancestors = <"DV_ORDERED", ...>
+		ancestors = <"DV_ORDERED">
 		properties = <
 			["magnitude_status"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"magnitude_status">
@@ -194,7 +205,7 @@ class_definitions = <
 
 	["MAGNITUDE_STATUS"] = (P_BMM_ENUMERATION_STRING) <
 		name = <"MAGNITUDE_STATUS">
-		ancestors = <"String", ...>
+		ancestors = <"String">
 		item_names = <"le", "ge", "eq", "approx_eq">
 		item_values = <"<=", ">=", "=", "~">
 	>
@@ -202,7 +213,7 @@ class_definitions = <
 	["DV_AMOUNT"] = <
 		name = <"DV_AMOUNT">
 		is_abstract = <True>
-		ancestors = <"DV_QUANTIFIED", ...>
+		ancestors = <"DV_QUANTIFIED">
 		properties = <
 			["accuracy"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"accuracy">
@@ -220,7 +231,7 @@ class_definitions = <
 	["DV_ABSOLUTE_QUANTITY"] = <
 		name = <"DV_ABSOLUTE_QUANTITY">
 		is_abstract = <True>
-		ancestors = <"DV_QUANTIFIED", ...>
+		ancestors = <"DV_QUANTIFIED">
 		properties = <
 			["accuracy"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"accuracy">
@@ -232,7 +243,7 @@ class_definitions = <
 
 	["DV_QUANTITY"] = <
 		name = <"DV_QUANTITY">
-		ancestors = <"DV_AMOUNT", ...>
+		ancestors = <"DV_AMOUNT">
 		properties = <
 			["magnitude"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"magnitude">
@@ -258,7 +269,7 @@ class_definitions = <
 
 	["RANGE_OF_INTERVAL_OF_QUANTITY"] = <
 		name = <"RANGE_OF_INTERVAL_OF_QUANTITY">
-		ancestors = <"Any", ...>
+		ancestors = <"Any">
 		properties = <
 			["range"] = (P_BMM_GENERIC_PROPERTY) <
 				name = <"range">

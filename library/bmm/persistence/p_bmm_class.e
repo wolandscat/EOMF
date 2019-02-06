@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Definition of dADL persistent form of an instance of BMM_CLASS"
+	description: "Definition of ODIN persistent form of an instance of BMM_CLASS"
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
@@ -44,8 +44,9 @@ feature -- Access (persisted)
 			-- list of immediate inheritance parents FROM SCHEMA
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	ancestor_defs: detachable ARRAYED_LIST [P_BMM_GENERIC_TYPE]
-			-- list of immediate inheritance parents FROM SCHEMA
+	ancestor_defs: detachable ARRAYED_LIST [P_BMM_BASE_TYPE]
+			-- list of immediate inheritance parents FROM SCHEMA; must be used if there are
+			-- any generic ancestors
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
 	properties: HASH_TABLE [P_BMM_PROPERTY, STRING]
@@ -67,19 +68,51 @@ feature -- Access
 			end
 		end
 
+	ancestor_class_names: ARRAYED_LIST [STRING]
+			-- list of ancestor class names, i.e. type names minus any generic part
+		local
+			anc_class_name: STRING
+		do
+			create Result.make (0)
+			Result.compare_objects
+			across ancestor_refs as ancs_csr loop
+				-- find the BMM_CLASS of the ancestor reference
+				if attached {P_BMM_GENERIC_TYPE} ancs_csr.item as gen_type then
+					anc_class_name := gen_type.root_type
+				else
+					check attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
+						anc_class_name := simple_type.type
+					end
+				end
+				Result.extend (anc_class_name)
+			end
+		end
+
 	ancestor_refs: ARRAYED_LIST [P_BMM_BASE_TYPE]
 			-- structural form of ancestors
 			-- TODO: not dealing with inheritance from Enmerated classes - if it is allowed....
+		require
+			attached p_bmm_schema
+		local
+			p_bmm_class: P_BMM_CLASS
 		do
 			if attached ancestor_defs as att_defs then
 				Result := att_defs
-			elseif attached ancestors as att_anc_strings then
-				create Result.make (0)
-				across att_anc_strings as anc_csr loop
-					Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (anc_csr.item))
-				end
 			else
 				create Result.make (0)
+				if attached ancestors then
+					across ancestors as anc_csr loop
+						check p_bmm_schema.has_class_definition (anc_csr.item) then
+							p_bmm_class := p_bmm_schema.class_definition (anc_csr.item)
+							if p_bmm_class.is_generic then
+								Result.extend (create {P_BMM_GENERIC_TYPE}.make_generic_open (anc_csr.item,
+								create {ARRAYED_LIST[STRING]}.make_from_array (p_bmm_class.generic_parameter_defs.current_keys)))
+							else
+								Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (anc_csr.item))
+							end
+						end
+					end
+				end
 			end
 		end
 
@@ -90,6 +123,12 @@ feature -- Access
 		end
 
 	bmm_class: detachable BMM_CLASS
+		note
+			option: transient
+		attribute
+		end
+
+	p_bmm_schema: detachable P_BMM_SCHEMA
 		note
 			option: transient
 		attribute
@@ -129,6 +168,11 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
+	set_p_bmm_schema (s: P_BMM_SCHEMA)
+		do
+			p_bmm_schema := s
+		end
+
 feature -- Factory
 
 	create_bmm_class
@@ -147,17 +191,19 @@ feature -- Factory
 		local
 			anc_class_name: STRING
 		do
-			if attached bmm_class as att_bmm_class then
+			check attached bmm_class as att_bmm_class then
 				-- populate references to ancestor classes; should be every class except Any
 				across ancestor_refs as ancs_csr loop
 					-- find the BMM_CLASS of the ancestor reference
 					if attached {P_BMM_GENERIC_TYPE} ancs_csr.item as gen_type then
 						anc_class_name := gen_type.root_type
-					elseif attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
-						anc_class_name := simple_type.type
+					else
+						check attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
+							anc_class_name := simple_type.type
+						end
 					end
 
-					check attached anc_class_name and then attached a_bmm_model.class_definition (anc_class_name) as anc_class then
+					check attached a_bmm_model.class_definition (anc_class_name) as anc_class then
 						ancs_csr.item.create_bmm_type (a_bmm_model, anc_class)
 					end
 
@@ -166,17 +212,19 @@ feature -- Factory
 					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
 					-- Could be fixed, but better to move on to new serial format
 					check attached {BMM_DEFINED_TYPE} ancs_csr.item.bmm_type as bt then
-						bmm_class.add_ancestor (bt)
+						att_bmm_class.add_ancestor (bt)
 					end
 				end
 
-				-- create generic parameters
+				-- create generic parameters if a generic class
 				-- and add to the BMM_GENERIC_TYPE.generic_parameters list
-				if attached generic_parameter_defs and then attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
-					across generic_parameter_defs as gen_parm_defs_csr loop
-						gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
-						check attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
-							bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
+				if attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
+					check attached generic_parameter_defs and then not generic_parameter_defs.is_empty then
+						across generic_parameter_defs as gen_parm_defs_csr loop
+							gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
+							check attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
+								bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
+							end
 						end
 					end
 				end
@@ -188,6 +236,9 @@ feature -- Factory
 						att_bmm_class.add_property (bmm_prop_def)
 					end
 				end
+
+				-- mark as complete
+				att_bmm_class.set_is_populated
 			end
 		end
 

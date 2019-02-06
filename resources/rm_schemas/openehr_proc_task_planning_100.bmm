@@ -224,14 +224,20 @@ class_definitions = <
 				name = <"expressions">
 				type_def = <
 					container_type = <"List">
-					type = <"CONTEXT_EXPRESSION">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"CONTEXT_EXPRESSION">
+						generic_parameters = <"EXPR_TYPE_DEF">
+					>
 				>
 			>
 			["variables"] = (P_BMM_CONTAINER_PROPERTY) <
 				name = <"variables">
 				type_def = <
 					container_type = <"List">
-					type = <"CONTEXT_VARIABLE">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"CONTEXT_VARIABLE">
+						generic_parameters = <"EXPR_TYPE_DEF">
+					>
 				>
 			>
 		>
@@ -262,7 +268,12 @@ class_definitions = <
 
 	["CONTEXT_VARIABLE"] = <
 		name = <"CONTEXT_VARIABLE">
-		ancestors = <"CONTEXT_VALUE">
+		ancestor_defs = <
+			["CONTEXT_VALUE<T>"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"CONTEXT_VALUE">
+				generic_parameters = <"T">
+			>
+		>
 		is_abstract = <True>
 		generic_parameter_defs = <
 			["T"] = <
@@ -280,7 +291,12 @@ class_definitions = <
 
 	["CONTEXT_EXPRESSION"] = <
 		name = <"CONTEXT_EXPRESSION">
-		ancestors = <"CONTEXT_VALUE">
+		ancestor_defs = <
+			["CONTEXT_VALUE"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"CONTEXT_VALUE">
+				generic_parameters = <"T">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -298,7 +314,12 @@ class_definitions = <
 
 	["STATE_VARIABLE"] = <
 		name = <"STATE_VARIABLE">
-		ancestors = <"CONTEXT_VARIABLE">
+		ancestor_defs = <
+			["CONTEXT_VARIABLE"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"CONTEXT_VARIABLE">
+				generic_parameters = <"T">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -315,7 +336,12 @@ class_definitions = <
 
 	["EVENT_VARIABLE"] = <
 		name = <"EVENT_VARIABLE">
-		ancestors = <"CONTEXT_VARIABLE">
+		ancestor_defs = <
+			["CONTEXT_VARIABLE"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"CONTEXT_VARIABLE">
+				generic_parameters = <"T">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -326,7 +352,12 @@ class_definitions = <
 
 	["CONTINUOUS_EVENT_VARIABLE"] = <
 		name = <"CONTINUOUS_EVENT_VARIABLE">
-		ancestors = <"EVENT_VARIABLE">
+		ancestor_defs = <
+			["EVENT_VARIABLE"] = (P_BMM_GENERIC_TYPE) <
+				root_type = <"EVENT_VARIABLE">
+				generic_parameters = <"T">
+			>
+		>
 		generic_parameter_defs = <
 			["T"] = <
 				name = <"T">
@@ -391,7 +422,10 @@ class_definitions = <
 				name = <"event_wait_states">
 				type_def = <
 					container_type = <"List">
-					type = <"EVENT_WAIT">
+					type_def = (P_BMM_GENERIC_TYPE) <
+						root_type = <"EVENT_WAIT">
+						generic_parameters = <"PLAN_EVENT">
+					>
 				>
 			>
 			["top_level_plans"] = (P_BMM_CONTAINER_PROPERTY) <
@@ -1186,7 +1220,7 @@ class_definitions = <
 				name = <"expression">
 				type_def = <
 					root_type = <"CONTEXT_EXPRESSION">
-					generic_parameters = <"TYPE_DEF_BOOLEAN">
+					generic_parameters = <"EXPR_TYPE_DEF">
 				>
 				is_mandatory = <True>
 			>

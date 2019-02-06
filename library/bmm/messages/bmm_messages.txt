@@ -62,6 +62,7 @@ templates = <
 		["BMM_CPTV"] = <"Schema $1 class definition $2 container property $3 target type $4 not found in schema">
 		["BMM_CPTNC"] = <"Schema $1 class definition $2 container property $3 cardinality not defined (assuming {0..*})">
 		["BMM_CPCT"] = <"Schema $1 class definition $2 container property $3 container type $4 not found in schema">
+		["BMM_CPVT"] = <"Schema $1 class definition $2 container property $3 contained value type $4 is generic but declared as simple type">
 		["BMM_GPT"] = <"Schema $1 class definition $2 generic property $3 not defined">
 		["BMM_GPRT"] = <"Schema $1 class definition $2 generic property $3 root type $4 not found in schema">
 		["BMM_GPRTNG"] = <"Schema $1 class definition $2 generic property $3 root type $4 has no formal generic parameters">

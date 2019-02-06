@@ -15,6 +15,19 @@ inherit
 			bmm_type, create_bmm_type
 		end
 
+create
+	make_generic_open
+
+feature -- Initialisation
+
+	make_generic_open (a_type: STRING; gen_parms: ARRAYED_LIST [STRING])
+			-- make on the fly for a types whose generic params are simple and open, e.g.
+			-- Interval<T> etc
+		do
+			root_type := a_type
+			generic_parameters := gen_parms
+		end
+
 feature -- Access (attributes from schema)
 
 	root_type: STRING
@@ -41,18 +54,17 @@ feature -- Access
 		do
 			if attached generic_parameter_defs as att_gen_parm_defs then
 				Result := att_gen_parm_defs
-			elseif attached generic_parameters as att_gen_parms_strings then
-				create Result.make (0)
-				across att_gen_parms_strings as gen_parms_csr loop
-					if formal_generic_parameter_name (gen_parms_csr.item) then
-						Result.extend (create {P_BMM_OPEN_TYPE}.make_simple (gen_parms_csr.item))
-					else
-						Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
-					end
-				end
-				-- generic_parameter_defs := Result
 			else
 				create Result.make (0)
+				check attached generic_parameters then
+					across generic_parameters as gen_parms_csr loop
+						if formal_generic_parameter_name (gen_parms_csr.item) then
+							Result.extend (create {P_BMM_OPEN_TYPE}.make_simple (gen_parms_csr.item))
+						else
+							Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (gen_parms_csr.item))
+						end
+					end
+				end
 			end
 		end
 
