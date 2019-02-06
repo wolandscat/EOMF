@@ -11,6 +11,9 @@ class BMM_SIMPLE_TYPE
 
 inherit
 	BMM_DEFINED_TYPE
+		redefine
+			defining_class
+		end
 
 create
 	make
@@ -20,10 +23,13 @@ feature -- Identification
 	type_name: STRING
 			-- formal name of the type
 		do
-			Result := effective_base_class.name
+			Result := defining_class.name
 		end
 
 feature -- Access
+
+	defining_class: BMM_SIMPLE_CLASS
+			-- the base class of this type
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
@@ -32,12 +38,12 @@ feature -- Access
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.extend (effective_base_class.name)
+			Result.extend (defining_class.name)
 		end
 
 	subtypes: ARRAYED_SET [STRING]
 		do
-			Result := effective_base_class.all_descendants
+			Result := defining_class.all_descendants
 		end
 
 feature -- Status Report
@@ -45,12 +51,12 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := effective_base_class.is_abstract
+			Result := defining_class.is_abstract
 		end
 
 	has_subtypes: BOOLEAN
 		do
-			Result := effective_base_class.has_descendants
+			Result := defining_class.has_descendants
 		end
 
 feature -- Factory
@@ -58,7 +64,7 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			create Result.make (effective_base_class)
+			create Result.make (defining_class)
 		end
 
 end

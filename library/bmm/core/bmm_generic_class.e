@@ -102,7 +102,7 @@ feature -- Modification
 			-- first find a direct ancestor that has generic parameters
 			if not ancestors.is_empty then
 				from ancestors.start until ancestors.off or attached a_gen_parm_def.inheritance_precursor loop
-					if attached {BMM_GENERIC_CLASS} ancestors.item_for_iteration.effective_base_class as anc_gen_class then
+					if attached {BMM_GENERIC_CLASS} ancestors.item_for_iteration.defining_class as anc_gen_class then
 						if anc_gen_class.has_generic_parameter (a_gen_parm_def.name) and then
 							attached anc_gen_class.generic_parameters.item (a_gen_parm_def.name.as_upper) as gen_parm
 						then
@@ -118,7 +118,7 @@ feature -- Modification
 			-- and it has a parent Interval <T: Ordered>, where DV_ORDERED further constraints Ordered, then any
 			-- properties from Interval of type T should be recreated in DV_INTERVAL.
 			across ancestors as anc_class_csr loop
-				if attached {BMM_GENERIC_CLASS} anc_class_csr.item.effective_base_class as parent_gen_class then
+				if attached {BMM_GENERIC_CLASS} anc_class_csr.item.defining_class as parent_gen_class then
 					across parent_gen_class.generic_parameters as parent_gen_class_gen_parms loop
 						if parent_gen_class_gen_parms.item.name.same_string (a_gen_parm_def.name) and
 							a_gen_parm_def.is_constrained and then attached a_gen_parm_def.inheritance_precursor as gp_inh_parent

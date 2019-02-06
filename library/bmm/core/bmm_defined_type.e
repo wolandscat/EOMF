@@ -14,15 +14,22 @@ inherit
 
 feature -- Initialisation
 
-	make (a_class: like effective_base_class)
+	make (a_class: like defining_class)
 		do
-			effective_base_class := a_class
+			defining_class := a_class
 		end
 
 feature -- Access
 
-	effective_base_class: BMM_CLASS
+	defining_class: BMM_CLASS
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
+
+	effective_base_class: BMM_CLASS
+			-- model-semantic class for this type, from which properties etc can be extracted;
+			-- abstracts away container types.
+		do
+			Result := defining_class
+		end
 
 end
 

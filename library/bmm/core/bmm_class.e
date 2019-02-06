@@ -75,8 +75,8 @@ feature -- Access
 				create Result.make (0)
 				Result.compare_objects
 				across ancestors as ancs_csr loop
-					Result.extend (ancs_csr.item.effective_base_class.name)
-					Result.merge (ancs_csr.item.effective_base_class.all_ancestor_classes)
+					Result.extend (ancs_csr.item.defining_class.name)
+					Result.merge (ancs_csr.item.defining_class.all_ancestor_classes)
 
 					-- remove own class name, which might appear due to generic types
 					Result.prune (name)
@@ -96,7 +96,7 @@ feature -- Access
 				Result.compare_objects
 				across ancestors as ancs_csr loop
 					Result.extend (ancs_csr.key.as_string_8)
-					Result.merge (ancs_csr.item.effective_base_class.all_ancestor_types)
+					Result.merge (ancs_csr.item.defining_class.all_ancestor_types)
 				end
 				all_ancestor_types_cache := Result
 			end
@@ -244,7 +244,7 @@ feature -- Access
 				create Result.make_caseless (0)
 				-- merge ancestor properties
 				across ancestors as ancestors_csr loop
-					Result.merge (ancestors_csr.item.effective_base_class.flat_properties)
+					Result.merge (ancestors_csr.item.defining_class.flat_properties)
 				end
 
 				-- now merge the current properties - merging afterward will correctly replace
@@ -353,6 +353,11 @@ feature -- Access
 		do
 			Result := entity_category
 		end
+
+feature -- Building
+
+	is_populated: BOOLEAN
+			-- True if this object has been populated during the construction phase
 
 feature -- Status Report
 
@@ -515,7 +520,7 @@ feature -- Modification
 			anc_gen_subs: STRING_TABLE [BMM_TYPE]
 		do
 			ancestors.put (an_anc_type, an_anc_type.type_name)
-			an_anc_type.effective_base_class.add_immediate_descendant (Current)
+			an_anc_type.defining_class.add_immediate_descendant (Current)
 
 			-- if the new ancestor is an effective generic type, we need to synthesise
 			-- replacements in the current class for inherited properties of open types
@@ -606,6 +611,12 @@ feature -- Modification
 			supplier_closure_cache := Void
 			suppliers_non_primitive_cache := Void
 			reset_flat_properties_cache
+		end
+
+	set_is_populated
+			-- set `is_populated`
+		do
+			is_populated := True
 		end
 
 feature -- Factory
