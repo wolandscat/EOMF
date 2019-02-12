@@ -14,7 +14,7 @@ note
 deferred class BMM_RANGE_CONSTRAINED
 
 inherit
-	BMM_CLASS
+	BMM_SIMPLE_CLASS
 		redefine
 			entity_metatype
 		end
@@ -24,13 +24,6 @@ feature -- Identification
 	entity_metatype: STRING
 		do
 			Result := Entity_metatype_range_constrained
-		end
-
-feature -- Factory
-
-	type: BMM_DEFINED_TYPE
-			-- type related to this class - this is the
-		do
 		end
 
 end

@@ -9,11 +9,28 @@ note
 
 deferred class BMM_VALUE_RETURNING
 
+inherit
+	BMM_BUILTINS
+		export
+			{NONE} all;
+			{ANY} deep_twin, is_deep_equal, standard_is_equal
+		end
+
 feature -- Access
 
 	bmm_type: BMM_TYPE
 			-- Declared or inferred static type of the entity.
+		attribute
+			Result := Any_type
+		end
+
+feature -- Modification
+
+	set_bmm_type (a_bmm_type: like bmm_type)
+			-- set `bmm_type`
+		do
+			bmm_type := a_bmm_type
+		end
 
 end
-
 

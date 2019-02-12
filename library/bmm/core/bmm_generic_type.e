@@ -189,6 +189,15 @@ feature -- Status Report
 				end
 		end
 
+	is_closed: BOOLEAN
+			-- True if parameters are subsituted in this type
+		do
+			Result :=
+				across generic_parameters as gen_parms_csr all
+					not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item
+				end
+		end
+
 	has_formal_generic_type (a_gen_type_name: STRING): BOOLEAN
 			-- True if there is any occurrence of `a_gen_type_name` in the type structure
 		do

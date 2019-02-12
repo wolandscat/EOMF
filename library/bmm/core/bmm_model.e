@@ -33,6 +33,13 @@ inherit
 			default_create
 		end
 
+	BMM_BUILTINS
+		export
+			{NONE} all
+		undefine
+			default_create
+		end
+
 create
 	make, default_create
 
@@ -103,7 +110,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across class_definitions as class_defs_csr loop
-				if attached {BMM_ENUMERATION [BMM_VALUE]} class_defs_csr.item as enum_type then
+				if attached {BMM_ENUMERATION} class_defs_csr.item as enum_type then
 					Result.extend (enum_type.name)
 				end
 			end
@@ -114,10 +121,10 @@ feature -- Access
 	any_class_definition: BMM_SIMPLE_CLASS
 			-- retrieve the class definition corresponding to the top `Any' class
 		do
-			if attached {BMM_SIMPLE_CLASS} class_definition (any_type) as class_def then
+			if attached {BMM_SIMPLE_CLASS} class_definition (Any_type_name) as class_def then
 				Result := class_def
 			else
-				create Result.make (any_type, "Root class of type system", True)
+				Result := Any_class
 			end
 		end
 
@@ -148,7 +155,7 @@ feature -- Access
 			end
 		end
 
-	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION [BMM_VALUE]
+	enumeration_definition (a_type_name: STRING): BMM_ENUMERATION
 			-- retrieve the enumeration definition corresponding to `a_type_name'
 		require
 			Type_name_valid: has_enumeration_definition (a_type_name)
@@ -156,7 +163,7 @@ feature -- Access
 			fake_int_enum_def: BMM_ENUMERATION_INTEGER
 			fake_str_enum_def: BMM_ENUMERATION_STRING
 		do
-			check attached {BMM_ENUMERATION [BMM_VALUE]} class_definition (a_type_name) as enum_def then
+			check attached {BMM_ENUMERATION} class_definition (a_type_name) as enum_def then
 				Result := enum_def
 			end
 		end
@@ -297,7 +304,7 @@ feature -- Status Report
 		require
 			Type_valid: not a_class_name.is_empty
 		do
-			Result := has_class_definition (a_class_name) and then attached {BMM_ENUMERATION [BMM_VALUE]} class_definition (a_class_name)
+			Result := has_class_definition (a_class_name) and then attached {BMM_ENUMERATION} class_definition (a_class_name)
 		end
 
 	has_property (a_type_name, a_prop_name: STRING): BOOLEAN
@@ -320,7 +327,7 @@ feature -- Status Report
 		require
 			has_class_definition (a_class_name)
 		do
-			Result := attached {BMM_ENUMERATION [BMM_VALUE]} class_definition (a_class_name)
+			Result := attached {BMM_ENUMERATION} class_definition (a_class_name)
 		end
 
 	is_descendant_of (a_class_name, a_parent_class_name: STRING): BOOLEAN

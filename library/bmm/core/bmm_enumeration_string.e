@@ -10,13 +10,30 @@ note
 class BMM_ENUMERATION_STRING
 
 inherit
-	BMM_ENUMERATION [BMM_STRING_VALUE]
+	BMM_ENUMERATION
 		redefine
-			set_item_names
+			item_values, has_value, set_item_names
 		end
 
 create
 	make
+
+feature -- Access
+
+	item_values:  ARRAYED_LIST [BMM_STRING_VALUE]
+			-- OPTIONAL list of item values; must be of same length as `item_names'
+		attribute
+			create Result.make (0)
+			Result.compare_objects
+		end
+
+feature -- Status Report
+
+	has_value (v: STRING): BOOLEAN
+			-- True if `item_values` has an item whose internal value is equal to `v`
+		do
+			Result := precursor (v)
+		end
 
 feature -- Modification
 
@@ -25,7 +42,9 @@ feature -- Modification
 			-- names are used as values
 		do
 			precursor (a_names)
-			item_values.append (item_names)
+			across item_names as names_csr loop
+				item_values.extend (create {BMM_STRING_VALUE}.make_value (names_csr.item))
+			end
 		end
 
 end

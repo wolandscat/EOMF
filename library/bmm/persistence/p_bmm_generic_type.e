@@ -104,6 +104,10 @@ feature -- Factory
 						new_bmm_type.add_generic_parameter (bt)
 					end
 				end
+
+				if attached value_constraint as vc then
+					bmm_type.set_value_constraint_from_string (vc)
+				end
 			end
 		end
 

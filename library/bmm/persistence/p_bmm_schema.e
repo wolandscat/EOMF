@@ -171,7 +171,7 @@ feature -- Comparison
 		do
 			-- True if `a_parent_prop' type is Any
 			if attached {P_BMM_SINGLE_PROPERTY} a_parent_prop as a_parent_single_prop and then attached a_parent_single_prop.type_def as att_parent_td
-				and then att_parent_td.type.same_string (any_type)
+				and then att_parent_td.type.same_string (Any_type_name)
 			then
 				Result := True
 

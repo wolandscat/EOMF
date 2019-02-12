@@ -191,7 +191,10 @@ class_definitions = <
 			>
 			["encoding"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"encoding">
-				type = <"CODE_PHRASE">
+				type_ref = <
+					type = <"CODE_PHRASE">
+					value_constraint = <"openEHR::languages">
+				>
 				is_im_infrastructure = <True>
 			>
 			["formatting"] = (P_BMM_SINGLE_PROPERTY) <

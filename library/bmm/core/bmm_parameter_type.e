@@ -111,7 +111,7 @@ feature -- Access
 			if attached flattened_conforms_to_type then
 				Result.append (flattened_conforms_to_type.flattened_type_list)
 			else
-				Result.extend (Any_type)
+				Result.extend (Any_type_name)
 			end
 		end
 

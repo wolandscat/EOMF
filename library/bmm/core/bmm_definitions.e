@@ -32,6 +32,10 @@ feature -- Definitions
 
 	Generic_right_delim: CHARACTER = '>'
 
+	Constraint_left_delim: CHARACTER = '«'
+
+	Constraint_right_delim: CHARACTER = '»'
+
 	Generic_separator: CHARACTER = ','
 
 	Generic_constraint_delimiter: CHARACTER = ':'
@@ -47,16 +51,6 @@ feature -- Definitions
 	Unknown_schema_name: STRING = "(uninitialised)"
 
 	Unknown_type_name: STRING = "UNKNOWN"
-
---	Bmm_container_types: ARRAYED_LIST [STRING]
---			-- built-in container types used to represent class-class 1:N relations
---		once
---			create Result.make (0)
---			Result.compare_objects
---			Result.extend ("List")
---			Result.extend ("Set")
---			Result.extend ("Array")
---		end
 
 	bmm2_schema_file_match_regex: STRING
 		once

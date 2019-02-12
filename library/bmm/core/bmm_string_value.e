@@ -12,14 +12,23 @@ class BMM_STRING_VALUE
 inherit
 	BMM_VALUE
 		redefine
-			type, value
+			bmm_type, value
 		end
+
+create
+	make_value
 
 feature -- Access
 
-	type: BMM_STRING_TYPE
+	bmm_type: BMM_SIMPLE_TYPE
+		attribute
+			Result := String_type
+		end
 
 	value: STRING
+		attribute
+			create {STRING} Result.make_from_string ("default")
+		end
 
 end
 

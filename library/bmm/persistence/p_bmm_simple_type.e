@@ -45,6 +45,9 @@ feature -- Factory
 		do
 			check a_bmm_model.has_class_definition (type) and then attached {BMM_SIMPLE_CLASS} a_bmm_model.class_definition (type) as simple_class_def then
 				create bmm_type.make (simple_class_def)
+				if attached value_constraint as vc then
+					bmm_type.set_value_constraint_from_string (vc)
+				end
 			end
 		end
 

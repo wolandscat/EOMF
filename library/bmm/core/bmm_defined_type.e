@@ -11,6 +11,9 @@ deferred class BMM_DEFINED_TYPE
 
 inherit
 	BMM_UNITARY_TYPE
+		export
+			{ANY} terminology_separator
+		end
 
 feature -- Initialisation
 
@@ -29,6 +32,24 @@ feature -- Access
 			-- abstracts away container types.
 		do
 			Result := defining_class
+		end
+
+	value_constraint: detachable BMM_VALUE_SET_SPEC
+			-- optional value-set constraint
+
+feature -- Modification
+
+	set_value_constraint (a_value_constraint: like value_constraint)
+		do
+			value_constraint := a_value_constraint
+		end
+
+	set_value_constraint_from_string (a_constraint_str: STRING)
+			-- set from a String of the form "resource_id::value_set_id". The first part may be empty.
+		require
+			Valid_string: a_constraint_str.has_substring (Terminology_separator)
+		do
+			create value_constraint.make_from_string (a_constraint_str)
 		end
 
 end

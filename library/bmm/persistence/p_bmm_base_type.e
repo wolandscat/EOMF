@@ -12,8 +12,10 @@ deferred class P_BMM_BASE_TYPE
 inherit
 	P_BMM_TYPE
 
-feature -- Access
+feature -- Access (attributes from schema)
 
+	value_constraint: detachable STRING
+			-- optional value-set constraint, specified as a two-part String, with '::' separator
 
 end
 

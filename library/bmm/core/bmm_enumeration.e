@@ -12,13 +12,23 @@ note
 	copyright:   "Copyright (c) 2009- openEHR Foundation <http://www.openehr.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_ENUMERATION [G -> BMM_VALUE]
+class BMM_ENUMERATION
 
 inherit
 	BMM_RANGE_CONSTRAINED
+		redefine
+			entity_metatype
+		end
 
 create
 	make
+
+feature -- Identification
+
+	entity_metatype: STRING
+		do
+			Result := Entity_metatype_enumeration
+		end
 
 feature -- Access
 
@@ -30,7 +40,7 @@ feature -- Access
 			Result.compare_objects
 		end
 
-	item_values:  ARRAYED_LIST [G]
+	item_values:  ARRAYED_LIST [BMM_VALUE]
 			-- OPTIONAL list of item values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
@@ -43,6 +53,25 @@ feature -- Access
 			create Result.make (0)
 			across item_names as names_csr loop
 				Result.put (names_csr.item, item_values.i_th (names_csr.cursor_index).out)
+			end
+		end
+
+	underlying_type_name: STRING
+			-- name of type on which enumeration is based, i.e. its ancestor
+		do
+			check ancestors.count = 1 then
+				ancestors.start
+				Result := ancestors.item_for_iteration.type_name
+			end
+		end
+
+feature -- Status Report
+
+	has_value (v: ANY): BOOLEAN
+			-- True if `item_values` has an item whose internal value is equal to `v`
+		do
+			Result := across item_values as item_values_csr some
+				item_values_csr.item.value.is_equal (v)
 			end
 		end
 

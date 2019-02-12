@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2011- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class P_BMM_ENUMERATION[G->BMM_VALUE]
+class P_BMM_ENUMERATION
 
 inherit
 	P_BMM_CLASS
@@ -25,12 +25,12 @@ feature -- Access (persisted)
 			Result.compare_objects
 		end
 
-	item_values: detachable ARRAYED_LIST [G]
+	item_values: detachable ARRAYED_LIST [ANY]
 			-- OPTIONAL list of item values; must be of same length as `item_names'
 
 feature -- Access
 
-	bmm_class: detachable BMM_ENUMERATION[G]
+	bmm_class: detachable BMM_ENUMERATION
 		note
 			option: transient
 		attribute
@@ -39,7 +39,7 @@ feature -- Access
 feature -- Factory
 
 	create_bmm_class
-			-- add remaining model elements from `' to `bmm_class'
+			-- add remaining model elements from `bmm_class'
 		local
 			bmm_class_def: attached like bmm_class
 		do
@@ -52,11 +52,25 @@ feature -- Factory
 			-- add remaining model elements to `bmm_class'
 		do
 			precursor (a_bmm_model)
-			if attached bmm_class as bmm_enum_def then
-				bmm_enum_def.set_item_names (item_names)
-				if attached item_values as iv then
-					bmm_enum_def.set_item_values (iv)
+			if attached bmm_class then
+				bmm_class.set_item_names (item_names)
+				populate_bmm_class_enumeration (bmm_class)
+			end
+		end
+
+feature {NONE} -- Implementation
+
+	populate_bmm_class_enumeration (a_bmm_enum_class: like bmm_class)
+			-- add remaining model elements to `bmm_class'
+		local
+			bmm_item_values: ARRAYED_LIST[BMM_VALUE]
+		do
+			if attached item_values as iv then
+				create bmm_item_values.make (0)
+				across iv as vals_csr loop
+					bmm_item_values.extend (create {BMM_VALUE}.make_value(vals_csr.item))
 				end
+				a_bmm_enum_class.set_item_values (bmm_item_values)
 			end
 		end
 

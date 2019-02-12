@@ -357,7 +357,7 @@ feature -- Access
 feature -- Building
 
 	is_populated: BOOLEAN
-			-- True if this object has been populated during the construction phase
+			-- True if this object has had `
 
 feature -- Status Report
 
@@ -394,7 +394,7 @@ feature -- Status Report
 		require
 			Class_name_valid: not a_class_name.is_empty
 		do
-			Result := a_class_name.is_case_insensitive_equal (any_type) or else
+			Result := a_class_name.is_case_insensitive_equal (Any_type_name) or else
 				all_ancestor_classes.has (a_class_name)
 		end
 

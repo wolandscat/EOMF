@@ -142,12 +142,6 @@ feature -- Comparison
 
 feature -- Modification
 
-	set_bmm_type (a_bmm_type: like bmm_type)
-			-- set `bmm_type`
-		do
-			bmm_type := a_bmm_type
-		end
-
 	set_is_synthesised_generic
 			-- set `is_synthesised_generic`
 		do

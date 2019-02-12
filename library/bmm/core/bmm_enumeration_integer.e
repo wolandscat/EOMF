@@ -4,19 +4,38 @@ note
 	keywords:    "integer, enumeration"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2014 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_ENUMERATION_INTEGER
 
 inherit
-	BMM_ENUMERATION[BMM_INTEGER_VALUE]
+	BMM_ENUMERATION
 		redefine
-			set_item_names
+			item_values, has_value, set_item_names
 		end
 
 create
 	make
+
+feature -- Access
+
+	item_values:  ARRAYED_LIST [BMM_INTEGER_VALUE]
+			-- OPTIONAL list of item values; must be of same length as `item_names'
+		attribute
+			create Result.make (0)
+			Result.compare_objects
+		end
+
+feature -- Status Report
+
+	has_value (v: INTEGER): BOOLEAN
+			-- True if `item_values` has an item whose internal value is equal to `v`
+		do
+			Result := across item_values as item_values_csr some
+				item_values_csr.item.value = v
+			end
+		end
 
 feature -- Modification
 
@@ -28,7 +47,7 @@ feature -- Modification
 		do
 			precursor (a_names)
 			across item_names as names_csr loop
-				item_values.extend (create {BMM_INTEGER_VALUE}.make (i))
+				item_values.extend (create {BMM_INTEGER_VALUE}.make_value (i))
 				i := i + 1
 			end
 		end

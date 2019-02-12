@@ -11,7 +11,7 @@ class BASIC_DEFINITIONS
 
 feature -- Definitions
 
-	Any_type: STRING = "Any"
+	Any_type_name: STRING = "Any"
 
 	bare_type_name (type_str: STRING): STRING
 			-- remove any leading ! from broken TYPE.name

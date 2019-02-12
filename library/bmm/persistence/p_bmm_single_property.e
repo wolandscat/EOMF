@@ -18,7 +18,7 @@ inherit
 feature -- Access (persisted)
 
 	type: detachable STRING
-			-- type definition of this property, if not a simple String type reference
+			-- type definition of this property, if a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
 	type_ref: detachable P_BMM_SIMPLE_TYPE

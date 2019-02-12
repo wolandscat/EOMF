@@ -12,14 +12,23 @@ class BMM_INTEGER_VALUE
 inherit
 	BMM_VALUE
 		redefine
-			type, value
+			bmm_type, value
 		end
+
+create
+	make_value
 
 feature -- Access
 
-	type: BMM_INTEGER_TYPE
+	bmm_type: BMM_SIMPLE_TYPE
+		attribute
+			Result := Integer_type
+		end
 
 	value: INTEGER_REF
+		attribute
+			create Result
+		end
 
 end
 
