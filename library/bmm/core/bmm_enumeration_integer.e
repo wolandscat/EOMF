@@ -10,32 +10,25 @@ note
 class BMM_ENUMERATION_INTEGER
 
 inherit
-	BMM_ENUMERATION[INTEGER]
+	BMM_ENUMERATION[BMM_INTEGER_VALUE]
 		redefine
-			set_item_names, underlying_type_name
+			set_item_names
 		end
 
 create
 	make
 
-feature -- Identification
-
-	underlying_type_name: STRING
-			-- redefined to remove _8, _16, _32 from Eiffel internal types
-		once
-			Result := "INTEGER"
-		end
-
 feature -- Modification
 
 	set_item_names (a_names: like item_names)
-			-- set the list of names of the enumeration. If no values are supplied, the
+			-- set the list of names of the enumeration. If no values are supplied,
+			-- default integer values starting from 0 are generated
 		local
 			i: INTEGER
 		do
 			precursor (a_names)
 			across item_names as names_csr loop
-				item_values.extend (i)
+				item_values.extend (create {BMM_INTEGER_VALUE}.make (i))
 				i := i + 1
 			end
 		end

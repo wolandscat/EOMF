@@ -15,7 +15,7 @@ inherit
 feature -- Definition
 
 	Entity_metatype_simple: STRING = "simple_entity"
-	Entity_metatype_enumeration: STRING = "enumeration_entity"
+	Entity_metatype_range_constrained: STRING = "range_constrained_entity"
 	Entity_metatype_generic: STRING = "generic_entity"
 	Entity_metatype_generic_parameter: STRING = "generic_parameter_entity"
 	Entity_metatype_container: STRING = "container_entity"

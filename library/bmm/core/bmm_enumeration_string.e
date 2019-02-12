@@ -10,26 +10,19 @@ note
 class BMM_ENUMERATION_STRING
 
 inherit
-	BMM_ENUMERATION [STRING]
+	BMM_ENUMERATION [BMM_STRING_VALUE]
 		redefine
-			set_item_names, underlying_type_name
+			set_item_names
 		end
 
 create
 	make
 
-feature -- Identification
-
-	underlying_type_name: STRING
-			-- redefined to remove _8, _16, _32 from Eiffel internal types
-		once
-			Result := "STRING"
-		end
-
 feature -- Modification
 
 	set_item_names (a_names: like item_names)
 			-- set the list of names of the enumeration. If no values are supplied, the
+			-- names are used as values
 		do
 			precursor (a_names)
 			item_values.append (item_names)
