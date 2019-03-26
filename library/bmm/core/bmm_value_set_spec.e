@@ -86,9 +86,18 @@ feature -- Modification
 feature -- Output
 
 	as_string: STRING
-			-- generate a single string in the form resource_id :: value_set_id
+			-- generate a single string in the form resource_id::value_set_id
 		do
 			Result := resource_id + Terminology_separator + value_set_id
+		end
+
+	as_delimited_string: STRING
+			-- generate a single string in the form <<resource_id::value_set_id>>
+		do
+			create Result.make_empty
+			Result.append_character ({BMM_DEFINITIONS}.Constraint_left_delim)
+			Result.append (as_string)
+			Result.append_character ({BMM_DEFINITIONS}.Constraint_right_delim)
 		end
 
 end
