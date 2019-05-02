@@ -565,11 +565,14 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			end
 
 			if attached {P_BMM_SINGLE_PROPERTY} a_prop_def as a_single_prop_def then
-				check attached a_single_prop_def.type_def as att_type_def then
+				if attached a_single_prop_def.type_def as att_type_def then
 					if (att_type_def.type.is_empty or else not has_class_definition (att_type_def.type)) then
 						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, att_type_def.type>>)
 					end
+				else
+					add_validity_error (a_class_def.source_schema_id, ec_BMM_SPV,
+						<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name>>)
 				end
 
 			elseif attached {P_BMM_SINGLE_PROPERTY_OPEN} a_prop_def as a_single_prop_def_open then

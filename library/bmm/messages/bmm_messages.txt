@@ -72,6 +72,7 @@ templates = <
 		["BMM_GPOPC"] = <"Schema $1 class definition $2 generic property $3 open parameter count does not match owning class">
 		["BMM_GPBPC"] = <"Schema $1 class definition $2 generic property $3 generic parameter count $4 does not match formal parameter count $5 of root type $6">
 		["BMM_SPT"] = <"Schema $1 class definition $2 single-valued property $3 type $4 not found in schema">
+		["BMM_SPV"] = <"Schema $1 class definition $2 single-valued property $3 no type set (use 'type' or 'type_ref')">
 		["BMM_SPOT"] = <"Schema $1 class definition $2 single-valued property $3 open generic parameter $4 not found in containing class declarations">
 		["BMM_PKGCL"] = <"Schema $1 class $2 mentioned in package $3 but not in schema, or relevant child schema">
 		["BMM_PKGID"] = <"Schema $1 class definition $2 not declared in any package">

@@ -24,7 +24,7 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (70)
+			create message_table.make (71)
 			message_table.put ("Documentation", ec_bmm_documentation_text)
 			message_table.put ("Property synthesised due to generic formal parameter substitution", ec_bmm_prop_synth_gen_text)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
@@ -79,6 +79,7 @@ feature -- Initialisation
 			message_table.put ("Schema $1 class definition $2 generic property $3 open parameter count does not match owning class", ec_BMM_GPOPC)
 			message_table.put ("Schema $1 class definition $2 generic property $3 generic parameter count $4 does not match formal parameter count $5 of root type $6", ec_BMM_GPBPC)
 			message_table.put ("Schema $1 class definition $2 single-valued property $3 type $4 not found in schema", ec_BMM_SPT)
+			message_table.put ("Schema $1 class definition $2 single-valued property $3 no type set (use 'type' or 'type_ref')", ec_BMM_SPV)
 			message_table.put ("Schema $1 class definition $2 single-valued property $3 open generic parameter $4 not found in containing class declarations", ec_BMM_SPOT)
 			message_table.put ("Schema $1 class $2 mentioned in package $3 but not in schema, or relevant child schema", ec_BMM_PKGCL)
 			message_table.put ("Schema $1 class definition $2 not declared in any package", ec_BMM_PKGID)
