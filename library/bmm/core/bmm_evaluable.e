@@ -11,7 +11,7 @@ deferred class BMM_EVALUABLE
 
 inherit
 	BMM_FORMAL_ELEMENT
-	BMM_VALUE_RETURNING
+	BMM_VALUED
 	
 end
 

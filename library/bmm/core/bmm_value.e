@@ -10,7 +10,7 @@ note
 class BMM_VALUE
 
 inherit
-	BMM_VALUE_RETURNING
+	BMM_VALUED
 		export
 			{ANY} out
 		redefine
