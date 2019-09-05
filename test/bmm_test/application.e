@@ -32,6 +32,11 @@ create
 feature -- Initialization
 
 	make
+		local
+			dummy_p_type: P_BMM_INDEXED_CONTAINER_TYPE
+			dummy_p_prop: P_BMM_INDEXED_CONTAINER_PROPERTY
+			dummy_type: BMM_INDEXED_CONTAINER_TYPE
+			dummy_prop: BMM_INDEXED_CONTAINER_PROPERTY
 		do
 			-- BMM initialisation
 			bmm_env_setup
@@ -69,6 +74,9 @@ feature -- Initialization
 			output_ancestors ("TIMER_WAIT", 0)
 			output_class_properties ("TIMER_WAIT", True)
 			output_class_properties ("TIMER_WAIT", False)
+
+			-- output a class that has a BMM_INDEXED_CONTAINER_TYPE as the type of a property
+			output_class_properties ("CALLBACK_WAIT", False)
 
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")

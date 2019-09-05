@@ -36,7 +36,7 @@ feature -- Initialisation
 			cardinality := other.cardinality.twin
 		end
 
-	make_from_other_generic (other: BMM_CONTAINER_PROPERTY; a_bmm_type: like bmm_type)
+	make_from_other_generic (other: like Current; a_bmm_type: like bmm_type)
 			-- make from a BMM_PROPERTY of any flavour
 		do
 			precursor (other, a_bmm_type)

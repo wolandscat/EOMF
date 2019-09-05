@@ -392,10 +392,11 @@ class_definitions = <
 				name = <"care_pathway">
 				type = <"DV_IDENTIFIER">
 			>
-			["order_list"] = (P_BMM_CONTAINER_PROPERTY) <
+			["order_list"] = (P_BMM_INDEXED_CONTAINER_PROPERTY) <
 				name = <"order_list">
 				type_def = <
-					container_type = <"List">
+					container_type = <"Hash">
+					index_type = <"String">
 					type = <"LOCATABLE_REF">
 				>
 				cardinality = <|>=0|>
@@ -1270,6 +1271,15 @@ class_definitions = <
 			["fail_action"] = (P_BMM_SINGLE_PROPERTY) <
 				name = <"fail_action">
 				type = <"EVENT_ACTION">
+			>
+			["custom_actions"] = (P_BMM_INDEXED_CONTAINER_PROPERTY) <
+				name = <"custom_actions">
+				type_def = <
+					container_type = <"Hash">
+					index_type = <"String">
+					type = <"EVENT_ACTION">
+				>
+				cardinality = <|>=0|>
 			>
 		>
 	>
