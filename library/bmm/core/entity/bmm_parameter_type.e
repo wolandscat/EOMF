@@ -117,14 +117,14 @@ feature -- Access
 
 	subtypes: ARRAYED_SET [STRING]
 		do
-			Result := effective_conforms_to_type.defining_class.all_descendants
+			Result := effective_conforms_to_type.subtypes
 		end
 
 feature -- Status Report
 
 	has_subtypes: BOOLEAN
 		do
-			Result := effective_conforms_to_type.defining_class.has_descendants
+			Result := not is_constrained or else effective_conforms_to_type.has_subtypes
 		end
 
 	is_constrained: BOOLEAN

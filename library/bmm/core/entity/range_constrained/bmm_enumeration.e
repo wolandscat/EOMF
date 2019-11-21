@@ -15,7 +15,7 @@ note
 class BMM_ENUMERATION
 
 inherit
-	BMM_RANGE_CONSTRAINED
+	BMM_SIMPLE_CLASS
 		redefine
 			entity_metatype
 		end
@@ -40,7 +40,7 @@ feature -- Access
 			Result.compare_objects
 		end
 
-	item_values:  ARRAYED_LIST [BMM_VALUE]
+	item_values:  ARRAYED_LIST [BMM_LITERAL_VALUE]
 			-- OPTIONAL list of item values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
@@ -71,7 +71,7 @@ feature -- Status Report
 			-- True if `item_values` has an item whose internal value is equal to `v`
 		do
 			Result := across item_values as item_values_csr some
-				item_values_csr.item.value.is_equal (v)
+				item_values_csr.item.value = v
 			end
 		end
 

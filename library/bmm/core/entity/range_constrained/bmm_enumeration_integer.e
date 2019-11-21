@@ -12,7 +12,7 @@ class BMM_ENUMERATION_INTEGER
 inherit
 	BMM_ENUMERATION
 		redefine
-			item_values, has_value, set_item_names
+			item_values, set_item_names
 		end
 
 create
@@ -25,16 +25,6 @@ feature -- Access
 		attribute
 			create Result.make (0)
 			Result.compare_objects
-		end
-
-feature -- Status Report
-
-	has_value (v: INTEGER): BOOLEAN
-			-- True if `item_values` has an item whose internal value is equal to `v`
-		do
-			Result := across item_values as item_values_csr some
-				item_values_csr.item.value = v
-			end
 		end
 
 feature -- Modification

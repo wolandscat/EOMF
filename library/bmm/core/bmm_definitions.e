@@ -32,6 +32,12 @@ feature -- Definitions
 
 	Generic_right_delim: CHARACTER = '>'
 
+	Tuple_left_delim: CHARACTER = '['
+
+	Tuple_right_delim: CHARACTER = ']'
+
+	Tuple_separator: CHARACTER = ','
+
 	Constraint_left_delim: CHARACTER = '«'
 
 	Constraint_right_delim: CHARACTER = '»'

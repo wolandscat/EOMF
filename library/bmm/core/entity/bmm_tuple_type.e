@@ -1,19 +1,17 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Type reference to a single type, either open or closed."
-	keywords:    "model, UML"
+	description: "Parent of type meta-types that correspond to defined types, rather than formal type parameters."
+	keywords:    "model, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2014- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_SIMPLE_TYPE
+class BMM_TUPLE_TYPE
 
 inherit
 	BMM_DEFINED_TYPE
-		redefine
-			defining_class
-		end
+	ITERATION_CURSOR [BMM_TYPE]
 
 create
 	make
@@ -21,15 +19,15 @@ create
 feature -- Identification
 
 	type_name: STRING
-			-- formal name of the type
+			-- formal string form of the type as per UML
 		do
-			Result := defining_class.name
+			create Result.make_from_string("Tuple")
 		end
 
 feature -- Access
 
-	defining_class: BMM_SIMPLE_CLASS
-			-- the base class of this type
+	item_types: LIST[BMM_TYPE]
+			-- types in the tuple type
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
@@ -37,13 +35,32 @@ feature -- Access
 			-- the type of an object as being a valid member of the container, e.g. ELEMENT in List<ELEMENT>
 		do
 			create Result.make (0)
-			Result.compare_objects
-			Result.extend (defining_class.name)
+			across item_types as item_types_csr loop
+				Result.extend (item_types_csr.item.type_name)
+			end
 		end
 
 	subtypes: ARRAYED_SET [STRING]
+			-- TODO: implement
 		do
-			Result := defining_class.all_descendants
+			create Result.make(0)
+		end
+
+feature -- Iteration
+
+	item: BMM_TYPE
+		do
+			Result := item_types.item
+		end
+
+	after: BOOLEAN
+		do
+			Result := item_types.after
+		end
+
+	forth
+		do
+			item_types.forth
 		end
 
 feature -- Status Report
@@ -51,12 +68,12 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- generate a type category of main target type from Type_cat_xx values
 		do
-			Result := defining_class.is_abstract
+			Result := False
 		end
 
 	has_subtypes: BOOLEAN
 		do
-			Result := defining_class.has_descendants
+			Result := False
 		end
 
 feature -- Factory
@@ -65,6 +82,9 @@ feature -- Factory
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
 			create Result.make (defining_class)
+			if attached inheritance_precursor as ip then
+				Result.set_inheritance_precursor (ip)
+			end
 		end
 
 end

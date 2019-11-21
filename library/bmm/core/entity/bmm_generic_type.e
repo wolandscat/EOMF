@@ -10,7 +10,7 @@ note
 class BMM_GENERIC_TYPE
 
 inherit
-	BMM_DEFINED_TYPE
+	BMM_ENTITY_TYPE
 		redefine
 			make, defining_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
 		end

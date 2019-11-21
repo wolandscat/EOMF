@@ -13,7 +13,7 @@ note
 deferred class BMM_CLASS
 
 inherit
-	BMM_MODEL_ELEMENT
+	BMM_DECLARATION
 
 	BMM_ENTITY
 		export

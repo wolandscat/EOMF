@@ -26,6 +26,18 @@ feature -- Definitions
 			create Result.make (Any_class)
 		end
 
+	None_class: BMM_SIMPLE_CLASS
+			-- built-in class definition corresponding to the top `None' class
+		once
+			create Result.make (None_type_name, "Built-in None class (non-conforming type)", True)
+		end
+
+	None_type: BMM_SIMPLE_TYPE
+			-- built-in type definition corresponding to the top `None' class
+		once
+			create Result.make (None_class)
+		end
+
 	String_type_name: STRING = "String"
 
 	String_class: BMM_SIMPLE_CLASS

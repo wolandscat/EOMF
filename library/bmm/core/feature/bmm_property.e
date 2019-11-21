@@ -10,10 +10,8 @@ note
 deferred class BMM_PROPERTY
 
 inherit
-	BMM_MUTABLE
-		redefine
-			scope
-		end
+	BMM_INSTANTIABLE
+	BMM_CLASS_SCOPED
 
 feature {NONE} -- Initialisation
 
@@ -99,10 +97,8 @@ feature -- Access
 			Result.append (bmm_type.type_signature)
 		end
 
-	scope: BMM_CLASS
-		do
-			Result := bmm_type.effective_base_class
-		end
+--	scope: BMM_CLASS
+			-- class in which this property is defined
 
 feature -- Status Report
 

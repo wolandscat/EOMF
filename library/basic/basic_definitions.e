@@ -13,6 +13,8 @@ feature -- Definitions
 
 	Any_type_name: STRING = "Any"
 
+	None_type_name: STRING = "None"
+
 	bare_type_name (type_str: STRING): STRING
 			-- remove any leading ! from broken TYPE.name
 		do
