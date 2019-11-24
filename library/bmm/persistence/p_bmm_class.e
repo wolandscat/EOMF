@@ -211,7 +211,7 @@ feature -- Factory
 					-- BMM_PARAMETER_TYPE (necessary because P_BMM_GENERIC_TYPE
 					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
 					-- Could be fixed, but better to move on to new serial format
-					check attached {BMM_DEFINED_TYPE} ancs_csr.item.bmm_type as bt then
+					check attached {BMM_ENTITY_TYPE} ancs_csr.item.bmm_type as bt then
 						att_bmm_class.add_ancestor (bt)
 					end
 				end

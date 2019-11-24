@@ -44,7 +44,7 @@ feature -- Access
 			create Result.default_create
 		end
 
-	ancestors: STRING_TABLE [BMM_DEFINED_TYPE]
+	ancestors: STRING_TABLE [BMM_ENTITY_TYPE]
 			-- list of directly inheritance parent types, which may include
 			-- closed, open and partial generic type signatures
 			-- keyed by type name, which may be generic
@@ -510,7 +510,7 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
-	add_ancestor (an_anc_type: BMM_DEFINED_TYPE)
+	add_ancestor (an_anc_type: BMM_ENTITY_TYPE)
 			-- add an ancestor class
 		require
 			New_ancestor: not ancestors.has_item (an_anc_type)
@@ -621,7 +621,7 @@ feature -- Modification
 
 feature -- Factory
 
-	type: BMM_DEFINED_TYPE
+	type: BMM_ENTITY_TYPE
 			-- type related to this class
 		deferred
 		end

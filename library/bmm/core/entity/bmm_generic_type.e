@@ -45,7 +45,7 @@ feature -- Identification
 
 	type_signature: STRING
 			-- Signature form of the type, which for generics includes generic parameter constrainer types
-			-- E.g. Interval<T:Ordered>
+			-- E.g. "Interval<T:Ordered>"
 		do
 			create Result.make_from_string (defining_class.name)
 			Result.append_character (generic_left_delim)

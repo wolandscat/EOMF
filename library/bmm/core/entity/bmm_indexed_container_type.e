@@ -31,7 +31,7 @@ feature -- Initialisation
 feature -- Identification
 
 	type_name: STRING
-			-- formal name of the type
+			-- formal name of the type in form "Container<K, V>"
 		do
 			create Result.make_empty
 			Result.append (container_class.name + Generic_left_delim.out + index_type.type_name +

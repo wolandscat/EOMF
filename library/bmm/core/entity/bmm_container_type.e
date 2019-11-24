@@ -29,7 +29,7 @@ feature -- Initialisation
 feature -- Identification
 
 	type_name: STRING
-			-- formal name of the type
+			-- formal name of the type in the form "Container<V>"
 		do
 			create Result.make_empty
 			Result.append (container_class.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
