@@ -52,7 +52,7 @@ feature -- Access
 		do
 			create Result.make (0)
 			across item_names as names_csr loop
-				Result.put (names_csr.item, item_values.i_th (names_csr.cursor_index).out)
+				Result.put (names_csr.item, item_values.i_th (names_csr.cursor_index).value_literal)
 			end
 		end
 

@@ -120,7 +120,7 @@ feature -- Initialization
 					end
 					io.put_string (" values: %N")
 					across enum_class.item_names as names_csr loop
-						io.put_string ("%T" + names_csr.item + " = " + enum_class.item_values.i_th (names_csr.target_index).out + "%N")
+						io.put_string ("%T" + names_csr.item + " = " + enum_class.item_values.i_th (names_csr.target_index).value_literal + "%N")
 					end
 				end
 				io.put_string ("%N")

@@ -12,7 +12,7 @@ class BMM_LITERAL_VALUE
 inherit
 	BMM_TYPED
 		redefine
-			bmm_type, out
+			bmm_type
 		end
 
 create
@@ -32,6 +32,7 @@ feature -- Initialisation
 			-- overridden in descendant
 		do
 			value := a_value
+			value_literal := value.out
 		end
 
 feature -- Access
@@ -50,13 +51,6 @@ feature -- Access
 	value: ANY
 		attribute
 			create {STRING} Result.make_from_string ("default")
-		end
-
-feature -- Output
-
-	out: STRING
-		do
-			Result := value_literal
 		end
 
 end
