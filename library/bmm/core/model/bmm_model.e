@@ -233,7 +233,7 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
 		end
 
-	subtypes (a_type: BMM_TYPE): ARRAYED_SET [STRING]
+	type_substitutions (a_type: BMM_TYPE): ARRAYED_SET [STRING]
 			-- obtain names of all possible type substitutions of `a_type' in the model
 		require
 			Type_name_valid: has_type_class_definition (a_type.type_name)
@@ -243,12 +243,12 @@ feature -- Access
 			base_classes: ARRAYED_SET [STRING]
 		do
 			if attached {BMM_CONTAINER_TYPE} a_type as cont_type then
-				Result := container_subtypes (cont_type)
+				Result := container_type_substitutions (cont_type)
 			elseif attached {BMM_PARAMETER_TYPE} a_type as bmm_param_type then
-				Result := subtypes (bmm_param_type.effective_conforms_to_type)
+				Result := type_substitutions (bmm_param_type.effective_conforms_to_type)
 			else
 				check attached {BMM_ENTITY_TYPE} a_type as entity_type then
-					Result := entity_subtypes (entity_type)
+					Result := entity_type_substitutions (entity_type)
 				end
 			end
 		end
@@ -617,7 +617,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	entity_subtypes (an_entity_type: BMM_ENTITY_TYPE): ARRAYED_SET [STRING]
+	entity_type_substitutions (an_entity_type: BMM_ENTITY_TYPE): ARRAYED_SET [STRING]
 			-- generate all possible type substitutions of a generic type
 		local
 			base_class_list: ARRAYED_LIST[STRING]
@@ -660,14 +660,14 @@ feature {NONE} -- Implementation
 							a_gen_type.has_formal_generic_type (base_class_gen_parms_csr.key.as_string_8) or else
 							attached {BMM_SIMPLE_TYPE} an_entity_type
 						then
-							gen_parm_sub_types.extend (subtypes (base_class_gen_parms_csr.item.effective_conforms_to_type))
+							gen_parm_sub_types.extend (type_substitutions (base_class_gen_parms_csr.item.effective_conforms_to_type))
 							gen_parm_sub_types.last.extend (base_class_gen_parms_csr.item.base_type_name)
 							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
 
 						-- an_entity_type has an actual parameter type in this position
 						-- and we should use that to generate the subtypes of this gen param position
 						elseif attached {BMM_GENERIC_TYPE} an_entity_type as a_gen_type and then a_gen_type.generic_substitutions.has (base_class_gen_parms_csr.key) then
-							gen_parm_sub_types.extend (subtypes (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type))
+							gen_parm_sub_types.extend (type_substitutions (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type))
 							gen_parm_sub_types.last.extend (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type_name)
 							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
 
@@ -732,14 +732,14 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	container_subtypes (a_cont_type: BMM_CONTAINER_TYPE): ARRAYED_SET [STRING]
+	container_type_substitutions (a_cont_type: BMM_CONTAINER_TYPE): ARRAYED_SET [STRING]
 		local
 			cont_sub_type_list, item_sub_type_list, index_sub_type_list: ARRAYED_LIST [STRING]
 		do
 			cont_sub_type_list := a_cont_type.container_class.all_descendants.deep_twin
 			cont_sub_type_list.extend (a_cont_type.container_class.name)
 
-			item_sub_type_list := subtypes (a_cont_type.base_type)
+			item_sub_type_list := type_substitutions (a_cont_type.base_type)
 
 			create Result.make (0)
 

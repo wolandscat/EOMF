@@ -37,6 +37,7 @@ feature -- Initialization
 			dummy_p_prop: P_BMM_INDEXED_CONTAINER_PROPERTY
 			dummy_type: BMM_INDEXED_CONTAINER_TYPE
 			dummy_prop: BMM_INDEXED_CONTAINER_PROPERTY
+			dummy_sig: BMM_SIGNATURE
 		do
 			-- BMM initialisation
 			bmm_env_setup
@@ -210,7 +211,7 @@ feature {NONE} -- Implementation
 		do
 			io.put_string ("======================= type substitutions - " + a_type_name + " =======================%N")
 			check attached test_bmm_model.create_bmm_type_from_name (a_type_name) as bmm_type then
-				across test_bmm_model.subtypes (bmm_type) as types_csr loop
+				across test_bmm_model.type_substitutions (bmm_type) as types_csr loop
 					io.put_string (types_csr.item + "%N")
 				end
 			end
