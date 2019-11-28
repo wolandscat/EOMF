@@ -78,6 +78,16 @@ feature -- Access
 			end
 		end
 
+	base_type_name: STRING
+			-- Name of base type
+		do
+			if attached flattened_conforms_to_type as fctt then
+				Result := fctt.base_type_name
+			else
+				Result := any_type_name
+			end
+		end
+
 	type_constraint: detachable BMM_DEFINED_TYPE
 			-- optional conformance constraint that must be another valid class name.
 
@@ -113,11 +123,6 @@ feature -- Access
 			else
 				Result.extend (Any_type_name)
 			end
-		end
-
-	subtypes: ARRAYED_SET [STRING]
-		do
-			Result := effective_conforms_to_type.subtypes
 		end
 
 feature -- Status Report

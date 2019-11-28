@@ -33,11 +33,20 @@ feature -- Identification
 
 	entity_metatype: STRING
 			-- generate a type category of main target type from Type_cat_xx values
-		do
-			Result := effective_base_class.entity_metatype
+		deferred
 		end
 
 feature -- Access
+
+	base_type: BMM_UNITARY_TYPE
+			-- Base type, excluding container
+		deferred
+		end
+
+	base_type_name: STRING
+			-- Name of base type
+		deferred
+		end
 
 	effective_base_class: BMM_CLASS
 			-- model-semantic class for this type, from which properties etc can be extracted;
@@ -50,17 +59,11 @@ feature -- Access
 		deferred
 		end
 
-	subtypes: ARRAYED_SET [STRING]
-			-- List of type substitutions if any available for this type within the current BMM model.
-		deferred
-		end
-
 feature -- Status Report
 
 	is_primitive: BOOLEAN
 			-- True if this entity corresponds to a primitive type
-		do
-			Result := effective_base_class.is_primitive
+		deferred
 		end
 
 	has_subtypes: BOOLEAN

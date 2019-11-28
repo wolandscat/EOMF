@@ -34,6 +34,14 @@ feature -- Access
 	defining_class: BMM_CLASS
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
+feature -- Status Report
+
+	is_primitive: BOOLEAN
+			-- True if this entity corresponds to a primitive type
+		do
+			Result := defining_class.is_primitive
+		end
+
 end
 
 

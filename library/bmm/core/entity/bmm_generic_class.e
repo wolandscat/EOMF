@@ -61,7 +61,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across generic_parameters as gen_parms_csr loop
-				Result.extend (gen_parms_csr.item.effective_base_class.name)
+				Result.extend (gen_parms_csr.item.base_type_name)
 			end
 		end
 
@@ -73,7 +73,7 @@ feature -- Access
 			has_generic_parameter (a_name)
 		do
 			check attached generic_parameters.item (a_name) as att_gen then
-				Result := att_gen.effective_base_class.name
+				Result := att_gen.base_type_name
 			end
 		end
 
@@ -115,7 +115,7 @@ feature -- Modification
 
 			-- Add synthesised properties for any open type properties whose constrainer types redefine
 			-- the constrainer types of the corresponding parent. For example if this class is DV_INTERVAL <T:DV_ORDERED>
-			-- and it has a parent Interval <T: Ordered>, where DV_ORDERED further constraints Ordered, then any
+			-- and it has a parent Interval <T: Ordered>, where DV_ORDERED further constrains Ordered, then any
 			-- properties from Interval of type T should be recreated in DV_INTERVAL.
 			across ancestors as anc_class_csr loop
 				if attached {BMM_GENERIC_CLASS} anc_class_csr.item.defining_class as parent_gen_class then

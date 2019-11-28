@@ -61,7 +61,7 @@ feature -- Initialization
 
 			output_ancestors ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", 0)
 			output_class_properties ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", True)
-			io.put_string ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN> has property expression: " + rm_schema.has_property ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", "expression").out + "%N")
+			io.put_string ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN> has property expression: " + test_bmm_model.has_property ("CONTEXT_EXPRESSION<TYPE_DEF_BOOLEAN>", "expression").out + "%N")
 
 			output_ancestors ("STATE_VARIABLE", 0)
 			output_class_properties ("STATE_VARIABLE", True)
@@ -79,21 +79,21 @@ feature -- Initialization
 			output_class_properties ("CALLBACK_WAIT", False)
 
 			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
-			io.put_string ("CARE_ENTRY has /protocol: " + rm_schema.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
-			io.put_string ("CARE_ENTRY has /data/events/data: " + rm_schema.has_property_path ("CARE_ENTRY", "/data/events/data").out + "%N")
-			io.put_string ("OBSERVATION has /data/events/data: " + rm_schema.has_property_path ("OBSERVATION", "/data/events/data").out + "%N")
-			io.put_string ("OBSERVATION has /data/events/data/items: " + rm_schema.has_property_path ("OBSERVATION", "/data/events/data/items").out + "%N")
-			io.put_string ("OBSERVATION has /data/events[at0003]/math_function: " + rm_schema.has_property_path ("OBSERVATION", "/data/events[at0003]/math_function").out + "%N")
-			io.put_string ("OBSERVATION has /protocol: " + rm_schema.has_property_path ("OBSERVATION", "/protocol").out + "%N")
-			io.put_string ("OBSERVATION has /data/events[at0002]/data/items[at0.76]/items: " + rm_schema.has_property_path ("OBSERVATION", "/data/events[at0002]/data/items[at0.76]/items").out + "%N" + "%N")
-			io.put_string ("OBSERVATION not has /data/events[at0002]/data/itemsXX[at0.76]/items: " + (not rm_schema.has_property_path ("OBSERVATION", "/data/events[at0002]/data/itemsXX[at0.76]/items")).out + "%N")
-			io.put_string ("COMPOSITION not has /xxxx: " + (not rm_schema.has_property_path ("COMPOSITION", "/xxxx")).out + "%N")
-			io.put_string ("CLUSTER has /items/items/items: " + rm_schema.has_property_path ("CLUSTER", "/items/items/items").out + "%N")
+			io.put_string ("CARE_ENTRY has /protocol: " + test_bmm_model.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
+			io.put_string ("CARE_ENTRY has /data/events/data: " + test_bmm_model.has_property_path ("CARE_ENTRY", "/data/events/data").out + "%N")
+			io.put_string ("OBSERVATION has /data/events/data: " + test_bmm_model.has_property_path ("OBSERVATION", "/data/events/data").out + "%N")
+			io.put_string ("OBSERVATION has /data/events/data/items: " + test_bmm_model.has_property_path ("OBSERVATION", "/data/events/data/items").out + "%N")
+			io.put_string ("OBSERVATION has /data/events[at0003]/math_function: " + test_bmm_model.has_property_path ("OBSERVATION", "/data/events[at0003]/math_function").out + "%N")
+			io.put_string ("OBSERVATION has /protocol: " + test_bmm_model.has_property_path ("OBSERVATION", "/protocol").out + "%N")
+			io.put_string ("OBSERVATION has /data/events[at0002]/data/items[at0.76]/items: " + test_bmm_model.has_property_path ("OBSERVATION", "/data/events[at0002]/data/items[at0.76]/items").out + "%N" + "%N")
+			io.put_string ("OBSERVATION not has /data/events[at0002]/data/itemsXX[at0.76]/items: " + (not test_bmm_model.has_property_path ("OBSERVATION", "/data/events[at0002]/data/itemsXX[at0.76]/items")).out + "%N")
+			io.put_string ("COMPOSITION not has /xxxx: " + (not test_bmm_model.has_property_path ("COMPOSITION", "/xxxx")).out + "%N")
+			io.put_string ("CLUSTER has /items/items/items: " + test_bmm_model.has_property_path ("CLUSTER", "/items/items/items").out + "%N")
 			io.new_line
 
 			io.put_string ("---------------- rm_schema.is_descendant_of() --------------%N")
-			io.put_string ("COMPOSITION is a subclass of LOCATABLE: " + rm_schema.is_descendant_of ("COMPOSITION", "LOCATABLE").out + "%N")
-			io.put_string ("LOCATABLE is not subclass of COMPOSITION" + (not rm_schema.is_descendant_of ("LOCATABLE", "COMPOSITION")).out + "%N")
+			io.put_string ("COMPOSITION is a subclass of LOCATABLE: " + test_bmm_model.is_descendant_of ("COMPOSITION", "LOCATABLE").out + "%N")
+			io.put_string ("LOCATABLE is not subclass of COMPOSITION" + (not test_bmm_model.is_descendant_of ("LOCATABLE", "COMPOSITION")).out + "%N")
 			io.new_line
 
 			io.put_string ("---------------- rm_schema.class_definition.properties --------------%N")
@@ -102,20 +102,20 @@ feature -- Initialization
 
 			io.put_string ("---------------- rm_schema.class_definition.suppliers --------------%N")
 			io.put_string ("All supplier classes of COMPOSITION: %N")
-			across rm_schema.class_definition ("COMPOSITION").suppliers as supps_csr loop
+			across test_bmm_model.class_definition ("COMPOSITION").suppliers as supps_csr loop
 				io.put_string (supps_csr.item + "%N")
 			end
 			io.new_line
 
 			io.put_string ("---------------- rm_schema.enumeration_definition types --------------%N")
 			io.put_string ("Enumeration types: %N")
-			across rm_schema.enumeration_types as enum_csr loop
+			across test_bmm_model.enumeration_types as enum_csr loop
 				io.put_string (enum_csr.item)
-				if attached {BMM_ENUMERATION} rm_schema.enumeration_definition (enum_csr.item) as enum_class then
+				if attached {BMM_ENUMERATION} test_bmm_model.enumeration_definition (enum_csr.item) as enum_class then
 					io.put_string ("; underlying types:%N")
 					across enum_class.ancestors as enum_ancs_csr loop
 						io.put_string (enum_ancs_csr.item.type_name + "; " + enum_csr.item + " conforms to " + enum_ancs_csr.item.type_name + ": ")
-						io.put_boolean (rm_schema.type_conforms_to (enum_csr.item, enum_ancs_csr.item.type_name))
+						io.put_boolean (test_bmm_model.type_conforms_to (enum_csr.item, enum_ancs_csr.item.type_name))
 						io.put_string ("%N")
 					end
 					io.put_string (" values: %N")
@@ -129,6 +129,12 @@ feature -- Initialization
 
 			output_class_properties ("PARAMETER_MAPPING", True)
 			output_class_properties ("QUERY_CALL", True)
+
+			do_output_subtypes ("DV_INTERVAL<DV_ORDERED>")
+			do_output_subtypes ("CITATION")
+			do_output_subtypes ("CITATION<T>")
+
+			do_output_subtypes ("CONTENT_ITEM")
 
 			bmm_model_cache.put (bmm_model ("openEHR_generics"))
 
@@ -158,6 +164,8 @@ feature -- Initialization
 			output_class_properties ("GENERIC_CHILD_OPEN_U", True)
 			output_class_properties ("GENERIC_CHILD_CLOSED", True)
 
+			do_output_subtypes ("GENERIC_PARENT<T,U>")
+
 		end
 
 feature {NONE} -- Implementation
@@ -168,9 +176,9 @@ feature {NONE} -- Implementation
 		do
 			io.put_string (a_class_name + " - properties " + if show_flat then "(flat)" else "(source)" end + "%N")
 			if show_flat then
-				properties := rm_schema.class_definition (a_class_name).flat_properties
+				properties := test_bmm_model.class_definition (a_class_name).flat_properties
 			else
-				properties := rm_schema.class_definition (a_class_name).properties
+				properties := test_bmm_model.class_definition (a_class_name).properties
 			end
 			across properties as props_csr loop
 				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
@@ -190,12 +198,23 @@ feature {NONE} -- Implementation
 			str: STRING
 			class_def: BMM_CLASS
 		do
-			class_def := rm_schema.type_class_definition (a_class_name)
+			class_def := test_bmm_model.type_class_definition (a_class_name)
 			across class_def.ancestors as ancs_csr loop
 				create str.make_filled ('%T', depth + 1)
 				io.put_string (str + ancs_csr.key + "%N")
 				do_output_ancestors (ancs_csr.key.as_string_8, depth + 1)
 			end
+		end
+
+	do_output_subtypes (a_type_name: STRING)
+		do
+			io.put_string ("======================= type substitutions - " + a_type_name + " =======================%N")
+			check attached test_bmm_model.create_bmm_type_from_name (a_type_name) as bmm_type then
+				across test_bmm_model.subtypes (bmm_type) as types_csr loop
+					io.put_string (types_csr.item + "%N")
+				end
+			end
+			io.new_line
 		end
 
 end

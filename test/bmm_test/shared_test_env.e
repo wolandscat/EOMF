@@ -73,7 +73,7 @@ feature -- Initialization
 			end
 		end
 
-	rm_schema: BMM_MODEL
+	test_bmm_model: BMM_MODEL
 		do
 			Result := bmm_model_cache.item
 		end

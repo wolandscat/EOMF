@@ -12,7 +12,7 @@ class BMM_CONTAINER_TYPE
 inherit
 	BMM_TYPE
 		redefine
-			entity_metatype, has_formal_generic_type, substitute_formal_generic_type
+			has_formal_generic_type, substitute_formal_generic_type
 		end
 
 create
@@ -45,6 +45,12 @@ feature -- Access
 	base_type: BMM_UNITARY_TYPE
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 
+	base_type_name: STRING
+			-- Name of base type
+		do
+			Result := base_type.base_type_name
+		end
+
 	container_class: BMM_GENERIC_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 
@@ -64,31 +70,18 @@ feature -- Access
 			Result.append (base_type.flattened_type_list)
 		end
 
-	subtypes: ARRAYED_SET [STRING]
-		local
-			cont_sub_type_list, item_sub_type_list: ARRAYED_LIST [STRING]
-		do
-			cont_sub_type_list := container_class.all_descendants.deep_twin
-			if cont_sub_type_list.is_empty then
-				cont_sub_type_list.extend (container_class.name)
-			end
-
-			item_sub_type_list := base_type.subtypes
-
-			create Result.make (0)
-			across cont_sub_type_list as cont_sub_types_csr loop
-				across item_sub_type_list as item_sub_types_csr loop
-					Result.extend (cont_sub_types_csr.item + generic_left_delim.out + item_sub_types_csr.item + generic_right_delim.out)
-				end
-			end
-		end
-
 feature -- Status Report
 
 	is_abstract: BOOLEAN
 			-- abstract status of this class or type
 		do
 			Result := base_type.is_abstract or container_class.is_abstract
+		end
+
+	is_primitive: BOOLEAN
+			-- True if this entity corresponds to a primitive type
+		do
+			Result := base_type.is_primitive
 		end
 
 	has_subtypes: BOOLEAN

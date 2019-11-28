@@ -15,31 +15,34 @@ inherit
 create
 	make
 
-feature -- Access
+feature -- Identification
 
 	type_name: STRING
-			-- output a type of the form '[[T1, T2, ...], R]'
+			-- output a type of the form '<[T1, T2, ...], R>'
 		do
-			create Result.make_empty
-			Result.append (Tuple_left_delim.out)
+			create Result.make_from_string (base_type_name)
+			Result.append (Generic_left_delim.out)
 
 			-- arguments part
-			Result.append (Tuple_left_delim.out)
+			Result.append (Tuple_separator.out)
 			if attached argument_types then
-				across argument_types as argument_types_csr loop
-					if not argument_types_csr.is_first then
-						Result.append (Tuple_separator.out + " ")
-					end
-					Result.append (argument_types.type_name)
-				end
+				Result.append (argument_types.type_name)
 			end
-			Result.append (Tuple_right_delim.out)
 
 			-- result part
-			Result.append (Tuple_right_delim.out)
 			if attached result_type then
 				Result.append (Tuple_separator.out + " " + result_type.type_name)
 			end
+
+			Result.append (Generic_right_delim.out)
+		end
+
+feature -- Access
+
+	base_type_name: STRING
+			-- Name of base type
+		once
+			create Result.make_from_string("Signature")
 		end
 
 	argument_types: detachable BMM_TUPLE_TYPE

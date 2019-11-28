@@ -19,15 +19,33 @@ create
 feature -- Identification
 
 	type_name: STRING
-			-- formal string form of the type as per UML
+			-- output a type of the form 'Tuple[T1, T2, ...]'
 		do
-			create Result.make_from_string("Tuple")
+			create Result.make_from_string (base_type_name)
+
+			Result.append (Tuple_left_delim.out)
+			across item_types as item_types_csr loop
+				if not item_types_csr.is_first then
+					Result.append (Tuple_separator.out + " ")
+				end
+				Result.append (item_types.type_name)
+			end
+			Result.append (Tuple_right_delim.out)
 		end
 
 feature -- Access
 
+	base_type_name: STRING
+			-- Name of base type
+		once
+			create Result.make_from_string("Tuple")
+		end
+
 	item_types: LIST[BMM_TYPE]
 			-- types in the tuple type
+		attribute
+			create {ARRAYED_LIST[BMM_TYPE]} Result.make
+		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters

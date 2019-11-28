@@ -14,7 +14,7 @@ inherit
 		rename
 			make as make_container
 		redefine
-			type_name, is_abstract, has_subtypes, subtypes, create_duplicate
+			type_name, is_abstract, has_subtypes, create_duplicate
 		end
 
 create
@@ -42,29 +42,6 @@ feature -- Access
 
 	index_type: BMM_SIMPLE_TYPE
 			-- the index type, normnally a primitive type such as String or Integer
-
-	subtypes: ARRAYED_SET [STRING]
-		local
-			cont_sub_type_list, item_sub_type_list, index_sub_type_list: ARRAYED_LIST [STRING]
-		do
-			cont_sub_type_list := container_class.all_descendants.deep_twin
-			if cont_sub_type_list.is_empty then
-				cont_sub_type_list.extend (container_class.name)
-			end
-
-			item_sub_type_list := base_type.subtypes
-			index_sub_type_list := index_type.subtypes
-
-			create Result.make (0)
-			across cont_sub_type_list as cont_sub_types_csr loop
-				across item_sub_type_list as item_sub_types_csr loop
-					across index_sub_type_list as index_sub_types_csr loop
-						Result.extend (cont_sub_types_csr.item + generic_left_delim.out + index_sub_types_csr.item +
-							Generic_separator.out + item_sub_types_csr.item + generic_right_delim.out)
-					end
-				end
-			end
-		end
 
 feature -- Status Report
 

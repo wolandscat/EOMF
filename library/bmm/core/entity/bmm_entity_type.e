@@ -12,7 +12,21 @@ deferred class BMM_ENTITY_TYPE
 inherit
 	BMM_DEFINED_TYPE
 
+feature -- Identification
+
+	entity_metatype: STRING
+			-- generate a type category of main target type from Type_cat_xx values
+		do
+			Result := defining_class.entity_metatype
+		end
+
 feature -- Access
+
+	base_type_name: STRING
+			-- Name of base type
+		do
+			Result := defining_class.name
+		end
 
 	value_constraint: detachable BMM_VALUE_SET_SPEC
 			-- optional value-set constraint

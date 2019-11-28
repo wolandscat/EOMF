@@ -233,37 +233,23 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
 		end
 
-	type_substitutions (a_type_name: STRING): ARRAYED_SET [STRING]
-			-- obtain names of all possible type substitutions of `a_type_name' in the model
-			-- including generic types.
-			-- TODO: incomplete
+	subtypes (a_type: BMM_TYPE): ARRAYED_SET [STRING]
+			-- obtain names of all possible type substitutions of `a_type' in the model
 		require
-			Type_name_valid: has_type_class_definition (a_type_name)
+			Type_name_valid: has_type_class_definition (a_type.type_name)
 		local
 			class_def: BMM_CLASS
 			type_name: BMM_TYPE_NAME
 			base_classes: ARRAYED_SET [STRING]
 		do
-			check attached class_definition (a_type_name) as cd then
-				class_def := cd
-			end
-
-			if attached create_type_name_from_string (a_type_name) as tn then
-				type_name := tn
-			end
-
-			base_classes := class_def.all_descendants
-			base_classes.extend (class_def.name)
-			if type_name.is_generic then
-				create Result.make (0)
-				Result.compare_objects
-				across base_classes as base_classes_csr loop
-					--
-					-- TODO: implementation
-					--
-				end
+			if attached {BMM_CONTAINER_TYPE} a_type as cont_type then
+				Result := container_subtypes (cont_type)
+			elseif attached {BMM_PARAMETER_TYPE} a_type as bmm_param_type then
+				Result := subtypes (bmm_param_type.effective_conforms_to_type)
 			else
-				Result := base_classes
+				check attached {BMM_ENTITY_TYPE} a_type as entity_type then
+					Result := entity_subtypes (entity_type)
+				end
 			end
 		end
 
@@ -365,7 +351,8 @@ feature -- Conformance
 			prop_conf_type: STRING
 		do
 			if has_type_class_definition (a_ms_property_type) then
-				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.effective_base_class.type.type_name
+				-- get the proper type name of the property type, minus any container type part
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.base_type_name
 
 				-- adjust for case where candidate type is not generic, but bmm_property type is - test on non-generic version
 				if valid_generic_type_name (prop_conf_type) and not valid_generic_type_name (a_ms_property_type) then
@@ -611,14 +598,167 @@ feature {NONE} -- Implementation
 				gen_class_def := gcd
 			end
 			create Result.make (gen_class_def)
-			across a_type_name.generic_parameters as gen_types_csr loop
-				if gen_types_csr.item.is_formal_type_parameter then
-					check attached gen_class_def.generic_parameters.item (gen_types_csr.item.name) as att_gpd then
-						gen_parm_def := att_gpd
+			if a_type_name.is_generic then
+				across a_type_name.generic_parameters as gen_types_csr loop
+					if gen_types_csr.item.is_formal_type_parameter then
+						check attached gen_class_def.generic_parameters.item (gen_types_csr.item.name) as att_gpd then
+							gen_parm_def := att_gpd
+						end
+						Result.add_generic_parameter (gen_parm_def)
+					else
+						Result.add_generic_parameter (create_bmm_type_from_bmm_type_name (gen_types_csr.item))
 					end
-					Result.add_generic_parameter (gen_parm_def)
-				else
-					Result.add_generic_parameter (create_bmm_type_from_bmm_type_name (gen_types_csr.item))
+				end
+			-- else we got the name of a generic class, but without the generic params part
+			else
+				across gen_class_def.generic_parameters as gen_parms_csr loop
+					Result.add_generic_parameter (gen_parms_csr.item)
+				end
+			end
+		end
+
+	entity_subtypes (an_entity_type: BMM_ENTITY_TYPE): ARRAYED_SET [STRING]
+			-- generate all possible type substitutions of a generic type
+		local
+			base_class_list: ARRAYED_LIST[STRING]
+			sub_types_table: HASH_TABLE[ARRAYED_LIST [ARRAYED_SET [STRING]], STRING]
+			gen_parm_sub_types: ARRAYED_LIST [ARRAYED_SET [STRING]]
+			permutations: HASH_TABLE[ARRAYED_LIST [ARRAYED_LIST[STRING]], STRING]
+			perm_count, gen_parm_perm_count, i, rep, rpt, rep_count, rpt_count, occ_count, rep_len, perm: INTEGER
+			perm_counts: HASH_TABLE[INTEGER, STRING]
+			tstr: STRING
+			base_bmm_class: BMM_CLASS
+			new_type_name: BMM_TYPE_NAME
+			perms_this_class: ARRAYED_LIST [ARRAYED_LIST [STRING]]
+		do
+			-- find set of base classes of descendants `an_entity_type`;
+			-- NOTE: not all have to be generic!
+			base_class_list := an_entity_type.defining_class.all_descendants.deep_twin
+			base_class_list.extend (an_entity_type.defining_class.name)
+
+			-- set up generic permutations data structure, keyed by base class names
+			create sub_types_table.make (0)
+			create perm_counts.make(0)
+			across base_class_list as base_classes_csr loop
+				create gen_parm_sub_types.make (0)
+				sub_types_table.put (gen_parm_sub_types, base_classes_csr.item)
+				gen_parm_perm_count := 1
+
+				base_bmm_class := class_definition (base_classes_csr.item)
+
+				-- we need to iterate across the open gen parms of the subtype;
+				-- this might be different from the parent, if there was inheritance
+				-- from a partly closed form of the `an_entity_type`
+				-- So we need to match on open param name
+				if attached {BMM_GENERIC_CLASS} base_bmm_class as base_bmm_gen_class then
+					across base_bmm_gen_class.generic_parameters as base_class_gen_parms_csr loop
+						-- if an_entity_type is generic, and has an open formal type of same name as this
+						-- gen param of this subtype base class, OR if an_entity_type is simple
+						-- then generate the subtypes of this gen param from the open param of this
+						-- subtype base class, since it could have a narrower constraint
+						if attached {BMM_GENERIC_TYPE} an_entity_type as a_gen_type and then
+							a_gen_type.has_formal_generic_type (base_class_gen_parms_csr.key.as_string_8) or else
+							attached {BMM_SIMPLE_TYPE} an_entity_type
+						then
+							gen_parm_sub_types.extend (subtypes (base_class_gen_parms_csr.item.effective_conforms_to_type))
+							gen_parm_sub_types.last.extend (base_class_gen_parms_csr.item.base_type_name)
+							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
+
+						-- an_entity_type has an actual parameter type in this position
+						-- and we should use that to generate the subtypes of this gen param position
+						elseif attached {BMM_GENERIC_TYPE} an_entity_type as a_gen_type and then a_gen_type.generic_substitutions.has (base_class_gen_parms_csr.key) then
+							gen_parm_sub_types.extend (subtypes (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type))
+							gen_parm_sub_types.last.extend (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type_name)
+							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
+
+						end
+					end
+				end
+				perm_counts.put (gen_parm_perm_count, base_classes_csr.item)
+			end
+
+			-- generate permutation matrix for each base class
+			create permutations.make (base_class_list.count)
+			across sub_types_table as sub_types_table_csr loop
+				rpt_count := 1
+				rep_len := 1
+				gen_parm_sub_types := sub_types_table_csr.item
+
+				perm_count := perm_counts.item (sub_types_table_csr.key)
+				create perms_this_class.make (perm_count)
+				permutations.put (perms_this_class, sub_types_table_csr.key)
+				from i := 1 until i > perm_count loop
+					perms_this_class.extend (create {ARRAYED_LIST [STRING]}.make (gen_parm_sub_types.count))
+					i := i + 1
+				end
+
+				across gen_parm_sub_types as gen_parm_sub_types_csr loop
+					occ_count := perm_count // gen_parm_sub_types_csr.item.count
+					rep_count := occ_count // rpt_count
+					rep_len := rep_len * gen_parm_sub_types_csr.item.count
+					from rep := 1 until rep > rep_count loop
+						across gen_parm_sub_types_csr.item as types_csr loop
+							from rpt := 1 until rpt > rpt_count loop
+								perm := (rep-1) * rep_len + (types_csr.cursor_index - 1) * rpt_count + rpt
+								perms_this_class.i_th (perm).extend (types_csr.item)
+								rpt := rpt + 1
+							end
+						end
+						rep := rep + 1
+					end
+					rpt_count := rpt_count * gen_parm_sub_types_csr.item.count
+				end
+			end
+
+			-- output the type strings
+			create Result.make (0)
+			Result.compare_objects
+			across permutations as perms_csr loop
+				perms_this_class := perms_csr.item
+				across perms_this_class as perms_this_class_csr loop
+					create tstr.make_from_string (perms_csr.key)
+					if not perms_this_class_csr.item.is_empty then
+						tstr.append (generic_left_delim.out)
+						across perms_this_class_csr.item as types_csr loop
+							tstr.append (types_csr.item)
+							if not types_csr.is_last then
+								tstr.append (generic_separator.out + " ")
+							end
+						end
+						tstr.append (generic_right_delim.out)
+					end
+					Result.extend (tstr)
+				end
+			end
+		end
+
+	container_subtypes (a_cont_type: BMM_CONTAINER_TYPE): ARRAYED_SET [STRING]
+		local
+			cont_sub_type_list, item_sub_type_list, index_sub_type_list: ARRAYED_LIST [STRING]
+		do
+			cont_sub_type_list := a_cont_type.container_class.all_descendants.deep_twin
+			cont_sub_type_list.extend (a_cont_type.container_class.name)
+
+			item_sub_type_list := subtypes (a_cont_type.base_type)
+
+			create Result.make (0)
+
+			if attached {BMM_INDEXED_CONTAINER_TYPE} a_cont_type as indexed_cont_type then
+				index_sub_type_list := indexed_cont_type.index_type.defining_class.all_descendants.deep_twin
+				index_sub_type_list.extend (indexed_cont_type.index_type.defining_class.name)
+				across cont_sub_type_list as cont_sub_types_csr loop
+					across item_sub_type_list as item_sub_types_csr loop
+						across index_sub_type_list as index_sub_types_csr loop
+							Result.extend (cont_sub_types_csr.item + generic_left_delim.out + index_sub_types_csr.item +
+								Generic_separator.out + item_sub_types_csr.item + generic_right_delim.out)
+						end
+					end
+				end
+			else
+				across cont_sub_type_list as cont_sub_types_csr loop
+					across item_sub_type_list as item_sub_types_csr loop
+						Result.extend (cont_sub_types_csr.item + generic_left_delim.out + item_sub_types_csr.item + generic_right_delim.out)
+					end
 				end
 			end
 		end

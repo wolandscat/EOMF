@@ -69,6 +69,10 @@ packages = <
 						name = <"integration">
 						classes = <"GENERIC_ENTRY"> 
 					>
+					["view"] = <
+						name = <"view">
+						classes = <"VIEW_ITEM", "VIEW_SECTION", "VIEW_ENTRY", "CITATION"> 
+					>
 				>
 			>
 		>
@@ -548,6 +552,70 @@ class_definitions = <
 			>
 		>
 	>
+	--
+	--------------------- rm.view ------------------
+	--
+
+	["VIEW_ITEM"] = <
+		name = <"VIEW_ITEM">
+		ancestors = <"CONTENT_ITEM">
+		properties = <
+			["meta_data"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"meta_data">
+				type = <"CLUSTER">
+			>
+		>
+	>
+
+	["VIEW_SECTION"] = <
+		name = <"VIEW_SECTION">
+		ancestors = <"VIEW_ITEM">
+		properties = <
+			["items"] = (P_BMM_CONTAINER_PROPERTY) <
+				name = <"items">
+				type_def = <
+					container_type = <"List">
+					type = <"VIEW_ITEM">
+				>
+				cardinality = <|>=0|>
+			>
+		>
+	>
+
+	["VIEW_ENTRY"] = <
+		name = <"VIEW_ENTRY">
+		ancestors = <"VIEW_ITEM">
+	>
 	
+	["CITATION"] = <
+		name = <"CITATION">
+		ancestors = <"VIEW_ENTRY">
+        generic_parameter_defs = <
+            ["T"] = <
+                name = <"T">
+                conforms_to_type = <"ENTRY">
+            >
+        >
+		properties = <
+			["reference"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"reference">
+				type = <"UID_BASED_ID">
+				is_mandatory = <True>
+			>
+			["parent_reference"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"parent_reference">
+				type = <"UID_BASED_ID">
+				is_mandatory = <True>
+			>
+			["type"] = (P_BMM_SINGLE_PROPERTY) <
+				name = <"type">
+				type = <"String">
+			>
+			["resolved"] = (P_BMM_SINGLE_PROPERTY_OPEN) <
+				name = <"resolved">
+				type = <"T">
+			>
+		>
+	>	
 >
 

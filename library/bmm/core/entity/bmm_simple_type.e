@@ -41,11 +41,6 @@ feature -- Access
 			Result.extend (defining_class.name)
 		end
 
-	subtypes: ARRAYED_SET [STRING]
-		do
-			Result := defining_class.all_descendants
-		end
-
 feature -- Status Report
 
 	is_abstract: BOOLEAN
