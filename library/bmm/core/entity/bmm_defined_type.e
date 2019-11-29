@@ -21,7 +21,7 @@ feature -- Access
 		end
 
 	type_base_name: STRING
-			-- Name of base generator type
+			-- Name of base generator type, i.e. excluding any generic parts if present
 		deferred
 		end
 

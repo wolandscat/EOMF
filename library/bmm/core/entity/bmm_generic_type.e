@@ -140,7 +140,7 @@ feature -- Status Report
 				across generic_parameters as gen_parms_csr some
 					attached {BMM_PARAMETER_TYPE} gen_parms_csr.item as formal_param and then
 						formal_param.name.is_equal (a_gen_type_name) or
-					gen_parms_csr.item.has_formal_generic_type (a_gen_type_name)
+						gen_parms_csr.item.has_formal_generic_type (a_gen_type_name)
 				end
 		end
 

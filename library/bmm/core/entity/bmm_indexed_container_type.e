@@ -35,7 +35,7 @@ feature -- Identification
 		do
 			create Result.make_empty
 			Result.append (container_class.name + Generic_left_delim.out + index_type.type_name +
-				Generic_separator.out + base_type.type_name + Generic_right_delim.out)
+				Generic_separator.out + item_type.type_name + Generic_right_delim.out)
 		end
 
 feature -- Access
@@ -61,7 +61,7 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			create Result.make (base_type.create_duplicate, index_type.create_duplicate, container_class)
+			create Result.make (item_type.create_duplicate, index_type.create_duplicate, container_class)
 		end
 
 end

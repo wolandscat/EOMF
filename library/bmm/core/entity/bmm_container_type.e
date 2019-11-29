@@ -20,9 +20,9 @@ create
 
 feature -- Initialisation
 
-	make (a_base_type: like base_type; a_container_class: like container_class)
+	make (a_base_type: like item_type; a_container_class: like container_class)
 		do
-			base_type := a_base_type
+			item_type := a_base_type
 			container_class := a_container_class
 		end
 
@@ -32,7 +32,7 @@ feature -- Identification
 			-- formal name of the type in the form "Container<V>"
 		do
 			create Result.make_empty
-			Result.append (container_class.name + Generic_left_delim.out + base_type.type_name + Generic_right_delim.out)
+			Result.append (container_class.name + Generic_left_delim.out + item_type.type_name + Generic_right_delim.out)
 		end
 
 	entity_metatype: STRING
@@ -42,44 +42,44 @@ feature -- Identification
 
 feature -- Access
 
-	base_type: BMM_UNITARY_TYPE
+	item_type: BMM_UNITARY_TYPE
 			-- The container item type
 
 	unitary_type: BMM_UNITARY_TYPE
 			-- Effective unitary type
 		do
-			Result := base_type
+			Result := item_type
 		end
 
 	effective_type: BMM_DEFINED_TYPE
 			-- Effective conformance type,taking into account formal parameter types
 		do
-			Result := base_type.effective_type
+			Result := item_type.effective_type
 		end
 
 	container_class: BMM_GENERIC_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
 
 	flattened_type_list: ARRAYED_LIST [STRING]
-			-- completely flattened list of type names, flattening out all generic parameters
-			-- note that for this type, we throw away the container_type because we are tring to match
-			-- the type of an object as being a valid member of the container, e.g. ELEMENT in List<ELEMENT>
+			-- completely flattened list of type names, with container_type removed
+			-- because we are tring to match the type of an object as being a valid
+			-- member of the container, e.g. ELEMENT in List<ELEMENT>
 		do
 			create Result.make (0)
 			Result.compare_objects
-			Result.append (base_type.flattened_type_list)
+			Result.append (item_type.flattened_type_list)
 		end
 
     properties: STRING_TABLE [BMM_PROPERTY]
 			-- list of all properties defined by this entity, keyed by property name
 		do
-			Result := base_type.properties
+			Result := item_type.properties
 		end
 
     flat_properties: STRING_TABLE [BMM_PROPERTY]
 			-- list of all properties of an instance of this entity, keyed by property name
 		do
-			Result := base_type.flat_properties
+			Result := item_type.flat_properties
 		end
 
 feature -- Status Report
@@ -87,24 +87,24 @@ feature -- Status Report
 	is_abstract: BOOLEAN
 			-- abstract status of this class or type
 		do
-			Result := base_type.is_abstract or container_class.is_abstract
+			Result := item_type.is_abstract or container_class.is_abstract
 		end
 
 	is_primitive: BOOLEAN
 			-- True if this entity corresponds to a primitive type
 		do
-			Result := base_type.is_primitive
+			Result := item_type.is_primitive
 		end
 
 	has_subtypes: BOOLEAN
 		do
-			Result := container_class.has_descendants or base_type.has_subtypes
+			Result := container_class.has_descendants or item_type.has_subtypes
 		end
 
 	has_formal_generic_type (a_gen_type_name: STRING): BOOLEAN
 			-- True if there is any occurrence of `a_gen_type_name` in the type structure
 		do
-			Result := base_type.has_formal_generic_type (a_gen_type_name)
+			Result := item_type.has_formal_generic_type (a_gen_type_name)
 		end
 
 feature -- Factory
@@ -112,7 +112,7 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			create Result.make (base_type.create_duplicate, container_class)
+			create Result.make (item_type.create_duplicate, container_class)
 		end
 
 feature -- Modification
@@ -121,9 +121,9 @@ feature -- Modification
 			-- substitute any occurrence of `a_gen_type_name` in the type structure
 			-- with `a_sub_type
 		do
-			if attached {BMM_PARAMETER_TYPE} base_type as param_type and then param_type.name.is_equal (a_gen_type_name) then
-				base_type := a_sub_type
-			elseif attached {BMM_GENERIC_TYPE} base_type as gen_type then
+			if attached {BMM_PARAMETER_TYPE} item_type as param_type and then param_type.name.is_equal (a_gen_type_name) then
+				item_type := a_sub_type
+			elseif attached {BMM_GENERIC_TYPE} item_type as gen_type then
 				gen_type.substitute_formal_generic_type (a_gen_type_name, a_sub_type)
 			end
 		end
