@@ -1,9 +1,10 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "[
-				 Parent of meta-types that may be used as the type of any instantiated object that is not a generic container object.
+				 Parent of meta-types that may be used as the type of any instantiated 
+				 object that is not a container object.
 				 ]"
-	keywords:    "model, UML"
+	keywords:    "model, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2009 The openEHR Foundation <http://www.openEHR.org>"

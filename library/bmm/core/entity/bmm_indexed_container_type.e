@@ -1,6 +1,9 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Type reference that specifies containers with one generic parameter."
+	description: "[
+				 Meta-type of linear container type that indexes the contained items in
+				 the manner of a standard Hash table, map or dictionary.
+				 ]"
 	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

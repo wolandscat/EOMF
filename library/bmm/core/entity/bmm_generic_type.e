@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Type reference based on a generic class, e.g. 'HashTable <List <Packet>, String>'"
+	description: "Meta-type based on a non-container generic class, e.g. `Packet<Header>`."
 	keywords:    "model, UML"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

@@ -1,6 +1,6 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Parent of type meta-types that correspond to entities, i.e. objects."
+	description: "A type that is defined by a class (or classes) in the model."
 	keywords:    "model, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

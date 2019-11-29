@@ -1,6 +1,9 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Parent of type meta-types that correspond to defined types, rather than formal type parameters."
+	description: "[
+				 A concrete, unitary meta-type that can be used as an actual parameter
+				 type in a generic type declaration.
+				 ]"
 	keywords:    "model, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"

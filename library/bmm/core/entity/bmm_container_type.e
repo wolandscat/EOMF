@@ -1,6 +1,10 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Type reference that specifies containers with one generic parameter."
+	description: "[
+				 Meta-type that specifies linear containers with a generic parameter corresponding 
+				 to the type of contained item, and whose container type is a generic type such as
+				 `List<T>`, `Set<T>` etc..
+				 ]"
 	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
