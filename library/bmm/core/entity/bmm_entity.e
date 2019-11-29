@@ -29,6 +29,8 @@ feature -- Definition
 	Entity_metatype_generic: STRING = "generic_entity"
 	Entity_metatype_generic_parameter: STRING = "generic_parameter_entity"
 	Entity_metatype_container: STRING = "container_entity"
+	Entity_metatype_signature: STRING = "signature_entity"
+	Entity_metatype_tuple: STRING = "tuple_entity"
 
 	Entity_category_modifier_abstract: STRING = "abstract"
 	Entity_category_modifier_primitive: STRING = "primitive"
@@ -55,6 +57,16 @@ feature -- Access
 		end
 
 	entity_metatype: STRING
+		deferred
+		end
+
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		deferred
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
 		deferred
 		end
 

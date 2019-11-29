@@ -43,22 +43,22 @@ feature -- Identification
 feature -- Access
 
 	base_type: BMM_UNITARY_TYPE
-			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
+			-- The container item type
 
-	base_type_name: STRING
-			-- Name of base type
+	unitary_type: BMM_UNITARY_TYPE
+			-- Effective unitary type
 		do
-			Result := base_type.base_type_name
+			Result := base_type
+		end
+
+	effective_type: BMM_DEFINED_TYPE
+			-- Effective conformance type,taking into account formal parameter types
+		do
+			Result := base_type.effective_type
 		end
 
 	container_class: BMM_GENERIC_CLASS
 			-- the type of the container. This converts to the root_type in BMM_GENERIC_TYPE
-
-	effective_base_class: BMM_CLASS
-			-- the 'design' type of this type, ignoring containers, multiplicity etc.
-		do
-			Result := base_type.effective_base_class
-		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]
 			-- completely flattened list of type names, flattening out all generic parameters
@@ -68,6 +68,18 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			Result.append (base_type.flattened_type_list)
+		end
+
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		do
+			Result := base_type.properties
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
+		do
+			Result := base_type.flat_properties
 		end
 
 feature -- Status Report

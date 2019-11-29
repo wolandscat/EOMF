@@ -22,7 +22,7 @@ create
 
 feature -- Initialisation
 
-	make (a_base_type: like base_type; an_index_type: like index_type; a_container_class: like container_class)
+	make (a_base_type: like unitary_type; an_index_type: like index_type; a_container_class: like container_class)
 		do
 			make_container (a_base_type, a_container_class)
 			index_type := an_index_type

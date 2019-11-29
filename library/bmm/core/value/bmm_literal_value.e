@@ -37,7 +37,7 @@ feature -- Initialisation
 
 feature -- Access
 
-	bmm_type: BMM_ENTITY_TYPE
+	bmm_type: BMM_MODEL_TYPE
 			-- Declared or inferred static type of the entity.
 		attribute
 			Result := Any_type

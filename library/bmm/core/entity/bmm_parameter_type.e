@@ -68,26 +68,6 @@ feature -- Access
 	inheritance_precursor: detachable BMM_PARAMETER_TYPE
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
-	effective_base_class: BMM_CLASS
-			-- the effective conformance type of this parameter, 'Any' if none other
-		do
-			if attached flattened_conforms_to_type as fctt then
-				Result := fctt.defining_class
-			else
-				Result := any_type_definition.defining_class
-			end
-		end
-
-	base_type_name: STRING
-			-- Name of base type
-		do
-			if attached flattened_conforms_to_type as fctt then
-				Result := fctt.base_type_name
-			else
-				Result := any_type_name
-			end
-		end
-
 	type_constraint: detachable BMM_DEFINED_TYPE
 			-- optional conformance constraint that must be another valid class name.
 
@@ -102,7 +82,7 @@ feature -- Access
 			end
 		end
 
-	effective_conforms_to_type: BMM_DEFINED_TYPE
+	effective_type: BMM_DEFINED_TYPE
 			-- Effective conformance type: either defined in model, or 'Any' if none from the model.
 		do
 			if attached flattened_conforms_to_type as att_fct then
@@ -125,11 +105,23 @@ feature -- Access
 			end
 		end
 
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		do
+			Result := effective_type.properties
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
+		do
+			Result := effective_type.flat_properties
+		end
+
 feature -- Status Report
 
 	has_subtypes: BOOLEAN
 		do
-			Result := not is_constrained or else effective_conforms_to_type.has_subtypes
+			Result := not is_constrained or else effective_type.has_subtypes
 		end
 
 	is_constrained: BOOLEAN

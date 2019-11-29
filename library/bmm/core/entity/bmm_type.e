@@ -38,19 +38,13 @@ feature -- Identification
 
 feature -- Access
 
-	base_type: BMM_UNITARY_TYPE
-			-- Base type, excluding container
+	unitary_type: BMM_UNITARY_TYPE
+			-- Effective unitary type, excluding container
 		deferred
 		end
 
-	base_type_name: STRING
-			-- Name of base type
-		deferred
-		end
-
-	effective_base_class: BMM_CLASS
-			-- model-semantic class for this type, from which properties etc can be extracted;
-			-- abstracts away container types.
+	effective_type: BMM_DEFINED_TYPE
+			-- Effective conformance type, taking into account formal parameter types
 		deferred
 		end
 

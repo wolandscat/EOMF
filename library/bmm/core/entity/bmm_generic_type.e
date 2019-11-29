@@ -10,7 +10,7 @@ note
 class BMM_GENERIC_TYPE
 
 inherit
-	BMM_ENTITY_TYPE
+	BMM_MODEL_TYPE
 		redefine
 			make, defining_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
 		end
@@ -80,7 +80,7 @@ feature -- Access
 			end
 		end
 
-	generic_substitutions: STRING_TABLE [BMM_UNITARY_TYPE]
+	generic_substitutions: STRING_TABLE [BMM_DEFINED_TYPE]
 			-- list of generic parameter substitutions, keyed by formal parameter name, e.g. 'T', 'U'
 		do
 			create Result.make_caseless (0)
@@ -88,7 +88,9 @@ feature -- Access
 			across generic_parameters as gen_parms_csr loop
 				-- if this is not a formal generic parameter, record a substitution
 				if not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item then
-					Result.put (gen_parms_csr.item, defining_class.generic_parameters.item_for_iteration.name)
+					check attached {BMM_DEFINED_TYPE} gen_parms_csr.item as bmm_def_type then
+						Result.put (bmm_def_type, defining_class.generic_parameters.item_for_iteration.name)
+					end
 				end
 				defining_class.generic_parameters.forth
 			end

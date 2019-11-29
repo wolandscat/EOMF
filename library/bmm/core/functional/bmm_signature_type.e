@@ -13,14 +13,42 @@ inherit
 	BMM_DEFINED_TYPE
 
 create
-	make
+	make, make_function, make_parameterless_function, make_procedure, make_parameterless_procedure
+
+feature -- Initialisation
+
+	make (a_args: detachable BMM_TUPLE_TYPE; a_result_type: detachable BMM_TYPE)
+		do
+			argument_types := a_args
+			result_type := a_result_type
+		end
+
+	make_function (a_args: BMM_TUPLE_TYPE; a_result_type: BMM_TYPE)
+		do
+			argument_types := a_args
+			result_type := a_result_type
+		end
+
+	make_parameterless_function (a_result_type: BMM_TYPE)
+		do
+			result_type := a_result_type
+		end
+
+	make_procedure (a_args: BMM_TUPLE_TYPE)
+		do
+			argument_types := a_args
+		end
+
+	make_parameterless_procedure
+		do
+		end
 
 feature -- Identification
 
 	type_name: STRING
 			-- output a type of the form '<[T1, T2, ...], R>'
 		do
-			create Result.make_from_string (base_type_name)
+			create Result.make_from_string (type_base_name)
 			Result.append (Generic_left_delim.out)
 
 			-- arguments part
@@ -37,9 +65,14 @@ feature -- Identification
 			Result.append (Generic_right_delim.out)
 		end
 
+	entity_metatype: STRING
+		do
+			Result := Entity_metatype_signature
+		end
+
 feature -- Access
 
-	base_type_name: STRING
+	type_base_name: STRING
 			-- Name of base type
 		once
 			create Result.make_from_string("Signature")
@@ -61,7 +94,7 @@ feature -- Access
 				Result.append (argument_types.flattened_type_list)
 			end
 			if attached result_type then
-				Result.extend (result_type.flattened_type_list)
+				Result.append (result_type.flattened_type_list)
 			end
 		end
 
@@ -70,13 +103,23 @@ feature -- Access
 			create Result.make(0)
 		end
 
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		do
+			create Result.make(0)
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
+		do
+			create Result.make(0)
+		end
+
 feature -- Status Report
 
-	is_abstract: BOOLEAN
-			-- generate a type category of main target type from Type_cat_xx values
-		do
-			Result := False
-		end
+	is_abstract: BOOLEAN = False
+
+	is_primitive: BOOLEAN = True
 
 	has_subtypes: BOOLEAN
 		do
@@ -87,11 +130,17 @@ feature -- Factory
 
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
+		local
+			a_dup_argument_types: like argument_types
+			a_dup_result_type: like result_type
 		do
-			create Result.make (defining_class)
-			if attached inheritance_precursor as ip then
-				Result.set_inheritance_precursor (ip)
+			if attached argument_types then
+				a_dup_argument_types := argument_types.create_duplicate
 			end
+			if attached result_type then
+				a_dup_result_type := result_type.create_duplicate
+			end
+			create Result.make (a_dup_argument_types, a_dup_result_type)
 		end
 
 end

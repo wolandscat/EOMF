@@ -44,7 +44,7 @@ feature -- Access
 			create Result.default_create
 		end
 
-	ancestors: STRING_TABLE [BMM_ENTITY_TYPE]
+	ancestors: STRING_TABLE [BMM_MODEL_TYPE]
 			-- list of directly inheritance parent types, which may include
 			-- closed, open and partial generic type signatures
 			-- keyed by type name, which may be generic
@@ -273,7 +273,7 @@ feature -- Access
 					Result := fp
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.base_type_name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.effective_type.type_base_name) as class_def then
 					Result := class_def.property_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -311,7 +311,7 @@ feature -- Access
 					Result := Current
 				end
 				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.base_type_name) as class_def then
+				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.effective_type.type_name) as class_def then
 					Result := class_def.class_definition_at_path (a_prop_path)
 				end
 			else -- look in the descendants
@@ -416,7 +416,7 @@ feature -- Status Report
 		do
 			a_path_pos := a_path.items.index
 			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				check attached bmm_model.class_definition (flat_prop.bmm_type.base_type_name) as class_def then
+				check attached bmm_model.class_definition (flat_prop.bmm_type.effective_type.type_base_name) as class_def then
 					a_path.forth
 					if not a_path.off then
 						Result := class_def.has_property_path (a_path)
@@ -510,7 +510,7 @@ feature -- Modification
 			source_schema_id := an_id
 		end
 
-	add_ancestor (an_anc_type: BMM_ENTITY_TYPE)
+	add_ancestor (an_anc_type: BMM_MODEL_TYPE)
 			-- add an ancestor class
 		require
 			New_ancestor: not ancestors.has_item (an_anc_type)
@@ -621,7 +621,7 @@ feature -- Modification
 
 feature -- Factory
 
-	type: BMM_ENTITY_TYPE
+	type: BMM_MODEL_TYPE
 			-- type related to this class
 		deferred
 		end
@@ -691,7 +691,7 @@ feature {NONE} -- Implementation
 			props: STRING_TABLE [BMM_PROPERTY]
 			prop_type_name: STRING
 		do
-			prop_type_name := a_prop.bmm_type.base_type_name
+			prop_type_name := a_prop.bmm_type.effective_type.type_base_name
 			if not supplier_closure_stack.has (prop_type_name) then
 				supplier_closure_stack.extend (prop_type_name)
 
@@ -700,10 +700,10 @@ feature {NONE} -- Implementation
 				if continue_action.item ([a_prop, depth]) then
 					if flat_flag then
 						-- props := bmm_model.class_definition (prop_type_name).flat_properties
-						props := a_prop.bmm_type.effective_base_class.flat_properties
+						props := a_prop.bmm_type.flat_properties
 					else
 						-- props := bmm_model.class_definition (prop_type_name).properties
-						props := a_prop.bmm_type.effective_base_class.properties
+						props := a_prop.bmm_type.properties
 					end
 
 					across props as props_csr loop

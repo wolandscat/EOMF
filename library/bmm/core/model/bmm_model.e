@@ -237,17 +237,13 @@ feature -- Access
 			-- obtain names of all possible type substitutions of `a_type' in the model
 		require
 			Type_name_valid: has_type_class_definition (a_type.type_name)
-		local
-			class_def: BMM_CLASS
-			type_name: BMM_TYPE_NAME
-			base_classes: ARRAYED_SET [STRING]
 		do
 			if attached {BMM_CONTAINER_TYPE} a_type as cont_type then
 				Result := container_type_substitutions (cont_type)
 			elseif attached {BMM_PARAMETER_TYPE} a_type as bmm_param_type then
-				Result := type_substitutions (bmm_param_type.effective_conforms_to_type)
+				Result := type_substitutions (bmm_param_type.effective_type)
 			else
-				check attached {BMM_ENTITY_TYPE} a_type as entity_type then
+				check attached {BMM_MODEL_TYPE} a_type as entity_type then
 					Result := entity_type_substitutions (entity_type)
 				end
 			end
@@ -351,8 +347,9 @@ feature -- Conformance
 			prop_conf_type: STRING
 		do
 			if has_type_class_definition (a_ms_property_type) then
-				-- get the proper type name of the property type, minus any container type part
-				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.base_type_name
+				-- get the type name of the property effective type
+				-- i.e. type name minus any container type part, and formal gen parm converted to constraint type
+				prop_conf_type := property_definition (a_bmm_type_name, a_bmm_property_name).bmm_type.effective_type.type_name
 
 				-- adjust for case where candidate type is not generic, but bmm_property type is - test on non-generic version
 				if valid_generic_type_name (prop_conf_type) and not valid_generic_type_name (a_ms_property_type) then
@@ -617,7 +614,7 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	entity_type_substitutions (an_entity_type: BMM_ENTITY_TYPE): ARRAYED_SET [STRING]
+	entity_type_substitutions (an_entity_type: BMM_MODEL_TYPE): ARRAYED_SET [STRING]
 			-- generate all possible type substitutions of a generic type
 		local
 			base_class_list: ARRAYED_LIST[STRING]
@@ -660,17 +657,20 @@ feature {NONE} -- Implementation
 							a_gen_type.has_formal_generic_type (base_class_gen_parms_csr.key.as_string_8) or else
 							attached {BMM_SIMPLE_TYPE} an_entity_type
 						then
-							gen_parm_sub_types.extend (type_substitutions (base_class_gen_parms_csr.item.effective_conforms_to_type))
-							gen_parm_sub_types.last.extend (base_class_gen_parms_csr.item.base_type_name)
+							gen_parm_sub_types.extend (type_substitutions (base_class_gen_parms_csr.item.effective_type))
+							gen_parm_sub_types.last.extend (base_class_gen_parms_csr.item.effective_type.type_name)
 							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
 
 						-- an_entity_type has an actual parameter type in this position
 						-- and we should use that to generate the subtypes of this gen param position
-						elseif attached {BMM_GENERIC_TYPE} an_entity_type as a_gen_type and then a_gen_type.generic_substitutions.has (base_class_gen_parms_csr.key) then
-							gen_parm_sub_types.extend (type_substitutions (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type))
-							gen_parm_sub_types.last.extend (a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key).base_type_name)
-							gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
-
+						elseif attached {BMM_GENERIC_TYPE} an_entity_type as a_gen_type and then
+							a_gen_type.generic_substitutions.has (base_class_gen_parms_csr.key)
+						then
+							check attached a_gen_type.generic_substitutions.item (base_class_gen_parms_csr.key) as gen_subtype then
+								gen_parm_sub_types.extend (type_substitutions (gen_subtype))
+								gen_parm_sub_types.last.extend (gen_subtype.type_base_name)
+								gen_parm_perm_count := gen_parm_perm_count * gen_parm_sub_types.last.count
+							end
 						end
 					end
 				end
@@ -739,7 +739,7 @@ feature {NONE} -- Implementation
 			cont_sub_type_list := a_cont_type.container_class.all_descendants.deep_twin
 			cont_sub_type_list.extend (a_cont_type.container_class.name)
 
-			item_sub_type_list := type_substitutions (a_cont_type.base_type)
+			item_sub_type_list := type_substitutions (a_cont_type.unitary_type)
 
 			create Result.make (0)
 

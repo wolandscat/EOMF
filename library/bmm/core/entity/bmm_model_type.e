@@ -7,10 +7,20 @@ note
 	copyright:   "Copyright (c) 2019- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_ENTITY_TYPE
+deferred class BMM_MODEL_TYPE
 
 inherit
 	BMM_DEFINED_TYPE
+		export
+			{ANY} terminology_separator
+		end
+
+feature -- Initialisation
+
+	make (a_class: like defining_class)
+		do
+			defining_class := a_class
+		end
 
 feature -- Identification
 
@@ -22,7 +32,10 @@ feature -- Identification
 
 feature -- Access
 
-	base_type_name: STRING
+	defining_class: BMM_CLASS
+			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
+
+	type_base_name: STRING
 			-- Name of base type
 		do
 			Result := defining_class.name
@@ -30,6 +43,26 @@ feature -- Access
 
 	value_constraint: detachable BMM_VALUE_SET_SPEC
 			-- optional value-set constraint
+
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		do
+			Result := defining_class.properties
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
+		do
+			Result := defining_class.flat_properties
+		end
+
+feature -- Status Report
+
+	is_primitive: BOOLEAN
+			-- True if this entity corresponds to a primitive type
+		do
+			Result := defining_class.is_primitive
+		end
 
 feature -- Modification
 

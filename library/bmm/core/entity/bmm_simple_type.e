@@ -10,7 +10,7 @@ note
 class BMM_SIMPLE_TYPE
 
 inherit
-	BMM_ENTITY_TYPE
+	BMM_MODEL_TYPE
 		redefine
 			defining_class
 		end

@@ -16,7 +16,7 @@ inherit
 
 feature -- Access
 
-	base_type: BMM_UNITARY_TYPE
+	unitary_type: BMM_UNITARY_TYPE
 			-- Base type, excluding container
 		do
 			Result := Current

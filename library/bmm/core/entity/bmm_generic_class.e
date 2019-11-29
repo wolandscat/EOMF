@@ -61,7 +61,7 @@ feature -- Access
 			create Result.make (0)
 			Result.compare_objects
 			across generic_parameters as gen_parms_csr loop
-				Result.extend (gen_parms_csr.item.base_type_name)
+				Result.extend (gen_parms_csr.item.effective_type.type_name)
 			end
 		end
 
@@ -73,7 +73,7 @@ feature -- Access
 			has_generic_parameter (a_name)
 		do
 			check attached generic_parameters.item (a_name) as att_gen then
-				Result := att_gen.base_type_name
+				Result := att_gen.effective_type.type_name
 			end
 		end
 
@@ -122,7 +122,7 @@ feature -- Modification
 					across parent_gen_class.generic_parameters as parent_gen_class_gen_parms loop
 						if parent_gen_class_gen_parms.item.name.same_string (a_gen_parm_def.name) and
 							a_gen_parm_def.is_constrained and then attached a_gen_parm_def.inheritance_precursor as gp_inh_parent
-							and then not a_gen_parm_def.effective_conforms_to_type.type_name.same_string (gp_inh_parent.effective_conforms_to_type.type_name)
+							and then not a_gen_parm_def.effective_type.type_name.same_string (gp_inh_parent.effective_type.type_name)
 						then
 							across parent_gen_class.flat_properties as parent_props_csr loop
 								if attached {BMM_UNITARY_PROPERTY} parent_props_csr.item as parent_prop and then parent_prop.bmm_type = gp_inh_parent then
