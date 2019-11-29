@@ -1,24 +1,21 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Meta-type of a tuple value item."
-	keywords:    "model, BMM"
+	description: "Meta-type of a tuple value, consisting of items of any type."
+	keywords:    "model, EL"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2019 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_TUPLE_ITEM
+class EL_TUPLE
 
 feature -- Access
 
-	name: STRING
-			-- name of the item
-		attribute
-			create Result.make_empty
-		end
+	type: BMM_TUPLE_TYPE
+			-- type of this tuple
 
-	item: BMM_VALUE
-			-- item referred to by the tuple element
+	items: LIST[EL_TUPLE_ITEM]
+			-- members of the tuple
 
 end
 

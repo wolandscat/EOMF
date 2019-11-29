@@ -1,32 +1,24 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Meta-type for any entity that can be evaluated at runtime to generate a value."
-	keywords:    "model, UML, BMM"
+	description: "Meta-type of a tuple value item."
+	keywords:    "model, EL"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
 	copyright:   "Copyright (c) 2019 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
- class BMM_VALUE
-
-inherit
-	BMM_TYPED
-		redefine
-			bmm_type
-		end
+class EL_TUPLE_ITEM
 
 feature -- Access
 
-	bmm_type: BMM_MODEL_TYPE
-			-- Declared or inferred static type of the entity.
-		attribute
-			Result := Any_type
-		end
-
-	value_literal: STRING
+	name: STRING
+			-- name of the item
 		attribute
 			create Result.make_empty
 		end
+
+	item: EL_EXPRESSION
+			-- item referred to by the tuple element
 
 end
 

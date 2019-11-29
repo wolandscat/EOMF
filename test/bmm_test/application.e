@@ -38,6 +38,9 @@ feature -- Initialization
 			dummy_type: BMM_INDEXED_CONTAINER_TYPE
 			dummy_prop: BMM_INDEXED_CONTAINER_PROPERTY
 			dummy_sig: BMM_SIGNATURE
+			dummy_str_val: BMM_STRING_VALUE
+			dummy_int_val: BMM_INTEGER_VALUE
+			-- dummy_bool_val: BMM_BOOLEAN_VALUE
 		do
 			-- BMM initialisation
 			bmm_env_setup
