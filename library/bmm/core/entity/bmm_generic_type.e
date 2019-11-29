@@ -80,7 +80,7 @@ feature -- Access
 			end
 		end
 
-	generic_substitutions: STRING_TABLE [BMM_DEFINED_TYPE]
+	generic_substitutions: STRING_TABLE [BMM_EFFECTIVE_TYPE]
 			-- list of generic parameter substitutions, keyed by formal parameter name, e.g. 'T', 'U'
 		do
 			create Result.make_caseless (0)
@@ -88,7 +88,7 @@ feature -- Access
 			across generic_parameters as gen_parms_csr loop
 				-- if this is not a formal generic parameter, record a substitution
 				if not attached {BMM_PARAMETER_TYPE} gen_parms_csr.item then
-					check attached {BMM_DEFINED_TYPE} gen_parms_csr.item as bmm_def_type then
+					check attached {BMM_EFFECTIVE_TYPE} gen_parms_csr.item as bmm_def_type then
 						Result.put (bmm_def_type, defining_class.generic_parameters.item_for_iteration.name)
 					end
 				end
@@ -157,7 +157,7 @@ feature -- Factory
 
 feature -- Modification
 
-	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_DEFINED_TYPE)
+	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_EFFECTIVE_TYPE)
 			-- substitute any occurrence of `a_gen_type_name` in the type structure
 			-- with `a_sub_type`
 		do

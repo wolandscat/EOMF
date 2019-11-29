@@ -207,7 +207,7 @@ feature -- Factory
 						ancs_csr.item.create_bmm_type (a_bmm_model, anc_class)
 					end
 
-					-- NOTE: we have to test for {BMM_DEFINED_TYPE} here to avoid
+					-- NOTE: we have to test for {BMM_EFFECTIVE_TYPE} here to avoid
 					-- BMM_PARAMETER_TYPE (necessary because P_BMM_GENERIC_TYPE
 					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
 					-- Could be fixed, but better to move on to new serial format

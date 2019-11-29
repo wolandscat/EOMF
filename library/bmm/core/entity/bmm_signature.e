@@ -10,7 +10,7 @@ note
 class BMM_SIGNATURE
 
 inherit
-	BMM_DEFINED_TYPE
+	BMM_EFFECTIVE_TYPE
 
 create
 	make, make_function, make_parameterless_function, make_procedure, make_parameterless_procedure

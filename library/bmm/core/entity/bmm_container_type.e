@@ -51,7 +51,7 @@ feature -- Access
 			Result := item_type
 		end
 
-	effective_type: BMM_DEFINED_TYPE
+	effective_type: BMM_EFFECTIVE_TYPE
 			-- Effective conformance type,taking into account formal parameter types
 		do
 			Result := item_type.effective_type
@@ -117,7 +117,7 @@ feature -- Factory
 
 feature -- Modification
 
-	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_DEFINED_TYPE)
+	substitute_formal_generic_type (a_gen_type_name: STRING; a_sub_type: BMM_EFFECTIVE_TYPE)
 			-- substitute any occurrence of `a_gen_type_name` in the type structure
 			-- with `a_sub_type
 		do

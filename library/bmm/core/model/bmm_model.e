@@ -567,7 +567,7 @@ feature {NONE} -- Implementation
 			No_spaces: not Result.has (' ')
 		end
 
-	create_bmm_type_from_bmm_type_name (a_type_name: BMM_TYPE_NAME): BMM_DEFINED_TYPE
+	create_bmm_type_from_bmm_type_name (a_type_name: BMM_TYPE_NAME): BMM_EFFECTIVE_TYPE
 			-- create a new BMM_TYPE from a bmm type already known in the system
 		require
 			Valid_name: not a_type_name.is_formal_type_parameter
@@ -625,7 +625,6 @@ feature {NONE} -- Implementation
 			perm_counts: HASH_TABLE[INTEGER, STRING]
 			tstr: STRING
 			base_bmm_class: BMM_CLASS
-			new_type_name: BMM_TYPE_NAME
 			perms_this_class: ARRAYED_LIST [ARRAYED_LIST [STRING]]
 		do
 			-- find set of base classes of descendants `an_entity_type`;

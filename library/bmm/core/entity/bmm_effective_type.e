@@ -7,14 +7,14 @@ note
 	copyright:   "Copyright (c) 2014- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_DEFINED_TYPE
+deferred class BMM_EFFECTIVE_TYPE
 
 inherit
 	BMM_UNITARY_TYPE
 
 feature -- Access
 
-	effective_type: BMM_DEFINED_TYPE
+	effective_type: BMM_EFFECTIVE_TYPE
 			-- Effective conformance type, taking into account formal parameter types
 		do
 			Result := Current

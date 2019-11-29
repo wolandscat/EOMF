@@ -43,7 +43,7 @@ feature -- Access
 		deferred
 		end
 
-	effective_type: BMM_DEFINED_TYPE
+	effective_type: BMM_EFFECTIVE_TYPE
 			-- Effective conformance type, taking into account formal parameter types
 		deferred
 		end

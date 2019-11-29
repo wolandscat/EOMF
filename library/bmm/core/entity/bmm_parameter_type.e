@@ -20,14 +20,14 @@ create
 
 feature -- Initialisation
 
-	make (a_name: STRING; an_any_type: BMM_DEFINED_TYPE)
+	make (a_name: STRING; an_any_type: BMM_EFFECTIVE_TYPE)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
 			any_type_definition := an_any_type
 		end
 
-	make_constrained (a_name: STRING; a_type_constraint, an_any_type: BMM_DEFINED_TYPE)
+	make_constrained (a_name: STRING; a_type_constraint, an_any_type: BMM_EFFECTIVE_TYPE)
 			-- any_type is a reference to the Any definition from this schema
 		do
 			name := a_name
@@ -68,10 +68,10 @@ feature -- Access
 	inheritance_precursor: detachable BMM_PARAMETER_TYPE
 			-- if set, is the corresponding generic parameter definition in an ancestor class
 
-	type_constraint: detachable BMM_DEFINED_TYPE
+	type_constraint: detachable BMM_EFFECTIVE_TYPE
 			-- optional conformance constraint that must be another valid class name.
 
-	flattened_conforms_to_type: detachable BMM_DEFINED_TYPE
+	flattened_conforms_to_type: detachable BMM_EFFECTIVE_TYPE
 			-- ultimate type conformance constraint on this generic parameter due to inheritance;
 			-- Void if no constraint type.
 		do
@@ -82,7 +82,7 @@ feature -- Access
 			end
 		end
 
-	effective_type: BMM_DEFINED_TYPE
+	effective_type: BMM_EFFECTIVE_TYPE
 			-- Effective conformance type: either defined in model, or 'Any' if none from the model.
 		do
 			if attached flattened_conforms_to_type as att_fct then
@@ -167,7 +167,7 @@ feature -- Modification
 
 feature {NONE} -- Implementation
 
-	any_type_definition: BMM_DEFINED_TYPE
+	any_type_definition: BMM_EFFECTIVE_TYPE
 
 end
 

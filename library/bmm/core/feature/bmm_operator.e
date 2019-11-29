@@ -9,7 +9,7 @@ note
 
 class BMM_OPERATOR
 
-creation
+create
 	make
 
 feature -- Initialisation

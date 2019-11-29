@@ -10,7 +10,7 @@ note
 deferred class BMM_MODEL_TYPE
 
 inherit
-	BMM_DEFINED_TYPE
+	BMM_EFFECTIVE_TYPE
 		export
 			{ANY} terminology_separator
 		end
