@@ -101,7 +101,6 @@ feature -- Commands
 	save (obj: G; false_booleans_off: BOOLEAN)
 			-- write `obj` out to original file in the syntax determined by the descendant implementation
 		local
-			a_dt_iterator: DT_VISITOR_ITERATOR
 			obj_file: PLAIN_TEXT_FILE
 		do
 			reset
@@ -130,7 +129,6 @@ feature -- Commands
 		require
 			Format_valid: has_dt_serialiser_format (a_syntax)
 		local
-			a_dt_iterator: DT_VISITOR_ITERATOR
 			obj_file: PLAIN_TEXT_FILE
 		do
 			reset

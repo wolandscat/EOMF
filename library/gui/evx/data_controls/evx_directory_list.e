@@ -157,8 +157,6 @@ feature -- Events
 
 	on_remove
 			-- let the user remove the current displayed directory
-		local
-			strs: ARRAYED_LIST[STRING]
 		do
 			if ev_data_control.count > 1 and attached ev_data_control.selected_item as ev_sel_item then
 				ev_data_control.prune (ev_sel_item)

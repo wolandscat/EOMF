@@ -14,7 +14,7 @@ inherit
 		rename
 			make as make_og_node
 		redefine
-			parent, child_type, put_child, put_child_left, put_child_right, valid_child_for_insertion, node_key
+			parent, put_child, put_child_left, put_child_right, valid_child_for_insertion, node_key
 		end
 
 create

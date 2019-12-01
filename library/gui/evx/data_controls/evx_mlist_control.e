@@ -33,7 +33,7 @@ inherit
 		rename
 			make as make_data_control, make_linked as make_linked_data_control, make_readonly as make_readonly_data_control
 		redefine
-			populate, do_enable_editable, do_disable_editable
+			do_enable_editable, do_disable_editable
 		end
 
 feature -- Initialisation

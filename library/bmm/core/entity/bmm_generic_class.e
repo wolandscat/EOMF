@@ -14,7 +14,7 @@ class BMM_GENERIC_CLASS
 inherit
 	BMM_CLASS
 		redefine
-			suppliers, type, entity_metatype
+			suppliers
 		end
 
 create

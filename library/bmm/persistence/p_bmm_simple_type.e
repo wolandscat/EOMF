@@ -12,7 +12,7 @@ class P_BMM_SIMPLE_TYPE
 inherit
 	P_BMM_BASE_TYPE
 		redefine
-			bmm_type, create_bmm_type
+			bmm_type
 		end
 
 create

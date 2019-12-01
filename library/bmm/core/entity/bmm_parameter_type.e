@@ -12,7 +12,7 @@ class BMM_PARAMETER_TYPE
 inherit
 	BMM_UNITARY_TYPE
 		redefine
-			type_signature, is_primitive, entity_metatype
+			type_signature
 		end
 
 create

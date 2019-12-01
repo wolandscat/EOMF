@@ -12,7 +12,7 @@ class P_BMM_CONTAINER_PROPERTY
 inherit
 	P_BMM_PROPERTY
 		redefine
-			bmm_property, create_bmm_property
+			bmm_property
 		end
 
 feature -- Access (persisted)

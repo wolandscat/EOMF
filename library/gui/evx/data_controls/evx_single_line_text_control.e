@@ -21,8 +21,6 @@ inherit
 	EVX_TEXT_CONTROL
 		rename
 			make as make_text_data_control, make_linked as make_linked_text_data_control, make_readonly as make_readonly_text_control
-		redefine
-			ev_data_control
 		end
 
 create

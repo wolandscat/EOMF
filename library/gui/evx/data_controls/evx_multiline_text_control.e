@@ -21,9 +21,6 @@ class EVX_MULTILINE_TEXT_CONTROL
 
 inherit
 	EVX_TEXT_CONTROL
-		redefine
-			ev_data_control
-		end
 
 create
 	make, make_linked

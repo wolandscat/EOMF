@@ -13,9 +13,6 @@ class BMM_SIMPLE_CLASS
 
 inherit
 	BMM_CLASS
-		redefine
-			type, entity_metatype
-		end
 
 create
 	make

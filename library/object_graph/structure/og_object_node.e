@@ -19,7 +19,7 @@ inherit
 
 	OG_NODE
 		redefine
-			child_type, parent
+			parent
 		end
 
 create
