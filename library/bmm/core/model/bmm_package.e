@@ -7,9 +7,9 @@ note
 				 top-level package within the schema, or unqualified.
 				 ]"
 	keywords:    "model, UML, BMM"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2010- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2010- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class BMM_PACKAGE
@@ -20,14 +20,43 @@ inherit
 	BMM_DECLARATION
 
 create
-	make
+	make, make_from_path, make_from_path_array
 
 feature -- Initialisation
 
 	make (a_name: STRING; a_doc: detachable STRING)
+			-- make from a simple name
 		do
 			name := a_name
 			documentation := a_doc
+		end
+
+	make_from_path (a_path: STRING; a_doc: detachable STRING)
+			-- make from a path; will cause creation of a chain of child packages
+			-- of this object, according to the path; `a_doc` is used only on the
+			-- deepest package.
+		local
+			pkg_names: LIST [STRING]
+		do
+			pkg_names := a_path.split (Package_name_delimiter)
+			pkg_names.start
+			make_from_path_array (pkg_names, a_doc)
+		end
+
+feature {BMM_PACKAGE} -- Initialisation
+
+	make_from_path_array (a_path: LIST[STRING]; a_doc: detachable STRING)
+			-- make from a path array; treat `a_path` cursor position as head of path.
+		require
+			Valid_path: not a_path.off
+		do
+			name := a_path.item
+			if a_path.islast then
+				documentation := a_doc
+			else
+				a_path.forth
+				add_package (create {BMM_PACKAGE}.make_from_path_array (a_path, a_doc))
+			end
 		end
 
 feature -- Access
@@ -134,6 +163,8 @@ feature -- Iteration
 				end
 			end
 		end
+
+feature {NONE} -- Implementation
 
 end
 

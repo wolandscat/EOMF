@@ -14,10 +14,22 @@ inherit
 
 feature -- Definitions
 
+	Default_any_package_path: IMMUTABLE_STRING_8
+		once
+			create Result.make_from_string ("org.openehr.base.foundation_types")
+		end
+
+	Default_any_package: BMM_PACKAGE
+			-- a default package for Any if Any class not provided in Model
+		once
+			create Result.make_from_path (Default_any_package_path, "openEHR BASE component foundation_types package")
+		end
+
 	Any_class: BMM_SIMPLE_CLASS
 			-- built-in class definition corresponding to the top `Any' class
 		once
 			create Result.make (Any_type_name, "Built-in Any class (root of type system)", True)
+				Result.set_package (Default_any_package)
 		end
 
 	Any_type: BMM_SIMPLE_TYPE
@@ -43,7 +55,7 @@ feature -- Definitions
 	String_class: BMM_SIMPLE_CLASS
 			-- built-in class definition corresponding to the `String' class
 		once
-			create Result.make (String_type_name, "Built-in String class", True)
+			create Result.make (String_type_name, "Built-in String class", False)
 		end
 
 	String_type: BMM_SIMPLE_TYPE
@@ -57,13 +69,27 @@ feature -- Definitions
 	Integer_class: BMM_SIMPLE_CLASS
 			-- built-in class definition corresponding to the `Integer' class
 		once
-			create Result.make (Integer_type_name, "Built-in Integer class", True)
+			create Result.make (Integer_type_name, "Built-in Integer class", False)
 		end
 
 	Integer_type: BMM_SIMPLE_TYPE
-			-- built-in class definition corresponding to the  `Integer' class
+			-- built-in class definition corresponding to the `Integer' class
 		once
 			create Result.make (Integer_class)
+		end
+
+	Boolean_type_name: STRING = "Boolean"
+
+	Boolean_class: BMM_SIMPLE_CLASS
+			-- built-in class definition corresponding to the `Boolean' class
+		once
+			create Result.make (Boolean_type_name, "Built-in Boolean class", False)
+		end
+
+	Boolean_type: BMM_SIMPLE_TYPE
+			-- built-in class definition corresponding to the `Boolean' class
+		once
+			create Result.make (Boolean_class)
 		end
 
 end
