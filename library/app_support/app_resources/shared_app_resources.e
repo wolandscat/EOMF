@@ -30,12 +30,17 @@ feature -- Definitions
 			Result := "unknown_app"
 		end
 
+	Config_file_path_root: STRING
+		once ("PROCESS")
+			Result := "." + application_developer_name
+		end
+
 	Default_user_config_file_directory: STRING
 			-- Default OS-specific place for user config file(s) for all applications ased on adl_workbench code base.
-			-- Follows the model home_path/app_vendor/adl_workbench.
+			-- Follows the model <user_home>/.app_vendor/adl_workbench.
 		do
 			if attached execution_environment.home_directory_name as hd then
-				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), application_name)
+				Result := file_system.pathname (file_system.pathname (hd, Config_file_path_root), application_name)
 			else
 				Result := file_system.current_working_directory
 			end
@@ -78,7 +83,7 @@ feature -- Access
 			-- (On Unix/Linux/Macosx(?) systems, we would normally locate this in /etc/adl_workbench)
 		once
 			if attached execution_environment.home_directory_name as hd then
-				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), Fallback_application_name)
+				Result := file_system.pathname (file_system.pathname (hd, Config_file_path_root), Fallback_application_name)
 			else
 				Result := file_system.current_working_directory
 			end
@@ -89,7 +94,7 @@ feature -- Access
 			-- Follows the model home_path/app_vendor/app_name.
 		once
 			check attached execution_environment.home_directory_name as hd then
-				Result := file_system.pathname (file_system.pathname (hd, application_developer_name), extension_removed (application_name))
+				Result := file_system.pathname (file_system.pathname (hd, Config_file_path_root), extension_removed (application_name))
 			end
 
 			-- if the directory doesn't exist, attempt to find a fallback directory
@@ -122,11 +127,9 @@ feature -- Access
 
 			if path.count > 3 then
 				dir := path.item (path.count - 1)
-				if dir.is_equal ("W_code") or dir.is_equal ("F_code") then
-					if path.item (path.count - 3).is_equal ("EIFGENs") then
-						dir := file_system.dirname (file_system.dirname (file_system.dirname (file_system.dirname (Result))))
-						Result := file_system.pathname (dir, file_system.basename (Result))
-					end
+				if (dir.is_equal ("W_code") or dir.is_equal ("F_code")) and path.item (path.count - 3).is_equal ("EIFGENs") then
+					dir := file_system.dirname (file_system.dirname (file_system.dirname (file_system.dirname (Result))))
+					Result := file_system.pathname (dir, file_system.basename (Result))
 				end
 			end
 		ensure

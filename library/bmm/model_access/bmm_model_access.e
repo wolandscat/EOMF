@@ -61,9 +61,10 @@ feature -- Initialisation
 
 	initialise_with_load_list (schema_dirs: LIST [STRING]; a_schemas_load_list: LIST [STRING])
 			-- initialise with a specific schema load list, usually a sub-set of schemas that will be
-			-- found in the directory `an_absolute_dir'
+			-- found in the directories in `schema_dirs`
 		require
-			Rm_dir_valid: across schema_dirs as sch_csr all file_system.directory_exists (sch_csr.item) end
+			Schema_dirs_valid: across schema_dirs as sch_csr all file_system.directory_exists (sch_csr.item) end
+			Schema_directories_set: not schema_dirs.is_empty
 		do
 			make
 			schema_directories := schema_dirs
@@ -176,7 +177,7 @@ feature -- Access
 
 feature -- Status Report
 
-	has_schema_directory: BOOLEAN
+	schema_directories_set: BOOLEAN
 			-- true if there is a valid schema directory set
 		do
 			Result := not schema_directories.is_empty
@@ -191,7 +192,7 @@ feature -- Status Report
 		do
 			Result := bmm_models.has (a_model_key)
 			if not Result then
-				cand_ver := "0.0.0"
+				cand_ver := Initial_version
 				across bmm_models.current_keys as model_ids_csr loop
 					if model_ids_csr.item.substring (1, a_model_key.count).is_case_insensitive_equal (a_model_key) then
 						new_ver := schema_id_version (model_ids_csr.item.as_string_8)
@@ -230,7 +231,7 @@ feature -- Validation
 
 feature -- Commands
 
-	set_schema_load_list (a_schemas_load_list: LIST [STRING])
+	set_schemas_load_list (a_schemas_load_list: LIST [STRING])
 		do
 			schemas_load_list.wipe_out
 			schemas_load_list.append (a_schemas_load_list)
@@ -260,7 +261,7 @@ feature {NONE} -- Implementation
 			-- initialise `rm_schema_metadata_table' by finding all the schema files in the directory tree of `schema_directory'
 			-- and for each one, doing a fast parse to obtain the descriptive meta-data found in the first few lines
 		require
-			has_schema_directory
+			schema_directories_set
 		local
 			dir: KL_DIRECTORY
 			bmm2_file_repo: FILE_REPOSITORY

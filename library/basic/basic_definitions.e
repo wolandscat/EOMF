@@ -62,6 +62,9 @@ feature -- Definitions
 			create Result.make_from_epoch (0)
 		end
 
+	Initial_version: STRING = "0.0.0"
+			-- first logical version in semver scheme.
+
 	Standard_version_regex: STRING = "[0-9]+(\.[0-9]+){0,2}"
 			-- Regex for 1, 2, or 3-part version string string of form N.M.P
 

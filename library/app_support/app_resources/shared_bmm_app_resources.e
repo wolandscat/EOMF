@@ -1,10 +1,10 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "Shared application resources for any BMM application"
-	keywords:    "test, ADL"
-	author:      "Thomas Beale <thomas.beale@OceanInformatics.com>"
+	keywords:    "BMM, app resources"
+	author:      "Thomas Beale <thomas.beale@openEHR.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2013- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
+	copyright:   "Copyright (c) 2013- openEHR Foundation <https://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class SHARED_BMM_APP_RESOURCES
@@ -15,11 +15,26 @@ inherit
 feature -- Definitions
 
 	Default_rm_schema_directory: STRING
-			-- default directory of Reference Model schema files; same as full path to app + "/rm_schemas";
-			-- contains schema files in .dadl format e.g.
-			-- .../rm_schemas/openehr_rm_102.bmm
+			-- default directory of Reference Model schema files; 
+			-- if installed, same as full path to app + "/rm_schemas";
+			-- if dev mode, is <app_home>/../../../../reference-models/models;
+			-- contains schema files in .odin format
+		local
+			path: KI_PATHNAME
+			dir: STRING
 		once ("PROCESS")
 			Result := file_system.pathname (application_startup_directory, "rm_schemas")
+
+			path := file_system.string_to_pathname (file_system.absolute_pathname (execution_environment.command_line.command_name))
+			path.set_canonical
+			if path.count > 3 then
+				dir := path.item (path.count - 1)
+				if (dir.is_equal ("W_code") or dir.is_equal ("F_code")) and path.item (path.count - 3).is_equal ("EIFGENs") then
+					dir := file_system.dirname (file_system.dirname (file_system.dirname (file_system.dirname (file_system.dirname (Result)))))
+					Result := file_system.pathname (dir, file_system.pathname ("reference-models", "models"))
+				end
+			end
+
 		end
 
 feature -- Application Switches
