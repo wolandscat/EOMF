@@ -163,6 +163,9 @@ feature -- Commands
 					in_file.read_line
 					a_line := in_file.last_string
 					if not a_line.is_whitespace then
+						-- right adjust in case we are on Linux, and files were
+						-- created on Windows, which means they will have a trailing CR
+						a_line.right_adjust
 						line_buf_extend_no_ws (a_line)
 						i := i + 1
 					end
