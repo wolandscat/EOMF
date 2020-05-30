@@ -247,10 +247,10 @@ feature -- Commands
 			row_collapsed: not a_row.is_expanded
 		end
 
-	resize_viewable_area_to_content (a_height_limit, a_width_limit: INTEGER; expansion_factor: REAL)
+	resize_viewable_area_to_content (max_height, max_width: INTEGER; expansion_factor: REAL)
 			-- resize grid so all content visible, in currenly expanded or collapsed form.
-			-- If either of first two arguments is 0, use `virtual_height' and `virtual_weight', else use the minimum of the
-			-- argument and `virtual_xxx'. The last number should be a number like 1.1 (10%). 
+			-- If either of max_height, max_width is 0, don't perform any reduction scaling.
+			-- The last number should be a number like 1.1 (10%). 
 		require
 			Sane_expansion_factor: expansion_factor >= 1.0 and expansion_factor <= 2.0
 		local
@@ -263,48 +263,81 @@ feature -- Commands
 				exp_factor := expansion_factor
 			end
 
-			if a_height_limit > 0 then
-				targ_height := a_height_limit.min (visible_row_count * row_height + header.height)
-			else
-				targ_height := visible_row_count * row_height + header.height
-			end
+			targ_height :=
+				if max_height > 0 then
+					max_height.min (visible_row_count * row_height + header.height)
+				else
+					visible_row_count * row_height + header.height
+				end
 			set_minimum_height ((targ_height * exp_factor).ceiling)
 
-			if a_width_limit > 0 then
-				targ_width := a_width_limit.min (virtual_width)
-			else
-				targ_width := virtual_width
-			end
+			targ_width :=
+				if max_width > 0 then
+					max_width.min (virtual_width)
+				else
+					virtual_width
+				end
 			set_minimum_width ((targ_width * exp_factor).ceiling)
 		end
 
-	resize_columns_to_content (expansion_factor: REAL)
+	resize_columns_to_content (max_width: INTEGER; expansion_factor: REAL)
 			-- resize all columns to content, applying `expansion_factor'
+			-- If max_width is 0, don't perform any reduction scaling.
 		require
 			Sane_expansion_factor: expansion_factor >= 1.0 and expansion_factor <= 2.0
 		local
-			i: INTEGER
+			i, total_width: INTEGER
+			col_widths: ARRAY[INTEGER]
+			scale_factor: DOUBLE
 		do
+			create col_widths.make_filled (0, 1, column_count)
+
+			-- work out column proportions
 			from i := 1 until i > column_count loop
 				if column (i).is_show_requested then
 					column(i).resize_to_content
-					column(i).set_width ((column (i).width * expansion_factor).ceiling)
+					col_widths[i] := (column (i).width * expansion_factor).ceiling
+
+					total_width := total_width + col_widths[i]
 				end
 				i := i + 1
 			end
+
+			-- scale according to max dimensions
+			if max_width > 0 and total_width > max_width then
+				scale_factor := max_width / total_width
+				from i := 1 until i > column_count loop
+					if column (i).is_show_requested then
+						col_widths[i] := (col_widths[i] * scale_factor).floor
+						if col_widths[i] < column (i).header_item.width then
+							col_widths[i] := column (i).header_item.width
+						end
+					end
+					i := i + 1
+				end
+			end
+
+			from i := 1 until i > column_count loop
+				if column (i).is_show_requested then
+					column(i).set_width (col_widths[i])
+				end
+				i := i + 1
+			end
+
 		end
 
-	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER]; expansion_factor: REAL)
+	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER]; max_width: INTEGER; expansion_factor: REAL)
 			-- resize columns according to their content and then shrink as needed, avoiding `fixed_cols'
+			-- If max_width is 0, don't perform any reduction scaling.			
 		require
 			Sane_expansion_factor: expansion_factor >= 1.0 and expansion_factor <= 2.0
 		local
 			fixed_cols_width, total_width, var_cols_width, grid_width, i: INTEGER
 			reduction_factor: REAL_64
 		do
-			resize_columns_to_content (expansion_factor)
+			grid_width := if max_width = 0 then width else width.min (max_width) end
 
-			grid_width := width
+			resize_columns_to_content (grid_width, expansion_factor)
 
 			-- add up widths of cols
 			from i := 1 until i > column_count loop

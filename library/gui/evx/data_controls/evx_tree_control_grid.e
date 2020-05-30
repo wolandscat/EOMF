@@ -26,11 +26,19 @@ feature -- Initialisation
 		do
 			ev_grid := a_gui_grid.ev_grid
 			ev_root_widget := ev_grid
+			maximum_height := a_gui_grid.maximum_height
+			maximum_width := a_gui_grid.maximum_width
 		end
 
 feature -- Access
 
 	ev_grid: EV_GRID_KBD_MOUSE
+
+	maximum_height: INTEGER
+			-- maximum height to display, including header, before scroll bars will appear; if = 0, no max height
+
+	maximum_width: INTEGER
+			-- maximum width to display, before scroll bars will appear; if = 0, no max width
 
 feature -- Commands
 
@@ -93,7 +101,7 @@ feature -- Commands
 
 	resize_columns_to_content (grid_expansion_factor: REAL)
 		do
-			ev_grid.resize_columns_to_content (grid_expansion_factor)
+			ev_grid.resize_columns_to_content (maximum_width, grid_expansion_factor)
 		end
 
 end

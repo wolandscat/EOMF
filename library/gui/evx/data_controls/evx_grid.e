@@ -24,9 +24,15 @@ inherit
 create
 	make
 
+feature -- Definitions
+
+	Fit_factor: REAL = 0.9
+			-- max size relative to launching window
+
 feature -- Initialisation
 
 	make (enable_tree, row_height_fixed, col_resize_on_collapse_expand, hide_tree_node_connectors: BOOLEAN)
+			-- if max_height or max_width are 0, no reduction scaling will be performed.
 		do
 			create ev_grid
 			if enable_tree then
@@ -38,10 +44,12 @@ feature -- Initialisation
 			if not row_height_fixed then
 				ev_grid.disable_row_height_fixed
 			end
+
 			if col_resize_on_collapse_expand then
-				ev_grid.row_expand_actions.extend (agent (a_row: EV_GRID_ROW) do ev_grid.resize_columns_to_content (Default_grid_expansion_factor) end)
-				ev_grid.row_collapse_actions.extend (agent  (a_row: EV_GRID_ROW) do ev_grid.resize_columns_to_content (Default_grid_expansion_factor) end)
+				ev_grid.row_expand_actions.extend (agent (a_row: EV_GRID_ROW) do ev_grid.resize_columns_to_content (maximum_width, Default_grid_expansion_factor) end)
+				ev_grid.row_collapse_actions.extend (agent  (a_row: EV_GRID_ROW) do ev_grid.resize_columns_to_content (maximum_width, Default_grid_expansion_factor) end)
 			end
+
 		end
 
 feature -- Access
@@ -108,8 +116,14 @@ feature -- Modification
 			-- set maximum dimensions of the overall grid, including header, if there is one. Use a value of 0
 			-- for either argument to only set a limit on one dimension
 		do
-			maximum_height := a_height
-			maximum_width := a_width
+			maximum_width := (a_width * Fit_factor).floor
+			maximum_height := (a_height * Fit_factor).floor
+		end
+
+	set_height_to_content
+			-- set height to visible content, but less than maximum_height
+		do
+			 ev_grid.set_minimum_height((ev_grid.visible_row_count * ev_grid.row_height).min(maximum_height))
 		end
 
 	set_tree_expand_collapse_icons (an_expand_icon, a_collapse_icon: EV_PIXMAP)
@@ -430,13 +444,13 @@ feature -- Commands
 	resize_columns_to_content
 			-- resize columns to content
 		do
-			ev_grid.resize_columns_to_content (Default_grid_expansion_factor)
+			ev_grid.resize_columns_to_content (maximum_width, Default_grid_expansion_factor)
 		end
 
 	resize_columns_to_content_and_fit (fixed_cols: LIST [INTEGER])
 			-- resize columns and then shrink as needed, avoiding fixed_cols
 		do
-			ev_grid.resize_columns_to_content_and_fit (fixed_cols, Default_grid_expansion_factor)
+			ev_grid.resize_columns_to_content_and_fit (fixed_cols, maximum_width, Default_grid_expansion_factor)
 		end
 
 	set_checkboxes_recursively (a_gcli: EV_GRID_CHECKABLE_LABEL_ITEM)
