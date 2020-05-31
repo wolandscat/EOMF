@@ -2,10 +2,10 @@ note
 	component:   "Eiffel Object Modelling Framework"
 	description: "file handling context"
 	keywords:    "file"
-	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
+	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2002- Ocean Informatics Pty Ltd <http://www.oceaninfomatics.com>"
-	licence:     "The openEHR Open Source Licence"
+	copyright:   "Copyright (c) 2002- openEHR Foundation <http://www.openehr.org>"
+	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
 class
 	FILE_CONTEXT
