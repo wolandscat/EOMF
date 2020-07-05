@@ -31,8 +31,15 @@ feature -- Definitions
 		end
 
 	Config_file_path_root: STRING
+			-- generate a directory for application data; on unix-like systems, it is in 
+			-- a directory named '.<application>' i.e. application name with a precending dot
+			-- on Windows, there is no dot.
 		once ("PROCESS")
-			Result := "." + application_developer_name
+			create Result.make_empty
+			if not is_windows then
+				Result.append_character ('.')
+			end
+			Result.append (application_developer_name)
 		end
 
 	Default_user_config_file_directory: STRING
