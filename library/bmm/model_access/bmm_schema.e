@@ -1,7 +1,7 @@
 note
 	component:   "Eiffel Object Modelling Framework"
 	description: "[
-				 Parent of pesistable forms of BMM_MODEL. Defines the abstract interface and some common implementation
+				 Parent of persistable forms of BMM_MODEL. Defines the abstract interface and some common implementation
 				 elements for descendants, which provide concrete persistence formats.
 				 ]"
 	keywords:    "Basic meta-model"

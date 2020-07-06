@@ -40,12 +40,9 @@ feature -- Factory
 
 	create_bmm_class
 			-- add remaining model elements from `bmm_class'
-		local
-			bmm_class_def: attached like bmm_class
 		do
-			create bmm_class_def.make (name, documentation, is_abstract)
-			bmm_class_def.set_source_schema_id (source_schema_id)
-			bmm_class := bmm_class_def
+			create bmm_class.make (name, documentation, is_abstract)
+			bmm_class.set_source_schema_id (source_schema_id)
 		end
 
 	populate_bmm_class (a_bmm_model: BMM_MODEL)

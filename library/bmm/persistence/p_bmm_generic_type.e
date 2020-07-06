@@ -74,6 +74,12 @@ feature -- Access
 		attribute
 		end
 
+	base_type: STRING
+			-- return the effective unitary type
+		do
+			Result := root_type
+		end
+
 feature -- Status Report
 
 	is_open: BOOLEAN

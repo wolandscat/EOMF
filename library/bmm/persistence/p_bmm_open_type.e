@@ -53,13 +53,18 @@ feature -- Factory
 			end
 		end
 
+	base_type: STRING
+			-- return the effective unitary type
+		do
+			Result := type
+		end
+
 feature -- Output
 
 	as_type_string: STRING
 			-- name of the type
 		do
-			create Result.make (0)
-			Result.append (type)
+			create Result.make_from_string (type)
 		end
 
 	flattened_type_list: ARRAYED_LIST [STRING]

@@ -31,8 +31,7 @@ feature -- Identification
 	type_name: STRING
 			-- full name of the type including generic parameters
 		do
-			create Result.make_empty
-			Result.append (defining_class.name)
+			create Result.make_from_string (defining_class.name)
 			Result.append_character (Generic_left_delim)
 			across generic_parameters as gen_parms_csr loop
 				Result.append (gen_parms_csr.item.type_name)

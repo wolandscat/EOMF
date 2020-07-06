@@ -54,6 +54,18 @@ feature -- Access
 		attribute
 		end
 
+	base_type: STRING
+			-- return the effective unitary type
+		do
+			if attached type as att_type then
+				Result := att_type
+			else
+				check attached type_def then
+					Result := type_def.base_type
+				end
+			end
+		end
+
 feature -- Factory
 
 	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)

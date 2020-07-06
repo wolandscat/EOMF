@@ -20,6 +20,11 @@ feature -- Access
 		attribute
 		end
 
+	base_type: STRING
+			-- return the effective base type
+		deferred
+		end
+
 feature -- Factory
 
 	create_bmm_type (a_bmm_model: BMM_MODEL; a_class_def: BMM_CLASS)

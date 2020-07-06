@@ -77,14 +77,7 @@ feature -- Access
 			Result.compare_objects
 			across ancestor_refs as ancs_csr loop
 				-- find the BMM_CLASS of the ancestor reference
-				if attached {P_BMM_GENERIC_TYPE} ancs_csr.item as gen_type then
-					anc_class_name := gen_type.root_type
-				else
-					check attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
-						anc_class_name := simple_type.type
-					end
-				end
-				Result.extend (anc_class_name)
+				Result.extend (ancs_csr.item.base_type)
 			end
 		end
 
@@ -106,7 +99,7 @@ feature -- Access
 							p_bmm_class := p_bmm_schema.class_definition (anc_csr.item)
 							if p_bmm_class.is_generic then
 								Result.extend (create {P_BMM_GENERIC_TYPE}.make_generic_open (anc_csr.item,
-								create {ARRAYED_LIST[STRING]}.make_from_array (p_bmm_class.generic_parameter_defs.current_keys)))
+									create {ARRAYED_LIST[STRING]}.make_from_array (p_bmm_class.generic_parameter_defs.current_keys)))
 							else
 								Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (anc_csr.item))
 							end
@@ -188,26 +181,16 @@ feature -- Factory
 
 	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements from Current to `bmm_class'
-		local
-			anc_class_name: STRING
 		do
 			check attached bmm_class as att_bmm_class then
 				-- populate references to ancestor classes; should be every class except Any
 				across ancestor_refs as ancs_csr loop
 					-- find the BMM_CLASS of the ancestor reference
-					if attached {P_BMM_GENERIC_TYPE} ancs_csr.item as gen_type then
-						anc_class_name := gen_type.root_type
-					else
-						check attached {P_BMM_SIMPLE_TYPE} ancs_csr.item as simple_type then
-							anc_class_name := simple_type.type
-						end
-					end
-
-					check attached a_bmm_model.class_definition (anc_class_name) as anc_class then
+					check attached a_bmm_model.class_definition (ancs_csr.item.base_type) as anc_class then
 						ancs_csr.item.create_bmm_type (a_bmm_model, anc_class)
 					end
 
-					-- NOTE: we have to test for {BMM_EFFECTIVE_TYPE} here to avoid
+					-- NOTE: we have to test for {BMM_MODEL_TYPE} here to avoid
 					-- BMM_PARAMETER_TYPE (necessary because P_BMM_GENERIC_TYPE
 					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
 					-- Could be fixed, but better to move on to new serial format
