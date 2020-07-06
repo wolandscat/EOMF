@@ -44,7 +44,7 @@ feature -- Access (persisted)
 			-- list of immediate inheritance parents FROM SCHEMA
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	ancestor_defs: detachable ARRAYED_LIST [P_BMM_BASE_TYPE]
+	ancestor_defs: detachable ARRAYED_LIST [P_BMM_UNITARY_TYPE]
 			-- list of immediate inheritance parents FROM SCHEMA; must be used if there are
 			-- any generic ancestors
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
@@ -70,8 +70,6 @@ feature -- Access
 
 	ancestor_class_names: ARRAYED_LIST [STRING]
 			-- list of ancestor class names, i.e. type names minus any generic part
-		local
-			anc_class_name: STRING
 		do
 			create Result.make (0)
 			Result.compare_objects
@@ -81,7 +79,7 @@ feature -- Access
 			end
 		end
 
-	ancestor_refs: ARRAYED_LIST [P_BMM_BASE_TYPE]
+	ancestor_refs: ARRAYED_LIST [P_BMM_UNITARY_TYPE]
 			-- structural form of ancestors
 			-- TODO: not dealing with inheritance from Enmerated classes - if it is allowed....
 		require

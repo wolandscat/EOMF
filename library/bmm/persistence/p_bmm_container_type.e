@@ -21,7 +21,7 @@ feature -- Access (persisted)
 			-- the target type; this converts to the first parameter in generic_parameters in BMM_GENERIC_TYPE
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	type_def: detachable P_BMM_BASE_TYPE
+	type_def: detachable P_BMM_UNITARY_TYPE
 			-- type definition of the `type', if not a simple String type reference
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
@@ -34,7 +34,7 @@ feature -- Access (persisted)
 
 feature -- Access
 
-	type_ref: detachable P_BMM_BASE_TYPE
+	type_ref: detachable P_BMM_UNITARY_TYPE
 			-- the target type
 		do
 			if not attached type_def and attached type as att_type then

@@ -10,7 +10,7 @@ note
 class P_BMM_GENERIC_TYPE
 
 inherit
-	P_BMM_BASE_TYPE
+	P_BMM_UNITARY_TYPE
 		redefine
 			bmm_type
 		end

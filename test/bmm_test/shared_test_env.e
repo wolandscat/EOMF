@@ -150,7 +150,6 @@ feature -- Initialization
 			end
 
 			bmm_models_access.initialise_with_load_list (rm_schema_directories, rm_schemas_load_list)
-			-- rm_schemas_access.initialise_all (rm_schema_directories)
 			output_schema_info
 
 			if bmm_models_access.has_errors then
