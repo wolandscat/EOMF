@@ -82,7 +82,7 @@ feature -- Initialization
 			-- output a class that has a BMM_INDEXED_CONTAINER_TYPE as the type of a property
 			output_class_properties ("CALLBACK_WAIT", False)
 
-			io.put_string ("---------------- rm_schema.has_property_path() --------------%N")
+			io.put_string ("---------------- BMM_MODEL.has_property_path() --------------%N")
 			io.put_string ("CARE_ENTRY has /protocol: " + test_bmm_model.has_property_path ("CARE_ENTRY", "/protocol").out + "%N")
 			io.put_string ("CARE_ENTRY has /data/events/data: " + test_bmm_model.has_property_path ("CARE_ENTRY", "/data/events/data").out + "%N")
 			io.put_string ("OBSERVATION has /data/events/data: " + test_bmm_model.has_property_path ("OBSERVATION", "/data/events/data").out + "%N")
@@ -95,23 +95,44 @@ feature -- Initialization
 			io.put_string ("CLUSTER has /items/items/items: " + test_bmm_model.has_property_path ("CLUSTER", "/items/items/items").out + "%N")
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.is_descendant_of() --------------%N")
+			io.put_string ("---------------- BMM_MODEL.is_descendant_of() --------------%N")
 			io.put_string ("COMPOSITION is a subclass of LOCATABLE: " + test_bmm_model.is_descendant_of ("COMPOSITION", "LOCATABLE").out + "%N")
 			io.put_string ("LOCATABLE is not subclass of COMPOSITION" + (not test_bmm_model.is_descendant_of ("LOCATABLE", "COMPOSITION")).out + "%N")
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.class_definition.properties --------------%N")
+			io.put_string ("---------------- BMM_MODEL.class_definition.properties --------------%N")
 			io.put_string ("Generic class and properties, showing generic type substitutions %N")
 			output_class_properties ("CONTACT", False)
 
-			io.put_string ("---------------- rm_schema.class_definition.suppliers --------------%N")
-			io.put_string ("All supplier classes of COMPOSITION: %N")
-			across test_bmm_model.class_definition ("COMPOSITION").suppliers as supps_csr loop
+			io.put_string ("---------------- BMM_MODEL.suppliers --------------%N")
+			io.put_string ("Immediate supplier classes of COMPOSITION: %N")
+			across test_bmm_model.suppliers ("COMPOSITION") as supps_csr loop
 				io.put_string (supps_csr.item + "%N")
 			end
 			io.new_line
 
-			io.put_string ("---------------- rm_schema.enumeration_definition types --------------%N")
+			io.put_string ("---------------- BMM_MODEL.supplier_closure --------------%N")
+			io.put_string ("supplier closure of COMPOSITION: %N")
+			across test_bmm_model.supplier_closure ("COMPOSITION") as supps_csr loop
+				io.put_string (supps_csr.item + "%N")
+			end
+			io.new_line
+
+			io.put_string ("---------------- BMM_MODEL.suppliers --------------%N")
+			io.put_string ("Immediate supplier classes of PARTY_IDENTIFIED: %N")
+			across test_bmm_model.suppliers ("PARTY_IDENTIFIED") as supps_csr loop
+				io.put_string (supps_csr.item + "%N")
+			end
+			io.new_line
+
+			io.put_string ("---------------- BMM_MODEL.supplier_closure --------------%N")
+			io.put_string ("supplier closure of PARTY_IDENTIFIED: %N")
+			across test_bmm_model.supplier_closure ("PARTY_IDENTIFIED") as supps_csr loop
+				io.put_string (supps_csr.item + "%N")
+			end
+			io.new_line
+
+			io.put_string ("---------------- BMM_MODEL.enumeration_definition types --------------%N")
 			io.put_string ("Enumeration types: %N")
 			across test_bmm_model.enumeration_types as enum_csr loop
 				io.put_string (enum_csr.item)
@@ -148,6 +169,7 @@ feature -- Initialization
 			output_ancestors ("GENERIC_CHILD_OPEN_T", 0)
 			output_ancestors ("GENERIC_PARENT<T,SUPPLIER_B>", 0)
 			output_ancestors ("GENERIC_PARENT<SUPPLIER_A,U>", 0)
+			io.put_string ("GENERIC_CHILD_CLOSED is a subclass of GENERIC_PARENT: " + test_bmm_model.is_descendant_of ("GENERIC_CHILD_CLOSED", "GENERIC_PARENT").out + "%N")
 
 			io.put_string ("======================= generic inheritance =======================%N")
 			io.put_string ("......... generic inheritance - source form ..........%N")

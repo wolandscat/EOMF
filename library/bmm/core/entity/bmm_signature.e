@@ -52,7 +52,6 @@ feature -- Identification
 			Result.append (Generic_left_delim.out)
 
 			-- arguments part
-			Result.append (Tuple_separator.out)
 			if attached argument_types then
 				Result.append (argument_types.type_name)
 			end

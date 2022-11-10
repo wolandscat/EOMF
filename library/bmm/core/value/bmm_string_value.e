@@ -10,34 +10,15 @@ note
 class BMM_STRING_VALUE
 
 inherit
-	BMM_LITERAL_VALUE
+	BMM_PRIMITIVE_VALUE
 		redefine
-			make, bmm_type, value, value_literal
+			value
 		end
 
 create
-	make_value
-
-feature -- Initialisation
-
-	make (a_value_literal: like value_literal; a_bmm_type: like bmm_type)
-			-- make with a literal value and a type representing the relevant type from the model
-		do
-			precursor (a_value_literal, a_bmm_type)
-			value := value_literal
-		end
+	make, make_value
 
 feature -- Access
-
-	bmm_type: BMM_SIMPLE_TYPE
-		attribute
-			Result := String_type
-		end
-
-	value_literal: STRING
-		attribute
-			create {STRING} Result.make_from_string ("default")
-		end
 
 	value: STRING
 		attribute

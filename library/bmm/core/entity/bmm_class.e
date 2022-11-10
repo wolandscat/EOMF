@@ -13,7 +13,7 @@ note
 deferred class BMM_CLASS
 
 inherit
-	BMM_DECLARATION
+	BMM_MODEL_ELEMENT
 
 	BMM_ENTITY
 		export
@@ -153,76 +153,6 @@ feature -- Access
 			Result := bmm_model.model_id + Schema_name_delimiter + class_path
 		end
 
-	suppliers: ARRAYED_SET [STRING]
-			-- list of names of immediate supplier classes, including concrete generic parameters,
-			-- concrete descendants of abstract statically defined types, and inherited suppliers.
-			-- (where generics are unconstrained, no class name is added, since logically it would be
-			-- 'ANY' and this can always be assumed anyway)
-			-- This list includes primitive types
-		local
-			ftl: ARRAYED_LIST [STRING]
-		do
-			if attached suppliers_cache as sc then
-				Result := sc
-			else
-				create Result.make(0)
-				Result.compare_objects
-
-				-- get the types of all the properties (including inherited)
-				across flat_properties as props_csr loop
-					-- get the statically defined type(s) of the property (could be >1 due to generics)
-					ftl := props_csr.item.bmm_type.flattened_type_list
-					Result.merge (ftl)
-					-- now get the descendant types, since these could be bound at runtime
-					across ftl as gen_types_csr loop
-						across bmm_model.class_definition (gen_types_csr.item).immediate_descendants as imm_descs_csr loop
-							Result.extend (imm_descs_csr.item.name)
-						end
-					end
-				end
-
-				suppliers_cache := Result
-			end
-		end
-
-	suppliers_non_primitive: ARRAYED_SET [STRING]
-			-- same as `suppliers' minus primitive types, as defined in input schema
-		do
-			if attached suppliers_non_primitive_cache as snpc then
-				Result := snpc
-			else
-				create Result.make (0)
-				Result.compare_objects
-				Result.merge (suppliers)
-				Result.subtract (bmm_model.primitive_types)
-				suppliers_non_primitive_cache := Result
-			end
-		end
-
-	supplier_closure: ARRAYED_SET [STRING]
-			-- list of names of all classes in full supplier closure, including concrete generic parameters;
-			-- (where generics are unconstrained, no class name is added, since logically it would be
-			-- 'ANY' and this can always be assumed anyway)
-			-- This list includes primitive types.
-		do
-			if attached supplier_closure_cache as scc then
-				Result := scc
-			else
-				closure_types_done.wipe_out
-				closure_types_done.extend (name)
-				create Result.make(0)
-				supplier_closure_cache := Result
-				Result.compare_objects
-				Result.merge (suppliers)
-				across suppliers as suppliers_csr loop
-					if not closure_types_done.has (suppliers_csr.item) then
-						Result.merge (bmm_model.class_definition (suppliers_csr.item).supplier_closure)
-						closure_types_done.extend (suppliers_csr.item)
-					end
-				end
-			end
-		end
-
 	generic_properties: ARRAYED_LIST [BMM_PROPERTY]
 			-- list of all generic properties in this class
 		do
@@ -240,8 +170,8 @@ feature -- Access
 			if attached flat_properties_cache as fpc then
 				Result := fpc
 			else
-
 				create Result.make_caseless (0)
+
 				-- merge ancestor properties
 				across ancestors as ancestors_csr loop
 					Result.merge (ancestors_csr.item.defining_class.flat_properties)
@@ -253,80 +183,6 @@ feature -- Access
 
 				flat_properties_cache := Result
 			end
-		end
-
-	property_definition_at_path (a_prop_path: OG_PATH): BMM_PROPERTY
-			-- retrieve the property definition for `a_prop_path' in flattened class
-			-- note that the internal cursor of the path is used to know how much to
-			-- read - from cursor to end (this allows recursive evaluation)
-		require
-			Property_path_valid: has_property_path (a_prop_path)
-		local
-			a_path_pos: INTEGER
-			i: INTEGER
-			found: BOOLEAN
-			bmm_prop: detachable BMM_PROPERTY
-		do
-			a_path_pos := a_prop_path.items.index
-			if has_property (a_prop_path.item.attr_name) then
-				check attached flat_properties.item (a_prop_path.item.attr_name) as fp then
-					Result := fp
-				end
-				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (Result.bmm_type.effective_type.type_base_name) as class_def then
-					Result := class_def.property_definition_at_path (a_prop_path)
-				end
-			else -- look in the descendants
-				from i := 1 until i > immediate_descendants.count or found loop
-					if immediate_descendants.i_th(i).has_property_path (a_prop_path) then
-						bmm_prop := immediate_descendants.i_th(i).property_definition_at_path (a_prop_path)
-						found := True
-					end
-					i := i + 1
-				end
-				check attached bmm_prop as bp then
-					Result := bp
-				end
-			end
-			a_prop_path.go_i_th (a_path_pos)
-		end
-
-	class_definition_at_path (a_prop_path: OG_PATH): BMM_CLASS
-			-- retrieve the class definition for the class containing the terminal property in `a_prop_path' in flattened class
-			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
-			-- recursive evaluation)
-		require
-			Property_path_valid: has_property_path (a_prop_path)
-		local
-			a_path_pos: INTEGER
-			i: INTEGER
-			found: BOOLEAN
-			bmm_prop: detachable BMM_PROPERTY
-			bmm_class: detachable BMM_CLASS
-		do
-			a_path_pos := a_prop_path.items.index
-			if has_property (a_prop_path.item.attr_name) then
-				check attached flat_properties.item (a_prop_path.item.attr_name) as fp then
-					bmm_prop := fp
-					Result := Current
-				end
-				a_prop_path.forth
-				if not a_prop_path.off and then attached bmm_model.class_definition (bmm_prop.bmm_type.effective_type.type_name) as class_def then
-					Result := class_def.class_definition_at_path (a_prop_path)
-				end
-			else -- look in the descendants
-				from i := 1 until i > immediate_descendants.count or found loop
-					if immediate_descendants.i_th(i).has_property_path (a_prop_path) then
-						bmm_class := immediate_descendants.i_th(i).class_definition_at_path (a_prop_path)
-						found := True
-					end
-					i := i + 1
-				end
-				check attached bmm_class as att_bmm_class then
-					Result := att_bmm_class
-				end
-			end
-			a_prop_path.go_i_th (a_path_pos)
 		end
 
 	effective_property_type (a_prop_name: STRING): STRING
@@ -404,33 +260,6 @@ feature -- Status Report
 			Class_name_valid: not a_class_name.is_empty
 		do
 			Result := across immediate_descendants as descs_csr some descs_csr.item.name.is_case_insensitive_equal (a_class_name) end
-		end
-
-	has_property_path (a_path: OG_PATH): BOOLEAN
-			-- is `a_path' possible based on this reference model?
-			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
-			-- recursive evaluation)
-		local
-			a_path_pos: INTEGER
-			i: INTEGER
-		do
-			a_path_pos := a_path.items.index
-			if has_property (a_path.item.attr_name) and then attached flat_properties.item (a_path.item.attr_name) as flat_prop then
-				check attached bmm_model.class_definition (flat_prop.bmm_type.effective_type.type_base_name) as class_def then
-					a_path.forth
-					if not a_path.off then
-						Result := class_def.has_property_path (a_path)
-					else
-						Result := True
-					end
-				end
-			else -- look in the descendants
-				from i := 1 until i > immediate_descendants.count or Result loop
-					Result := immediate_descendants.i_th(i).has_property_path(a_path)
-					i := i + 1
-				end
-			end
-			a_path.go_i_th (a_path_pos)
 		end
 
 	valid_candidate_property (a_prop_def: BMM_PROPERTY): BOOLEAN
@@ -593,9 +422,9 @@ feature -- Modification
 		do
 			properties.put (a_prop_def, a_prop_def.name)
 
-			suppliers_cache := Void
-			supplier_closure_cache := Void
-			suppliers_non_primitive_cache := Void
+			suppliers := Void
+			supplier_closure := Void
+			suppliers_non_primitive := Void
 			reset_flat_properties_cache
 		end
 
@@ -607,9 +436,9 @@ feature -- Modification
 		do
 			properties.force (a_prop_def, a_prop_def.name)
 
-			suppliers_cache := Void
-			supplier_closure_cache := Void
-			suppliers_non_primitive_cache := Void
+			suppliers := Void
+			supplier_closure := Void
+			suppliers_non_primitive := Void
 			reset_flat_properties_cache
 		end
 
@@ -619,12 +448,41 @@ feature -- Modification
 			is_populated := True
 		end
 
+	set_suppliers (a_suppliers: ARRAYED_SET [STRING])
+			-- set cache for `suppliers'
+		do
+			suppliers := a_suppliers
+		end
+
+	set_suppliers_non_primitive (a_suppliers: ARRAYED_SET [STRING])
+			-- cache for `suppliers_non_primitive'
+		do
+			suppliers_non_primitive := a_suppliers
+		end
+
+	set_supplier_closure (a_suppliers: ARRAYED_SET [STRING])
+			-- cache for `supplier_closure'
+		do
+			supplier_closure := a_suppliers
+		end
+
 feature -- Factory
 
 	type: BMM_MODEL_TYPE
 			-- type related to this class
 		deferred
 		end
+
+feature {BMM_MODEL} -- Implementation
+
+	suppliers: detachable ARRAYED_SET [STRING]
+			-- cache for `suppliers'
+
+	suppliers_non_primitive: detachable ARRAYED_SET [STRING]
+			-- cache for `suppliers_non_primitive'
+
+	supplier_closure: detachable ARRAYED_SET [STRING]
+			-- cache for `supplier_closure'
 
 feature {BMM_CLASS} -- Implementation
 
@@ -635,9 +493,9 @@ feature {BMM_CLASS} -- Implementation
 			if not immediate_descendants.has (a_class) then
 				immediate_descendants.extend (a_class)
 				all_descendants_cache := Void
-				suppliers_cache := Void
-				supplier_closure_cache := Void
-				suppliers_non_primitive_cache := Void
+				suppliers := Void
+				supplier_closure := Void
+				suppliers_non_primitive := Void
 			end
 		end
 
@@ -646,14 +504,6 @@ feature {BMM_CLASS} -- Implementation
 	flat_properties_cache: detachable STRING_TABLE [BMM_PROPERTY]
 			-- reference list of all attributes due to inheritance flattening of this type
 
-	suppliers_cache: detachable ARRAYED_SET [STRING]
-			-- cache for `suppliers'
-
-	suppliers_non_primitive_cache: detachable ARRAYED_SET [STRING]
-			-- cache for `suppliers_non_primitive'
-
-	supplier_closure_cache: detachable ARRAYED_SET [STRING]
-			-- cache for `supplier_closure'
 
 	all_ancestor_types_cache: detachable ARRAYED_SET [STRING]
 			-- cache for `all_ancestor_types'
@@ -720,13 +570,6 @@ feature {NONE} -- Implementation
 
 	supplier_closure_stack: ARRAYED_STACK [STRING]
 			-- list of classes on this tree branch, to prevent cycling
-		attribute
-			create Result.make (0)
-			Result.compare_objects
-		end
-
-	closure_types_done: ARRAYED_SET [STRING]
-			-- list of types for which supplier_closure has already been called, used to avoid doing rework
 		attribute
 			create Result.make (0)
 			Result.compare_objects

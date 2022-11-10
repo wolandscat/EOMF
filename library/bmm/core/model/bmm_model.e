@@ -134,12 +134,12 @@ feature -- Access
 			create Result.make (any_class_definition)
 		end
 
-	class_definition (a_class_name: STRING): BMM_CLASS
+	class_definition (a_type_name: STRING): BMM_CLASS
 			-- retrieve the class definition corresponding to `a_type_name' (which may contain a generic part)
 		require
-			Type_name_valid: has_class_definition (a_class_name)
+			Type_name_valid: has_class_definition (a_type_name)
 		do
-			check attached class_definitions.item (type_name_to_class_key (a_class_name)) as class_def then
+			check attached class_definitions.item (type_name_to_class_key (a_type_name)) as class_def then
 				Result := class_def
 			end
 		end
@@ -191,7 +191,7 @@ feature -- Access
 			Type_name_valid: has_class_definition (a_type_name)
 			Property_valid: has_property_path (a_type_name, a_prop_path)
 		do
-			check attached property_definition_at_path (a_type_name, a_prop_path) as prop_def then
+			check attached property_at_path (a_type_name, a_prop_path) as prop_def then
 				Result := prop_def.object_multiplicity
 			end
 		end
@@ -206,7 +206,7 @@ feature -- Access
 			Result := class_definition (type_name_to_class_key (a_type_name)).effective_property_type (a_prop_name)
 		end
 
-	property_definition_at_path (a_type_name, a_prop_path: STRING): BMM_PROPERTY
+	property_at_path (a_type_name, a_prop_path: STRING): BMM_PROPERTY
 			-- retrieve the property definition for `a_prop_path' in flattened class corresponding to `a_type_name'
 		require
 			Type_name_valid: has_class_definition (a_type_name)
@@ -216,10 +216,10 @@ feature -- Access
 		do
 			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
-			Result := class_definition (type_name_to_class_key (a_type_name)).property_definition_at_path (an_og_path)
+			Result := do_property_at_path (class_definition (type_name_to_class_key (a_type_name)), an_og_path)
 		end
 
-	class_definition_at_path (a_type_name, a_prop_path: STRING): BMM_CLASS
+	class_at_path (a_type_name, a_prop_path: STRING): BMM_CLASS
 			-- retrieve the class definition for the class that owns the terminal attribute in `a_prop_path'
 			-- in flattened class corresponding to `a_type_name'
 		require
@@ -230,7 +230,7 @@ feature -- Access
 		do
 			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
-			Result := class_definition (type_name_to_class_key (a_type_name)).class_definition_at_path (an_og_path)
+			Result := do_class_at_path (class_definition (type_name_to_class_key (a_type_name)), an_og_path)
 		end
 
 	type_substitutions (a_type: BMM_TYPE): ARRAYED_SET [STRING]
@@ -245,6 +245,100 @@ feature -- Access
 			else
 				check attached {BMM_MODEL_TYPE} a_type as entity_type then
 					Result := entity_type_substitutions (entity_type)
+				end
+			end
+		end
+
+	suppliers (a_type_name: STRING): ARRAYED_SET [STRING]
+			-- list of names of immediate supplier classes, including concrete generic parameters,
+			-- concrete descendants of abstract statically defined types, and inherited suppliers.
+			-- (where generics are unconstrained, no class name is added, since logically it would be
+			-- 'ANY' and this can always be assumed anyway)
+			-- This list includes primitive types
+		require
+			Type_name_valid: has_class_definition (a_type_name)
+		local
+			bmm_class: BMM_CLASS
+			ftl: ARRAYED_LIST [STRING]
+		do
+			bmm_class := class_definition (type_name_to_class_key (a_type_name))
+			if attached bmm_class.suppliers as sc then
+				Result := sc
+			else
+				create Result.make(0)
+				Result.compare_objects
+
+				-- get the types of all the properties (including inherited)
+				across bmm_class.flat_properties as props_csr loop
+					-- get the statically defined type(s) of the property (could be >1 due to generics)
+					ftl := props_csr.item.bmm_type.flattened_type_list
+					Result.merge (ftl)
+					-- now get the descendant types, since these could be bound at runtime
+					across ftl as gen_types_csr loop
+						across class_definition (gen_types_csr.item).immediate_descendants as imm_descs_csr loop
+							Result.extend (imm_descs_csr.item.name)
+						end
+					end
+				end
+
+				if attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class then
+					-- get the types defined in formal generics
+					ftl := bmm_gen_class.type.flattened_type_list
+					ftl.go_i_th (1)
+					ftl.remove
+					Result.merge (ftl)
+				end
+
+				bmm_class.set_suppliers (Result)
+			end
+		end
+
+	suppliers_non_primitive (a_type_name: STRING): ARRAYED_SET [STRING]
+			-- same as `suppliers' minus primitive types, as defined in input schema
+		require
+			Type_name_valid: has_class_definition (a_type_name)
+		local
+			bmm_class: BMM_CLASS
+		do
+			bmm_class := class_definition (type_name_to_class_key (a_type_name))
+			if attached bmm_class.suppliers_non_primitive as snp then
+				Result := snp
+			else
+				create Result.make (0)
+				Result.compare_objects
+				Result.merge (suppliers (a_type_name))
+				Result.subtract (primitive_types)
+				bmm_class.set_suppliers_non_primitive (Result)
+			end
+		end
+
+	supplier_closure (a_type_name: STRING): ARRAYED_SET [STRING]
+			-- list of names of all classes in full supplier closure, including concrete generic parameters;
+			-- (where generics are unconstrained, no class name is added, since logically it would be
+			-- 'ANY' and this can always be assumed anyway)
+			-- This list includes primitive types.
+		require
+			Type_name_valid: has_class_definition (a_type_name)
+		local
+			bmm_class: BMM_CLASS
+			imm_suppliers: ARRAYED_SET [STRING]
+		do
+			bmm_class := class_definition (type_name_to_class_key (a_type_name))
+			if attached bmm_class.supplier_closure as scc then
+				Result := scc
+			else
+				closure_types_done.wipe_out
+				closure_types_done.extend (bmm_class.name)
+				create Result.make(0)
+				bmm_class.set_supplier_closure (Result)
+				Result.compare_objects
+				imm_suppliers := suppliers (a_type_name)
+				Result.merge (imm_suppliers)
+				across imm_suppliers as suppliers_csr loop
+					if not closure_types_done.has (suppliers_csr.item) then
+						Result.merge (supplier_closure (suppliers_csr.item))
+						closure_types_done.extend (suppliers_csr.item)
+					end
 				end
 			end
 		end
@@ -318,7 +412,7 @@ feature -- Status Report
 			Sub_class_valid: has_class_definition (a_class_name)
 			Parent_class_valid: has_class_definition (a_parent_class_name)
 		do
-			Result := class_definition (type_name_to_class_key (a_class_name)).all_ancestor_types.has (a_parent_class_name.as_upper)
+			Result := class_definition (type_name_to_class_key (a_class_name)).all_ancestor_classes.has (a_parent_class_name.as_upper)
 		end
 
 	has_property_path (a_type_name, a_prop_path: STRING): BOOLEAN
@@ -330,7 +424,7 @@ feature -- Status Report
 			create an_og_path.make_pure_from_string (a_prop_path)
 			an_og_path.start
 			if has_class_definition (type_name_to_class_key (a_type_name)) then
-				Result := class_definition (type_name_to_class_key (a_type_name)).has_property_path (an_og_path)
+				Result := do_has_property_path (class_definition (type_name_to_class_key (a_type_name)), an_og_path)
 			end
 		end
 
@@ -760,6 +854,110 @@ feature {NONE} -- Implementation
 					end
 				end
 			end
+		end
+
+	do_has_property_path (a_bmm_class: BMM_CLASS; a_path: OG_PATH): BOOLEAN
+			-- is `a_path' possible based on this reference model?
+			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
+			-- recursive evaluation)
+		local
+			a_path_pos: INTEGER
+			i: INTEGER
+		do
+			a_path_pos := a_path.items.index
+			if a_bmm_class.has_property (a_path.item.attr_name) and then attached a_bmm_class.flat_properties.item (a_path.item.attr_name) as flat_prop then
+				check attached class_definition (flat_prop.bmm_type.effective_type.type_base_name) as prop_class_def then
+					a_path.forth
+					if not a_path.off then
+						Result := do_has_property_path (prop_class_def, a_path)
+					else
+						Result := True
+					end
+				end
+			else -- look in the descendants
+				from i := 1 until i > a_bmm_class.immediate_descendants.count or Result loop
+					Result := do_has_property_path (a_bmm_class.immediate_descendants.i_th(i), a_path)
+					i := i + 1
+				end
+			end
+			a_path.go_i_th (a_path_pos)
+		end
+
+	do_property_at_path (a_bmm_class: BMM_CLASS; a_prop_path: OG_PATH): BMM_PROPERTY
+			-- retrieve the property definition for `a_prop_path' in flattened class
+			-- note that the internal cursor of the path is used to know how much to
+			-- read - from cursor to end (this allows recursive evaluation)
+		local
+			a_path_pos: INTEGER
+			i: INTEGER
+			found: BOOLEAN
+			bmm_prop: detachable BMM_PROPERTY
+		do
+			a_path_pos := a_prop_path.items.index
+			if a_bmm_class.has_property (a_prop_path.item.attr_name) then
+				check attached a_bmm_class.flat_properties.item (a_prop_path.item.attr_name) as fp then
+					Result := fp
+				end
+				a_prop_path.forth
+				if not a_prop_path.off and then attached class_definition (Result.bmm_type.effective_type.type_base_name) as prop_class_def then
+					Result := do_property_at_path (prop_class_def, a_prop_path)
+				end
+			else -- look in the descendants
+				from i := 1 until i > a_bmm_class.immediate_descendants.count or found loop
+					if do_has_property_path (a_bmm_class.immediate_descendants.i_th(i), a_prop_path) then
+						bmm_prop := do_property_at_path (a_bmm_class.immediate_descendants.i_th(i), a_prop_path)
+						found := True
+					end
+					i := i + 1
+				end
+				check attached bmm_prop as bp then
+					Result := bp
+				end
+			end
+			a_prop_path.go_i_th (a_path_pos)
+		end
+
+	do_class_at_path (a_bmm_class: BMM_CLASS; a_prop_path: OG_PATH): BMM_CLASS
+			-- retrieve the class definition for the class containing the terminal property in `a_prop_path' in flattened class
+			-- note that the internal cursor of the path is used to know how much to read - from cursor to end (this allows
+			-- recursive evaluation)
+		local
+			a_path_pos: INTEGER
+			i: INTEGER
+			found: BOOLEAN
+			bmm_prop: detachable BMM_PROPERTY
+			bmm_class: detachable BMM_CLASS
+		do
+			a_path_pos := a_prop_path.items.index
+			if a_bmm_class.has_property (a_prop_path.item.attr_name) then
+				check attached a_bmm_class.flat_properties.item (a_prop_path.item.attr_name) as fp then
+					bmm_prop := fp
+					Result := a_bmm_class
+				end
+				a_prop_path.forth
+				if not a_prop_path.off and then attached class_definition (bmm_prop.bmm_type.effective_type.type_name) as prop_class_def then
+					Result := do_class_at_path (prop_class_def, a_prop_path)
+				end
+			else -- look in the descendants
+				from i := 1 until i > a_bmm_class.immediate_descendants.count or found loop
+					if do_has_property_path (a_bmm_class.immediate_descendants.i_th(i), a_prop_path) then
+						bmm_class := do_class_at_path (a_bmm_class.immediate_descendants.i_th(i), a_prop_path)
+						found := True
+					end
+					i := i + 1
+				end
+				check attached bmm_class as att_bmm_class then
+					Result := att_bmm_class
+				end
+			end
+			a_prop_path.go_i_th (a_path_pos)
+		end
+
+	closure_types_done: ARRAYED_SET [STRING]
+			-- list of types for which supplier_closure has already been called, used to avoid doing rework
+		attribute
+			create Result.make (0)
+			Result.compare_objects
 		end
 
 end

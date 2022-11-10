@@ -60,12 +60,12 @@ feature {NONE} -- Implementation
 	populate_bmm_class_enumeration (a_bmm_enum_class: like bmm_class)
 			-- add remaining model elements to `bmm_class'
 		local
-			bmm_item_values: ARRAYED_LIST[BMM_LITERAL_VALUE]
+			bmm_item_values: ARRAYED_LIST[BMM_PRIMITIVE_VALUE]
 		do
 			if attached item_values as iv then
 				create bmm_item_values.make (0)
 				across iv as vals_csr loop
-					bmm_item_values.extend (create {BMM_LITERAL_VALUE}.make_value(vals_csr.item))
+					bmm_item_values.extend (create {BMM_PRIMITIVE_VALUE}.make_value(vals_csr.item))
 				end
 				a_bmm_enum_class.set_item_values (bmm_item_values)
 			end

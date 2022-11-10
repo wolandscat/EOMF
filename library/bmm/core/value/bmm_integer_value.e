@@ -10,17 +10,17 @@ note
 class BMM_INTEGER_VALUE
 
 inherit
-	BMM_LITERAL_VALUE
+	BMM_PRIMITIVE_VALUE
 		redefine
-			make, bmm_type, value, value_literal
+			make, value, value_literal
 		end
 
 create
-	make_value
+	make, make_value
 
 feature -- Initialisation
 
-	make (a_value_literal: like value_literal; a_bmm_type: like bmm_type)
+	make (a_value_literal: like value_literal; a_bmm_type: BMM_SIMPLE_TYPE)
 			-- make with a literal value and a type representing the relevant type from the model
 		do
 			precursor (a_value_literal, a_bmm_type)
@@ -30,11 +30,6 @@ feature -- Initialisation
 		end
 
 feature -- Access
-
-	bmm_type: BMM_SIMPLE_TYPE
-		attribute
-			Result := Integer_type
-		end
 
 	value_literal: STRING
 		attribute

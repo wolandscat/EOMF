@@ -10,8 +10,7 @@ note
 deferred class BMM_VARIABLE
 
 inherit
-	BMM_INSTANTIABLE
-	BMM_CLASS_SCOPED
+	BMM_FORMAL_ELEMENT
 --		redefine
 --			scope
 --		end
@@ -21,6 +20,11 @@ feature -- Access
 --	scope: BMM_ROUTINE
 			-- scope of a variable is a routine
 
-end
+	signature: BMM_SIGNATURE
+			-- Signature of this feature.
+		do
+			create Result
+		end
 
+end
 

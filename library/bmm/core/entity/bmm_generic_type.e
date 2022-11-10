@@ -102,7 +102,7 @@ feature -- Status Report
 		do
 			Result := defining_class.is_abstract or else
 				across generic_parameters as gen_parm_csr some
-					not gen_parm_csr.item.is_abstract
+					gen_parm_csr.item.is_abstract
 				end
 		end
 

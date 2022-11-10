@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-13-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-13-0 http://www.eiffel.com/developers/xml/configuration-1-13-0.xsd" name="bmm_test" uuid="45BBD57C-1699-4EE7-3BCF-337A024EA782">
+<system xmlns="http://www.eiffel.com/developers/xml/configuration-1-20-0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.eiffel.com/developers/xml/configuration-1-20-0 http://www.eiffel.com/developers/xml/configuration-1-20-0.xsd" name="bmm_test" uuid="45BBD57C-1699-4EE7-3BCF-337A024EA782">
 	<target name="bmm_test">
 		<root class="APPLICATION" feature="make"/>
 		<file_rule>
 			<exclude>/\.git$</exclude>
 			<exclude>/\.svn$</exclude>
 		</file_rule>
-		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" void_safety="initialization" syntax="standard">
+		<option trace="false" profile="false" debug="false" warning="true" full_class_checking="true" is_attached_by_default="true" is_obsolete_routine_type="true" syntax="standard" manifest_array_type="mismatch_warning">
 			<debug name="__unnamed_debug__" enabled="false"/>
 			<assertions precondition="true" postcondition="true" check="true" invariant="true" loop="true" supplier_precondition="true"/>
 			<warning name="export_class_missing" enabled="true"/>
@@ -18,14 +18,24 @@
 		<setting name="array_optimization" value="false"/>
 		<setting name="check_vape" value="true"/>
 		<setting name="console_application" value="false"/>
-		<setting name="dead_code_removal" value="true"/>
 		<setting name="dynamic_runtime" value="false"/>
 		<setting name="exception_trace" value="true"/>
 		<setting name="inlining" value="false"/>
 		<setting name="inlining_size" value="4"/>
 		<setting name="line_generation" value="false"/>
-		<setting name="concurrency" value="thread"/>
-
+		<setting name="dead_code_removal" value="feature"/>
+		<capability>
+			<concurrency support="thread" use="thread"/>
+			<void_safety support="initialization" use="initialization"/>
+		</capability>
+		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
+		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
+		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
+		<library name="eomf_file_system" location="$EOMF\library\file_system\eomf_file_system.ecf"/>
+		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
+		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
+		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
+		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
 		<library name="gobo_kernel" location="$ISE_LIBRARY\library\gobo\gobo_kernel.ecf"/>
 		<library name="gobo_lexical" location="$ISE_LIBRARY\library\gobo\gobo_lexical.ecf"/>
 		<library name="gobo_lexical_skl" location="$ISE_LIBRARY\library\gobo\gobo_lexical_skl.ecf"/>
@@ -40,28 +50,16 @@
 		<library name="ise_base" location="$ISE_LIBRARY\library\base\base.ecf"/>
 		<library name="ise_encoding" location="$ISE_LIBRARY\library\encoding\encoding.ecf"/>
 		<library name="ise_i18n" location="$ISE_LIBRARY\library\i18n\i18n.ecf"/>
-		<library name="ise_testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
 		<library name="ise_process" location="$ISE_LIBRARY\library\process\process.ecf"/>
+		<library name="ise_testing" location="$ISE_LIBRARY\library\testing\testing.ecf"/>
 		<library name="ise_time" location="$ISE_LIBRARY\library\time\time.ecf">
 			<renaming old_name="INTERVAL" new_name="TIME_INTERVAL"/>
 		</library>
 		<library name="ise_xml_parser" location="$ISE_LIBRARY\library\text\parser\xml\parser\xml_parser.ecf"/>
 		<library name="ise_xml_tree" location="$ISE_LIBRARY\library\text\parser\xml\tree\xml_tree.ecf"/>
-
 		<library name="iso8601" location="$EIFFEL_HUB\iso8601\src\iso8601.ecf"/>
-		<library name="error_message" location="$EIFFEL_HUB\error_message\src\error_message.ecf"/>
-		<library name="eomf_messages" location="$EOMF\library\messages\eomf_messages.ecf"/>
-
-		<library name="eomf_app_support" location="$EOMF\library\app_support\eomf_app_support.ecf"/>
-		<library name="eomf_data_tree" location="$EOMF\library\data_tree\eomf_data_tree.ecf"/>
-		<library name="eomf_odin" location="$EOMF\library\odin\eomf_odin.ecf"/>
-		<library name="eomf_object_graph" location="$EOMF\library\object_graph\eomf_object_graph.ecf"/>
-		<library name="eomf_file_system" location="$EOMF\library\file_system\eomf_file_system.ecf"/>
-		<library name="eomf_basic" location="$EOMF\library\basic\eomf_basic.ecf"/>
-
+		<cluster name="app" location=".\"/>
 		<cluster name="eomf_bmm" location="$EOMF\library\bmm\" recursive="true"/>
-
-		<cluster name="app" location="."/>
 		<override name="vendor_fixes" location="$EOMF\library\vendor-fixes\eiffel_software\time\" recursive="true"/>
 	</target>
 </system>

@@ -11,15 +11,11 @@ class BMM_FUNCTION
 
 inherit
 	BMM_ROUTINE
-	BMM_TYPED_FEATURE
 
 feature -- Access
 
-	operator_def: BMM_OPERATOR
+	operator_definition: BMM_OPERATOR
 			-- Equivalent operator for this function, if any
-
-invariant
-	signature.result_type /= Void
 
 end
 

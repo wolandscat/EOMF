@@ -1,16 +1,19 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "A formal declared element, referenced via a name within the scope of the enclosing entity, and having a signature."
+	description: "Instance value. In an abstract syntax, represented by a literal value."
 	keywords:    "model, UML, BMM"
 	author:      "Thomas Beale <thomas.beale@openehr.org>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
-	copyright:   "Copyright (c) 2019 The openEHR Foundation <http://www.openEHR.org>"
+	copyright:   "Copyright (c) 2021 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_CLASS_SCOPED
+class BMM_INTERVAL_VALUE
 
 inherit
-	BMM_DECLARATION
+	BMM_LITERAL_VALUE[BMM_GENERIC_TYPE]
+
+create
+	make, make_value
 
 end
 

@@ -29,7 +29,7 @@ feature {NONE} -- Events
 		do
 			bmm_env_setup
 			if not has_errors then
-				bmm_model_cache.put (bmm_model ("openehr-task_planning"))
+				bmm_model_cache.put (bmm_model ("openEHR_task_planning"))
 			end
 		end
 
@@ -57,14 +57,14 @@ feature -- Test routines
 		note
 			testing:  "paths", "bmm", "covers/{SCHEMA_ACCESS}.property_definition_at_path"
 		do
-			assert ("CARE_ENTRY found property at /protocol", test_bmm_model.property_definition_at_path ("CARE_ENTRY", "/protocol").name.is_equal("protocol"))
-			assert ("CARE_ENTRY found property at /data/events/data", test_bmm_model.property_definition_at_path ("CARE_ENTRY", "/data/events/data").name.is_equal("data"))
-			assert ("OBSERVATION found property at /data/events/data", test_bmm_model.property_definition_at_path ("OBSERVATION", "/data/events/data").name.is_equal("data"))
-			assert ("OBSERVATION found property at /data/events/data/items", test_bmm_model.property_definition_at_path ("OBSERVATION", "/data/events/data/items").name.is_equal("items"))
-			assert ("OBSERVATION found property at /data/events[at0003]/math_function", test_bmm_model.property_definition_at_path ("OBSERVATION", "/data/events[at0003]/math_function").name.is_equal("math_function"))
-			assert ("OBSERVATION found property at /protocol", test_bmm_model.property_definition_at_path ("OBSERVATION", "/protocol").name.is_equal("protocol"))
-			assert ("OBSERVATION found property at /data/events[at0002]/data/items[at0.76]/items", test_bmm_model.property_definition_at_path ("OBSERVATION", "/data/events[at0002]/data/items[at0.76]/items").name.is_equal("items"))
-			assert ("CLUSTER found proerty at /items/items/items", test_bmm_model.property_definition_at_path ("CLUSTER", "/items/items/items").name.is_equal("items"))
+			assert ("CARE_ENTRY found property at /protocol", test_bmm_model.property_at_path ("CARE_ENTRY", "/protocol").name.is_equal("protocol"))
+			assert ("CARE_ENTRY found property at /data/events/data", test_bmm_model.property_at_path ("CARE_ENTRY", "/data/events/data").name.is_equal("data"))
+			assert ("OBSERVATION found property at /data/events/data", test_bmm_model.property_at_path ("OBSERVATION", "/data/events/data").name.is_equal("data"))
+			assert ("OBSERVATION found property at /data/events/data/items", test_bmm_model.property_at_path ("OBSERVATION", "/data/events/data/items").name.is_equal("items"))
+			assert ("OBSERVATION found property at /data/events[at0003]/math_function", test_bmm_model.property_at_path ("OBSERVATION", "/data/events[at0003]/math_function").name.is_equal("math_function"))
+			assert ("OBSERVATION found property at /protocol", test_bmm_model.property_at_path ("OBSERVATION", "/protocol").name.is_equal("protocol"))
+			assert ("OBSERVATION found property at /data/events[at0002]/data/items[at0.76]/items", test_bmm_model.property_at_path ("OBSERVATION", "/data/events[at0002]/data/items[at0.76]/items").name.is_equal("items"))
+			assert ("CLUSTER found property at /items/items/items", test_bmm_model.property_at_path ("CLUSTER", "/items/items/items").name.is_equal("items"))
 		end
 
 	test_is_descendant_of
@@ -88,32 +88,33 @@ feature -- Test routines
 			assert ("EVENT <ITEM_STRUCTURE> conforms to LOCATABLE", test_bmm_model.type_conforms_to ("EVENT <ITEM_STRUCTURE>", "LOCATABLE"))
 			assert ("List <ITEM_TREE> conforms to List <ITEM_STRUCTURE>", test_bmm_model.type_conforms_to ("List <ITEM_TREE>", "List <ITEM_STRUCTURE>"))
 			assert ("List <ITEM_STRUCTURE> conforms to List <ITEM_TREE>", not test_bmm_model.type_conforms_to ("List <ITEM_STRUCTURE>", "List <ITEM_TREE>"))
-			assert ("List<Reference<ServiceRequest>> conforms to List<IReference<Any>>", not test_bmm_model.type_conforms_to ("List<Reference<ServiceRequest>>", "List<IReference<Any>>"))
+			-- assert ("List<Reference<ServiceRequest>> conforms to List<IReference<Any>>", not test_bmm_model.type_conforms_to ("List<Reference<ServiceRequest>>", "List<IReference<Any>>"))
 		end
 
 	test_immediate_suppliers
 			-- New test routine
 		note
-			testing:  "immediate_suppliers", "bmm", "covers/{BMM_CLASS_DEFINITION}.immediate_suppliers"
+			testing:  "immediate_suppliers", "bmm", "covers/{BMM_MODEL}.suppliers"
 		local
 			supps: ARRAYED_SET [STRING]
 		do
-			supps := test_bmm_model.class_definition ("COMPOSITION").suppliers
+			supps := test_bmm_model.suppliers ("COMPOSITION")
 			assert ("COMPOSITION immediate suppliers includes CODE_PHRASE", supps.has ("CODE_PHRASE"))
 			assert ("COMPOSITION immediate suppliers includes DV_CODED_TEXT", supps.has ("DV_CODED_TEXT"))
 			assert ("COMPOSITION immediate suppliers includes PARTY_PROXY", supps.has ("PARTY_PROXY"))
 			assert ("COMPOSITION immediate suppliers includes EVENT_CONTEXT", supps.has ("EVENT_CONTEXT"))
 			assert ("COMPOSITION immediate suppliers includes CONTENT_ITEM", supps.has ("CONTENT_ITEM"))
+			assert ("COMPOSITION immediate suppliers not includes OBSERVATION", not supps.has ("OBSERVATION"))
 		end
 
 	test_supplier_closure
 			-- New test routine
 		note
-			testing:  "all_suppliers", "bmm", "covers/{BMM_CLASS_DEFINITION}.supplier_closure"
+			testing:  "supplier_closure", "bmm", "covers/{BMM_MODEL}.supplier_closure"
 		local
 			supps: ARRAYED_SET [STRING]
 		do
-			supps := test_bmm_model.class_definition ("COMPOSITION").supplier_closure
+			supps := test_bmm_model.supplier_closure ("COMPOSITION")
 			assert ("COMPOSITION supplier closure includes CODE_PHRASE", supps.has ("CODE_PHRASE"))
 			assert ("COMPOSITION supplier closure includes DV_CODED_TEXT", supps.has ("DV_CODED_TEXT"))
 			assert ("COMPOSITION supplier closure includes PARTY_PROXY", supps.has ("PARTY_PROXY"))

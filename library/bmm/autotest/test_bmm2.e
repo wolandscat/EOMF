@@ -29,7 +29,7 @@ feature {NONE} -- Events
 		do
 			bmm_env_setup
 			if not has_errors then
-				bmm_model_cache.put (bmm_model ("fhir_dstu4_refactored"))
+				bmm_model_cache.put (bmm_model ("hl7_fhir_0.5.0"))
 			end
 		end
 

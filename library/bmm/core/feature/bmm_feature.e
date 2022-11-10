@@ -10,17 +10,12 @@ note
 deferred class BMM_FEATURE
 
 inherit
-	BMM_DECLARATION
+	BMM_FORMAL_ELEMENT
 
 feature -- Access
 
-	scope: BMM_DECLARATION
+--	scope: BMM_CLASS
 			-- scope of this feature.
-
-	signature: BMM_SIGNATURE
-			-- Signature of this feature.
-		deferred
-		end
 
 end
 

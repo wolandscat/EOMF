@@ -7,7 +7,7 @@ note
 	copyright:   "Copyright (c) 2012- The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-deferred class BMM_DECLARATION
+deferred class BMM_MODEL_ELEMENT
 
 inherit
 	BMM_DEFINITIONS
@@ -24,7 +24,7 @@ feature -- Access
 	documentation: detachable STRING
 			-- Optional documentation of this element.
 
---	scope: BMM_DECLARATION
+--	scope: BMM_MODEL_ELEMENT
 --			-- scope in which this declaration is valid
 --		deferred
 --		end

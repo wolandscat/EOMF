@@ -40,7 +40,7 @@ feature -- Access
 			Result.compare_objects
 		end
 
-	item_values:  ARRAYED_LIST [BMM_LITERAL_VALUE]
+	item_values:  ARRAYED_LIST [BMM_PRIMITIVE_VALUE]
 			-- OPTIONAL list of item values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)

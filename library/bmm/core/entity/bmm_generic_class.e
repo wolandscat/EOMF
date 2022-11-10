@@ -13,9 +13,6 @@ class BMM_GENERIC_CLASS
 
 inherit
 	BMM_CLASS
-		redefine
-			suppliers
-		end
 
 create
 	make
@@ -36,21 +33,6 @@ feature -- Access
 			-- is maintained for iteration.
 		attribute
 			create Result.make_caseless (0)
-		end
-
-	suppliers: ARRAYED_SET [STRING]
-			-- <precursor>
-			-- Add in suppliers from generic parameters
-		local
-			ftl: ARRAYED_LIST [STRING]
-		do
-			Result := precursor
-
-			-- get the types defined in formal generics
-			ftl := type.flattened_type_list
-			ftl.go_i_th (1)
-			ftl.remove
-			Result.merge (ftl)
 		end
 
 	generic_parameter_conformance_types: ARRAYED_LIST [STRING]
@@ -146,9 +128,9 @@ feature -- Modification
 			end
 
 			type_cache := Void
-			suppliers_cache := Void
-			supplier_closure_cache := Void
-			suppliers_non_primitive_cache := Void
+			suppliers := Void
+			supplier_closure := Void
+			suppliers_non_primitive := Void
 		ensure
 			generic_parameters.item (a_gen_parm_def.name.as_upper) = a_gen_parm_def
 		end

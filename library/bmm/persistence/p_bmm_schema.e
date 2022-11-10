@@ -853,6 +853,9 @@ feature {NONE} -- Implementation
 		attribute
 		end
 
+	p_bmm_indexed_container_property: detachable P_BMM_INDEXED_CONTAINER_PROPERTY
+			-- ref to force class into compilation; may be deleted if
+			-- this class referenced elsewhere.
 end
 
 

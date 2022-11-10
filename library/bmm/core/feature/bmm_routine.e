@@ -11,9 +11,9 @@ deferred class BMM_ROUTINE
 
 inherit
 	BMM_FEATURE
-		redefine
-			scope
-		end
+--		redefine
+--			scope
+--		end
 
 feature -- Access
 

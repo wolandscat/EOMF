@@ -11,7 +11,6 @@ deferred class BMM_PROPERTY
 
 inherit
 	BMM_INSTANTIABLE
-	BMM_CLASS_SCOPED
 
 feature {NONE} -- Initialisation
 
@@ -89,16 +88,19 @@ feature -- Access
 			Result := existence.deep_twin
 		end
 
-	signature: STRING
+	signature: BMM_SIGNATURE
+			-- Signature of this feature.
+		do
+			create Result.make (Void, bmm_type)
+		end
+
+	signature_string: STRING
 			-- Formal signature of this element, in the form 'name: Type'
 		do
 			create Result.make_from_string (name)
 			Result.append_character ({BMM_DEFINITIONS}.Type_delimiter)
 			Result.append (bmm_type.type_signature)
 		end
-
---	scope: BMM_CLASS
-			-- class in which this property is defined
 
 feature -- Status Report
 

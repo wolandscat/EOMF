@@ -7,20 +7,18 @@ note
 	copyright:   "Copyright (c) 2019 The openEHR Foundation <http://www.openEHR.org>"
 	license:     "Apache 2.0 License <http://www.apache.org/licenses/LICENSE-2.0.html>"
 
-class BMM_LITERAL_VALUE
+deferred class BMM_LITERAL_VALUE[T -> BMM_TYPE]
 
 inherit
-	BMM_TYPED
-		redefine
-			bmm_type
+	BMM_BUILTINS
+		export
+			{NONE} all;
+			{ANY} deep_twin, is_deep_equal, standard_is_equal
 		end
-
-create
-	make, make_value
 
 feature -- Initialisation
 
-	make (a_value_literal: like value_literal; a_bmm_type: like bmm_type)
+	make (a_value_literal: like value_literal; a_bmm_type: T)
 			-- make with a literal value and a type representing the relevant type from the model
 		do
 			value_literal := a_value_literal
@@ -37,10 +35,12 @@ feature -- Initialisation
 
 feature -- Access
 
-	bmm_type: BMM_MODEL_TYPE
+	bmm_type: T
 			-- Declared or inferred static type of the entity.
 		attribute
-			Result := Any_type
+			check attached {T} Any_type as t_any then
+				Result := t_any
+			end
 		end
 
 	value_literal: STRING
@@ -52,6 +52,15 @@ feature -- Access
 		attribute
 			create {STRING} Result.make_from_string ("default")
 		end
+
+feature -- Modification
+
+	set_bmm_type (a_bmm_type: T)
+			-- set `bmm_type`
+		do
+			bmm_type := a_bmm_type
+		end
+
 
 end
 

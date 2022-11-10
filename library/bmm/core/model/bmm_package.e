@@ -17,7 +17,7 @@ class BMM_PACKAGE
 inherit
 	BMM_PACKAGE_CONTAINER
 
-	BMM_DECLARATION
+	BMM_MODEL_ELEMENT
 
 create
 	make, make_from_path, make_from_path_array

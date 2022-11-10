@@ -38,7 +38,7 @@ feature -- Access
 			-- the target type
 		do
 			if not attached type_def and attached type as att_type then
-				if valid_generic_type_name (att_type) then
+				if formal_generic_parameter_name (att_type) then
 					create {P_BMM_OPEN_TYPE} Result.make_simple (att_type)
 				else
 					create {P_BMM_SIMPLE_TYPE} Result.make_simple (att_type)
