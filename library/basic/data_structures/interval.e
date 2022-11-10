@@ -114,7 +114,6 @@ feature -- Output
 invariant
 	lower_attached_if_bounded: not lower_unbounded implies attached lower
 	upper_attached_if_bounded: not upper_unbounded implies attached upper
-	limits_consistent: attached lower as l and then attached upper as u implies l <= u
 
 end
 

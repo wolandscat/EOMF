@@ -188,35 +188,69 @@ feature -- Status report
 			Result := lower_unbounded and upper_unbounded
 		end
 
+feature -- Modification
+
+	set_upper_unbounded
+			-- reset upper to umnbounded
+		do
+			upper_unbounded := True
+		ensure
+			upper_unbounded
+		end
+
+	set_lower_unbounded
+			-- reset lower to umnbounded
+		do
+			lower_unbounded := True
+		ensure
+			lower_unbounded
+		end
+
 feature -- Comparison
 
 	has (v: G): BOOLEAN
 			-- Does current interval have `v' between its bounds?
 		do
-			Result := ((not lower_unbounded and attached lower as l) implies (lower_included and v >= l or else v > l)) and
-				((not upper_unbounded and attached upper as u) implies ((upper_included and v <= u or else v < u)))
+			if unbounded then
+				Result := True
+			elseif lower_unbounded then
+				Result := attached upper as u and then (upper_included and v <= u or else v < u)
+			elseif upper_unbounded then
+				Result := attached lower as l and then (lower_included and v >= l or else v > l)
+			else
+				Result := (attached upper as u and then (upper_included and v <= u or v < u)) and
+							(attached lower as l and then (lower_included and v >= l or v > l))
+			end
 		end
 
 	intersects (other: INTERVAL [G]): BOOLEAN
 			-- True if there is any overlap between intervals represented by Current and `other'. True if at least one limit
 			-- of other is strictly inside the limits of this interval
 		do
-			Result :=
-				-- either unbounded
-				unbounded or other.unbounded or
-				-- at least one interval with lower unbounded
-				lower_unbounded and (other.lower_unbounded or (attached other.lower as other_l and then has (other_l))) or
-				-- at least one interval with upper unbounded
-				upper_unbounded and (other.upper_unbounded or (attached other.upper as other_u and then has (other_u))) or
-				-- both intervals bounded
-				((other.lower_included and attached other.lower as other_l and then has (other_l)) or
-				 (other.upper_included and attached other.upper as other_u and then has (other_u)) or
-				 (lower_included and attached lower as l and then other.has (l)) or
-				 (upper_included and attached upper as u and then other.has (u)) or
-					-- currently undecidable case due to lack of way of computing 'is_empty' for an interval
-					-- otherwise we would see if |lower..other.upper| was not empty or else |upper..other.lower| is not empty
-					False
-				)
+			-- either unbounded
+			if unbounded or other.unbounded then
+				Result := True
+
+			-- at least one interval with lower unbounded
+			elseif lower_unbounded then
+				 Result := other.lower_unbounded or (attached other.lower as other_l and then has (other_l))
+
+			-- at least one interval with upper unbounded
+			elseif upper_unbounded then
+				Result := other.upper_unbounded or (attached other.upper as other_u and then has (other_u))
+
+			-- both intervals bounded
+			else
+				Result :=
+					((other.lower_included and attached other.lower as other_l and then has (other_l)) or
+					 (other.upper_included and attached other.upper as other_u and then has (other_u)) or
+					 (lower_included and attached lower as l and then other.has (l)) or
+					 (upper_included and attached upper as u and then other.has (u)) or
+						-- currently undecidable case due to lack of way of computing 'is_empty' for an interval
+						-- otherwise we would see if |lower..other.upper| was not empty or else |upper..other.lower| is not empty
+						False
+					)
+			end
 
 		end
 

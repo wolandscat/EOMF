@@ -158,6 +158,12 @@ feature -- Status report
 			Result := lower = 0 and upper_unbounded
 		end
 
+	is_multiple: BOOLEAN
+			-- True if this interval has an upper bound greater than 1
+		do
+			Result := upper_unbounded or upper > 1
+		end
+
 	is_optional: BOOLEAN
 			-- True if this interval expresses optionality, i.e. 0..1
 		do
@@ -192,6 +198,15 @@ feature -- Modification
 		do
 			lower := a_lower
 			lower_unbounded := False
+		end
+
+	set_upper (an_upper: INTEGER)
+			-- reset upper to `upper'
+		require
+			Upper_valid: an_upper >= 0
+		do
+			upper := an_upper
+			upper_unbounded := False
 		end
 
 feature -- Operations
