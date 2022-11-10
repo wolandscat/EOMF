@@ -150,7 +150,7 @@ feature {NONE} -- Table templates
 			-- Template for `yy_nxt'
 		once
 			Result := yy_fixed_array (<<
-			    0,    4,    5,    6,    7,    4,    8,    9,   10,   11,
+			    0,    5,    6,    7,    4,    8,    9,   10,   11,    4,
 			   13,   12,   12,   14,    3,   14,   14,   14,   14,   14,
 			   14,   14,   14,   14, yy_Dummy>>)
 		end
@@ -168,8 +168,8 @@ feature {NONE} -- Table templates
 			-- Template for `yy_base'
 		once
 			Result := yy_fixed_array (<<
-			    0,    0,    0,   13,   14,   10,   14,   14,   14,   14,
-			   14,    0,    9,    0,   14,    8, yy_Dummy>>)
+			    0,    0,    0,   13,   14,   11,   14,   14,   14,   14,
+			   14,    0,   10,    0,   14,    9, yy_Dummy>>)
 		end
 
 	yy_def_template: SPECIAL [INTEGER]
@@ -185,9 +185,12 @@ feature {NONE} -- Table templates
 		local
 			an_array: ARRAY [INTEGER]
 		once
-			create an_array.make_filled (0, 0, 256)
+			create an_array.make_filled (0, 0, 257)
 			yy_ec_template_1 (an_array)
+			an_array.area.fill_with (8, 65, 90)
 			yy_ec_template_2 (an_array)
+			an_array.area.fill_with (4, 97, 122)
+			an_array.area.fill_with (9, 123, 257)
 			Result := yy_fixed_array (an_array)
 		end
 
@@ -195,48 +198,29 @@ feature {NONE} -- Table templates
 			-- Fill chunk #1 of template for `yy_ec'.
 		do
 			yy_array_subcopy (an_array, <<
-			    0,    1,    1,    1,    1,    1,    1,    1,    1,    2,
-			    3,    1,    1,    2,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    2,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    4,    1,    1,    1,    5,    5,
-			    5,    5,    5,    5,    5,    5,    5,    5,    6,    1,
-			    7,    1,    8,    1,    1,    9,    9,    9,    9,    9,
+			    0,    9,    9,    9,    9,    9,    9,    9,    9,    1,
+			    2,    9,    9,    1,    9,    9,    9,    9,    9,    9,
 			    9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
-			    9,    9,    9,    9,    9,    9,    9,    9,    9,    9,
-			    9,    1,    1,    1,    1,    5,    1,    5,    5,    5,
-
-			    5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-			    5,    5,    5,    5,    5,    5,    5,    5,    5,    5,
-			    5,    5,    5,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1, yy_Dummy>>,
-			1, 200, 0)
+			    9,    9,    1,    9,    9,    9,    9,    9,    9,    9,
+			    9,    9,    9,    9,    3,    9,    9,    9,    4,    4,
+			    4,    4,    4,    4,    4,    4,    4,    4,    5,    9,
+			    6,    9,    7,    9,    9, yy_Dummy>>,
+			1, 65, 0)
 		end
 
 	yy_ec_template_2 (an_array: ARRAY [INTEGER])
 			-- Fill chunk #2 of template for `yy_ec'.
 		do
 			yy_array_subcopy (an_array, <<
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1,    1,    1,    1,
-			    1,    1,    1,    1,    1,    1,    1, yy_Dummy>>,
-			1, 57, 200)
+			    9,    9,    9,    9,    4,    9, yy_Dummy>>,
+			1, 6, 91)
 		end
 
 	yy_meta_template: SPECIAL [INTEGER]
 			-- Template for `yy_meta'
 		once
 			Result := yy_fixed_array (<<
-			    0,    1,    1,    1,    1,    2,    1,    1,    1,    2, yy_Dummy>>)
+			    0,    2,    2,    2,    1,    2,    2,    2,    1,    2, yy_Dummy>>)
 		end
 
 	yy_accept_template: SPECIAL [INTEGER]
@@ -259,8 +243,12 @@ feature {NONE} -- Constants
 	yyTemplate_mark: INTEGER = 15
 			-- Mark between normal states and templates
 
-	yyNull_equiv_class: INTEGER = 1
+	yyNull_equiv_class: INTEGER = 9
 			-- Equivalence code for NULL character
+
+	yyMax_symbol_equiv_class: INTEGER = 256
+			-- All symbols greater than this symbol will have
+			-- the same equivalence class as this symbol
 
 	yyReject_used: BOOLEAN = false
 			-- Is `reject' called?
