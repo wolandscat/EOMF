@@ -21,16 +21,6 @@ inherit
 			{NONE} all
 		end
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
-	EVX_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	SHARED_MESSAGE_DB
 		export
 			{NONE} all

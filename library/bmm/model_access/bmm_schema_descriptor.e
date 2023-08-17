@@ -24,11 +24,6 @@ inherit
 			{ANY} valid_bmm_meta_data
 		end
 
-	BMM_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	SHARED_DT_SERIALISERS
 		export
 			{NONE} all;
@@ -62,7 +57,7 @@ feature -- Initialisation
 				end
 				is_bmm_compatible := bmm_version_compatible (bmm_ver)
 				if not is_bmm_compatible then
-					add_error (ec_BMM_VER, <<schema_id, bmm_ver, Bmm_internal_version>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_VER, <<schema_id, bmm_ver, Bmm_internal_version>>)
 				end
 				schema_path := md_schema_path
 				create_schema_file_accessor (schema_path)
@@ -118,7 +113,7 @@ feature -- Modification
 	signal_load_include_error
 			-- set error status due to failure to load an included schema
 		do
-			add_error (ec_bmm_schema_include_failed_to_load, <<schema_id>>)
+			add_error ({BMM_MESSAGES_IDS}.ec_BMM_schema_include_failed_to_load, <<schema_id>>)
 		end
 
 feature {BMM_MODEL_ACCESS} -- Commands
@@ -169,7 +164,7 @@ feature {BMM_MODEL_ACCESS} -- Commands
 			if attached bmm_schema and then attached bmm_schema.includes as bmm_schema_includes then
 				across bmm_schema_includes as supplier_schemas_csr loop
 					if not all_schemas.has (supplier_schemas_csr.item.id) then
-						add_error (ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
+						add_error ({BMM_MESSAGES_IDS}.ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
 					else
 						includes.extend (supplier_schemas_csr.item.id)
 					end
@@ -197,7 +192,7 @@ feature {BMM_MODEL_ACCESS} -- Commands
 					bmm_schema.create_bmm_model
 					bmm_model := bmm_schema.bmm_model
 				else
-					add_error (ec_BMM_CRF, <<bmm_schema.schema_id>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_CRF, <<bmm_schema.schema_id>>)
 				end
 			end
 		ensure

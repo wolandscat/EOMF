@@ -56,7 +56,7 @@ feature {NONE} -- Initialisation
 			ev_root_container.disable_item_expand (evx_control_panel.ev_root_container)
 
 			-- -------- Row view frame --------
-			evx_control_panel.create_new_frame (get_text (ec_row_filter_frame_text), False)
+			evx_control_panel.create_new_frame (get_text ({EVX_MESSAGES_IDS}.ec_row_filter_frame_text), False)
 
 			-- -------- Row view combo --------
 			create evx_row_filter_combo.make ("", Void, a_row_filter_names_agt, agent set_row_filter, 12, False)
@@ -66,7 +66,7 @@ feature {NONE} -- Initialisation
 			end
 
 			-- -------- Col view frame --------
-			evx_control_panel.create_new_frame (get_text (ec_column_frame_text), False)
+			evx_control_panel.create_new_frame (get_text ({EVX_MESSAGES_IDS}.ec_column_frame_text), False)
 
 			-- set events: key press agent for main list, enables things like
 			-- ctrl-C to do copy

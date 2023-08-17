@@ -15,11 +15,6 @@ class ODIN_CONFIG_FILE_ACCESS
 inherit
 	CONFIG_FILE_ACCESS_I
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 create
 	make
 
@@ -54,7 +49,7 @@ feature -- Commands
 					if not parser.syntax_error then
 						dt_tree := parser.output
 					else
-						errors.add_error (ec_cfg_file_parse_error, <<file_path, parser.errors.as_string>>, generator)
+						errors.add_error ({GENERAL_MESSAGES_IDS}.ec_cfg_file_parse_error, <<file_path, parser.errors.as_string>>, generator)
 					end
 					res_file.close
 				end

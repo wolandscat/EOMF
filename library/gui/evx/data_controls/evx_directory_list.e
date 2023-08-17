@@ -178,14 +178,14 @@ feature {NONE} -- Implementation
 		do
 			-- Add button
 			create ev_add_button
-			ev_add_button.set_text (utf8_to_utf32 (get_text (ec_add_button_text)))
+			ev_add_button.set_text (utf8_to_utf32 (get_text ({EVX_MESSAGES_IDS}.ec_add_button_text)))
 			ev_root_container.extend (ev_add_button)
 			ev_root_container.disable_item_expand (ev_add_button)
 			ev_add_button.select_actions.extend (agent on_add)
 
 			-- Remove button
 			create ev_remove_button
-			ev_remove_button.set_text (utf8_to_utf32 (get_text (ec_remove_button_text)))
+			ev_remove_button.set_text (utf8_to_utf32 (get_text ({EVX_MESSAGES_IDS}.ec_remove_button_text)))
 			ev_root_container.extend (ev_remove_button)
 			ev_root_container.disable_item_expand (ev_remove_button)
 			ev_remove_button.select_actions.extend (agent on_remove)
@@ -224,11 +224,11 @@ feature {NONE} -- Implementation
 						if a_dir.exists then
 							user_dir := a_dir.name
 						else
-							create error_dialog.make_with_text (get_msg (ec_directory_does_not_exist, <<dialog.directory>>))
+							create error_dialog.make_with_text (get_msg ({GENERAL_MESSAGES_IDS}.ec_directory_does_not_exist, <<dialog.directory>>))
 							error_dialog.show_modal_to_window (a_parent_window)
 						end
 					else
-						create error_dialog.make_with_text (get_text (ec_empty_directory_does_not_exist))
+						create error_dialog.make_with_text (get_text ({GENERAL_MESSAGES_IDS}.ec_empty_directory_does_not_exist))
 						error_dialog.show_modal_to_window (a_parent_window)
 					end
 				end

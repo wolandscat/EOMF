@@ -260,7 +260,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						end (?, packages_csr.item.name)
 					)
 				then
-					add_error (ec_BMM_PKGTL, <<schema_id>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGTL, <<schema_id>>)
 				end
 			end
 
@@ -274,7 +274,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						prop_list.compare_objects
 						across a_class_def.properties as props_csr loop
 							if prop_list.has (props_csr.item.name) then
-								add_error (ec_BMM_PRDUP, <<schema_id, a_class_def.name, props_csr.item.name>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_PRDUP, <<schema_id, a_class_def.name, props_csr.item.name>>)
 							else
 								prop_list.extend (props_csr.item.name)
 							end
@@ -288,22 +288,22 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					do
 						-- check for lower-down qualified names
 						if not packages.has_item (a_pkg) and a_pkg.name.has (package_name_delimiter) then
-							add_error (ec_BMM_PKGQN, <<schema_id, a_pkg.name>>)
+							add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGQN, <<schema_id, a_pkg.name>>)
 						end
 
 						-- check if all classes mentioned in each package exist in the local schema
 						across a_pkg.classes as classes_csr loop
 							if classes_csr.item.is_empty then
-								add_error (ec_BMM_PKGCE, <<schema_id, a_pkg.name>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGCE, <<schema_id, a_pkg.name>>)
 							elseif not has_class_definition (classes_csr.item) then
-								add_error (ec_BMM_PKGCL, <<schema_id, classes_csr.item, a_pkg.name>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGCL, <<schema_id, classes_csr.item, a_pkg.name>>)
 							end
 						end
 					end
 			)
 
 			if passed then
-				add_info (ec_bmm_schema_info_loaded, << schema_id, primitive_types.count.out, class_definitions.count.out >>)
+				add_info ({BMM_MESSAGES_IDS}.ec_BMM_schema_info_loaded, << schema_id, primitive_types.count.out, class_definitions.count.out >>)
 				state := State_validated_created
 			end
 		end
@@ -460,7 +460,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 
 			-- check that RM shema release is valid
 			if not valid_standard_version (rm_release) then
-				add_error (ec_BMM_RMREL, <<schema_id, rm_release>>)
+				add_error ({BMM_MESSAGES_IDS}.ec_BMM_RMREL, <<schema_id, rm_release>>)
 			end
 
 			-- check that no duplicate class names are found in packages
@@ -473,7 +473,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						do
 							cname := a_class_name.as_lower
 							if pkg_class_list.has (cname) and then attached pkg_class_list.item (cname) as cl_item then
-								add_error (ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
 							else
 								pkg_class_list.put (a_pkg.name, cname)
 							end
@@ -491,9 +491,9 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					do
 						cname := a_class_def.name.as_lower
 						if not pkg_class_list.has (cname) then
-							add_error (ec_BMM_PKGID, <<schema_id, a_class_def.name>>)
+							add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGID, <<schema_id, a_class_def.name>>)
 						elseif class_name_list.has (cname) then
-							add_error (ec_BMM_CLDUP, <<schema_id, a_class_def.name>>)
+							add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLDUP, <<schema_id, a_class_def.name>>)
 						else
 							class_name_list.extend (cname)
 						end
@@ -509,9 +509,9 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			-- check that all ancestors exist
 			across a_class_def.ancestors as ancs_csr loop
 				if ancs_csr.item.is_empty then
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_ANCE, <<a_class_def.source_schema_id, a_class_def.name>>)
+					add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_ANCE, <<a_class_def.source_schema_id, a_class_def.name>>)
 				elseif not has_class_definition (ancs_csr.item) then
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_ANC, <<a_class_def.source_schema_id, a_class_def.name, ancs_csr.item>>)
+					add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_ANC, <<a_class_def.source_schema_id, a_class_def.name, ancs_csr.item>>)
 				end
 			end
 
@@ -520,7 +520,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 				if a_class_def.is_generic and attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
 					across att_gen_parm_defs as gen_param_defs_csr loop
 						if attached gen_param_defs_csr.item.conforms_to_type as conf_type and then not has_class_definition (conf_type) then
-							add_validity_error (a_class_def.source_schema_id, ec_bmm_gpct,
+							add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_gpct,
 								<<a_class_def.source_schema_id, a_class_def.name, gen_param_defs_csr.item.name, conf_type>>)
 						end
 					end
@@ -554,10 +554,10 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 							attached anc_prop.type_def as att_anc_prop_td and then
 							att_prop_td.as_type_string.same_string (att_anc_prop_td.as_type_string)
 						then
-							add_validity_warning (a_class_def.source_schema_id, ec_BMM_PRCFD,
+							add_validity_warning (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_PRCFD,
 								<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
 						else
-							add_validity_error (a_class_def.source_schema_id, ec_BMM_PRNCF,
+							add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_PRNCF,
 								<<a_class_def.source_schema_id, a_class_def.name, a_prop_def.name, ancs_csr.item>>)
 						end
 					end
@@ -567,11 +567,11 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			if attached {P_BMM_SINGLE_PROPERTY} a_prop_def as a_single_prop_def then
 				if attached a_single_prop_def.type_def as att_type_def then
 					if (att_type_def.type.is_empty or else not has_class_definition (att_type_def.type)) then
-						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPT,
+						add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_SPT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name, att_type_def.type>>)
 					end
 				else
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_SPV,
+					add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_SPV,
 						<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def.name>>)
 				end
 
@@ -580,7 +580,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					if not a_class_def.is_generic or else (attached a_class_def.generic_parameter_defs as att_gen_parm_defs and then
 						not att_gen_parm_defs.has (att_type_def.type))
 					then
-						add_validity_error (a_class_def.source_schema_id, ec_BMM_SPOT,
+						add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_SPOT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_single_prop_def_open.name, att_type_def.type>>)
 					end
 				end
@@ -588,12 +588,12 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 			elseif attached {P_BMM_CONTAINER_PROPERTY} a_prop_def as a_cont_prop_def then
 				if attached a_cont_prop_def.type_def as cont_type_def then
 					if not has_class_definition (cont_type_def.container_type) then
-						add_validity_error (a_class_def.source_schema_id, ec_BMM_CPCT,
+						add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_CPCT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, cont_type_def.container_type>>)
 					elseif attached cont_type_def.type_ref as value_type_ref then
 						-- check if it is the correct meta-type
 						if attached {P_BMM_SIMPLE_TYPE} value_type_ref as simple_type and then attached class_definition (simple_type.type) as p_bmm_class and then p_bmm_class.is_generic then
-							add_validity_error (a_class_def.source_schema_id, ec_BMM_CPVT,
+							add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_CPVT,
 								<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, simple_type.type>>)
 						else
 							-- loop through types inside contained type and check them
@@ -602,12 +602,12 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 									if a_class_def.is_generic then -- it might be a formal parameter, to be matched against those of enclosing class
 										check attached a_class_def.generic_parameter_defs as gen_parm_defs then
 											if not gen_parm_defs.has (types_csr.item) then
-												add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
+												add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPGPU,
 													<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, a_class_def.name, types_csr.item>>)
 											end
 										end
 									else
-										add_validity_error (a_class_def.source_schema_id, ec_BMM_CPTV,
+										add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_CPTV,
 											<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name, types_csr.item>>)
 									end
 								end
@@ -617,19 +617,19 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						-- Report?
 					end
 				else
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_CPT,
+					add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_CPT,
 						<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 				if not attached a_cont_prop_def.cardinality then
-					add_validity_info (a_class_def.source_schema_id, ec_BMM_CPTNC,
+					add_validity_info (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_CPTNC,
 						<<a_class_def.source_schema_id, a_class_def.name, a_cont_prop_def.name>>)
 				end
 
 			elseif attached {P_BMM_GENERIC_PROPERTY} a_prop_def as a_gen_prop_def then
 				if attached a_gen_prop_def.type_def as gen_type_def then
 					if not has_class_definition (gen_type_def.root_type) then
-						add_validity_error (a_class_def.source_schema_id, ec_BMM_GPRT,
+						add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPRT,
 							<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_type_def.root_type>>)
 					else
 						-- check that all actual generic parameters are either defined classes, or open
@@ -638,7 +638,7 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 						if attached gen_root_type.generic_parameter_defs as root_formal_parms then
 							-- the root class is generic, but actual and formal params count don't match
 							if gen_parm_refs.count /= root_formal_parms.count then
-								add_validity_error (a_class_def.source_schema_id, ec_BMM_GPBPC,
+								add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPBPC,
 									<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_refs.count.out, root_formal_parms.count.out, gen_root_type.name>>)
 							else
 								gen_parm_actual_open_count := 0
@@ -652,12 +652,12 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 											if a_class_def.is_generic then
 												check attached a_class_def.generic_parameter_defs as att_gen_parm_defs then
 													if not att_gen_parm_defs.has (gen_parm_types_csr.item) then
-														add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPU,
+														add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPGPU,
 															<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, a_class_def.name, gen_parm_types_csr.item>>)
 													end
 												end
 											else
-												add_validity_error (a_class_def.source_schema_id, ec_BMM_GPGPT,
+												add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPGPT,
 													<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_parm_types_csr.item>>)
 											end
 										end
@@ -667,19 +667,19 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 								-- check that the number of open generic parameters in the property matches the number in the containing class
 								if attached a_class_def.generic_parameter_defs as formal_parms then
 									if gen_parm_actual_open_count > formal_parms.count then
-										add_validity_error (a_class_def.source_schema_id, ec_BMM_GPOPC,
+										add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPOPC,
 											<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
 									end
 								end
 							end
 						else
 							-- root class is not even generic
-							add_validity_error (a_class_def.source_schema_id, ec_BMM_GPRTNG,
+							add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPRTNG,
 								<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name, gen_root_type.name>>)
 						end
 					end
 				else
-					add_validity_error (a_class_def.source_schema_id, ec_BMM_GPT,
+					add_validity_error (a_class_def.source_schema_id, {BMM_MESSAGES_IDS}.ec_BMM_GPT,
 						<<a_class_def.source_schema_id, a_class_def.name, a_gen_prop_def.name>>)
 				end
 			end

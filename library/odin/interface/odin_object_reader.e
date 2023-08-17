@@ -49,15 +49,15 @@ feature {NONE} -- Implementation
 			dt_engine.parse
 			if dt_engine.parse_succeeded and then attached dt_engine.tree as dt_tree then
 				if not attached {G} dt_tree.as_object_from_string (({G}).name, Void) as att_obj then
-					add_error (ec_object_load_failure_exception, <<({G}).name, file_path>>)
+					add_error ({GENERAL_MESSAGES_IDS}.ec_object_load_failure_exception, <<({G}).name, file_path>>)
 				elseif dt_object_converter.errors.has_errors then
-					add_error (ec_object_conv_fail_err, <<({G}).name, file_path, dt_object_converter.errors.as_string>>)
+					add_error ({GENERAL_MESSAGES_IDS}.ec_object_conv_fail_err, <<({G}).name, file_path, dt_object_converter.errors.as_string>>)
 				else
 					object := att_obj
 					passed := True
 				end
 			else
-				add_error (ec_object_load_failure, <<({G}).name, file_path, dt_engine.errors.as_string>>)
+				add_error ({GENERAL_MESSAGES_IDS}.ec_object_load_failure, <<({G}).name, file_path, dt_engine.errors.as_string>>)
 			end
 		end
 

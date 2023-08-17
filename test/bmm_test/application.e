@@ -227,7 +227,7 @@ feature {NONE} -- Implementation
 			class_def := test_bmm_model.type_class_definition (a_class_name)
 			across class_def.ancestors as ancs_csr loop
 				create str.make_filled ('%T', depth + 1)
-				io.put_string (str + ancs_csr.key + "%N")
+				io.put_string (str + ancs_csr.key.as_string_8 + "%N")
 				do_output_ancestors (ancs_csr.key.as_string_8, depth + 1)
 			end
 		end

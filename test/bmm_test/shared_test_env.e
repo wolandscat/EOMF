@@ -23,16 +23,6 @@ inherit
 			Application_developer_name, Default_application_name
 		end
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
-	BMM_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	BMM_DEFINITIONS
 		export
 			{NONE} all
@@ -139,7 +129,7 @@ feature -- Initialization
 			-- get rid of any non-existent schema directories
 			across rm_schema_directories as sch_dirs loop
 				if not file_system.directory_exists (sch_dirs.item) then
-					add_warning (ec_bmm_schema_dir_not_valid, <<sch_dirs.item>>)
+					add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_dir_not_valid, <<sch_dirs.item>>)
 					dead_schema_dirs.extend (sch_dirs.item)
 				else
 					io.put_string ("Schemas found in ==================== " + sch_dirs.item + " ====================%N")
@@ -153,9 +143,9 @@ feature -- Initialization
 			output_schema_info
 
 			if bmm_models_access.has_errors then
-				add_error (Ec_general_error, <<bmm_models_access.error_strings>>)
+				add_error ({GENERAL_MESSAGES_IDS}.ec_general_error, <<bmm_models_access.error_strings>>)
 			elseif not bmm_models_access.found_valid_models then
-				add_error (ec_bmm_schemas_config_not_valid, <<bmm_models_access.schemas_load_list_string>>)
+				add_error ({BMM_MESSAGES_IDS}.ec_bmm_schemas_config_not_valid, <<bmm_models_access.schemas_load_list_string>>)
 			end
 		end
 

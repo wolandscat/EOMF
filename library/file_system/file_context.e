@@ -18,11 +18,6 @@ inherit
 			{NONE} all
 		end
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	BASIC_DEFINITIONS
 		export
 			{NONE} all
@@ -176,7 +171,7 @@ feature -- Commands
 				end
 			else
 				last_op_failed := True
-				last_op_fail_reason := get_msg (ec_read_failed_file_does_not_exist, <<current_full_path>>)
+				last_op_fail_reason := get_msg ({GENERAL_MESSAGES_IDS}.ec_read_failed_file_does_not_exist, <<current_full_path>>)
 			end
 		ensure
 			line_buf_empty_on_failure: last_op_failed implies line_buf_count = 0
@@ -229,7 +224,7 @@ feature -- Commands
 				end
 			else
 				last_op_failed := True
-				last_op_fail_reason := get_msg (ec_read_failed_file_does_not_exist, <<current_full_path>>)
+				last_op_fail_reason := get_msg ({GENERAL_MESSAGES_IDS}.ec_read_failed_file_does_not_exist, <<current_full_path>>)
 			end
 		ensure
 			line_buf_empty_on_failure: last_op_failed implies line_buf_count = 0
@@ -264,14 +259,14 @@ feature -- Commands
 --					if has_byte_order_marker then
 --						create file_content.make_empty
 --						last_op_failed := True
---						last_op_fail_reason := get_msg (ec_invalid_utf8_file, <<current_full_path>>)
+--						last_op_fail_reason := get_msg ({GENERAL_MESSAGES_IDS}.ec_invalid_utf8_file, <<current_full_path>>)
 --					else
 --						file_content := utf8.to_utf8 (file_content)
 --					end
 --				end
 			else
 				last_op_failed := True
-				last_op_fail_reason := get_msg (ec_read_failed_file_does_not_exist, <<current_full_path>>)
+				last_op_fail_reason := get_msg ({GENERAL_MESSAGES_IDS}.ec_read_failed_file_does_not_exist, <<current_full_path>>)
 			end
 		ensure
 			file_content_empty_on_failure: last_op_failed implies file_content.is_empty
@@ -302,7 +297,7 @@ feature -- Commands
 				file_timestamp := out_file.date
 			else
 				last_op_failed := True
-				last_op_fail_reason := get_msg (ec_write_failed_file_does_not_exist, <<a_file_name>>)
+				last_op_fail_reason := get_msg ({GENERAL_MESSAGES_IDS}.ec_write_failed_file_does_not_exist, <<a_file_name>>)
 			end
 		end
 

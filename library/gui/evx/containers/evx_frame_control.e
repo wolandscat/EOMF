@@ -55,6 +55,13 @@ feature -- Modification
 			end
 		end
 
+	add_padding_cell
+			-- extend current container with an expanding padding cell
+		do
+			ev_current_box.extend (create {EV_CELL})
+		end
+
+
 	add_row (can_expand: BOOLEAN)
 			-- add an HBOX container; subsequent calls to `extend' will add to this HBOX
 		do

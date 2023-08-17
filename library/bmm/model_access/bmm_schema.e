@@ -24,11 +24,6 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
 		end
 
-	BMM_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	BMM_MODEL_METADATA
 
 feature -- Definitions
@@ -294,7 +289,7 @@ feature {NONE} -- Implementation
 				check attached schema_error_table.item (source_schema_id) as att_schema_err then
 					att_schema_err.add_error (a_key, args, "")
 				end
-				add_error (ec_BMM_INCERR, <<schema_id, source_schema_id>>)
+				add_error ({BMM_MESSAGES_IDS}.ec_bmm_INCERR, <<schema_id, source_schema_id>>)
 			end
 		end
 

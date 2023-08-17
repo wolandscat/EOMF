@@ -18,11 +18,6 @@ inherit
 			reset
 		end
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	KL_SHARED_FILE_SYSTEM
 		export
 			{NONE} all
@@ -80,7 +75,7 @@ feature -- Commands
 			reset
 			create obj_file.make (file_path)
 			if not obj_file.exists or else not obj_file.is_readable then
-				add_error (ec_object_file_not_valid, <<({G}).name, file_path>>)
+				add_error ({GENERAL_MESSAGES_IDS}.ec_object_file_not_valid, <<({G}).name, file_path>>)
 			else
 				obj_file.open_read
 				obj_file.read_stream (obj_file.count)

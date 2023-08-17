@@ -44,7 +44,7 @@ feature -- Initialisation
 
 			-- add button
 			create collapse_expand_button
-			collapse_expand_button.set_text (get_text (ec_collapse_button_text))
+			collapse_expand_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_collapse_button_text))
 			hbox.extend (collapse_expand_button)
 			hbox.disable_item_expand (collapse_expand_button)
 
@@ -75,13 +75,13 @@ feature -- Commands
 	collapse
 		do
 			ev_main_vbox.hide
-			collapse_expand_button.set_text (get_text (ec_expand_button_text))
+			collapse_expand_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_expand_button_text))
 		end
 
 	expand
 		do
 			ev_main_vbox.show
-			collapse_expand_button.set_text (get_text (ec_collapse_button_text))
+			collapse_expand_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_collapse_button_text))
 		end
 
 feature -- Modification
@@ -127,10 +127,10 @@ feature {NONE} -- Implementation
 		do
 			if collapse_expand_button.is_selected then
 				ev_main_vbox.hide
-				collapse_expand_button.set_text (get_text (ec_expand_button_text))
+				collapse_expand_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_expand_button_text))
 			else
 				ev_main_vbox.show
-				collapse_expand_button.set_text (get_text (ec_collapse_button_text))
+				collapse_expand_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_collapse_button_text))
 			end
 		end
 

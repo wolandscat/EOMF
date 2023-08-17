@@ -32,8 +32,6 @@ inherit
 			{NONE} all
 		end
 
-	DT_MESSAGES_IDS
-
 feature -- Definitions
 
 	No_type: INTEGER = -10
@@ -172,7 +170,7 @@ end
 									raise ("dt_to_object software exception LOC #1")
 								end
 							else
-								errors.add_error (ec_non_existent_path, <<a_dt_obj_ref.value.as_string>>, "dt_to_object")
+								errors.add_error ({DT_MESSAGES_IDS}.ec_non_existent_path, <<a_dt_obj_ref.value.as_string>>, "dt_to_object")
 							end
 						elseif attached {DT_OBJECT_REFERENCE_LIST} obj_ref_csr.item as a_dt_obj_ref_list then
 							-- make the generic container, it will be a SEQUENCE (some kind of list)
@@ -189,7 +187,7 @@ end
 									then
 										a_sequence2.extend (seq_obj)
 									else
-										errors.add_error (ec_non_existent_path_in_list, <<path_list.item.as_string>>, "dt_to_object")
+										errors.add_error ({DT_MESSAGES_IDS}.ec_non_existent_path_in_list, <<path_list.item.as_string>>, "dt_to_object")
 									end
 									path_list.forth
 								end
@@ -219,14 +217,14 @@ end
 			if assertion_violation then
 				-- check that the original was set_reference_field () - this indicates a type mismatch
 				if attached original_recipient_name as orn then
-					errors.add_error (ec_dt_to_object_type_mismatch, <<orn>>, "dt_to_object")
+					errors.add_error ({DT_MESSAGES_IDS}.ec_dt_to_object_type_mismatch, <<orn>>, "dt_to_object")
 				else
-						errors.add_error (ec_dt_to_object_type_mismatch, <<"Original recipient name not available">>, "dt_to_object")
+						errors.add_error ({DT_MESSAGES_IDS}.ec_dt_to_object_type_mismatch, <<"Original recipient name not available">>, "dt_to_object")
 				end
 			elseif attached exception_trace as et then
-				errors.add_error (ec_dt_unknown_error, <<exception.out, et>>, "dt_to_object")
+				errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_error, <<exception.out, et>>, "dt_to_object")
 			else
-				errors.add_error (ec_dt_unknown_error, <<exception.out, "no exception trace avalable">>, "dt_to_object")
+				errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_error, <<exception.out, "no exception trace avalable">>, "dt_to_object")
 			end
 			retry
 		end
@@ -487,7 +485,7 @@ end
 							else
 								-- should never get here: it means that the DT data parsed as a
 								-- nested generic, but that the corresponding object types are not
-								errors.add_error (ec_dt_nested_type_mismatch, <<Result.generating_type.name, a_dt_attr.im_attr_name>>, "create_object_from_dt")
+								errors.add_error ({DT_MESSAGES_IDS}.ec_dt_nested_type_mismatch, <<Result.generating_type.name, a_dt_attr.im_attr_name>>, "create_object_from_dt")
 							end
 						else
 							raise ("create_object_from_dt software exception LOC #1")
@@ -539,7 +537,7 @@ end
 
 								-- type in parsed DT is container, but not in Eiffel class		
 								else
-									errors.add_error (ec_container_type_mismatch,
+									errors.add_error ({DT_MESSAGES_IDS}.ec_container_type_mismatch,
 										<<type_name_of_type (fld_att_static_tid), type_name_of_type (a_type_id)>>, "create_object_from_dt")
 								end
 
@@ -647,7 +645,7 @@ end
 												if is_eiffel_container_type (fld_att_static_tid) then -- Eiffel field type is compatible
 													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
 												else -- type in parsed DT is container, but not in Eiffel class		
-													errors.add_error (ec_container_type_mismatch,
+													errors.add_error ({DT_MESSAGES_IDS}.ec_container_type_mismatch,
 														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
@@ -664,7 +662,7 @@ end
 
 												-- type in parsed DT is INTERVAL, but not in Eiffel class
 												else
-													errors.add_error (ec_interval_type_mismatch,
+													errors.add_error ({DT_MESSAGES_IDS}.ec_interval_type_mismatch,
 														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
@@ -675,7 +673,7 @@ end
 													set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, dt_po_ivl_list.value)
 												-- type in parsed DT is INTERVAL, but not in Eiffel class
 												else
-													errors.add_error (ec_interval_list_type_mismatch,
+													errors.add_error ({DT_MESSAGES_IDS}.ec_interval_list_type_mismatch,
 														<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 												end
 
@@ -694,7 +692,7 @@ end
 													elseif attached cvt_dt_to_obj (a_dt_obj_leaf.value) as tc_val then
 														set_reference_field (i, Result, tc_val)
 													else
-														errors.add_error (ec_atomic_type_mismatch,
+														errors.add_error ({DT_MESSAGES_IDS}.ec_atomic_type_mismatch,
 															<<type_name_of_type (fld_att_static_tid), type_name_of_type (dt_val_att_dyn_tid)>>, "create_object_from_dt")
 													end
 												end
@@ -729,12 +727,12 @@ debug ("DT")
 end
 		rescue
 			if dt_val_att_dyn_tid /= 0 then
-				errors.add_error (ec_dt_proc_arg_type_mismatch,
+				errors.add_error ({DT_MESSAGES_IDS}.ec_dt_proc_arg_type_mismatch,
 					<<type_name_of_type (a_type_id), fld_name, type_name_of_type (fld_att_static_tid), type_name (a_dt_obj_leaf.value)>>, "create_object_from_dt")
 			elseif attached exception_trace as et then
-				errors.add_error (ec_dt_unknown_error, <<exception.out, et>>, "create_object_from_dt")
+				errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_error, <<exception.out, et>>, "create_object_from_dt")
 			else
-				errors.add_error (ec_dt_unknown_error, <<exception.out, "no stack trace available">>, "create_object_from_dt")
+				errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_error, <<exception.out, "no stack trace available">>, "create_object_from_dt")
 			end
 			retry
 		end
@@ -1080,7 +1078,7 @@ end
 						if a_dt_attr_csr.item.type_visible then
 							att_result_obj_tid := dt_dynamic_type_from_string (a_dt_attr_csr.item.im_type_name)
 							if att_result_obj_tid <= 0 then
-								errors.add_error (ec_dt_unknown_type_in_source, <<a_dt_attr_csr.item.im_type_name>>, "populate_eif_container_from_dt")
+								errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_type_in_source, <<a_dt_attr_csr.item.im_type_name>>, "populate_eif_container_from_dt")
 							end
 						else
 							att_result_obj_tid := att_static_cont_item_tid
@@ -1093,7 +1091,7 @@ end
 								if field_conforms_to (dynamic_type (val), att_static_cont_item_tid) then
 									a_hash_table.extend (val, a_dt_attr_csr.item.id)
 								else
-									errors.add_error (ec_dt_container_gen_param_type_mismatch,
+									errors.add_error ({DT_MESSAGES_IDS}.ec_dt_container_gen_param_type_mismatch,
 										<<(1).out, a_hash_table.generating_type.name, type_name_of_type (att_static_cont_item_tid),
 											val.generating_type.name>>, "populate_eif_container_from_dt")
 								end
@@ -1124,7 +1122,7 @@ end
 						if a_dt_attr_csr.item.type_visible then
 							att_result_obj_tid := dt_dynamic_type_from_string (a_dt_attr_csr.item.im_type_name)
 							if att_result_obj_tid <= 0 then
-								errors.add_error (ec_dt_unknown_type_in_source, <<a_dt_attr_csr.item.im_type_name>>, "populate_eif_container_from_dt")
+								errors.add_error ({DT_MESSAGES_IDS}.ec_dt_unknown_type_in_source, <<a_dt_attr_csr.item.im_type_name>>, "populate_eif_container_from_dt")
 							end
 						else
 							att_result_obj_tid := att_static_cont_item_tid
@@ -1136,7 +1134,7 @@ end
 								if field_conforms_to (dynamic_type (val), att_static_cont_item_tid) then
 									eif_seq.extend (val)
 								else
-									errors.add_error (ec_dt_container_gen_param_type_mismatch,
+									errors.add_error ({DT_MESSAGES_IDS}.ec_dt_container_gen_param_type_mismatch,
 										<<(1).out, eif_seq.generating_type.name, type_name_of_type (att_static_cont_item_tid),
 											val.generating_type.name>>, "populate_eif_container_from_dt")
 								end

@@ -137,7 +137,7 @@ feature -- Commands
 						end (?, cur_val)
 				)
 			else
-				create li2.make_with_text (utf8_to_utf32 (get_text (ec_unknown_value)))
+				create li2.make_with_text (utf8_to_utf32 (get_text ({EVX_MESSAGES_IDS}.ec_unknown_value)))
 				ev_data_control.extend (li2)
 				li2.enable_select
 			end

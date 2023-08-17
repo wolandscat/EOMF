@@ -159,11 +159,11 @@ feature {NONE} -- Implmentation
 						if a_file.exists then
 							user_file := a_file.name
 						else
-							create error_dialog.make_with_text (get_msg (ec_file_does_not_exist,  <<dialog.file_name>>))
+							create error_dialog.make_with_text (get_msg ({GENERAL_MESSAGES_IDS}.ec_file_does_not_exist,  <<dialog.file_name>>))
 							error_dialog.show_modal_to_window (a_parent_window)
 						end
 					else
-						create error_dialog.make_with_text (get_text (ec_empty_file_does_not_exist))
+						create error_dialog.make_with_text (get_text ({GENERAL_MESSAGES_IDS}.ec_empty_file_does_not_exist))
 						error_dialog.show_modal_to_window (a_parent_window)
 					end
 				end
@@ -174,7 +174,7 @@ feature {NONE} -- Implmentation
 	initialise_browse_button
 		do
 			create ev_browse_button
-			ev_browse_button.set_text (get_text (ec_browse_button_text))
+			ev_browse_button.set_text (get_text ({EVX_MESSAGES_IDS}.ec_browse_button_text))
 			ev_root_container.extend (ev_browse_button)
 			ev_root_container.disable_item_expand (ev_browse_button)
 			ev_browse_button.select_actions.extend (agent on_browse)

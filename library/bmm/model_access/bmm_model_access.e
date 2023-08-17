@@ -18,11 +18,6 @@ inherit
 			{ANY} file_system
 		end
 
-	BMM_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 	BMM_DEFINITIONS
 		export
 			{NONE} all
@@ -271,23 +266,23 @@ feature {NONE} -- Implementation
 				across schema_directories as sch_dir_csr loop
 					create dir.make (sch_dir_csr.item)
 					if not (dir.exists and dir.is_readable) then
-						add_error (ec_bmm_schema_dir_not_valid, <<sch_dir_csr.item>>)
+						add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_dir_not_valid, <<sch_dir_csr.item>>)
 					elseif dir.is_empty then
-						add_error (ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
+						add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
 					else
 						create bmm2_file_repo.make (sch_dir_csr.item, bmm2_schema_file_match_regex)
 						across bmm2_file_repo.matching_paths as paths_csr loop
 							process_schema_file (paths_csr.item)
 						end
 						if all_schemas.is_empty then
-							add_error (ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
+							add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_dir_contains_no_schemas, <<sch_dir_csr.item>>)
 						end
 					end
 				end
 			end
 		rescue
 			exception_encountered := True
-			add_error (ec_bmm_schema_unknown_exception, Void)
+			add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_unknown_exception, Void)
 			retry
 		end
 
@@ -305,14 +300,14 @@ feature {NONE} -- Implementation
 
 				-- check for two schema files purporting to be the exact same schema (including release)
 				if sd.errors.has_errors then
-					add_error (ec_bmm_schema_load_failure, <<sd.schema_id, sd.errors.as_string>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_load_failure, <<sd.schema_id, sd.errors.as_string>>)
 				elseif all_schemas.has (sd.schema_id) then
-					add_warning (ec_bmm_schema_duplicate_schema_found, <<sd.schema_id, a_schema_file_path>>)
+					add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_duplicate_schema_found, <<sd.schema_id, a_schema_file_path>>)
 				else
 					all_schemas.put (sd, sd.schema_id)
 				end
 			else
-				add_warning (ec_bmm_schema_rm_missing, <<a_schema_file_path, dmp.last_parse_fail_reason>>)
+				add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_rm_missing, <<a_schema_file_path, dmp.last_parse_fail_reason>>)
 			end
 		end
 
@@ -341,7 +336,7 @@ feature {NONE} -- Implementation
 					if not schemas_load_list.is_empty then
 						from schemas_load_list.start until schemas_load_list.off loop
 							if not all_schemas.has (schemas_load_list.item) then
-								add_warning (ec_bmm_schema_invalid_load_list, <<schemas_load_list.item>>)
+								add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_invalid_load_list, <<schemas_load_list.item>>)
 								schemas_load_list.remove
 							else
 								schemas_load_list.forth
@@ -353,7 +348,7 @@ feature {NONE} -- Implementation
 						across all_schemas.current_keys as schema_ids_csr loop
 							schemas_load_list.extend (schema_ids_csr.item.as_string_8)
 						end
-						add_warning (ec_bmm_schemas_no_load_list_found, Void)
+						add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schemas_no_load_list_found, Void)
 					end
 
 					-- initial load of all schemas, which populates `schema_inclusion_map';
@@ -361,12 +356,12 @@ feature {NONE} -- Implementation
 						if all_schemas_csr.item.passed then
 							load_schema_include_closure (all_schemas_csr.key.as_string_8)
 							if all_schemas_csr.item.errors.has_warnings then
-								add_warning (ec_bmm_schema_passed_with_warnings, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
+								add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_passed_with_warnings, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
 							end
 						else
-							add_error (ec_bmm_schema_basic_validation_failed, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
+							add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_basic_validation_failed, <<all_schemas_csr.key.as_string_8, all_schemas_csr.item.errors.as_string>>)
 							if not all_schemas_csr.item.is_bmm_compatible then
-								add_error (ec_bmm_schema_version_incompatible_with_tool, <<all_schemas_csr.key.as_string_8, Bmm_internal_version>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_version_incompatible_with_tool, <<all_schemas_csr.key.as_string_8, Bmm_internal_version>>)
 							end
 						end
 					end
@@ -404,16 +399,16 @@ feature {NONE} -- Implementation
 											then
 												-- DO THE MERGE
 												including_schema.merge (included_schema)
-												add_info (ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas_item (schemas_csr.item).schema_id>>)
+												add_info ({BMM_MESSAGES_IDS}.ec_bmm_schema_merged_schema, <<included_schema.schema_id, candidate_schemas_item (schemas_csr.item).schema_id>>)
 												finished := False
 											end
 										else
-											add_error (ec_bmm_schema_including_schema_not_valid, <<map_csr.key.as_string_8>>)
+											add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_including_schema_not_valid, <<map_csr.key.as_string_8>>)
 										end
 									end
 								end
 							else
-								add_error (ec_bmm_schema_included_schema_not_found, <<map_csr.key.as_string_8>>)
+								add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_included_schema_not_found, <<map_csr.key.as_string_8>>)
 							end
 						end
 						i := i + 1
@@ -436,13 +431,13 @@ feature {NONE} -- Implementation
 										att_model.post_process
 										bmm_models.extend (att_model, att_model.model_id)
 										if schema_desc.errors.has_warnings then
-											add_warning (ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
+											add_warning ({BMM_MESSAGES_IDS}.ec_bmm_schema_passed_with_warnings, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 										end
 									else
-										add_error (ec_bmm_schema_post_merge_create_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
+										add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_post_merge_create_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 									end
 								else
-									add_error (ec_bmm_schema_post_merge_validate_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
+									add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_post_merge_validate_fail, <<schema_desc.schema_id, schema_desc.errors.as_string>>)
 								end
 							end
 						end
@@ -455,9 +450,9 @@ feature {NONE} -- Implementation
 		rescue
 			exception_encountered := True
 			if assertion_violation and attached original_class_name as ocn and attached original_recipient_name as orn and attached exception_trace as et then
-				add_error (ec_bmm_schema_assertion_violation, <<ocn + "." + orn + "%N" + et>>)
+				add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_assertion_violation, <<ocn + "." + orn + "%N" + et>>)
 			else
-				add_error (ec_bmm_schema_unknown_exception, Void)
+				add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_unknown_exception, Void)
 			end
 			retry
 		end
@@ -473,7 +468,7 @@ feature {NONE} -- Implementation
 			if target_schema.passed then
 				target_schema.validate_includes (all_schemas)
 				if target_schema.passed and attached target_schema.bmm_schema as att_p_schema then
-					add_info (ec_bmm_schema_info_loaded, <<a_schema_id, att_p_schema.primitive_types_count.out, att_p_schema.class_definitions_count.out>>)
+					add_info ({BMM_MESSAGES_IDS}.ec_bmm_schema_info_loaded, <<a_schema_id, att_p_schema.primitive_types_count.out, att_p_schema.class_definitions_count.out>>)
 					across att_p_schema.includes as includes_csr loop
 						if not schema_inclusion_map.has (includes_csr.item.id) then
 							create includers.make (0)
@@ -485,10 +480,10 @@ feature {NONE} -- Implementation
 						end
 					end
 				else
-					add_error (ec_bmm_schema_includes_valiidation_failed, <<a_schema_id, target_schema.errors.as_string>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_includes_valiidation_failed, <<a_schema_id, target_schema.errors.as_string>>)
 				end
 			else
-				add_error (ec_bmm_schema_load_failure, <<a_schema_id, target_schema.errors.as_string>>)
+				add_error ({BMM_MESSAGES_IDS}.ec_bmm_schema_load_failure, <<a_schema_id, target_schema.errors.as_string>>)
 			end
 		end
 
@@ -514,9 +509,9 @@ feature {NONE} -- Implementation
 							agent (a_client_schema, a_source_schema: STRING; err_accum: ERROR_ACCUMULATOR)
 								do
 									if err_accum.has_errors then
-										all_schemas_item (a_client_schema).add_error (ec_BMM_INCERR, <<a_client_schema, a_source_schema>>)
+										all_schemas_item (a_client_schema).add_error ({BMM_MESSAGES_IDS}.ec_BMM_INCERR, <<a_client_schema, a_source_schema>>)
 									else
-										all_schemas_item (a_client_schema).add_warning (ec_BMM_INCWARN, <<a_client_schema, a_source_schema>>)
+										all_schemas_item (a_client_schema).add_warning ({BMM_MESSAGES_IDS}.ec_BMM_INCWARN, <<a_client_schema, a_source_schema>>)
 									end
 								end (?, err_table_csr.key, err_table_csr.item)
 						)
@@ -534,9 +529,9 @@ feature {NONE} -- Implementation
 							client_sd := all_schemas_item (client_schemas_csr.item)
 							if client_sd.passed and not client_sd.errors.has_warnings then
 								if not targ_sd.passed then
-									client_sd.add_error (ec_BMM_INCERR, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
+									client_sd.add_error ({BMM_MESSAGES_IDS}.ec_BMM_INCERR, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
 								else
-									client_sd.add_warning (ec_BMM_INCWARN, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
+									client_sd.add_warning ({BMM_MESSAGES_IDS}.ec_BMM_INCWARN, <<client_schemas_csr.item, schema_inclusion_map_csr.key.as_string_8>>)
 								end
 								errors_to_propagate := True
 							end

@@ -53,7 +53,7 @@ feature {NONE}-- Initialization
 			make (a_source_text_agt)
 			enable_editable
 			save_agt := a_save_agt
-			add_button (Void, Void, get_text (ec_save_button_text), get_text (ec_save_button_tooltip), agent save_content, Void)
+			add_button (Void, Void, get_text ({EVX_MESSAGES_IDS}.ec_save_button_text), get_text ({EVX_MESSAGES_IDS}.ec_save_button_tooltip), agent save_content, Void)
 			ev_text.key_press_actions.extend (agent on_keypress)
 		end
 
@@ -76,13 +76,13 @@ feature {NONE}-- Initialization
 			ev_root_container.disable_item_expand (control_panel.ev_root_container)
 
 			-- ---------- view panel frame ----------
-			create evx_view_frame.make (get_text (ec_view_controls_text), False)
+			create evx_view_frame.make (get_text ({EVX_MESSAGES_IDS}.ec_view_controls_text), False)
 			control_panel.add_frame_control (evx_view_frame, False)
 
 			-- ---------- line numbers Check box ----------
 			create evx_line_numbers_cb.make_linked (
-				get_text (ec_add_line_numbers_text),
-				get_text (ec_add_line_numbers_tooltip),
+				get_text ({EVX_MESSAGES_IDS}.ec_add_line_numbers_text),
+				get_text ({EVX_MESSAGES_IDS}.ec_add_line_numbers_tooltip),
 				agent :BOOLEAN do Result := show_line_numbers end,
 				agent update_line_numbers)
 			evx_view_frame.extend (evx_line_numbers_cb.ev_data_control, False)

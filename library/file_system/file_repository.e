@@ -16,11 +16,6 @@ inherit
 			{ANY} deep_copy, deep_twin, is_deep_equal, standard_is_equal
 		end
 
-	GENERAL_MESSAGES_IDS
-		export
-			{NONE} all;
-		end
-
 create
 	make, make_fixed
 
@@ -55,7 +50,7 @@ feature {NONE} -- Initialisation
 			base_name_pattern_regex.set_case_insensitive (True)
 			base_name_pattern_regex.compile (base_name_pattern)
 			if not base_name_pattern_regex.is_compiled then
-				errors.add_error (ec_regex_invalid, <<base_name_pattern>>, generator + ".make")
+				errors.add_error ({GENERAL_MESSAGES_IDS}.ec_regex_invalid, <<base_name_pattern>>, generator + ".make")
 			else
 				find_matching_file_paths (a_dir_name, True)
 			end

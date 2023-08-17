@@ -16,11 +16,6 @@ inherit
 			{ANY} deep_twin, is_deep_equal, standard_is_equal;
 		end
 
-	EVX_MESSAGES_IDS
-		export
-			{NONE} all
-		end
-
 feature {NONE} -- Initialisation
 
 	make
@@ -52,7 +47,7 @@ feature -- Access
 					Result := pxm
 				end
 			else
-				errors.add_error (ec_no_pixmap_found, <<key>>, Void)
+				errors.add_error ({EVX_MESSAGES_IDS}.ec_no_pixmap_found, <<key>>, Void)
 				create Result.default_create
 			end
 		end

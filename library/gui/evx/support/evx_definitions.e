@@ -9,13 +9,6 @@ note
 
 class EVX_DEFINITIONS
 
-inherit
-	EVX_MESSAGES_IDS
-		export
-			{NONE} all;
-			{ANY} deep_copy, deep_twin, standard_is_equal, is_deep_equal
-		end
-
 feature -- Definitions
 
 	default_min_height: INTEGER
