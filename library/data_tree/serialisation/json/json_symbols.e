@@ -18,5 +18,6 @@ feature -- Token codes
 	Sym_json_item_delimiter: INTEGER = 5005
 	Sym_json_eq: INTEGER = 5006
 	Sym_json_attribute_name_delimiter: INTEGER = 5007
+	Sym_json_type_attribute_name: INTEGER = 5008
 
 end

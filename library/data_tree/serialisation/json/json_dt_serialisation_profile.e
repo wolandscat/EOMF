@@ -33,6 +33,7 @@ feature {NONE} -- Implementation
 			Result.put (",", SYM_JSON_ITEM_DELIMITER)
 			Result.put (": ", SYM_JSON_EQ)
 			Result.put ("%"", Sym_json_attribute_name_delimiter)
+			Result.put ("_type", Sym_json_type_attribute_name)
 		end
 
 	tags: HASH_TABLE[STRING, INTEGER]

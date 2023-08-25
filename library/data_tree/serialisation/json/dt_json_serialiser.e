@@ -45,6 +45,19 @@ feature -- Visitor
 				start_object_item (a_node, depth)
 			end
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + format_item (FMT_NEWLINE))
+
+			-- if type marking on, output an attribute of the form "_type": "XXXX",
+			if full_type_marking_on then
+				-- output: indent "_type":
+				last_result.append (create_indent ((depth+1)//2 + multiple_attr_count))
+				last_result.append (format_attr_name (symbol (Sym_json_type_attribute_name)))
+				last_result.append (symbol (SYM_JSON_EQ))
+
+				-- output the value
+				last_result.append (primitive_value_to_json_string (a_node.im_type_name))
+				last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
+				last_result.append (format_item (FMT_NEWLINE))
+			end
 		end
 
 	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
@@ -62,7 +75,7 @@ feature -- Visitor
 		do
 			-- output: indent "$attr_name":
 			last_result.append (create_indent (depth//2 + multiple_attr_count))
-			last_result.append (symbol (Sym_json_attribute_name_delimiter) + a_node.im_attr_name + symbol (Sym_json_attribute_name_delimiter))
+			last_result.append (format_attr_name (a_node.im_attr_name))
 			last_result.append (symbol (SYM_JSON_EQ))
 
 			-- if it is a container, first output typing info, if option on
@@ -220,11 +233,14 @@ feature {NONE} -- Implementation
 	start_object_item (a_node: DT_OBJECT_ITEM; depth: INTEGER)
 			-- start serialising a DT_OBJECT_ITEM
 		do
+			-- indent
+			if last_result.item(last_result.count).out.is_equal (format_item (FMT_NEWLINE)) then
+				last_result.append (create_indent (depth//2 + multiple_attr_count))
+			end
+
 			-- for containers contianing primitive types, put out the key as if it were an attribute name (JSON doesn't distinguish between hash
 			-- keys and proper attribute names)
 			if a_node.is_addressable then
-				-- indent
-				last_result.append (create_indent (depth//2 + multiple_attr_count))
 				if not a_node.id.is_integer then
 					last_result.append (format_attr_name (clean (a_node.id)))
 					last_result.append (symbol (SYM_JSON_EQ))
@@ -235,6 +251,7 @@ feature {NONE} -- Implementation
 	end_object_item (a_node: DT_OBJECT_ITEM; depth: INTEGER)
 			-- end serialising a DT_OBJECT_ITEM
 		do
+			-- determine whether to putput a comma or not
 			if attached a_node.parent as att_dt_attr and then (att_dt_attr.is_container_type and then att_dt_attr.last_child /= a_node or else
 				not att_dt_attr.is_container_type and then attached att_dt_attr.parent as att_dt_obj and then att_dt_obj.last /= att_dt_attr)
 			then
@@ -246,8 +263,7 @@ feature {NONE} -- Implementation
 	format_attr_name (an_attr_name: STRING): STRING
 			-- from a normal attribute name, generate the JSON formatting, i.e. with enclosing ""
 		do
-			create Result.make_empty
-			Result.append (symbol (Sym_json_attribute_name_delimiter) + an_attr_name + symbol (Sym_json_attribute_name_delimiter))
+			Result := symbol (Sym_json_attribute_name_delimiter) + an_attr_name + symbol (Sym_json_attribute_name_delimiter)
 		end
 
 	primitive_value_to_json_string (a_prim_val: ANY): STRING
