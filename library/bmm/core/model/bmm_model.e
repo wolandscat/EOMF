@@ -412,7 +412,9 @@ feature -- Status Report
 			Sub_class_valid: has_class_definition (a_class_name)
 			Parent_class_valid: has_class_definition (a_parent_class_name)
 		do
-			Result := class_definition (type_name_to_class_key (a_class_name)).all_ancestor_classes.has (a_parent_class_name.as_upper)
+			Result := across class_definition (type_name_to_class_key (a_class_name)).all_ancestor_classes as anc_class_csr some
+							anc_class_csr.item.is_case_insensitive_equal (a_parent_class_name)
+						end
 		end
 
 	has_property_path (a_type_name, a_prop_path: STRING): BOOLEAN
