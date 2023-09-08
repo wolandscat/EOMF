@@ -12,7 +12,7 @@ class BMM_ENUMERATION_STRING
 inherit
 	BMM_ENUMERATION
 		redefine
-			item_values, set_item_names
+			item_values, set_item_names, has_value
 		end
 
 create
@@ -25,6 +25,18 @@ feature -- Access
 		attribute
 			create Result.make (0)
 			Result.compare_objects
+		end
+
+feature -- Status Report
+
+	has_value (v: ANY): BOOLEAN
+			-- True if `item_values` has an item whose internal value is equal to `v`
+		do
+			check attached {STRING} v as str then
+				Result := across item_values as item_values_csr some
+					item_values_csr.item.value.is_case_insensitive_equal (str)
+				end
+			end
 		end
 
 feature -- Modification

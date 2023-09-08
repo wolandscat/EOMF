@@ -44,7 +44,6 @@ feature -- Access
 			-- OPTIONAL list of item values; must be of same length as `item_names'
 		attribute
 			create Result.make (0)
-			Result.compare_objects
 		end
 
 	name_map: HASH_TABLE [STRING, STRING]
