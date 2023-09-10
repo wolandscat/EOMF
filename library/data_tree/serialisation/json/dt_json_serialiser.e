@@ -73,49 +73,55 @@ feature -- Visitor
 	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising a DT_ATTRIBUTE_NODE
 		do
-			-- output: indent "$attr_name":
-			last_result.append (create_indent (depth//2 + multiple_attr_count))
-			last_result.append (format_attr_name (a_node.im_attr_name))
-			last_result.append (symbol (SYM_JSON_EQ))
+			-- don't output anything if nested - generate nested keyed objects only
+			if not a_node.is_nested then
+				-- output: indent "$attr_name":
+				last_result.append (create_indent (depth//2 + multiple_attr_count))
+				last_result.append (format_attr_name (a_node.im_attr_name))
+				last_result.append (symbol (SYM_JSON_EQ))
 
-			-- if it is a container, first output typing info, if option on
-			-- then '['
-			if a_node.is_container_type then
-				multiple_attr_count := multiple_attr_count + 1
+				-- if it is a container, first output typing info, if option on
+				-- then '['
+				if a_node.is_container_type then
+					multiple_attr_count := multiple_attr_count + 1
 
-				-- look into the objects in the container; if it turns out to be a HASH_TABLE,
-				-- i.e. with real hash keys (not just numbers) we need to put out another SYM_JSON_START_OBJECT
-				-- token (JSON is very dumb about hash maps)
-				if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
-					last_result.append (symbol (SYM_JSON_START_OBJECT))
-				else
-					last_result.append (symbol (SYM_JSON_START_ARRAY))
+					-- look into the objects in the container; if it turns out to be a HASH_TABLE,
+					-- i.e. with real hash keys (not just numbers) we need to put out another SYM_JSON_START_OBJECT
+					-- token (JSON is very dumb about hash maps)
+					if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
+						last_result.append (symbol (SYM_JSON_START_OBJECT))
+					else
+						last_result.append (symbol (SYM_JSON_START_ARRAY))
+					end
+					last_result.append (format_item (FMT_NEWLINE))
 				end
-				last_result.append (format_item (FMT_NEWLINE))
 			end
 		end
 
 	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
-			if a_node.is_container_type then
-				multiple_attr_count := multiple_attr_count - 1
+			-- don't output anything if nested - generate nested keyed objects only
+			if not a_node.is_nested then
+				if a_node.is_container_type then
+					multiple_attr_count := multiple_attr_count - 1
 
-				-- output the indent
-				last_result.append (create_indent (depth//2 + multiple_attr_count))
+					-- output the indent
+					last_result.append (create_indent (depth//2 + multiple_attr_count))
 
-				-- look into the objects in the container; if it turns out to be a HASH_TABLE,
-				-- i.e. with real hash keys (not just numbers) we need to put out another SYM_JSON_END_OBJECT
-				-- token (JSON is very dumb about hash maps)
-				if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
-					last_result.append (symbol (SYM_JSON_END_OBJECT))
-				else
-					last_result.append (symbol (SYM_JSON_END_ARRAY))
+					-- look into the objects in the container; if it turns out to be a HASH_TABLE,
+					-- i.e. with real hash keys (not just numbers) we need to put out another SYM_JSON_END_OBJECT
+					-- token (JSON is very dumb about hash maps)
+					if not a_node.is_empty and then a_node.first_child.is_addressable and then not a_node.first_child.id.is_integer then
+						last_result.append (symbol (SYM_JSON_END_OBJECT))
+					else
+						last_result.append (symbol (SYM_JSON_END_ARRAY))
+					end
+					if attached a_node.parent as att_dt_obj and then att_dt_obj.last /= a_node then
+						last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
+					end
+					last_result.append (format_item (FMT_NEWLINE))
 				end
-				if attached a_node.parent as att_dt_obj and then att_dt_obj.last /= a_node then
-					last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
-				end
-				last_result.append (format_item (FMT_NEWLINE))
 			end
 		end
 

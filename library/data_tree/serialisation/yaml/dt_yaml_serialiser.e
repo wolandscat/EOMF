@@ -67,28 +67,34 @@ feature -- Visitor
 	start_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- start serialising a DT_ATTRIBUTE_NODE
 		do
-			-- output: indent, if not the first line of a new complex object where a '  - '
-			-- sequence marker has just been output
-			if not entered_anonymous_complex_object then
-				last_result.append (create_indent (depth//2 + multiple_attr_count + addressable_complex_object_count))
-			else
-				entered_anonymous_complex_object := False
-			end
-			-- output: $attr_name:
-			last_result.append (a_node.im_attr_name)
-			last_result.append (symbol (SYM_YAML_EQ))
+			-- don't output anything if nested - generate nested keyed objects only
+			if not a_node.is_nested then
+				-- output: indent, if not the first line of a new complex object where a '  - '
+				-- sequence marker has just been output
+				if not entered_anonymous_complex_object then
+					last_result.append (create_indent (depth//2 + multiple_attr_count + addressable_complex_object_count))
+				else
+					entered_anonymous_complex_object := False
+				end
+				-- output: $attr_name:
+				last_result.append (a_node.im_attr_name)
+				last_result.append (symbol (SYM_YAML_EQ))
 
-			if a_node.is_container_type then
-				multiple_attr_count := multiple_attr_count + 1
-				last_result.append (format_item (FMT_NEWLINE))
+				if a_node.is_container_type then
+					multiple_attr_count := multiple_attr_count + 1
+					last_result.append (format_item (FMT_NEWLINE))
+				end
 			end
 		end
 
 	end_attribute_node (a_node: DT_ATTRIBUTE; depth: INTEGER)
 			-- end serialising an DT_ATTRIBUTE_NODE
 		do
-			if a_node.is_container_type then
-				multiple_attr_count := multiple_attr_count - 1
+			-- don't output anything if nested - generate nested keyed objects only
+			if not a_node.is_nested then
+				if a_node.is_container_type then
+					multiple_attr_count := multiple_attr_count - 1
+				end
 			end
 		end
 
