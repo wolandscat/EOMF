@@ -78,8 +78,11 @@ feature {NONE} -- Definitions
 			Result.extend (({ISO8601_TIME}).type_id)
 			Result.extend (({ISO8601_DURATION}).type_id)
 
-			Result.extend (({TERMINOLOGY_CODE}).type_id)
-			Result.extend (({URI}).type_id)
+	--		Result.extend (({TERMINOLOGY_CODE}).type_id)
+	--		Result.extend (({URI}).type_id)
+	--		Result.extend (({UUID}).type_id)
+	--		Result.extend (({ISO_OID}).type_id)
+	--		Result.extend (({INTERNET_ID}).type_id)
 		end
 
 	dt_primitive_sequence_types: ARRAYED_LIST [INTEGER]
@@ -119,8 +122,11 @@ feature {NONE} -- Definitions
 			Result.extend (({SEQUENCE [ISO8601_TIME]}).type_id)
 			Result.extend (({SEQUENCE [ISO8601_DURATION]}).type_id)
 
-			Result.extend (({SEQUENCE [TERMINOLOGY_CODE]}).type_id)
-			Result.extend (({SEQUENCE [URI]}).type_id)
+	--		Result.extend (({SEQUENCE [TERMINOLOGY_CODE]}).type_id)
+	--		Result.extend (({SEQUENCE [URI]}).type_id)
+	--		Result.extend (({SEQUENCE [UUID]}).type_id)
+	--		Result.extend (({SEQUENCE [ISO_OID]}).type_id)
+	--		Result.extend (({SEQUENCE [INTERNET_ID]}).type_id)
 		end
 
 	dt_primitive_interval_types: ARRAYED_LIST [INTEGER]
@@ -361,13 +367,24 @@ end
 		end
 
 	dt_dynamic_type_from_string (a_type_str: STRING): INTEGER
-			-- generates an attached type_id unless `a_type_str' is of form
-			-- "attached T"
+			-- generates an attached type_id or else 0 if:
+			-- 1. `a_type_str' is not a valid Eiffel type string
+			-- 2. `a_type_str' isn't the name of a type compiled in the system
+			-- 3. `a_type_str' is of form "attached T"
+		require
+			is_valid_type_string (a_type_str)
+		local
+			eif_tid: INTEGER
 		do
 			if not dt_dynamic_types.has (a_type_str) then
-				dt_dynamic_types.put (dynamic_type_from_string (a_type_str), a_type_str)
+				eif_tid := dynamic_type_from_string (a_type_str)
+				if eif_tid /= -1 then
+					dt_dynamic_types.put (eif_tid, a_type_str)
+					Result := eif_tid
+				end
+			else
+				Result := dt_dynamic_types.item (a_type_str)
 			end
-			Result := dt_dynamic_types.item (a_type_str)
 		end
 
 feature -- Status Report

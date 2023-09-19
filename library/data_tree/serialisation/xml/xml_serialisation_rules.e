@@ -95,27 +95,31 @@ feature -- Access
 				-- we do the creation here, because this object may have been read from a text file
 				-- and there is no guarantee of make having been run. A slightly cleaner approach
 				-- would be to make it DT_CONVERTIBLE and then a make routine can be called on it
-				type_tid := dt_dynamic_type_from_string (a_type_name)
+				if is_valid_type_string (a_type_name) then
+					type_tid := dt_dynamic_type_from_string (a_type_name)
 
-				-- go through all the rules, since the type we are looking for might inherit
-				-- from more than one of them.
-				across im_class_rules as class_rules_csr loop
-					rule_type_tid := dt_dynamic_type_from_string (class_rules_csr.key)
-					if rule_type_tid >= 0 and then type_conforms_to (type_tid, rule_type_tid) then
+					if type_tid > 0 then
+						-- go through all the rules, since the type we are looking for might inherit
+						-- from more than one of them.
+						across im_class_rules as class_rules_csr loop
+							rule_type_tid := dt_dynamic_type_from_string (class_rules_csr.key)
+							if rule_type_tid >= 0 and then type_conforms_to (type_tid, rule_type_tid) then
+								if not im_class_flat_rules_by_type.has (a_type_name) then
+									im_class_flat_rules_by_type.put (class_rules_csr.item.deep_twin, a_type_name)
+								elseif attached im_class_flat_rules_by_type.item (a_type_name) as att_rules_for_type then
+									att_rules_for_type.merge (class_rules_csr.item)
+								else
+									im_class_flat_rules_by_type.force (class_rules_csr.item.deep_twin, a_type_name)
+								end
+							end
+						end
+
 						if not im_class_flat_rules_by_type.has (a_type_name) then
-							im_class_flat_rules_by_type.put (class_rules_csr.item.deep_twin, a_type_name)
-						elseif attached im_class_flat_rules_by_type.item (a_type_name) as att_rules_for_type then
-							att_rules_for_type.merge (class_rules_csr.item)
+							im_class_flat_rules_by_type.put (Void, a_type_name)
 						else
-							im_class_flat_rules_by_type.force (class_rules_csr.item.deep_twin, a_type_name)
+							Result := im_class_flat_rules_by_type.item (a_type_name)
 						end
 					end
-				end
-
-				if not im_class_flat_rules_by_type.has (a_type_name) then
-					im_class_flat_rules_by_type.put (Void, a_type_name)
-				else
-					Result := im_class_flat_rules_by_type.item (a_type_name)
 				end
 			end
 		end

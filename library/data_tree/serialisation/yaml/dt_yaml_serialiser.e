@@ -246,7 +246,7 @@ feature {NONE} -- Implementation
 	primitive_value_to_yaml_string (a_prim_val: ANY): STRING
 			-- generate a string, including YAML delimiters, e.g. "", '' for strings and chars.
 		do
-			if attached {STRING_GENERAL} a_prim_val then
+			if attached {STRING_GENERAL} a_prim_val or attached {URI} a_prim_val or attached {UID} a_prim_val then
 				Result := "%"" + a_prim_val.out + "%""
 			elseif attached {CHARACTER} a_prim_val or attached {CHARACTER_32} a_prim_val then
 				Result := a_prim_val.out
@@ -264,6 +264,13 @@ feature {NONE} -- Implementation
 					if (attached {REAL_32} a_prim_val or attached {REAL_64} a_prim_val) and then Result.index_of ('.', 1) = 0 then
 						Result.append (".0")
 					end
+
+					-- YAML has to have scientific format numbers as strings
+					if Result.has_substring ("e+") then
+						Result.prepend ("%"")
+						Result.append ("%"")
+					end
+
 				end
 			end
 		end

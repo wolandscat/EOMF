@@ -20,6 +20,11 @@ inherit
 			{NONE} all
 		end
 
+	DT_DEFINITIONS
+		export
+			{NONE} all
+		end
+
 	STRING_UTILITIES
 		export
 			{NONE} all
@@ -51,7 +56,7 @@ feature -- Visitor
 
 			-- output the type information if required, then the opening '<'
 			if a_node.is_typed and (a_node.type_visible or full_type_marking_on or a_node.is_root and output_typed_encapsulated) then
-				last_result.append ("(" + a_node.im_type_name + ")" + format_item (FMT_SPACE) + symbol(SYM_START_DBLOCK) + format_item (FMT_NEWLINE))
+				last_result.append ("(" + eiffel_to_standard_type_name (a_node.im_type_name) + ")" + format_item (FMT_SPACE) + symbol(SYM_START_DBLOCK) + format_item (FMT_NEWLINE))
 			elseif not a_node.is_root then
 				last_result.append (symbol(SYM_START_DBLOCK) + format_item(FMT_NEWLINE))
 			end

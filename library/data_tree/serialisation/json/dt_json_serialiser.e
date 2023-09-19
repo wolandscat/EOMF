@@ -25,6 +25,11 @@ inherit
 			{NONE} all
 		end
 
+	DT_DEFINITIONS
+		export
+			{NONE} all
+		end
+
 create
 	make
 
@@ -54,7 +59,7 @@ feature -- Visitor
 				last_result.append (symbol (SYM_JSON_EQ))
 
 				-- output the value
-				last_result.append (primitive_value_to_json_string (a_node.im_type_name))
+				last_result.append (primitive_value_to_json_string (eiffel_to_standard_type_name (a_node.im_type_name)))
 				last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
 				last_result.append (format_item (FMT_NEWLINE))
 			end
@@ -159,7 +164,7 @@ feature -- Visitor
 			str: STRING
 		do
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + "%N")
-			start_object_item (a_node, depth)
+	--		start_object_item (a_node, depth)
 			str := a_node.as_serialised_string (
 					agent primitive_value_to_json_string,
 					agent format_attr_name,
@@ -266,6 +271,7 @@ feature {NONE} -- Implementation
 			last_result.append (format_item (FMT_NEWLINE))
 		end
 
+
 	format_attr_name (an_attr_name: STRING): STRING
 			-- from a normal attribute name, generate the JSON formatting, i.e. with enclosing ""
 		do
@@ -275,7 +281,7 @@ feature {NONE} -- Implementation
 	primitive_value_to_json_string (a_prim_val: ANY): STRING
 			-- generate a string, including JSON delimiters, e.g. "", '' for strings and chars.
 		do
-			if attached {STRING_GENERAL} a_prim_val then
+			if attached {STRING_GENERAL} a_prim_val or attached {URI} a_prim_val or attached {UID} a_prim_val then
 				Result := "%"" + a_prim_val.out + "%""
 			elseif attached {CHARACTER} a_prim_val or attached {CHARACTER_32} a_prim_val then
 				Result := "%'" + a_prim_val.out + "%'"
@@ -287,13 +293,22 @@ feature {NONE} -- Implementation
 					Result := "%"" + (create {ISO8601_DURATION}.make_date_time_duration(a_dur)).as_string + "%""
 				elseif attached {DATE_TIME} a_prim_val as a_dt then
 					Result := "%"" + (create {ISO8601_DATE_TIME}.make_date_time(a_dt)).as_string + "%""
-				elseif attached {ISO8601_DURATION} a_prim_val or attached {ISO8601_DATE_TIME} a_prim_val or attached {ISO8601_DATE} a_prim_val or attached {ISO8601_TIME} a_prim_val then
+				elseif attached {ISO8601_DURATION} a_prim_val or attached {ISO8601_DATE_TIME} a_prim_val or
+						attached {ISO8601_DATE} a_prim_val or attached {ISO8601_TIME} a_prim_val then
 					Result := "%"" + a_prim_val.out + "%""
+
+				-- numbers
 				else
 					Result := a_prim_val.out.as_lower
 					-- FIXME: REAL.out is broken (still the case in Eiffel 6.6)
 					if (attached {REAL_32} a_prim_val or attached {REAL_64} a_prim_val) and then Result.index_of ('.', 1) = 0 then
 						Result.append(".0")
+					end
+
+					-- JSON has to have scientific format numbers as strings
+					if Result.has_substring ("e+") then
+						Result.prepend ("%"")
+						Result.append ("%"")
 					end
 				end
 			end

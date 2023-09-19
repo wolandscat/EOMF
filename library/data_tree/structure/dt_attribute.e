@@ -15,11 +15,6 @@ inherit
 			parent, representation
 		end
 
-	DT_DEFINITIONS
-		export
-			{NONE} all
-		end
-
 	ITERABLE [DT_OBJECT_ITEM]
 		undefine
 			is_equal
@@ -58,7 +53,7 @@ feature -- Initialisation
 			-- make as a container type attribute representing the implied attirbute of a container object, typically
 			-- called something like 'items', 'values', 'elements' etc
 		do
-			create representation.make_multiple (Container_attr_name)
+			create representation.make_multiple ({DT_DEFINITIONS}.Container_attr_name)
 			is_nested := True
 			representation.set_content (Current)
 		ensure
