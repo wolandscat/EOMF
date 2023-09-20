@@ -682,11 +682,12 @@ end
 												if field_conforms_to (dt_val_att_dyn_tid, fld_att_static_tid) then
 													set_reference_field (i, Result, a_dt_obj_leaf.value)
 
-												else -- take care of any type conversions required to match 'convert' statements in basic types
-													-- first check we do is if the DT object is an atom, but the Eiffel type is actually
-													-- a SEQUENCE; this can happen if the ODIN text does not follow the rules, and
-													-- uses e.g. xxx = <val> for a list containing one value, instead of xxx = <val, ...>,
-													-- which is the correct syntax; however, this is common, so we deal with it.
+												-- take care of any type conversions required to match 'convert' statements in basic types
+												-- first check we do is if the DT object is an atom, but the Eiffel type is actually
+												-- a SEQUENCE; this can happen if the ODIN text does not follow the rules, and
+												-- uses e.g. xxx = <val> for a list containing one value, instead of xxx = <val, ...>,
+												-- which is the correct syntax; however, this is common, so we deal with it.
+												else
 													if is_eiffel_container_type (fld_att_static_tid) then
 														set_eif_primitive_sequence_field (i, Result, fld_att_static_tid, a_dt_obj_leaf.value)
 													elseif attached cvt_dt_to_obj (a_dt_obj_leaf.value) as tc_val then
