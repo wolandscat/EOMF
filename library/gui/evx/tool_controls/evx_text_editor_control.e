@@ -62,6 +62,8 @@ feature {NONE}-- Initialization
 			source_text_agt := a_source_text_agt
 
 			create ev_root_container
+
+			create check_box_table.make(0)
 			create gui_controls.make (0)
 
 			-- ---------- text control -----------
@@ -95,16 +97,13 @@ feature -- Access
 
 	ev_root_container: EV_HORIZONTAL_BOX
 
-	show_line_numbers: BOOLEAN
-
-	text_filter_selected: BOOLEAN
-
 	source_text_agt: FUNCTION [ANY, TUPLE, detachable STRING]
 			-- agent that provides access to text
 
 feature -- Modification
 
-	add_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING_8; a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
+	add_button (an_active_pixmap, an_inactive_pixmap: detachable EV_PIXMAP; a_button_text, a_tooltip_text: detachable STRING_8;
+			a_do_action, a_stop_action: detachable PROCEDURE [ANY, TUPLE])
 			-- add an EVX button to the control panel, along with two agents for 'do' and 'stop' (the two button states)
 		local
 			evx_button: EVX_BUTTON
@@ -129,6 +128,23 @@ feature -- Modification
 			gui_controls.extend (evx_filter_cb)
 		end
 
+	add_check_box (a_text: STRING; a_tooltip_text: detachable STRING_8;
+			a_data_source_agent: FUNCTION [ANY, TUPLE, BOOLEAN];
+			a_on_select_agent: PROCEDURE [ANY, TUPLE [BOOLEAN]])
+				-- add a checkbox to the frame; state of the checkbox is available in `check_box_selected`
+		local
+			evx_cb: EVX_CHECK_BOX_CONTROL
+		do
+			create evx_cb.make_linked (a_text, a_tooltip_text, a_data_source_agent,
+				agent (cb_selected: BOOLEAN; agt: PROCEDURE [ANY, TUPLE [BOOLEAN]])
+					do
+						agt.call([cb_selected]); populate
+					end (?, a_on_select_agent))
+			evx_view_frame.extend (evx_cb.ev_data_control, False)
+			check_box_table.put(evx_cb, a_text)
+			gui_controls.extend (evx_cb)
+		end
+
 feature -- Status Report
 
 	is_displayed: BOOLEAN
@@ -141,6 +157,17 @@ feature -- Status Report
 			-- True if no text in this editor
 		do
 			Result := ev_text.text_length = 0
+		end
+
+	show_line_numbers: BOOLEAN
+
+	text_filter_selected: BOOLEAN
+
+	check_box_selected (a_key: STRING): BOOLEAN
+		do
+			if check_box_table.has(a_key) and then attached check_box_table.item(a_key) as evx_cb_ctl then
+				Result := evx_cb_ctl.is_selected
+			end
 		end
 
 feature -- Commands
@@ -250,6 +277,8 @@ feature {NONE} -- Implementation
 
 			end
 		end
+
+	check_box_table: STRING_TABLE [EVX_CHECK_BOX_CONTROL]
 
 end
 
