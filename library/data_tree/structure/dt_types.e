@@ -79,7 +79,7 @@ feature {NONE} -- Definitions
 			Result.extend (({ISO8601_DURATION}).type_id)
 
 	--		Result.extend (({TERMINOLOGY_CODE}).type_id)
-	--		Result.extend (({URI}).type_id)
+			Result.extend (({URI}).type_id)
 	--		Result.extend (({UUID}).type_id)
 	--		Result.extend (({ISO_OID}).type_id)
 	--		Result.extend (({INTERNET_ID}).type_id)
@@ -123,7 +123,7 @@ feature {NONE} -- Definitions
 			Result.extend (({SEQUENCE [ISO8601_DURATION]}).type_id)
 
 	--		Result.extend (({SEQUENCE [TERMINOLOGY_CODE]}).type_id)
-	--		Result.extend (({SEQUENCE [URI]}).type_id)
+			Result.extend (({SEQUENCE [URI]}).type_id)
 	--		Result.extend (({SEQUENCE [UUID]}).type_id)
 	--		Result.extend (({SEQUENCE [ISO_OID]}).type_id)
 	--		Result.extend (({SEQUENCE [INTERNET_ID]}).type_id)
