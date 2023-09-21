@@ -12,7 +12,7 @@ class BMM_ENUMERATION_INTEGER
 inherit
 	BMM_ENUMERATION
 		redefine
-			item_values, set_item_names
+			item_values, set_item_names, item_value_literals
 		end
 
 create
@@ -25,6 +25,15 @@ feature -- Access
 		attribute
 			create Result.make (0)
 			Result.compare_objects
+		end
+
+	item_value_literals:  ARRAYED_LIST [INTEGER]
+			-- list of literal form of item values; must be of same length as `item_names'
+		do
+			create Result.make (0)
+			across item_values as item_val_csr loop
+				Result.extend (item_val_csr.item.value)
+			end
 		end
 
 feature -- Modification

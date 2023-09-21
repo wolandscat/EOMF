@@ -46,6 +46,15 @@ feature -- Access
 			create Result.make (0)
 		end
 
+	item_value_literals:  ARRAYED_LIST [ANY]
+			-- list of literal form of item values; must be of same length as `item_names'
+		do
+			create Result.make (0)
+			across item_values as item_val_csr loop
+				Result.extend (item_val_csr.item.value)
+			end
+		end
+
 	name_map: HASH_TABLE [STRING, STRING]
 			-- map of item_values (string form) to item_names
 		do
