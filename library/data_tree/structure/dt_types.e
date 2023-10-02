@@ -187,59 +187,59 @@ feature {NONE} -- Definitions
 			Result.extend (({SEQUENCE [INTERVAL [ISO8601_DURATION]]}).type_id)
 		end
 
-	odin_inferred_primitive_atomic_types: ARRAYED_LIST [INTEGER]
-			-- list of all primitive atomic types whose Eiffel type can safely be inferred from ODIN text,
-			-- without type information being explicitly supplied. E.g. in ODIN:
-			--  "some_int = <123>" ==> infer INTEGER, i.e. INTEGER_32
-			--  "some_real = <1.5>" ==> infer REAL, i.e. REAL_32
-			--  "some_string = <"absndf">" ==> infer STRING, i.e. STRING_8
-			-- etc
-		once
-			create Result.make (0)
-			Result.extend (({INTEGER}).type_id)
-			Result.extend (({REAL}).type_id)
-			Result.extend (({BOOLEAN}).type_id)
-			Result.extend (({CHARACTER}).type_id)
-			Result.extend (({STRING}).type_id)
-			Result.extend (({ISO8601_DATE}).type_id)
-			Result.extend (({ISO8601_DATE_TIME}).type_id)
-			Result.extend (({ISO8601_TIME}).type_id)
-			Result.extend (({ISO8601_DURATION}).type_id)
-		end
+--	odin_inferred_primitive_atomic_types: ARRAYED_LIST [INTEGER]
+--			-- list of all primitive atomic types whose Eiffel type can safely be inferred from ODIN text,
+--			-- without type information being explicitly supplied. E.g. in ODIN:
+--			--  "some_int = <123>" ==> infer INTEGER, i.e. INTEGER_32
+--			--  "some_real = <1.5>" ==> infer REAL, i.e. REAL_32
+--			--  "some_string = <"absndf">" ==> infer STRING, i.e. STRING_8
+--			-- etc
+--		once
+--			create Result.make (0)
+--			Result.extend (({INTEGER}).type_id)
+--			Result.extend (({REAL}).type_id)
+--			Result.extend (({BOOLEAN}).type_id)
+--			Result.extend (({CHARACTER}).type_id)
+--			Result.extend (({STRING}).type_id)
+--			Result.extend (({ISO8601_DATE}).type_id)
+--			Result.extend (({ISO8601_DATE_TIME}).type_id)
+--			Result.extend (({ISO8601_TIME}).type_id)
+--			Result.extend (({ISO8601_DURATION}).type_id)
+--		end
 
-	odin_inferred_primitive_sequence_types: ARRAYED_LIST [INTEGER]
-			-- list of all primitive sequence types whose Eiffel type can safely be inferred from ODIN text,
-			-- without type information being explicitly supplied. E.g. in ODIN:
-			--  "some_arr_list_of_int = <1, 2, 3>" ==> infer ARRAYED_LIST[INTEGER]
-			--  any SEQUENCE type declared in the object structured can be handled, because 'extend' works for
-			-- populating it.
-		once
-			create Result.make (0)
-			Result.extend (({SEQUENCE [INTEGER]}).type_id)
-			Result.extend (({SEQUENCE [REAL]}).type_id)
-			Result.extend (({SEQUENCE [BOOLEAN]}).type_id)
-			Result.extend (({SEQUENCE [CHARACTER]}).type_id)
-			Result.extend (({SEQUENCE [STRING]}).type_id)
-			Result.extend (({SEQUENCE [ISO8601_DATE]}).type_id)
-			Result.extend (({SEQUENCE [ISO8601_DATE_TIME]}).type_id)
-			Result.extend (({SEQUENCE [ISO8601_TIME]}).type_id)
-			Result.extend (({SEQUENCE [ISO8601_DURATION]}).type_id)
-		end
+--	odin_inferred_primitive_sequence_types: ARRAYED_LIST [INTEGER]
+--			-- list of all primitive sequence types whose Eiffel type can safely be inferred from ODIN text,
+--			-- without type information being explicitly supplied. E.g. in ODIN:
+--			--  "some_arr_list_of_int = <1, 2, 3>" ==> infer ARRAYED_LIST[INTEGER]
+--			--  any SEQUENCE type declared in the object structured can be handled, because 'extend' works for
+--			-- populating it.
+--		once
+--			create Result.make (0)
+--			Result.extend (({SEQUENCE [INTEGER]}).type_id)
+--			Result.extend (({SEQUENCE [REAL]}).type_id)
+--			Result.extend (({SEQUENCE [BOOLEAN]}).type_id)
+--			Result.extend (({SEQUENCE [CHARACTER]}).type_id)
+--			Result.extend (({SEQUENCE [STRING]}).type_id)
+--			Result.extend (({SEQUENCE [ISO8601_DATE]}).type_id)
+--			Result.extend (({SEQUENCE [ISO8601_DATE_TIME]}).type_id)
+--			Result.extend (({SEQUENCE [ISO8601_TIME]}).type_id)
+--			Result.extend (({SEQUENCE [ISO8601_DURATION]}).type_id)
+--		end
 
-	odin_inferred_primitive_interval_types: ARRAYED_LIST [INTEGER]
-			-- list of all primitive interval types whose Eiffel type can safely be inferred from ODIN text,
-			-- without type information being explicitly supplied. E.g. in ODIN:
-			--  "some_ivl_of_int = <|1..3|>" ==> infer INTERVAL[INTEGER]
-			-- etc
-		once
-			create Result.make (0)
-			Result.extend (({INTERVAL [INTEGER]}).type_id)
-			Result.extend (({INTERVAL [REAL]}).type_id)
-			Result.extend (({INTERVAL [ISO8601_DATE]}).type_id)
-			Result.extend (({INTERVAL [ISO8601_DATE_TIME]}).type_id)
-			Result.extend (({INTERVAL [ISO8601_TIME]}).type_id)
-			Result.extend (({INTERVAL [ISO8601_DURATION]}).type_id)
-		end
+--	odin_inferred_primitive_interval_types: ARRAYED_LIST [INTEGER]
+--			-- list of all primitive interval types whose Eiffel type can safely be inferred from ODIN text,
+--			-- without type information being explicitly supplied. E.g. in ODIN:
+--			--  "some_ivl_of_int = <|1..3|>" ==> infer INTERVAL[INTEGER]
+--			-- etc
+--		once
+--			create Result.make (0)
+--			Result.extend (({INTERVAL [INTEGER]}).type_id)
+--			Result.extend (({INTERVAL [REAL]}).type_id)
+--			Result.extend (({INTERVAL [ISO8601_DATE]}).type_id)
+--			Result.extend (({INTERVAL [ISO8601_DATE_TIME]}).type_id)
+--			Result.extend (({INTERVAL [ISO8601_TIME]}).type_id)
+--			Result.extend (({INTERVAL [ISO8601_DURATION]}).type_id)
+--		end
 
 feature -- Conversion
 
@@ -390,8 +390,7 @@ end
 feature -- Status Report
 
 	is_dt_primitive_atomic_type (a_type_id: INTEGER): BOOLEAN
-			-- True if one of the types STRING, INTEGER, REAL, BOOLEAN, CHARACTER,
-			-- DATE, TIME, DATE_TIME, DATE_TIME_DURATION
+			-- True if one of the types in `dt_primitive_atomic_types`
 		require
 			Type_valid: a_type_id >= 0
 		do
@@ -399,8 +398,7 @@ feature -- Status Report
 		end
 
 	is_dt_primitive_sequence_type (a_type_id: INTEGER): BOOLEAN
-			-- True if a_type_id conforms to SEQUENCE of STRING, INTEGER, REAL, BOOLEAN, CHARACTER,
-			-- DATE, TIME, DATE_TIME, DATE_TIME_DURATION, TERMINOLOGY_CODE, URI
+			-- True if a_type_id conforms to a type in `dt_primitive_sequence_types`
 		require
 			Type_valid: a_type_id >= 0
 		do
@@ -408,8 +406,7 @@ feature -- Status Report
 		end
 
 	is_dt_primitive_interval_type (a_type_id: INTEGER): BOOLEAN
-			-- True if a_type_id is one of the types INTERVAL of INTEGER, REAL,
-			-- DATE, TIME, DATE_TIME, DATE_TIME_DURATION
+			-- True if a_type_id is one of the types in `dt_primitive_interval_types`
 		require
 			Type_valid: a_type_id >= 0
 		do
@@ -521,19 +518,19 @@ debug ("DT-types")
 end
 		end
 
-	is_odin_inferred_primitive_sequence_type (a_type_id: INTEGER): BOOLEAN
-		local
-			att_type_id: INTEGER
-		do
-			att_type_id := attached_type (a_type_id)
-			Result := odin_inferred_primitive_sequence_types.has (att_type_id) or odin_inferred_primitive_sequence_conforming_types.has (att_type_id)
-			if not Result then
-				Result := across odin_inferred_primitive_sequence_types as seq_types_csr some field_conforms_to (att_type_id, seq_types_csr.item) end
-				if Result then
-					odin_inferred_primitive_sequence_conforming_types.put (odin_inferred_primitive_sequence_types.item, att_type_id)
-				end
-			end
-		end
+--	is_odin_inferred_primitive_sequence_type (a_type_id: INTEGER): BOOLEAN
+--		local
+--			att_type_id: INTEGER
+--		do
+--			att_type_id := attached_type (a_type_id)
+--			Result := odin_inferred_primitive_sequence_types.has (att_type_id) or odin_inferred_primitive_sequence_conforming_types.has (att_type_id)
+--			if not Result then
+--				Result := across odin_inferred_primitive_sequence_types as seq_types_csr some field_conforms_to (att_type_id, seq_types_csr.item) end
+--				if Result then
+--					odin_inferred_primitive_sequence_conforming_types.put (odin_inferred_primitive_sequence_types.item, att_type_id)
+--				end
+--			end
+--		end
 
 feature -- Modification
 
@@ -651,14 +648,14 @@ feature {NONE} -- Implementation
 			create Result.make(0)
 		end
 
-	odin_inferred_primitive_sequence_conforming_types: HASH_TABLE [INTEGER, INTEGER]
-			-- this table contains abstract DT primitive sequence types found in `odin_inferred_primitive_sequence_types'
-			-- keyed by concrete types which conform to them, e.g. LINKED_LIST [INTEGER] etc. It is populated
-			-- due to repeated calling, thus only contains type ids of types that actually get converted
-			-- into DT form.
-		once
-			create Result.make(0)
-		end
+--	odin_inferred_primitive_sequence_conforming_types: HASH_TABLE [INTEGER, INTEGER]
+--			-- this table contains abstract DT primitive sequence types found in `odin_inferred_primitive_sequence_types'
+--			-- keyed by concrete types which conform to them, e.g. LINKED_LIST [INTEGER] etc. It is populated
+--			-- due to repeated calling, thus only contains type ids of types that actually get converted
+--			-- into DT form.
+--		once
+--			create Result.make(0)
+--		end
 
 	dt_dynamic_types: HASH_TABLE [INTEGER, STRING]
 		once
