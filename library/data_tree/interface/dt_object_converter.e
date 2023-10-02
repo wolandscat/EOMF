@@ -45,7 +45,7 @@ feature -- Modification
 			-- This is only needed for functions that map types like TERMINOLOGY_CODE, URI, ISO8601 date/time types
 			-- to a different type that is considered a primitive in another type system
 		require
-			valid_dt_type: is_dt_primitive_type (dt_source_type_dyn_type)
+			valid_dt_type: is_any_dt_primitive_type (dt_source_type_dyn_type)
 		do
 			dt_to_obj_agents.put (a_cvt_agent, dt_source_type_dyn_type)
 		end

@@ -441,7 +441,7 @@ feature -- Status Report
 			Result := dt_primitive_sequence_conforming_type (attached_type (a_type_id)) /= 0
 		end
 
-	is_dt_primitive_type (a_type_id: INTEGER): BOOLEAN
+	is_any_dt_primitive_type (a_type_id: INTEGER): BOOLEAN
 		do
 			Result := is_dt_primitive_atomic_type (a_type_id) or is_dt_primitive_sequence_type (a_type_id) or is_dt_primitive_interval_type (a_type_id)
 		end
