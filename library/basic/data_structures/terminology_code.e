@@ -23,7 +23,7 @@ inherit
 		end
 
 create
-	default_create, make, make_from_string
+	default_create, make, make_from_string, make_with_version
 
 feature -- Definitions
 
@@ -31,9 +31,9 @@ feature -- Definitions
 
 	default_code_string: STRING = "000001"
 
-	version_left_delimiter: CHARACTER = '(' 
+	version_left_delimiter: CHARACTER = '('
 
-	version_right_delimiter: CHARACTER = ')' 
+	version_right_delimiter: CHARACTER = ')'
 
 	separator: STRING = "::"
 
