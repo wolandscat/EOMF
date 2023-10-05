@@ -150,6 +150,22 @@ feature -- Validation
 			Result := schema_bmm_ver.substring (1, schema_bmm_ver.index_of ('.', 1)-1).is_equal (Bmm_internal_version.substring (1, Bmm_internal_version.index_of ('.', 1)-1))
 		end
 
+	is_integer_type (a_type_name: STRING): BOOLEAN
+		local
+			lc_name: STRING
+		do
+			lc_name := a_type_name.as_lower
+			Result := lc_name.starts_with ("integer") or lc_name.is_equal ("int")
+		end
+
+	is_real_type (a_type_name: STRING): BOOLEAN
+		local
+			lc_name: STRING
+		do
+			lc_name := a_type_name.as_lower
+			Result := lc_name.starts_with ("real") or lc_name.is_equal ("float") or lc_name.is_equal ("double")
+		end
+
 feature -- Conversion
 
 	create_schema_id (a_model_publisher, a_schema_name, a_model_release: STRING): STRING

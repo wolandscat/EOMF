@@ -522,7 +522,20 @@ feature -- Conformance
 					else
 						Result := not valid_generic_type_name (an_anc_type)
 					end
+
+				-- check for well-known exceptions, including mathematical type promotions
+				else
+					Result := type_convertible_to (a_desc_type, an_anc_type)
 				end
+			end
+		end
+
+	type_convertible_to (a_desc_type, an_anc_type: STRING): BOOLEAN
+			-- check possibility of `a_desc_type' to be converted to `an_anc_type' by native means,
+			-- primarily mathematical type promotion
+		do
+			if is_integer_type (a_desc_type) and (is_real_type (an_anc_type) or is_integer_type (an_anc_type)) then
+				Result := True
 			end
 		end
 
