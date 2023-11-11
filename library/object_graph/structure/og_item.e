@@ -119,10 +119,19 @@ feature -- Modification
 		end
 
 	set_node_id (a_node_id: STRING)
+			-- Set node_id and also key in owning OG_ATTR hash table
 		require
 			Node_id_valid: not a_node_id.is_empty
+		local
+			old_id: STRING
 		do
+			old_id := node_id
 			node_id := a_node_id
+
+			-- now fix the node id
+			if attached parent as og_attr then
+				parent.replace_node_id (old_id, a_node_id)
+			end
 		end
 
 	set_parent (a_node: like parent)
