@@ -1,6 +1,10 @@
 note
 	component:   "Eiffel Object Modelling Framework"
-	description: "Serialise DT structure to YAML syntax"
+	description: "[
+				  Serialise DT structure to YAML syntax.
+				  TODO: synchronise code here with DT_JSON__SERIALISER to get same processing
+				  of TERMINOLOGY_CODE, type marking etc.
+				  ]"
 	keywords:    "Data tree, YAML, serialisation"
 	author:      "Thomas Beale <thomas.beale@oceaninformatics.com>"
 	support:     "http://www.openehr.org/issues/browse/AWB"
