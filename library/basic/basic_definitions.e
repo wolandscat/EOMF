@@ -25,13 +25,18 @@ feature -- Definitions
 			end
 		end
 
-	format_real (a_real: REAL): STRING
+	Max_decimal_places: INTEGER = 5
+			-- maximum number of decimal places to show in any real/double
+
+	format_real (a_real: DOUBLE): STRING
 			-- add the missing ".0" to integral REAL, otherwise don't change
+		local
+			fmt: FORMAT_DOUBLE
 		do
-			Result := a_real.out
-			if Result.index_of ('.', 1) = 0 then
-				Result.append (".0")
-			end
+			create fmt.make(a_real.floor.out.count + Max_decimal_places, Max_decimal_places)
+			fmt.hide_trailing_zeros
+			Result := fmt.formatted(a_real)
+			Result.left_adjust
 		end
 
 	Terminology_separator: STRING = "::"

@@ -9,6 +9,12 @@ note
 
 class STRING_UTILITIES
 
+inherit
+	BASIC_DEFINITIONS
+		export
+			{NONE} all
+		end
+
 feature -- Definitions
 
 	Default_quote_characters: STRING = "nrt\%"'"
@@ -25,12 +31,12 @@ feature -- Formatting
 				Result := (create {ISO8601_DURATION}.make_date_time_duration(a_dur)).as_string
 			elseif attached {DATE_TIME} a_prim_val as a_dt then
 				Result := (create {ISO8601_DATE_TIME}.make_date_time(a_dt)).as_string
+			elseif attached {REAL_32} a_prim_val as r then
+				Result := format_real(r)
+			elseif attached {REAL_64} a_prim_val as r then
+				Result := format_real(r)
 			else
 				Result := a_prim_val.out
-				-- FIXME: REAL.out is broken (still the case in Eiffel 6.6)
-				if (attached {REAL_32} a_prim_val or attached {REAL_64} a_prim_val) and then Result.index_of ('.', 1) = 0 then
-					Result.append(".0")
-				end
 			end
 		end
 
