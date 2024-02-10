@@ -11,6 +11,11 @@ class
 	FILE_CONTEXT
 
 inherit
+	KL_SHARED_FILE_SYSTEM
+		export
+			{NONE} all
+		end
+
 	UC_IMPORTED_UTF8_ROUTINES
 
 	SHARED_MESSAGE_DB
@@ -23,16 +28,12 @@ inherit
 			{NONE} all
 		end
 
-feature -- Definitions
-
-	Default_current_directory: STRING = "."
-
 feature -- Access
 
 	current_full_path: STRING
 			-- derive from file name and path
 		do
-			Result := current_directory + operating_environment.Directory_separator.out + current_file_name
+			Result :=  file_system.pathname (current_directory, current_file_name)
 		end
 
 	current_directory: STRING
@@ -245,7 +246,7 @@ feature -- Commands
 				file_timestamp := in_file.date
 				in_file.open_read
 				in_file.read_stream (in_file.count)
-				 
+
 				str := in_file.last_string
 				if utf8.is_endian_detection_character (str.item (1), str.item (2), str.item (3)) then
 					file_content := str.substring (UTF8_bom_length + 1, str.count)
@@ -305,18 +306,9 @@ feature -- Commands
 			-- set context to `a_file_path'
 		require
 			a_file_path_valid: not a_file_path.is_empty
-		local
-			sep_pos: INTEGER
 		do
-			sep_pos := a_file_path.last_index_of(operating_environment.Directory_separator, a_file_path.count)
-
-			if sep_pos > 0 then -- there is a directory
-				current_directory := a_file_path.substring(1, sep_pos - 1)
-				current_file_name := a_file_path.substring(sep_pos + 1, a_file_path.count)
-			else
-				current_directory := Default_current_directory
-				current_file_name := a_file_path
-			end
+			current_directory := file_system.dirname (a_file_path)
+			current_file_name := file_system.basename (a_file_path)
 		end
 
 	set_current_file_name (a_file_name: STRING)
