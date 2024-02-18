@@ -52,14 +52,14 @@ feature -- Visitor
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + format_item (FMT_NEWLINE))
 
 			-- if type marking on, output an attribute of the form "_type": "XXXX",
-			if full_type_marking_on then
+			if full_type_marking_on and not is_eif_type_ignored_in_json (a_node.im_type_name) then
 				-- output: indent "_type":
 				last_result.append (create_indent ((depth+1)//2 + multiple_attr_count))
 				last_result.append (format_attr_name (symbol (Sym_json_type_attribute_name)))
 				last_result.append (symbol (SYM_JSON_EQ))
 
 				-- output the value
-				last_result.append (primitive_value_to_json_string (eiffel_to_standard_type_name (a_node.im_type_name)))
+				last_result.append (primitive_value_to_json_string (eiffel_to_json_type_name (a_node.im_type_name)))
 				last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
 				last_result.append (format_item (FMT_NEWLINE))
 			end
