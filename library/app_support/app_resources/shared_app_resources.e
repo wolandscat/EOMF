@@ -80,8 +80,7 @@ feature -- Access
 			-- place for config files common to multiple applications
 			-- UNIX only
 		once
-			create Result.make(0)
-			Result.append (execution_environment.root_directory_name + "etc")
+			Result := file_system.pathname (execution_environment.root_directory_name, "etc")
 		end
 
 	fallback_user_config_file_directory: STRING
