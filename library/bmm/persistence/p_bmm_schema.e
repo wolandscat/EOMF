@@ -426,85 +426,91 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					end
 			)
 
-			-- compute ancestors index:
-			-- pass 1: add class direct ancestors
-			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS)
-					local
-						anc_list: ARRAYED_SET [STRING]
-					do
-						create anc_list.make (0)
-						anc_list.compare_objects
-						anc_list.merge (a_class_def.ancestor_type_names)
-						ancestors_index.put (anc_list, a_class_def.name)
-					end
-			)
+			-- for all classes, validate references
+			do_all_classes (agent (a_class_def: P_BMM_CLASS) do validate_class_refs (a_class_def) end)
 
-			-- pass 2: add indirect ancestors
-			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS)
-					local
-						anc_list_copy: ARRAYED_SET [STRING]
-					do
-						if attached ancestors_index.item (a_class_def.name) as anc_list then
-							-- create a copy for iteration purposes
-							anc_list_copy := anc_list.deep_twin
-							across anc_list_copy as anc_copy_csr loop
-								if ancestors_index.has (anc_copy_csr.item) and then attached ancestors_index.item (anc_copy_csr.item) as iter_anc_list then
-									anc_list.merge (iter_anc_list)
+			if not has_errors then
+				-- compute ancestors index:
+				-- pass 1: add class direct ancestors
+				do_all_classes (
+					agent (a_class_def: P_BMM_CLASS)
+						local
+							anc_list: ARRAYED_SET [STRING]
+						do
+							create anc_list.make (0)
+							anc_list.compare_objects
+							anc_list.merge (a_class_def.ancestor_type_names)
+							ancestors_index.put (anc_list, a_class_def.name)
+						end
+				)
+
+				-- pass 2: add indirect ancestors
+				do_all_classes (
+					agent (a_class_def: P_BMM_CLASS)
+						local
+							anc_list_copy: ARRAYED_SET [STRING]
+						do
+							if attached ancestors_index.item (a_class_def.name) as anc_list then
+								-- create a copy for iteration purposes
+								anc_list_copy := anc_list.deep_twin
+								across anc_list_copy as anc_copy_csr loop
+									if ancestors_index.has (anc_copy_csr.item) and then attached ancestors_index.item (anc_copy_csr.item) as iter_anc_list then
+										anc_list.merge (iter_anc_list)
+									end
 								end
 							end
 						end
-					end
-			)
+				)
 
-			-- check that RM shema release is valid
-			if not valid_standard_version (rm_release) then
-				add_error ({BMM_MESSAGES_IDS}.ec_BMM_RMREL, <<schema_id, rm_release>>)
-			end
+				-- check that RM shema release is valid
+				if not valid_standard_version (rm_release) then
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_RMREL, <<schema_id, rm_release>>)
+				end
 
-			-- check that no duplicate class names are found in packages
-			create package_classes.make (0)
-			across canonical_packages as pkgs_csr loop
-				pkgs_csr.item.do_recursive_classes (
-					agent (a_pkg: P_BMM_PACKAGE; a_class_name: STRING; pkg_class_list: HASH_TABLE [STRING, STRING])
+				-- check that no duplicate class names are found in packages
+				create package_classes.make (0)
+				across canonical_packages as pkgs_csr loop
+					pkgs_csr.item.do_recursive_classes (
+						agent (a_pkg: P_BMM_PACKAGE; a_class_name: STRING; pkg_class_list: HASH_TABLE [STRING, STRING])
+							local
+								cname: STRING
+							do
+								cname := a_class_name.as_lower
+								if pkg_class_list.has (cname) and then attached pkg_class_list.item (cname) as cl_item then
+									add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
+								else
+									pkg_class_list.put (a_pkg.name, cname)
+								end
+							end (?, ?, package_classes)
+					)
+				end
+
+				-- check that every class is in a package
+				create class_names.make (0)
+				class_names.compare_objects
+				do_all_classes (
+					agent (a_class_def: P_BMM_CLASS; pkg_class_list: HASH_TABLE [STRING, STRING]; class_name_list: ARRAYED_LIST [STRING])
 						local
 							cname: STRING
 						do
-							cname := a_class_name.as_lower
-							if pkg_class_list.has (cname) and then attached pkg_class_list.item (cname) as cl_item then
-								add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLPKDP, <<schema_id, a_class_name, a_pkg.name, cl_item>>)
+							cname := a_class_def.name.as_lower
+							if not pkg_class_list.has (cname) then
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGID, <<schema_id, a_class_def.name>>)
+							elseif class_name_list.has (cname) then
+								add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLDUP, <<schema_id, a_class_def.name>>)
 							else
-								pkg_class_list.put (a_pkg.name, cname)
+								class_name_list.extend (cname)
 							end
-						end (?, ?, package_classes)
+						end (?, package_classes, class_names)
 				)
+
+				-- for all classes, validate all properties
+				do_all_classes (agent (a_class_def: P_BMM_CLASS) do validate_class (a_class_def) end)
 			end
-
-			-- check that every class is in a package
-			create class_names.make (0)
-			class_names.compare_objects
-			do_all_classes (
-				agent (a_class_def: P_BMM_CLASS; pkg_class_list: HASH_TABLE [STRING, STRING]; class_name_list: ARRAYED_LIST [STRING])
-					local
-						cname: STRING
-					do
-						cname := a_class_def.name.as_lower
-						if not pkg_class_list.has (cname) then
-							add_error ({BMM_MESSAGES_IDS}.ec_BMM_PKGID, <<schema_id, a_class_def.name>>)
-						elseif class_name_list.has (cname) then
-							add_error ({BMM_MESSAGES_IDS}.ec_BMM_CLDUP, <<schema_id, a_class_def.name>>)
-						else
-							class_name_list.extend (cname)
-						end
-					end (?, package_classes, class_names)
-			)
-
-			-- for all classes, validate all properties
-			do_all_classes (agent (a_class_def: P_BMM_CLASS) do validate_class (a_class_def) end)
 		end
 
-	validate_class (a_class_def: P_BMM_CLASS)
+	validate_class_refs (a_class_def: P_BMM_CLASS)
+			-- validate class references to other types
 		do
 			-- check that all ancestors exist
 			across a_class_def.ancestors as ancs_csr loop
@@ -526,14 +532,14 @@ feature {BMM_SCHEMA_DESCRIPTOR, BMM_MODEL_ACCESS} -- Schema Processing
 					end
 				end
 			end
+		end
 
+	validate_class (a_class_def: P_BMM_CLASS)
 			-- validate the properties
-			if not has_errors then
-				across a_class_def.properties as props_csr loop
-					validate_property (a_class_def, props_csr.item)
-				end
+		do
+			across a_class_def.properties as props_csr loop
+				validate_property (a_class_def, props_csr.item)
 			end
-
 		end
 
 	validate_property (a_class_def: P_BMM_CLASS; a_prop_def: P_BMM_PROPERTY)
