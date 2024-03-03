@@ -64,6 +64,7 @@ feature -- Commands
 		local
 			a_dt_iterator: DT_VISITOR_ITERATOR
 			res_file: PLAIN_TEXT_FILE
+			dir: DIRECTORY
 		do
 			-- serialise to a String
 			dt_serialiser.reset
@@ -73,9 +74,13 @@ feature -- Commands
 			-- write to the config file
 			create res_file.make (file_path)
 			if not file_system.file_exists (file_path) then
-				check attached file_system.dirname (file_path) as dir then
-					if not file_system.directory_exists (dir) then
-						file_system.recursive_create_directory (dir)
+				check attached file_system.dirname (file_path) as a_dir then
+					if not file_system.directory_exists (a_dir) then
+						-- TODO: revert when original call no longer causes OS faults
+						-- file_system.recursive_create_directory (a_dir)
+						create dir.make (a_dir)
+						dir.recursive_create_dir
+
 					end
 				end
 				res_file.create_read_write

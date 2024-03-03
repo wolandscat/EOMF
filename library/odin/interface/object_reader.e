@@ -97,6 +97,7 @@ feature -- Commands
 			-- write `obj` out to original file in the syntax determined by the descendant implementation
 		local
 			obj_file: PLAIN_TEXT_FILE
+			dir: DIRECTORY
 		do
 			reset
 
@@ -106,9 +107,12 @@ feature -- Commands
 			-- write to file
 			create obj_file.make (file_path)
 			if not obj_file.exists then
-				check attached file_system.dirname (file_path) as dir then
-					if not file_system.directory_exists (dir) then
-						file_system.recursive_create_directory (dir)
+				check attached file_system.dirname (file_path) as a_dir then
+					if not file_system.directory_exists (a_dir) then
+						-- TODO: revert when original call no longer causes OS faults
+						-- file_system.recursive_create_directory (a_dir)
+						create dir.make (a_dir)
+						dir.recursive_create_dir
 					end
 				end
 				obj_file.create_read_write
@@ -125,13 +129,17 @@ feature -- Commands
 			Format_valid: has_dt_serialiser_format (a_syntax)
 		local
 			obj_file: PLAIN_TEXT_FILE
+			dir: DIRECTORY
 		do
 			reset
 			create obj_file.make (a_file_path)
 			if not obj_file.exists then
-				check attached file_system.dirname (a_file_path) as dir then
-					if not file_system.directory_exists (dir) then
-						file_system.recursive_create_directory (dir)
+				check attached file_system.dirname (a_file_path) as a_dir then
+					if not file_system.directory_exists (a_dir) then
+						-- TODO: revert when original call no longer causes OS faults
+						-- file_system.recursive_create_directory (a_dir)
+						create dir.make (a_dir)
+						dir.recursive_create_dir
 					end
 				end
 				obj_file.create_read_write
