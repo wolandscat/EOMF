@@ -51,9 +51,9 @@ feature -- Identification
 			-- E.g. "T:Ordered"
 		do
 			create Result.make_from_string (name)
-			if attached flattened_conforms_to_type then
+			if attached flattened_conforms_to_type as fctt then
 				Result.append_character (Generic_constraint_delimiter)
-				Result.append (flattened_conforms_to_type.type_name)
+				Result.append (fctt.type_name)
 			end
 		end
 
@@ -75,18 +75,18 @@ feature -- Access
 			-- ultimate type conformance constraint on this generic parameter due to inheritance;
 			-- Void if no constraint type.
 		do
-			if attached type_constraint then
-				Result := type_constraint
-			elseif attached inheritance_precursor then
-				Result := inheritance_precursor.flattened_conforms_to_type
+			if attached type_constraint as tc then
+				Result := tc
+			elseif attached inheritance_precursor as ip then
+				Result := ip.flattened_conforms_to_type
 			end
 		end
 
 	effective_type: BMM_EFFECTIVE_TYPE
 			-- Effective conformance type: either defined in model, or 'Any' if none from the model.
 		do
-			if attached flattened_conforms_to_type as att_fct then
-				Result := att_fct
+			if attached flattened_conforms_to_type as fct then
+				Result := fct
 			else
 				Result := any_type_definition
 			end
@@ -98,8 +98,8 @@ feature -- Access
 		do
 			create Result.make(0)
 			Result.compare_objects
-			if attached flattened_conforms_to_type then
-				Result.append (flattened_conforms_to_type.flattened_type_list)
+			if attached flattened_conforms_to_type as fct then
+				Result.append (fct.flattened_type_list)
 			else
 				Result.extend (Any_type_name)
 			end
@@ -147,10 +147,10 @@ feature -- Factory
 	create_duplicate: like Current
 			-- create a copy of this type object, with common references to BMM_CLASS objects
 		do
-			if attached type_constraint then
-				create Result.make (name.twin, any_type_definition)
+			if attached type_constraint as tc then
+				create Result.make_constrained (name.twin, tc.create_duplicate, any_type_definition)
 			else
-				create Result.make_constrained (name.twin, type_constraint.create_duplicate, any_type_definition)
+				create Result.make (name.twin, any_type_definition)
 			end
 			if attached inheritance_precursor as ip then
 				Result.set_inheritance_precursor (ip)

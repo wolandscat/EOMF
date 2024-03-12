@@ -52,13 +52,13 @@ feature -- Identification
 			Result.append (Generic_left_delim.out)
 
 			-- arguments part
-			if attached argument_types then
-				Result.append (argument_types.type_name)
+			if attached argument_types as at then
+				Result.append (at.type_name)
 			end
 
 			-- result part
-			if attached result_type then
-				Result.append (Tuple_separator.out + " " + result_type.type_name)
+			if attached result_type as rt then
+				Result.append (Tuple_separator.out + " " + rt.type_name)
 			end
 
 			Result.append (Generic_right_delim.out)
@@ -89,11 +89,11 @@ feature -- Access
 			-- the type of an object as being a valid member of the container, e.g. ELEMENT in List<ELEMENT>
 		do
 			create Result.make(0)
-			if attached argument_types then
-				Result.append (argument_types.flattened_type_list)
+			if attached argument_types as at then
+				Result.append (at.flattened_type_list)
 			end
-			if attached result_type then
-				Result.append (result_type.flattened_type_list)
+			if attached result_type as rt then
+				Result.append (rt.flattened_type_list)
 			end
 		end
 
@@ -133,11 +133,11 @@ feature -- Factory
 			a_dup_argument_types: like argument_types
 			a_dup_result_type: like result_type
 		do
-			if attached argument_types then
-				a_dup_argument_types := argument_types.create_duplicate
+			if attached argument_types as at then
+				a_dup_argument_types := at.create_duplicate
 			end
-			if attached result_type then
-				a_dup_result_type := result_type.create_duplicate
+			if attached result_type as rt then
+				a_dup_result_type := rt.create_duplicate
 			end
 			create Result.make (a_dup_argument_types, a_dup_result_type)
 		end

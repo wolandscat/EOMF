@@ -100,8 +100,8 @@ feature -- Status Report
 	is_top_level: BOOLEAN
 			-- True if this is a top-level schema, i.e. has an archetype namespace
 		do
-			if attached bmm_schema then
-				Result := attached bmm_schema.model_name
+			if attached bmm_schema as bs then
+				Result := attached bs.model_name
 			end
 		end
 
@@ -143,8 +143,8 @@ feature {BMM_MODEL_ACCESS} -- Commands
 					merge_errors (schema_file_accessor.errors)
 				end
 			else
-				if passed then
-					merge_errors (new_schema.errors)
+				if attached new_schema as ns and passed then
+					merge_errors (ns.errors)
 				else
 					merge_errors (schema_file_accessor.errors)
 				end
@@ -161,8 +161,8 @@ feature {BMM_MODEL_ACCESS} -- Commands
 	validate_includes (all_schemas: STRING_TABLE [BMM_SCHEMA_DESCRIPTOR])
 			-- validate includes list for this schema, to see if each mentioned schema exists in read schemas
 		do
-			if attached bmm_schema and then attached bmm_schema.includes as bmm_schema_includes then
-				across bmm_schema_includes as supplier_schemas_csr loop
+			if attached bmm_schema as bs and then attached bs.includes as bsi then
+				across bsi as supplier_schemas_csr loop
 					if not all_schemas.has (supplier_schemas_csr.item.id) then
 						add_error ({BMM_MESSAGES_IDS}.ec_BMM_INC, <<schema_id, supplier_schemas_csr.item.id>>)
 					else
@@ -174,9 +174,9 @@ feature {BMM_MODEL_ACCESS} -- Commands
 
 	validate_merged
 		do
-			check attached bmm_schema then
-				bmm_schema.validate
-				merge_errors (bmm_schema.errors)
+			check attached bmm_schema as bs then
+				bs.validate
+				merge_errors (bs.errors)
 			end
 		end
 
@@ -187,12 +187,12 @@ feature {BMM_MODEL_ACCESS} -- Commands
 		local
 			exception_encountered: BOOLEAN
 		do
-			check attached bmm_schema then
+			check attached bmm_schema as bs then
 				if not exception_encountered then
-					bmm_schema.create_bmm_model
-					bmm_model := bmm_schema.bmm_model
+					bs.create_bmm_model
+					bmm_model := bs.bmm_model
 				else
-					add_error ({BMM_MESSAGES_IDS}.ec_BMM_CRF, <<bmm_schema.schema_id>>)
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_CRF, <<bs.schema_id>>)
 				end
 			end
 		ensure

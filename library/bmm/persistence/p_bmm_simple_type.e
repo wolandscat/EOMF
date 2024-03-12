@@ -35,7 +35,7 @@ feature -- Access (attributes from schema)
 
 	bmm_type: detachable BMM_SIMPLE_TYPE
 		note
-			option: transient
+			option: stable, transient
 		attribute
 		end
 

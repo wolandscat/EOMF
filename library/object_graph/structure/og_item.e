@@ -130,7 +130,7 @@ feature -- Modification
 
 			-- now fix the node id
 			if attached parent as og_attr then
-				parent.replace_node_id (old_id, a_node_id)
+				og_attr.replace_node_id (old_id, a_node_id)
 			end
 		end
 

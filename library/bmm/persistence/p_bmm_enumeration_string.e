@@ -24,13 +24,13 @@ feature -- Access
 
 	bmm_class: detachable BMM_ENUMERATION_STRING
 		note
-			option: transient
+			option: stable, transient
 		attribute
 		end
 
 feature {NONE} -- Implementation
 
-	populate_bmm_class_enumeration (a_bmm_enum_class: like bmm_class)
+	populate_bmm_class_enumeration (a_bmm_enum_class: BMM_ENUMERATION_STRING)
 			-- add remaining model elements to `bmm_class'
 		local
 			bmm_item_values: ARRAYED_LIST[BMM_STRING_VALUE]

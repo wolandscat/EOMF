@@ -30,7 +30,7 @@ inherit
 		end
 
 create
-	make, make_from_string
+	make, make_from_string, default_create
 
 feature -- Initialisation
 
@@ -84,6 +84,9 @@ feature -- Access
 
 	value: STRING
 			-- the complete URI value
+		attribute
+			create Result.make_empty
+		end
 
 	scheme: STRING
 			-- A distributed information "space" in which  information
@@ -136,12 +139,24 @@ feature -- Access
 
 feature -- Status Report
 
+	is_empty: BOOLEAN
+		do
+			Result := value.is_empty
+		end
+
 	valid_uri (a_str: STRING): BOOLEAN
 			-- True if a_str in valid URI syntax
 		do
 			-- FIXME: for the moment, anything is valid. We need to use the Gobo UT_URI class to
 			-- do proper validation
 			Result := not a_str.is_empty -- a_str.substring_index(Scheme_delimiter + Authority_delimiter, 1) > 1
+		end
+
+feature -- Modification
+
+	wipe_out
+		do
+			value.wipe_out
 		end
 
 feature -- Conversion

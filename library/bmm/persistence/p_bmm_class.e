@@ -18,8 +18,6 @@ feature -- Initialisation
 
 	make_dt (make_args: detachable ARRAY[ANY])
 		do
-			create ancestors.make (0)
-			ancestors.compare_objects
 		end
 
 feature -- Access (persisted)
@@ -40,9 +38,13 @@ feature -- Access (persisted)
 			-- FIXME: this won't function correctly unless ordering is guaranteed;
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
 
-	ancestors: detachable ARRAYED_LIST [STRING]
+	ancestors: ARRAYED_LIST [STRING]
 			-- list of immediate inheritance parents FROM SCHEMA
 			-- DO NOT RENAME OR OTHERWISE CHANGE THIS ATTRIBUTE EXCEPT IN SYNC WITH RM SCHEMA
+		attribute
+			create Result.make (0)
+			Result.compare_objects
+		end
 
 	ancestor_defs: detachable ARRAYED_LIST [P_BMM_UNITARY_TYPE]
 			-- list of immediate inheritance parents FROM SCHEMA; must be used if there are
@@ -91,13 +93,13 @@ feature -- Access
 				Result := att_defs
 			else
 				create Result.make (0)
-				if attached ancestors then
-					across ancestors as anc_csr loop
+				if attached ancestors as ancs then
+					across ancs as anc_csr loop
 						check p_bmm_schema.has_class_definition (anc_csr.item) then
 							p_bmm_class := p_bmm_schema.class_definition (anc_csr.item)
-							if p_bmm_class.is_generic then
+							if p_bmm_class.is_generic and attached p_bmm_class.generic_parameter_defs as gen_parm_defs then
 								Result.extend (create {P_BMM_GENERIC_TYPE}.make_generic_open (anc_csr.item,
-									create {ARRAYED_LIST[STRING]}.make_from_array (p_bmm_class.generic_parameter_defs.current_keys)))
+									create {ARRAYED_LIST[STRING]}.make_from_array (gen_parm_defs.current_keys)))
 							else
 								Result.extend (create {P_BMM_SIMPLE_TYPE}.make_simple (anc_csr.item))
 							end
@@ -115,13 +117,13 @@ feature -- Access
 
 	bmm_class: detachable BMM_CLASS
 		note
-			option: transient
+			option: stable, transient
 		attribute
 		end
 
 	p_bmm_schema: detachable P_BMM_SCHEMA
 		note
-			option: transient
+			option: stable, transient
 		attribute
 		end
 
@@ -180,7 +182,7 @@ feature -- Factory
 	populate_bmm_class (a_bmm_model: BMM_MODEL)
 			-- add remaining model elements from Current to `bmm_class'
 		do
-			check attached bmm_class as att_bmm_class then
+			check attached bmm_class as bc then
 				-- populate references to ancestor classes; should be every class except Any
 				across ancestor_refs as ancs_csr loop
 					-- find the BMM_CLASS of the ancestor reference
@@ -193,18 +195,18 @@ feature -- Factory
 					-- doesn't inherit from P_BMM_SIMPLE_TYPE.)
 					-- Could be fixed, but better to move on to new serial format
 					check attached {BMM_MODEL_TYPE} ancs_csr.item.bmm_type as bt then
-						att_bmm_class.add_ancestor (bt)
+						bc.add_ancestor (bt)
 					end
 				end
 
 				-- create generic parameters if a generic class
 				-- and add to the BMM_GENERIC_TYPE.generic_parameters list
-				if attached {BMM_GENERIC_CLASS} bmm_class as bmm_gen_class_def then
-					check attached generic_parameter_defs and then not generic_parameter_defs.is_empty then
-						across generic_parameter_defs as gen_parm_defs_csr loop
+				if attached {BMM_GENERIC_CLASS} bmm_class as bgc then
+					check attached generic_parameter_defs as gpd and then not gpd.is_empty then
+						across gpd as gen_parm_defs_csr loop
 							gen_parm_defs_csr.item.create_bmm_generic_parameter (a_bmm_model)
 							check attached gen_parm_defs_csr.item.bmm_generic_parameter as bm_gen_parm_def then
-								bmm_gen_class_def.add_generic_parameter (bm_gen_parm_def)
+								bgc.add_generic_parameter (bm_gen_parm_def)
 							end
 						end
 					end
@@ -212,14 +214,14 @@ feature -- Factory
 
 				-- populate properties
 				across properties as props_csr loop
-					props_csr.item.create_bmm_property (a_bmm_model, att_bmm_class)
-					if attached props_csr.item.bmm_property as bmm_prop_def then
-						att_bmm_class.add_property (bmm_prop_def)
+					props_csr.item.create_bmm_property (a_bmm_model, bc)
+					if attached props_csr.item.bmm_property as p then
+						bc.add_property (p)
 					end
 				end
 
 				-- mark as complete
-				att_bmm_class.set_is_populated
+				bc.set_is_populated
 			end
 		end
 

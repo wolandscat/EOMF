@@ -63,8 +63,8 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			check attached type_ref then
-				Result := container_type + Generic_left_delim.out + index_type + Generic_separator.out + type_ref.as_type_string + Generic_right_delim.out
+			check attached type_ref as tr then
+				Result := container_type + Generic_left_delim.out + index_type + Generic_separator.out + tr.as_type_string + Generic_right_delim.out
 			end
 		end
 
@@ -75,8 +75,8 @@ feature -- Output
 			Result.compare_objects
 			Result.extend (container_type)
 			Result.extend (index_type)
-			check attached type_ref as att_type_ref then
-				Result.append (att_type_ref.flattened_type_list)
+			check attached type_ref as tr then
+				Result.append (tr.flattened_type_list)
 			end
 		end
 

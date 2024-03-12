@@ -56,8 +56,8 @@ feature -- Access
 				Result := att_gen_parm_defs
 			else
 				create Result.make (0)
-				check attached generic_parameters then
-					across generic_parameters as gen_parms_csr loop
+				check attached generic_parameters as gp then
+					across gp as gen_parms_csr loop
 						if formal_generic_parameter_name (gen_parms_csr.item) then
 							Result.extend (create {P_BMM_OPEN_TYPE}.make_simple (gen_parms_csr.item))
 						else
@@ -70,7 +70,7 @@ feature -- Access
 
 	bmm_type: detachable BMM_GENERIC_TYPE
 		note
-			option: transient
+			option: stable, transient
 		attribute
 		end
 

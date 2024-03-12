@@ -37,14 +37,14 @@ feature -- Access
 	type_ref: detachable P_BMM_UNITARY_TYPE
 			-- the target type
 		do
-			if not attached type_def and attached type as att_type then
-				if formal_generic_parameter_name (att_type) then
-					create {P_BMM_OPEN_TYPE} Result.make_simple (att_type)
+			if attached type_def as td then
+				Result := td
+			elseif attached type as t then
+				if formal_generic_parameter_name (t) then
+					create {P_BMM_OPEN_TYPE} Result.make_simple (t)
 				else
-					create {P_BMM_SIMPLE_TYPE} Result.make_simple (att_type)
+					create {P_BMM_SIMPLE_TYPE} Result.make_simple (t)
 				end
-			else
-				Result := type_def
 			end
 		end
 
@@ -57,11 +57,11 @@ feature -- Access
 	base_type: STRING
 			-- return the effective unitary type
 		do
-			if attached type as att_type then
-				Result := att_type
+			if attached type as t then
+				Result := t
 			else
-				check attached type_def then
-					Result := type_def.base_type
+				check attached type_def as td then
+					Result := td.base_type
 				end
 			end
 		end
@@ -88,8 +88,8 @@ feature -- Output
 	as_type_string: STRING
 			-- formal name of the type
 		do
-			check attached type_ref then
-				Result := container_type + Generic_left_delim.out + type_ref.as_type_string + Generic_right_delim.out
+			check attached type_ref as tr then
+				Result := container_type + Generic_left_delim.out + tr.as_type_string + Generic_right_delim.out
 			end
 		end
 
@@ -99,8 +99,8 @@ feature -- Output
 			create Result.make (0)
 			Result.compare_objects
 			Result.extend (container_type)
-			check attached type_ref as att_type_ref then
-				Result.append (att_type_ref.flattened_type_list)
+			check attached type_ref as tr then
+				Result.append (tr.flattened_type_list)
 			end
 		end
 
