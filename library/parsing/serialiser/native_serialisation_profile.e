@@ -27,7 +27,7 @@ feature {ANY_SERIALISER} -- Access
 			Result.put("",			FMT_DOC_END)
 			Result.put("",			FMT_DOC_STYLES)
 			Result.put("",			FMT_START_BODY)
-			Result.put("",			FMT_END_BODY)
+			Result.put("%N",		FMT_END_BODY)
 			Result.put("",			FMT_START_SPAN)
 			Result.put("",			FMT_END_SPAN)
 			Result.put("",			FMT_START_TITLE)
