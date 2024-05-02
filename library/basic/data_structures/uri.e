@@ -26,7 +26,7 @@ class URI
 inherit
 	ANY
 		redefine
-			out
+			out, is_equal
 		end
 
 create
@@ -143,6 +143,15 @@ feature -- Status Report
 		do
 			Result := value.is_empty
 		end
+
+feature -- Comparison
+
+	is_equal (other: like Current): BOOLEAN
+		do
+			Result := value.is_equal (other.value)
+		end
+
+feature -- Validation
 
 	valid_uri (a_str: STRING): BOOLEAN
 			-- True if a_str in valid URI syntax
