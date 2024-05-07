@@ -138,13 +138,13 @@ feature -- Output
 
 feature -- Serialisation
 
-	enter_subtree (serialiser: DT_SERIALISER; depth: INTEGER)
+	enter_subtree (serialiser: DT_VISITOR; depth: INTEGER)
 			-- perform serialisation at start of block for this node
 		do
 			serialiser.start_primitive_object_interval_list (Current, depth)
 		end
 
-	exit_subtree (serialiser: DT_SERIALISER; depth: INTEGER)
+	exit_subtree (serialiser: DT_VISITOR; depth: INTEGER)
 			-- perform serialisation at end of block for this node
 		do
 			serialiser.end_primitive_object_interval_list (Current, depth)
