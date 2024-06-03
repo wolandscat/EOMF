@@ -152,6 +152,12 @@ feature -- Initialization
 			end
 			io.new_line
 
+			io.put_string ("---------------- BMM_MODEL.value_constraints --------------%N")
+			output_class_properties ("COMPOSITION", False)
+
+
+			io.put_string ("---------------- BMM_MODEL.subtypes --------------%N")
+
 			output_class_properties ("PARAMETER_MAPPING", True)
 			output_class_properties ("QUERY_CALL", True)
 
@@ -208,6 +214,13 @@ feature {NONE} -- Implementation
 			end
 			across properties as props_csr loop
 				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
+				if attached {BMM_UNITARY_PROPERTY} props_csr.item as up and then
+						attached {BMM_MODEL_TYPE} up.bmm_type as mt and then
+						attached mt.value_constraint as vc
+				then
+					io.put_string ("%TValue-set constraint:%N")
+					io.put_string ("%T%T" + vc.resource_id + "::" + vc.value_set_id + "%N")
+				end
 			end
 			io.new_line
 		end
