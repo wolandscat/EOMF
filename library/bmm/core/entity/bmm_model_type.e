@@ -73,8 +73,6 @@ feature -- Modification
 
 	set_value_constraint_from_string (a_constraint_str: STRING)
 			-- set from a String of the form "resource_id::value_set_id". The first part may be empty.
-		require
-			Valid_string: a_constraint_str.has_substring (Terminology_separator)
 		do
 			create value_constraint.make_from_string (a_constraint_str)
 		end

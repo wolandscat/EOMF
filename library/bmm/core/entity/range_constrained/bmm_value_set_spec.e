@@ -33,7 +33,7 @@ feature -- Initialisation
 		end
 
 	make_from_string (a_constraint_str: STRING)
-			-- set from a String of the form "resource_id::value_set_id". The first part may be empty.
+			-- set from a String of the form "resource_id::value_set_id" or "value_set_id".
 		do
 			set_from_string (a_constraint_str)
 		end
@@ -63,24 +63,18 @@ feature -- Modification
 		end
 
 	set_from_string (a_constraint_str: STRING)
-			-- set from a String of the form "resource_id::value_set_id". The first part may be empty.
-		require
-			Valid_string: a_constraint_str.has_substring (Terminology_separator)
+			-- set from a String of the form "resource_id::value_set_id" or "value_set_id"
 		local
 			res_id, vs_id: STRING
 			pos: INTEGER
 		do
 			pos := a_constraint_str.substring_index (Terminology_separator, 1)
 			if pos > 1 then
-				res_id := a_constraint_str.substring (1, pos-1)
+				resource_id := a_constraint_str.substring (1, pos-1)
+				value_set_id := a_constraint_str.substring (pos + Terminology_separator.count, a_constraint_str.count)
 			else
-				create res_id.make_empty
+				create value_set_id.make_from_string(a_constraint_str)
 			end
-
-			vs_id := a_constraint_str.substring (pos + Terminology_separator.count, a_constraint_str.count)
-
-			resource_id := res_id
-			value_set_id := vs_id
 		end
 
 feature -- Output
@@ -88,7 +82,11 @@ feature -- Output
 	as_string: STRING
 			-- generate a single string in the form resource_id::value_set_id
 		do
-			Result := resource_id + Terminology_separator + value_set_id
+			create Result.make_empty
+			if not resource_id.is_empty then
+				Result.append (resource_id + Terminology_separator)
+			end
+			Result.append (value_set_id)
 		end
 
 	as_delimited_string: STRING
