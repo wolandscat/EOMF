@@ -31,8 +31,8 @@ feature -- Definitions
 		end
 
 	Config_file_path_root: STRING
-			-- generate a directory for application data; on unix-like systems, it is in 
-			-- a directory named '.<application>' i.e. application name with a precending dot
+			-- generate a directory for application data; on unix-like systems, it is in
+			-- a directory named '.<application>' i.e. application name with a preceding dot
 			-- on Windows, there is no dot.
 		once ("PROCESS")
 			create Result.make_empty
@@ -67,7 +67,11 @@ feature -- Access
 			-- accessor object for application config file
 		once ("PROCESS")
 			Result := app_cfg_cell.item
-			Result.initialise (user_config_file_path)
+			if not custom_config_file_path.is_empty then
+				Result.initialise (custom_config_file_path)
+			else
+				Result.initialise (user_config_file_path)
+			end
 			app_cfg_initialise
 		end
 
@@ -93,6 +97,12 @@ feature -- Access
 			else
 				Result := file_system.current_working_directory
 			end
+		end
+
+	custom_config_file_path: STRING
+			-- Command-line specified specific location for cfg file
+		once
+			create Result.make(0)
 		end
 
 	user_config_file_directory: STRING
