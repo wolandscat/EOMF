@@ -59,19 +59,9 @@ feature -- Application Switches
 
 	rm_schema_directories: ARRAYED_LIST [STRING]
 			-- Locations where RM schemas are found - note: this should be writable.
-		local
-			old_path: STRING
 		do
 			Result := app_cfg.string_list_value ("/rm_schema_directories")
 			Result.compare_objects
-
-			-- FIXME: for a few versions starting at 2.0.6.2813, scrape up the old single path variable 
-			old_path := app_cfg.string_value ("/file_system/rm_schema_directory")
-			if Result.is_empty and not old_path.is_empty then
-				Result.extend (old_path)
-				app_cfg.remove_resource ("/file_system/rm_schema_directory")
-				app_cfg.put_string_list_value ("/rm_schema_directories", Result)
-			end
 		ensure
 			value_comparison: Result.object_comparison
 			no_empty_items: not across Result as sch_csr some sch_csr.item.is_empty end

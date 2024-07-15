@@ -130,12 +130,15 @@ feature -- Access
 					Result := val
 				end
 			else
-				if has_resource (a_path) and then attached dt_tree as att_dt_tree
-					and then attached {ARRAYED_LIST [STRING]} att_dt_tree.value_list_at_path (a_path) as lst_str
-				then
-					Result := lst_str
-				else
-					create Result.make (0)
+				create Result.make (0)
+				if has_resource (a_path) and then attached dt_tree as att_dt_tree then
+					if attached {ARRAYED_LIST [STRING]} att_dt_tree.value_list_at_path (a_path) as lst_str then
+						Result := lst_str
+
+					-- convert a single string to a string list
+					elseif attached {STRING} att_dt_tree.value_at_path (a_path) as str then
+						Result.extend (str)
+					end
 				end
 				string_list_value_cache.put (Result, a_path)
 			end
