@@ -36,14 +36,14 @@ create
 
 feature -- Access
 
-	data_source_agent: FUNCTION [ANY, TUPLE, detachable HASH_TABLE [STRING, STRING]]
+	data_source_agent: FUNCTION [ANY, TUPLE, detachable STRING_TABLE [READABLE_STRING_GENERAL]]
 			-- function that produces a correct reference to the data source of this
 			-- control when called
 
-	data_source_setter_agent: detachable PROCEDURE [ANY, TUPLE [STRING, STRING]]
+	data_source_setter_agent: detachable PROCEDURE [ANY, TUPLE [READABLE_STRING_GENERAL, READABLE_STRING_GENERAL]]
 			-- agent for creating & setting the data source
 
-	data_source_remove_agent: detachable PROCEDURE [ANY, TUPLE [STRING]]
+	data_source_remove_agent: detachable PROCEDURE [ANY, TUPLE [READABLE_STRING_GENERAL]]
 			-- agent for removing a data item
 
 feature {NONE} -- Implementation
@@ -57,7 +57,7 @@ feature {NONE} -- Implementation
 
 	process_in_place_edit
 		local
-			old_key, old_val, new_key, new_val: STRING
+			old_key, old_val, new_key, new_val: READABLE_STRING_GENERAL
 			i: INTEGER
 		do
 			if attached data_source_agent.item ([]) as ds then

@@ -34,8 +34,8 @@ feature -- Commands
 
 feature {NONE} -- Implementation
 
-	populate_ev_multi_list_from_hash (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable HASH_TABLE [ANY, STRING])
-			-- populate rows of a multi-column list with name - value pairs in a HASH_TABLE
+	populate_ev_multi_list_from_hash (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable STRING_TABLE [ANY])
+			-- populate rows of a multi-column list with name - value pairs in a STRING_TABLE
 			-- Note that the value type is assumed to have a sensible outpur from its 'out' function
 		local
 			ev_list_row: EV_MULTI_COLUMN_LIST_ROW
@@ -44,16 +44,16 @@ feature {NONE} -- Implementation
 				ev_mlist.wipe_out
 				across ht as ht_csr loop
 					create ev_list_row
-					ev_list_row.extend (utf8_to_utf32 (ht_csr.key))
-					ev_list_row.extend (utf8_to_utf32 (ht_csr.item.out))
+					ev_list_row.extend (ht_csr.key.as_string_32)
+					ev_list_row.extend (ht_csr.item.out.as_string_32)
 					ev_mlist.extend (ev_list_row)
 				end
 				resize_ev_multi_list (ev_mlist)
 			end
 		end
 
-	populate_ev_multi_list_from_hash_list (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable HASH_TABLE [LIST[STRING], STRING])
-			-- populate rows of a multi-column list with name - value pairs in a HASH_TABLE
+	populate_ev_multi_list_from_hash_list (ev_mlist: EV_MULTI_COLUMN_LIST; ht: detachable STRING_TABLE [LIST[STRING]])
+			-- populate rows of a multi-column list with name - value pairs in a STRING_TABLE
 			-- Note that the value type is assumed to have a sensible outpur from its 'out' function
 		local
 			ev_list_row: EV_MULTI_COLUMN_LIST_ROW
@@ -62,9 +62,9 @@ feature {NONE} -- Implementation
 				ev_mlist.wipe_out
 				across ht as ht_csr loop
 					create ev_list_row
-					ev_list_row.extend (utf8_to_utf32 (ht_csr.key))
+					ev_list_row.extend (ht_csr.key.as_string_32)
 					across ht_csr.item as items_csr loop
-						ev_list_row.extend (utf8_to_utf32 (items_csr.item))
+						ev_list_row.extend (items_csr.item.as_string_32)
 					end
 					ev_mlist.extend (ev_list_row)
 				end
@@ -120,16 +120,15 @@ feature {NONE} -- Implementation
 			end
 		end
 
-	populate_ev_list_from_hash_keys (ev_list: EV_LIST; ht: detachable HASH_TABLE [ANY, STRING])
+	populate_ev_list_from_hash_keys (ev_list: EV_LIST; ht: detachable STRING_TABLE [ANY])
 			-- populate list from hash table keys
 		local
 			ev_list_item: EV_LIST_ITEM
 		do
-			if attached ht then
-				from ht.start until ht.off loop
-					create ev_list_item.make_with_text (utf8_to_utf32 (ht.key_for_iteration))
+			if attached ht as att_ht then
+				across att_ht as ht_csr loop
+					create ev_list_item.make_with_text (ht_csr.key.as_string_32)
 					ev_list.extend(ev_list_item)
-					ht.forth
 				end
 			end
 		end
