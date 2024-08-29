@@ -183,7 +183,7 @@ feature {NONE} -- Implementation
 			-- get the node list from here back up to the root or `stop_node' if set,
 			-- but don't include the root OG_OBJECT_NODE
 			create og_nodes.make(0)
-			from csr := Current until csr.parent = Void or csr ~ stop_node loop
+			from csr := Current until csr.parent = Void or csr = stop_node loop
 				og_nodes.put_front (csr)
 				check attached csr.parent as p then
 					csr := p
