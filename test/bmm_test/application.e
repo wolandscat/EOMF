@@ -198,6 +198,14 @@ feature -- Initialization
 
 			do_output_subtypes ("GENERIC_PARENT<T,U>")
 
+			io.put_string ("======================= generic property =======================%N")
+			output_class_properties ("TYPE_WITH_GENERIC_PROPERTY", False)
+			if attached test_bmm_model.class_definition ("TYPE_WITH_GENERIC_PROPERTY").properties.item("time_validity") as prop and then
+				attached {BMM_MODEL_TYPE} prop.bmm_type as pt
+			then
+				output_type_properties (pt)
+			end
+
 		end
 
 feature {NONE} -- Implementation
@@ -212,6 +220,25 @@ feature {NONE} -- Implementation
 			else
 				properties := test_bmm_model.class_definition (a_class_name).properties
 			end
+			across properties as props_csr loop
+				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
+				if attached {BMM_UNITARY_PROPERTY} props_csr.item as up and then
+						attached {BMM_MODEL_TYPE} up.bmm_type as mt and then
+						attached mt.value_constraint as vc
+				then
+					io.put_string ("%TValue-set constraint:%N")
+					io.put_string ("%T%T" + vc.resource_id + "::" + vc.value_set_id + "%N")
+				end
+			end
+			io.new_line
+		end
+
+	output_type_properties (a_type: BMM_MODEL_TYPE)
+		local
+			properties: STRING_TABLE [BMM_PROPERTY]
+		do
+			io.put_string (a_type.type_name + " - properties %N")
+			properties := a_type.properties
 			across properties as props_csr loop
 				io.put_string ("    " + props_csr.item.name + ": " + props_csr.item.bmm_type.type_name + "%N")
 				if attached {BMM_UNITARY_PROPERTY} props_csr.item as up and then

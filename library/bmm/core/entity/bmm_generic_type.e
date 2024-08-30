@@ -12,7 +12,8 @@ class BMM_GENERIC_TYPE
 inherit
 	BMM_MODEL_TYPE
 		redefine
-			make, defining_class, type_signature, has_formal_generic_type, substitute_formal_generic_type
+			make, defining_class, type_signature, has_formal_generic_type, substitute_formal_generic_type,
+			properties, flat_properties
 		end
 
 create
@@ -95,6 +96,20 @@ feature -- Access
 			end
 		end
 
+    properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties defined by this entity, keyed by property name
+		local
+			new_prop: BMM_UNITARY_PROPERTY
+		do
+			Result := properties_substituted (defining_class.properties)
+		end
+
+    flat_properties: STRING_TABLE [BMM_PROPERTY]
+			-- list of all properties of an instance of this entity, keyed by property name
+		do
+			Result := properties_substituted (defining_class.flat_properties)
+		end
+
 feature -- Status Report
 
 	is_abstract: BOOLEAN
@@ -173,6 +188,28 @@ feature -- Modification
 	add_generic_parameter (a_gen_parm: BMM_UNITARY_TYPE)
 		do
 			generic_parameters.extend (a_gen_parm)
+		end
+
+feature {NONE} -- Implementation
+
+    properties_substituted (props: STRING_TABLE [BMM_PROPERTY]): STRING_TABLE [BMM_PROPERTY]
+			-- process props by substituting those with open generic property type with any
+			-- substitution available
+		local
+			new_prop: BMM_UNITARY_PROPERTY
+		do
+			create Result.make(0)
+			across props as props_csr loop
+				if attached {BMM_PARAMETER_TYPE} props_csr.item.bmm_type as gpt
+					and then attached generic_substitutions.item (gpt.name) as gsubt
+				then
+					create new_prop.make_from_other_generic (props_csr.item, gsubt)
+					new_prop.set_is_synthesised_generic
+					Result.put (new_prop, new_prop.name)
+				else
+					Result.put (props_csr.item, props_csr.key)
+				end
+			end
 		end
 
 end

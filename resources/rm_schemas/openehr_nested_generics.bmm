@@ -74,7 +74,7 @@ packages = <
 		packages = <
 			["inheritance"] = <
 				name = <"inheritance">
-				classes = <"GENERIC_PARENT", "SUPPLIER", "SUPPLIER_A", "SUPPLIER_B", "GENERIC_CHILD_OPEN_T", "GENERIC_CHILD_OPEN_U", "GENERIC_CHILD_CLOSED">
+				classes = <"GENERIC_PARENT", "SUPPLIER", "SUPPLIER_A", "SUPPLIER_B", "GENERIC_CHILD_OPEN_T", "GENERIC_CHILD_OPEN_U", "GENERIC_CHILD_CLOSED", "TYPE_WITH_GENERIC_PROPERTY">
 			>
 		>
 	>
@@ -89,6 +89,20 @@ class_definitions = <
 	------------------------------------------------------------
 	--------------------- rm.data_types ------------------------
 	------------------------------------------------------------
+
+	["TYPE_WITH_GENERIC_PROPERTY"] = <
+		name = <"TYPE_WITH_GENERIC_PROPERTY">
+		properties = <
+			["time_validity"] = (P_BMM_GENERIC_PROPERTY) <
+				name = <"time_validity">
+				type_def = <
+					root_type = <"Interval">
+					generic_parameters = <"Date">
+				>
+			>
+		>
+	>
+
 
 	--
 	--------------------- rm.data_types.basic ------------------
