@@ -30,6 +30,11 @@ inherit
 			{ANY} has_dt_serialiser_format
 		end
 
+	EXCEPTIONS
+		export
+			{NONE} all
+		end
+
 feature -- Initialisation
 
 	make (a_meta_data: HASH_TABLE [STRING, STRING])
@@ -186,13 +191,21 @@ feature {BMM_MODEL_ACCESS} -- Commands
 			passed
 		local
 			exception_encountered: BOOLEAN
+			msg: STRING
 		do
 			check attached bmm_schema as bs then
 				if not exception_encountered then
 					bs.create_bmm_model
 					bmm_model := bs.bmm_model
 				else
-					add_error ({BMM_MESSAGES_IDS}.ec_BMM_CRF, <<bs.schema_id>>)
+					create msg.make_from_string (bs.schema_id)
+
+					-- obtain the exception trace
+					if attached exception_trace as str then
+						msg.append ("%N" + str)
+					end
+
+					add_error ({BMM_MESSAGES_IDS}.ec_BMM_CRF, <<msg>>)
 				end
 			end
 		ensure

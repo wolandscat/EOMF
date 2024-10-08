@@ -12,7 +12,7 @@ do
 	cd $msg_dir
 	if ls $messages_file_pattern 1> /dev/null 2>&1; then
 		echo "cd $msg_dir; msg_code_gen"
-		msg_code_gen
+		msg_code_gen -l en
 	fi
 	cd $root_dir
 done

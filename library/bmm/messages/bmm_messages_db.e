@@ -24,9 +24,10 @@ feature -- Initialisation
 
 	make
 		do
-			create message_table.make (71)
+			create message_table.make (72)
 			message_table.put ("Documentation", ec_bmm_documentation_text)
 			message_table.put ("Property synthesised due to generic formal parameter substitution", ec_bmm_prop_synth_gen_text)
+			message_table.put ("Failure processing RM schemas: $1", ec_bmm_schemas_general_error)
 			message_table.put ("Reference model schema(s) $1 specified in options not valid or not found in schema directories", ec_bmm_schemas_config_not_valid)
 			message_table.put ("Reference Model schema file $1 does not exist or not readable", ec_bmm_schema_file_not_valid)
 			message_table.put ("Reference Model schema $1 load failure; reason: $2", ec_bmm_schema_load_failure)

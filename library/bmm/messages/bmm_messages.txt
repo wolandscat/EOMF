@@ -17,6 +17,7 @@ templates = <
 
 
 		-- SCHEMA_ACCESS (RM model checker)
+		["bmm_schemas_general_error"] = <"Failure processing RM schemas: $1">
 		["bmm_schemas_config_not_valid"] = <"Reference model schema(s) $1 specified in options not valid or not found in schema directories">
 		["bmm_schema_file_not_valid"] = <"Reference Model schema file $1 does not exist or not readable">
 		["bmm_schema_load_failure"] = <"Reference Model schema $1 load failure; reason: $2">
