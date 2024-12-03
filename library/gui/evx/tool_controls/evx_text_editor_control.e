@@ -54,7 +54,7 @@ feature {NONE}-- Initialization
 			enable_editable
 			save_agt := a_save_agt
 			add_button (Void, Void, get_text ({EVX_MESSAGES_IDS}.ec_save_button_text), get_text ({EVX_MESSAGES_IDS}.ec_save_button_tooltip), agent save_content, Void)
-			ev_text.key_press_actions.extend (agent on_keypress)
+			ev_text.key_press_actions.extend (agent on_save)
 		end
 
 	make (a_source_text_agt: like source_text_agt)
@@ -91,6 +91,9 @@ feature {NONE}-- Initialization
 			gui_controls.extend (evx_line_numbers_cb)
 
 			ev_root_container.set_data (Current)
+
+			ev_text.key_press_actions.extend (agent on_keypress)
+			ev_text.pointer_button_press_actions.extend (agent on_mouse_button_press)
 		end
 
 feature -- Access
@@ -99,6 +102,50 @@ feature -- Access
 
 	source_text_agt: FUNCTION [ANY, TUPLE, detachable STRING]
 			-- agent that provides access to text
+
+feature -- Search
+
+	has_text (a_text: STRING): BOOLEAN
+			-- return True if `a_text` found
+		do
+			Result := ev_text.search (a_text, 1) > 0
+		end
+
+	search_and_display (a_text: STRING)
+			-- search for `a_text` from start and make visible if found
+		local
+			pos: INTEGER
+		do
+			create search_text.make_from_string (a_text)
+			pos := ev_text.search (search_text, 1)
+			if pos > 0 then
+				ev_application.add_idle_action_kamikaze (agent select_and_display (pos, pos + search_text.count - 1))
+			end
+		end
+
+	search_next
+			-- search for last searched text from start and make visible if found
+		local
+			pos: INTEGER
+		do
+			pos := ev_text.search (search_text, (last_search_pos + 1) \\ ev_text.text_length)
+			if pos = 0 then
+				pos := ev_text.search (search_text, 1)
+			end
+			if pos > 0 then
+				last_search_pos := pos
+				if not ev_text.character_displayed (pos) then
+					ev_text.scroll_to_line (ev_text.line_number_from_position (pos))
+				end
+				ev_text.select_region (pos, pos + search_text.count - 1)
+			end
+		end
+
+	search_previous
+			-- search for previous instance of last searched text from start and make visible if found
+		do
+			-- TODO
+		end
 
 feature -- Modification
 
@@ -143,6 +190,11 @@ feature -- Modification
 			evx_view_frame.extend (evx_cb.ev_data_control, False)
 			check_box_table.put(evx_cb, a_text)
 			gui_controls.extend (evx_cb)
+		end
+
+	set_text_focus_in_action (agt: PROCEDURE[ANY,TUPLE])
+		do
+			ev_text.focus_in_actions.extend (agt)
 		end
 
 feature -- Status Report
@@ -209,12 +261,32 @@ feature -- Commands
 
 feature -- Events
 
-	on_keypress (key: EV_KEY)
+	on_save (a_key: EV_KEY)
 			-- When the user presses ctrl-S on row in path map, call the save agent
 		do
-			if ev_application.ctrl_pressed and attached key and then key.code = key_s then
+			if ev_application.ctrl_pressed and attached a_key as key and then key.code = key_s then
 				save_content
 			end
+		end
+
+	on_keypress (a_key: EV_KEY)
+			-- Check if an arrow key has been pressed and update last search position
+		do
+			if attached a_key as key and then key.is_arrow then
+				ev_application.add_idle_action_kamikaze (agent do_update_last_search_pos_from_carat)
+			end
+		end
+
+	on_mouse_button_press (x, y, button: INTEGER; x_tilt, y_tilt, pressure: DOUBLE; screen_x, screen_y: INTEGER)
+		do
+			if button = {EV_POINTER_CONSTANTS}.left then
+				ev_application.add_idle_action_kamikaze (agent do_update_last_search_pos_from_carat)
+			end
+		end
+
+	do_update_last_search_pos_from_carat
+		do
+			last_search_pos := ev_text.caret_position
 		end
 
 feature {NONE} -- Implementation
@@ -279,6 +351,25 @@ feature {NONE} -- Implementation
 		end
 
 	check_box_table: STRING_TABLE [EVX_CHECK_BOX_CONTROL]
+
+	last_search_pos: INTEGER
+			-- character position of last matched string in text due to call to `search_and_display`
+
+	search_text: STRING
+		attribute
+			create Result.make_empty
+		end
+
+	select_and_display (start_pos, end_pos: INTEGER)
+			-- select between two positions and display
+		do
+			ev_text.set_focus
+			last_search_pos := start_pos
+			if not ev_text.character_displayed (start_pos) then
+				ev_text.scroll_to_line (ev_text.line_number_from_position (start_pos))
+			end
+			ev_text.select_region (start_pos, end_pos)
+		end
 
 end
 
