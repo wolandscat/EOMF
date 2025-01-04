@@ -51,18 +51,8 @@ feature -- Visitor
 			end
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + format_item (FMT_NEWLINE))
 
-			-- if type marking on, output an attribute of the form "_type": "XXXX",
-			if full_type_marking_on and not is_eif_type_ignored_in_json (a_node.im_type_name) then
-				-- output: indent "_type":
-				last_result.append (create_indent ((depth+1)//2 + multiple_attr_count))
-				last_result.append (format_attr_name (symbol (Sym_json_type_attribute_name)))
-				last_result.append (symbol (SYM_JSON_EQ))
-
-				-- output the value
-				last_result.append (primitive_value_to_json_string (eiffel_to_json_type_name (a_node.im_type_name)))
-				last_result.append (symbol (SYM_JSON_ITEM_DELIMITER))
-				last_result.append (format_item (FMT_NEWLINE))
-			end
+			last_result.append (create_indent ((depth+1)//2 + multiple_attr_count))
+			last_result.append (serialise_type_attribute (a_node))
 		end
 
 	end_complex_object_node (a_node: DT_COMPLEX_OBJECT; depth: INTEGER)
@@ -164,7 +154,6 @@ feature -- Visitor
 			str: STRING
 		do
 			last_result.append (symbol (SYM_JSON_START_OBJECT) + "%N")
-	--		start_object_item (a_node, depth)
 			str := a_node.as_serialised_string (
 					agent primitive_value_to_json_string,
 					agent format_attr_name,
@@ -183,7 +172,7 @@ feature -- Visitor
 		end
 
 	start_primitive_object_interval_list (a_node: DT_PRIMITIVE_OBJECT_INTERVAL_LIST; depth: INTEGER)
-			-- start serialising a DT_OBJECT_SIMPLE
+			-- start serialising a DT_PRIMITIVE_OBJECT_INTERVAL_LIST
 		local
 			str: STRING
 		do
@@ -327,6 +316,22 @@ feature {NONE} -- Implementation
 						Result.append ("%"")
 					end
 				end
+			end
+		end
+
+	serialise_type_attribute (a_node: DT_ITEM): STRING
+			-- output "_type": "xxx", if `full_type_marking_on` set
+		do
+			create Result.make_empty
+			if full_type_marking_on and not is_eif_type_ignored_in_json (a_node.im_type_name) then
+				-- output: indent "_type":
+				Result.append (format_attr_name (symbol (Sym_json_type_attribute_name)))
+				Result.append (symbol (SYM_JSON_EQ))
+
+				-- output the value
+				Result.append (primitive_value_to_json_string (eiffel_to_json_type_name (a_node.im_type_name)))
+				Result.append (symbol (SYM_JSON_ITEM_DELIMITER))
+				Result.append (format_item (FMT_NEWLINE))
 			end
 		end
 
